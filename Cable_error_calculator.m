@@ -61,7 +61,6 @@ end
 % computing H = 0.005 vs h = 0.001 norms
 [Linf_U, Linf_N, Linf_M, Linf_H, L1_U, L1_N, L1_M, L1_H, L2_U, L2_N, L2_M, L2_H] = norm_calculator(U2, N2, M2, H2, U3, N3, M3, H3, Uall1_num_of_rows)
 
-
 % plotting h = 0.01, h= 0.005, and h = 0.001 next to each other
 figure(1)
 plot_different_time_steps(U1, U2, U3, 0, 35, 0.01)
