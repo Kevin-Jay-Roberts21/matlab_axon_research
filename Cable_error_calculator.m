@@ -2,252 +2,74 @@ clear all
 close all
 clc
 
-Uall1 = load('projects/axon_simulations/data/Uall1.mat').Uall;
-Nall1 = load('projects/axon_simulations/data/Nall1.mat').Nall;
-Mall1 = load('projects/axon_simulations/data/Mall1.mat').Mall;
-Hall1 = load('projects/axon_simulations/data/Hall1.mat').Hall;
-Uall1_num_of_rows = size(Uall1, 1);
-Uall1_num_of_cols = size(Uall1, 2);
+bigUall1 = load('projects/axon_simulations/data/Uall1.mat').Uall;
+bigNall1 = load('projects/axon_simulations/data/Nall1.mat').Nall;
+bigMall1 = load('projects/axon_simulations/data/Mall1.mat').Mall;
+bigHall1 = load('projects/axon_simulations/data/Hall1.mat').Hall;
+Uall1_num_of_rows = size(bigUall1, 1);
+Uall1_num_of_cols = size(bigUall1, 2);
 
-Uall2 = load('projects/axon_simulations/data/Uall2.mat').Uall;
-Nall2 = load('projects/axon_simulations/data/Nall2.mat').Nall;
-Mall2 = load('projects/axon_simulations/data/Mall2.mat').Mall;
-Hall2 = load('projects/axon_simulations/data/Hall2.mat').Hall;
-Uall2_num_of_rows = size(Uall2, 1);
-Uall2_num_of_cols = size(Uall2, 2);
+bigUall2 = load('projects/axon_simulations/data/Uall2.mat').Uall;
+bigNall2 = load('projects/axon_simulations/data/Nall2.mat').Nall;
+bigMall2 = load('projects/axon_simulations/data/Mall2.mat').Mall;
+bigHall2 = load('projects/axon_simulations/data/Hall2.mat').Hall;
+Uall2_num_of_rows = size(bigUall2, 1);
+Uall2_num_of_cols = size(bigUall2, 2);
 
-Uall3 = load('projects/axon_simulations/data/Uall3.mat').Uall;
-Nall3 = load('projects/axon_simulations/data/Nall3.mat').Nall;
-Mall3 = load('projects/axon_simulations/data/Mall3.mat').Mall;
-Hall3 = load('projects/axon_simulations/data/Hall3.mat').Hall;
-Uall3_num_of_rows = size(Uall3, 1);
-Uall3_num_of_cols = size(Uall3, 2);
+bigUall3 = load('projects/axon_simulations/data/Uall3.mat').Uall;
+bigNall3 = load('projects/axon_simulations/data/Nall3.mat').Nall;
+bigMall3 = load('projects/axon_simulations/data/Mall3.mat').Mall;
+bigHall3 = load('projects/axon_simulations/data/Hall3.mat').Hall;
+Uall3_num_of_rows = size(bigUall3, 1);
+Uall3_num_of_cols = size(bigUall3, 2);
+
+U1 = zeros(Uall1_num_of_cols, 1);
+N1 = zeros(Uall1_num_of_cols, 1);
+M1 = zeros(Uall1_num_of_cols, 1);
+H1 = zeros(Uall1_num_of_cols, 1);
+U2 = zeros(Uall1_num_of_cols, 1);
+N2 = zeros(Uall1_num_of_cols, 1);
+M2 = zeros(Uall1_num_of_cols, 1);
+H2 = zeros(Uall1_num_of_cols, 1);
+U3 = zeros(Uall1_num_of_cols, 1);
+N3 = zeros(Uall1_num_of_cols, 1);
+M3 = zeros(Uall1_num_of_cols, 1);
+H3 = zeros(Uall1_num_of_cols, 1);
 
 
-% find the difference at time t_0 = 0.01, t_1 = 0.02, ..., t_3500 = 35
-% Modify Uall2, Nall2, Mall2 Hall2, and all the others to have the same
-% number of rows as Uall1, Nall1, Mall1 and Hall1
-
-% compute the Linf norm difference of -all1s and -all2s
-% compute the L1 norm difference of -all1s and -all2s
-% compute the L2 norm difference of -all1s and -all2s
-Uall_max_numerator = 0;
-Nall_max_numerator = 0;
-Mall_max_numerator = 0; 
-Hall_max_numerator = 0;
-Uall_max_denominator = 0;
-Nall_max_denominator = 0;
-Mall_max_denominator = 0; 
-Hall_max_denominator = 0;
-Uall_L1_norm_numerator = 0;
-Uall_L1_norm_denominator = 0;
-Uall_L2_norm_numerator_sum = 0;
-Uall_L2_norm_denominator_sum = 0;
-Nall_L1_norm_numerator = 0;
-Nall_L1_norm_denominator = 0;
-Nall_L2_norm_numerator_sum = 0;
-Nall_L2_norm_denominator_sum = 0;
-Mall_L1_norm_numerator = 0;
-Mall_L1_norm_denominator = 0;
-Mall_L2_norm_numerator_sum = 0;
-Mall_L2_norm_denominator_sum = 0;
-Hall_L1_norm_numerator = 0;
-Hall_L1_norm_denominator = 0;
-Hall_L2_norm_numerator_sum = 0;
-Hall_L2_norm_denominator_sum = 0;
-
+% redefining Uall1, Uall2 and Uall3 to be vectors of the same length
 for i = 1:Uall1_num_of_rows
+    U1(i, 1) = bigUall1(i, 1);
+    N1(i, 1) = bigNall1(i, 1);
+    M1(i, 1) = bigMall1(i, 1);
+    H1(i, 1) = bigHall1(i, 1);
     
-    % finding the L1 norm
-    Uall_L1_norm_numerator = Uall_L1_norm_numerator + abs(Uall1(i, 1) - Uall2((2*i)-1, 1));
-    Uall_L1_norm_denominator = Uall_L1_norm_denominator + abs(Uall2((2*i)-1, 1));
-    Nall_L1_norm_numerator = Nall_L1_norm_numerator + abs(Nall1(i, 1) - Nall2((2*i)-1, 1));
-    Nall_L1_norm_denominator = Nall_L1_norm_denominator + abs(Nall2((2*i)-1, 1));
-    Mall_L1_norm_numerator = Mall_L1_norm_numerator + abs(Mall1(i, 1) - Mall2((2*i)-1, 1));
-    Mall_L1_norm_denominator = Mall_L1_norm_denominator + abs(Mall2((2*i)-1, 1));
-    Hall_L1_norm_numerator = Hall_L1_norm_numerator + abs(Hall1(i, 1) - Hall2((2*i)-1, 1));
-    Hall_L1_norm_denominator = Hall_L1_norm_denominator + abs(Hall2((2*i)-1, 1));
+    U2(i, 1) = bigUall2((2*i)-1, 1);
+    N2(i, 1) = bigNall2((2*i)-1, 1);
+    M2(i, 1) = bigMall2((2*i)-1, 1);
+    H2(i, 1) = bigHall2((2*i)-1, 1);
     
-    % finding the L2 norm
-    Uall_L2_norm_numerator_sum = Uall_L2_norm_numerator_sum + (abs(Uall1(i, 1) - Uall2((2*i)-1, 1)))^2;
-    Uall_L2_norm_denominator_sum = Uall_L2_norm_denominator_sum + (abs(Uall2((2*i)-1, 1)))^2;
-    Nall_L2_norm_numerator_sum = Nall_L2_norm_numerator_sum + (abs(Nall1(i, 1) - Nall2((2*i)-1, 1)))^2;
-    Nall_L2_norm_denominator_sum = Nall_L2_norm_denominator_sum + (abs(Nall2((2*i)-1, 1)))^2;
-    Mall_L2_norm_numerator_sum = Mall_L2_norm_numerator_sum + (abs(Mall1(i, 1) - Mall2((2*i)-1, 1)))^2;
-    Mall_L2_norm_denominator_sum = Mall_L2_norm_denominator_sum + (abs(Mall2((2*i)-1, 1)))^2;
-    Hall_L2_norm_numerator_sum = Hall_L2_norm_numerator_sum + (abs(Hall1(i, 1) - Hall2((2*i)-1, 1)))^2;
-    Hall_L2_norm_denominator_sum = Hall_L2_norm_denominator_sum + (abs(Hall2((2*i)-1, 1)))^2;    
-    
-    % finding the Linf norm
-    new_umax_numerator = abs(Uall1(i, 1) - Uall2((2*i)-1, 1));
-    new_nmax_numerator = abs(Nall1(i, 1) - Nall2((2*i)-1, 1));
-    new_mmax_numerator = abs(Mall1(i, 1) - Mall2((2*i)-1, 1));
-    new_hmax_numerator = abs(Hall1(i, 1) - Hall2((2*i)-1, 1));
-    new_umax_denominator = abs(Uall2((2*i)-1, 1));
-    new_nmax_denominator = abs(Nall2((2*i)-1, 1));
-    new_mmax_denominator = abs(Mall2((2*i)-1, 1));
-    new_hmax_denominator = abs(Hall2((2*i)-1, 1));
-    
-    % find Linf norm
-    if new_umax_numerator > Uall_max_numerator
-        Uall_max_numerator = new_umax_numerator;
-    end
-    if new_nmax_numerator > Nall_max_numerator
-        Nall_max_numerator = new_nmax_numerator;
-    end
-    if new_mmax_numerator > Mall_max_numerator
-        Mall_max_numerator = new_mmax_numerator;
-    end
-    if new_hmax_numerator > Hall_max_numerator
-        Hall_max_numerator = new_hmax_denominator;
-    end
-    
-    if new_umax_denominator > Uall_max_denominator
-        Uall_max_denominator = new_umax_denominator;
-    end
-    if new_nmax_denominator > Nall_max_denominator
-        Nall_max_denominator = new_nmax_denominator;
-    end
-    if new_mmax_denominator > Mall_max_denominator
-        Mall_max_denominator = new_mmax_denominator;
-    end
-    if new_hmax_denominator > Hall_max_denominator
-        Hall_max_denominator = new_hmax_denominator;
-    end
-    
+    U3(i, 1) = bigUall3(10*(i-1)+1, 1);
+    N3(i, 1) = bigNall3(10*(i-1)+1, 1);
+    M3(i, 1) = bigMall3(10*(i-1)+1, 1);
+    H3(i, 1) = bigHall3(10*(i-1)+1, 1);
 end
 
-% Linf norms
-Linf_Uall = round(vpa(Uall_max_numerator/Uall_max_denominator), 5)
-Linf_Nall = round(vpa(Nall_max_numerator/Nall_max_denominator), 5)
-Linf_Mall = round(vpa(Mall_max_numerator/Mall_max_denominator), 5)
-Linf_Hall = round(vpa(Hall_max_numerator/Hall_max_denominator), 5)
+% computing h = 0.01 vs h = 0.005 norms
+[Linf_U, Linf_N, Linf_M, Linf_H, L1_U, L1_N, L1_M, L1_H, L2_U, L2_N, L2_M, L2_H] = norm_calculator(U1, N1, M1, H1, U2, N2, M2, H2, Uall1_num_of_rows)
 
-% L1 norms
-L1_Uall = round(vpa(Uall_L1_norm_numerator/Uall_L1_norm_denominator), 5)
-L1_Nall = round(vpa(Nall_L1_norm_numerator/Nall_L1_norm_denominator), 5)
-L1_Mall = round(vpa(Mall_L1_norm_numerator/Mall_L1_norm_denominator), 5)
-L1_Hall = round(vpa(Hall_L1_norm_numerator/Hall_L1_norm_denominator), 5)
-
-% L2 norms
-L2_Uall = round(vpa(sqrt(Uall_L2_norm_numerator_sum)/sqrt(Uall_L2_norm_denominator_sum)), 5)
-L2_Nall = round(vpa(sqrt(Nall_L2_norm_numerator_sum)/sqrt(Nall_L2_norm_denominator_sum)), 5)
-L2_Mall = round(vpa(sqrt(Mall_L2_norm_numerator_sum)/sqrt(Mall_L2_norm_denominator_sum)), 5)
-L2_Hall = round(vpa(sqrt(Hall_L2_norm_numerator_sum)/sqrt(Hall_L2_norm_denominator_sum)), 5)
+% computing H = 0.005 vs h = 0.001 norms
+[Linf_U, Linf_N, Linf_M, Linf_H, L1_U, L1_N, L1_M, L1_H, L2_U, L2_N, L2_M, L2_H] = norm_calculator(U2, N2, M2, H2, U3, N3, M3, H3, Uall1_num_of_rows)
 
 
-% compute the Linf norm difference of -all2s and -all3s
-% compute the L1 norm difference of -all2s and -all3s
-% compute the L2 norm difference of -all2s and -all3s
-Uall_max_numerator = 0;
-Nall_max_numerator = 0;
-Mall_max_numerator = 0; 
-Hall_max_numerator = 0;
-Uall_max_denominator = 0;
-Nall_max_denominator = 0;
-Mall_max_denominator = 0; 
-Hall_max_denominator = 0;
-Uall_L1_norm_numerator = 0;
-Uall_L1_norm_denominator = 0;
-Uall_L2_norm_numerator_sum = 0;
-Uall_L2_norm_denominator_sum = 0;
-Nall_L1_norm_numerator = 0;
-Nall_L1_norm_denominator = 0;
-Nall_L2_norm_numerator_sum = 0;
-Nall_L2_norm_denominator_sum = 0;
-Mall_L1_norm_numerator = 0;
-Mall_L1_norm_denominator = 0;
-Mall_L2_norm_numerator_sum = 0;
-Mall_L2_norm_denominator_sum = 0;
-Hall_L1_norm_numerator = 0;
-Hall_L1_norm_denominator = 0;
-Hall_L2_norm_numerator_sum = 0;
-Hall_L2_norm_denominator_sum = 0;
+% plotting h = 0.01, h= 0.005, and h = 0.001 next to each other
+figure(1)
+plot_different_time_steps(U1, U2, U3, 0, 35, 0.01)
 
-for i = 1:Uall1_num_of_rows
-    
-    % finding the L1 norm
-    Uall_L1_norm_numerator = Uall_L1_norm_numerator + abs(Uall2((2*i)-1, 1) - Uall3(10*(i-1)+1, 1));
-    Uall_L1_norm_denominator = Uall_L1_norm_denominator + abs(Uall3(10*(i-1)+1, 1));
-    Nall_L1_norm_numerator = Nall_L1_norm_numerator + abs(Nall2((2*i)-1, 1) - Nall3(10*(i-1)+1, 1));
-    Nall_L1_norm_denominator = Nall_L1_norm_denominator + abs(Nall3(10*(i-1)+1, 1));
-    Mall_L1_norm_numerator = Mall_L1_norm_numerator + abs(Mall2((2*i)-1, 1) - Mall3(10*(i-1)+1, 1));
-    Mall_L1_norm_denominator = Mall_L1_norm_denominator + abs(Mall3(10*(i-1)+1, 1));
-    Hall_L1_norm_numerator = Hall_L1_norm_numerator + abs(Hall2((2*i)-1, 1) - Hall3(10*(i-1)+1, 1));
-    Hall_L1_norm_denominator = Hall_L1_norm_denominator + abs(Hall3(10*(i-1)+1, 1));
-    
-    
-    % finding the L2 norm
-    Uall_L2_norm_numerator_sum = Uall_L2_norm_numerator_sum + (abs(Uall2((2*i)-1, 1) - Uall3(10*(i-1)+1, 1)))^2;
-    Uall_L2_norm_denominator_sum = Uall_L2_norm_denominator_sum + (abs(Uall3(10*(i-1)+1, 1)))^2;
-    Nall_L2_norm_numerator_sum = Nall_L2_norm_numerator_sum + (abs(Nall2((2*i)-1, 1) - Nall3(10*(i-1)+1, 1)))^2;
-    Nall_L2_norm_denominator_sum = Nall_L2_norm_denominator_sum + (abs(Nall3(10*(i-1)+1, 1)))^2;
-    Mall_L2_norm_numerator_sum = Mall_L2_norm_numerator_sum + (abs(Mall2((2*i)-1, 1) - Mall3(10*(i-1)+1, 1)))^2;
-    Mall_L2_norm_denominator_sum = Mall_L2_norm_denominator_sum + (abs(Mall3(10*(i-1)+1, 1)))^2;
-    Hall_L2_norm_numerator_sum = Hall_L2_norm_numerator_sum + (abs(Hall2((2*i)-1, 1) - Hall3(10*(i-1)+1, 1)))^2;
-    Hall_L2_norm_denominator_sum = Hall_L2_norm_denominator_sum + (abs(Hall3(10*(i-1)+1, 1)))^2;    
-    
-    
-    % finding the Linf norm
-    new_umax_numerator = abs(Uall2((2*i)-1, 1) - Uall3(10*(i-1)+1, 1));
-    new_nmax_numerator = abs(Nall2((2*i)-1, 1) - Nall3(10*(i-1)+1, 1));
-    new_mmax_numerator = abs(Mall2((2*i)-1, 1) - Mall3(10*(i-1)+1, 1));
-    new_hmax_numerator = abs(Hall2((2*i)-1, 1) - Hall3(10*(i-1)+1, 1));
-    new_umax_denominator = abs(Uall3(10*(i-1)+1, 1));
-    new_nmax_denominator = abs(Nall3(10*(i-1)+1, 1));
-    new_mmax_denominator = abs(Mall3(10*(i-1)+1, 1));
-    new_hmax_denominator = abs(Hall3(10*(i-1)+1, 1));
-    
-    % find Linf norm
-    if new_umax_numerator > Uall_max_numerator
-        Uall_max_numerator = new_umax_numerator;
-    end
-    if new_nmax_numerator > Nall_max_numerator
-        Nall_max_numerator = new_nmax_numerator;
-    end
-    if new_mmax_numerator > Mall_max_numerator
-        Mall_max_numerator = new_mmax_numerator;
-    end
-    if new_hmax_numerator > Hall_max_numerator
-        Hall_max_numerator = new_hmax_denominator;
-    end
-    
-    if new_umax_denominator > Uall_max_denominator
-        Uall_max_denominator = new_umax_denominator;
-    end
-    if new_nmax_denominator > Nall_max_denominator
-        Nall_max_denominator = new_nmax_denominator;
-    end
-    if new_mmax_denominator > Mall_max_denominator
-        Mall_max_denominator = new_mmax_denominator;
-    end
-    if new_hmax_denominator > Hall_max_denominator
-        Hall_max_denominator = new_hmax_denominator;
-    end
-    
-end
+% plotting from time t = 6 milliseconds to t = 7 milliseconds
+figure(2)
+plot_different_time_steps(U1, U2, U3, 6, 7, 0.01)
 
-% Linf norms
-Linf_Uall = round(vpa(Uall_max_numerator/Uall_max_denominator), 5)
-Linf_Nall = round(vpa(Nall_max_numerator/Nall_max_denominator), 5)
-Linf_Mall = round(vpa(Mall_max_numerator/Mall_max_denominator), 5)
-Linf_Hall = round(vpa(Hall_max_numerator/Hall_max_denominator), 5)
-
-% L1 norms
-L1_Uall = round(vpa(Uall_L1_norm_numerator/Uall_L1_norm_denominator), 5)
-L1_Nall = round(vpa(Nall_L1_norm_numerator/Nall_L1_norm_denominator), 5)
-L1_Mall = round(vpa(Mall_L1_norm_numerator/Mall_L1_norm_denominator), 5)
-L1_Hall = round(vpa(Hall_L1_norm_numerator/Hall_L1_norm_denominator), 5)
-
-% L2 norms
-L2_Uall = round(vpa(sqrt(Uall_L2_norm_numerator_sum)/sqrt(Uall_L2_norm_denominator_sum)), 5)
-L2_Nall = round(vpa(sqrt(Nall_L2_norm_numerator_sum)/sqrt(Nall_L2_norm_denominator_sum)), 5)
-L2_Mall = round(vpa(sqrt(Mall_L2_norm_numerator_sum)/sqrt(Mall_L2_norm_denominator_sum)), 5)
-L2_Hall = round(vpa(sqrt(Hall_L2_norm_numerator_sum)/sqrt(Hall_L2_norm_denominator_sum)), 5)
-
-
-
-
-
-
-
+% plotting from time t = 5 milliseconds to t = 10 milliseconds
+figure(3)
+plot_different_time_steps(U1, U2, U3, 5, 10, 0.01)
