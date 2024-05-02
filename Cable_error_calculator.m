@@ -2,24 +2,24 @@ clear all
 close all
 clc
 
-Uall1 = load('Uall1.mat').Uall;
-Nall1 = load('Nall1.mat').Nall;
-Mall1 = load('Mall1.mat').Mall;
-Hall1 = load('Hall1.mat').Hall;
+Uall1 = load('projects/axon_simulations/data/Uall1.mat').Uall;
+Nall1 = load('projects/axon_simulations/data/Nall1.mat').Nall;
+Mall1 = load('projects/axon_simulations/data/Mall1.mat').Mall;
+Hall1 = load('projects/axon_simulations/data/Hall1.mat').Hall;
 Uall1_num_of_rows = size(Uall1, 1);
 Uall1_num_of_cols = size(Uall1, 2);
 
-Uall2 = load('Uall2.mat').Uall;
-Nall2 = load('Nall2.mat').Nall;
-Mall2 = load('Mall2.mat').Mall;
-Hall2 = load('Hall2.mat').Hall;
+Uall2 = load('projects/axon_simulations/data/Uall2.mat').Uall;
+Nall2 = load('projects/axon_simulations/data/Nall2.mat').Nall;
+Mall2 = load('projects/axon_simulations/data/Mall2.mat').Mall;
+Hall2 = load('projects/axon_simulations/data/Hall2.mat').Hall;
 Uall2_num_of_rows = size(Uall2, 1);
 Uall2_num_of_cols = size(Uall2, 2);
 
-Uall3 = load('Uall3.mat').Uall;
-Nall3 = load('Nall3.mat').Nall;
-Mall3 = load('Mall3.mat').Mall;
-Hall3 = load('Hall3.mat').Hall;
+Uall3 = load('projects/axon_simulations/data/Uall3.mat').Uall;
+Nall3 = load('projects/axon_simulations/data/Nall3.mat').Nall;
+Mall3 = load('projects/axon_simulations/data/Mall3.mat').Mall;
+Hall3 = load('projects/axon_simulations/data/Hall3.mat').Hall;
 Uall3_num_of_rows = size(Uall3, 1);
 Uall3_num_of_cols = size(Uall3, 2);
 
