@@ -1,4 +1,4 @@
-function [Uall, Nall, Mall, Hall] = axon_simulation_function(c_m, r_l, a, d, h, total_time, k, g_k, g_Na, g_L, E_k, E_Na, E_L, S, N_0, M_0, H_0, V_initial)
+function [Uall, Nall, Mall, Hall] = axon_simulation_function(c_m, r_l, a, d, h, total_time, k, g_k, g_Na, g_L, E_k, E_Na, E_L, S, N_0, M_0, H_0, V_initial, T0, T1)
     m = d/h; % number of columns of the matrices (length of axon divided by space step)
 
     U = zeros(m, 1);
@@ -19,7 +19,7 @@ function [Uall, Nall, Mall, Hall] = axon_simulation_function(c_m, r_l, a, d, h, 
     Nall(1,:) = N;
     Mall(1,:) = M; 
     Hall(1,:) = H;
-
+    
     n = total_time/k; % total time is k*n
 
     for j = 1:(n-1)
@@ -34,7 +34,7 @@ function [Uall, Nall, Mall, Hall] = axon_simulation_function(c_m, r_l, a, d, h, 
             a5 = g_k*N(i, 1)^4*E_k + g_Na*M(i, 1)^3*H(i, 1)*E_Na + g_L*E_L;
 
             % adding the stimulus at 5 ms.
-            if j > 4.99/k && j < 5.01/k
+            if j*k >= T0 && j*k <= T1
                 a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
                 a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
             end
