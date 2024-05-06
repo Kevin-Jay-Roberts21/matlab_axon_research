@@ -18,7 +18,7 @@ E_Na = 50; % (mV)
 E_L = -54.4; % (mV)
 
 % adding sodium conductance (sitmulus)
-S = 0.001;
+S = 0.01;
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5; % end time of when stimulus is added (in ms)
 
