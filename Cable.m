@@ -19,6 +19,8 @@ E_L = -54.4; % (mV)
 
 % adding sodium conductance (sitmulus)
 S = 0.01;
+T0 = 5; % start time of when stimulus is added (in ms)
+T1 = 5; % end time of when stimulus is added (in ms)
 
 % INITIAL CONDITIONS
 N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
@@ -28,4 +30,7 @@ V_initial = -64.9997; % (mV) Voltage (eq: -64.9997)
 
 % can write [U, N, M, H] = axon_simulation_function(...) to get the vectors
 % back or just run axon_simulation_function(...) to the just the plots
-a = axon_simulation_function(c_m, r_l, a, d, h, total_time, k, g_k, g_Na, g_L, E_k, E_Na, E_L, S, N_0, M_0, H_0, V_initial)
+[U, N, M, H] = axon_simulation_function(c_m, r_l, a, d, h, total_time, k, g_k, g_Na, g_L, E_k, E_Na, E_L, S, N_0, M_0, H_0, V_initial, T0, T1)
+
+% save U,N,,'cable_0.01'  % this is for...
+% save(U, M, N, H, 'test' % this )
