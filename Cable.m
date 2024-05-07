@@ -2,6 +2,7 @@ clear all
 close all
 clc
 
+% NOTE: USING syms slows down code significantly, not sure why.
 syms alpha_n(V) beta_n(V) alpha_m(V) beta_m(V) alpha_h(V) beta_h(V) 
 
 % defining all of the initial and constant variables
@@ -28,9 +29,12 @@ alpha_h(V) = 0.07*exp(-(V + 65)/20);
 beta_h(V) = 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (sitmulus)
-S = 0.0006;
+S = 0;
+% if start and end time are the same, no stimulus will be added
 T0 = 5; % start time of when stimulus is added (in ms)
-T1 = 5.1; % end time of when stimulus is added (in ms)
+T1 = 5; % end time of when stimulus is added (in ms)
+P = 1; % position of adding the stimulus (in cm)
+
 
 % INITIAL CONDITIONS
 N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
@@ -74,8 +78,14 @@ for j = 1:(n-1)
         a4 = c_m/k; 
         a5 = g_k*N(i, 1)^4*E_k + g_Na*M(i, 1)^3*H(i, 1)*E_Na + g_L*E_L;
 
-        % adding the stimulus at 5 ms.
-        if j*k >= T0 && j*k <= T1
+        % adding the stimulus during a certain time interval: (T0 - T1)
+        % if j*k >= T0 && j*k <= T1
+        %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
+        %     a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
+        % end
+        
+        % adding the stimulus at a specfic position: P
+        if i*h == P
             a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
             a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
         end
@@ -100,10 +110,13 @@ for j = 1:(n-1)
     end
 
     newU = A\b;
+    % newN = 1/(1/k + alpha_n(U(i, 1)) + beta_n(U(i, 1))) * (N(i, 1)/k + alpha_n(U(i, 1)));
+    % newM = 1/(1/k + alpha_m(U(i, 1)) + beta_m(U(i, 1))) * (M(i, 1)/k + alpha_m(U(i, 1)));
+    % newH = 1/(1/k + alpha_h(U(i, 1)) + beta_h(U(i, 1))) * (H(i, 1)/k + alpha_h(U(i, 1)));
 
-    newN = 1/(1/k + alpha_n(U(i, 1)) + beta_n(U(i, 1))) * (N(i, 1)/k + alpha_n(U(i, 1)));
-    newM = 1/(1/k + alpha_m(U(i, 1)) + beta_m(U(i, 1))) * (M(i, 1)/k + alpha_m(U(i, 1)));
-    newH = 1/(1/k + alpha_h(U(i, 1)) + beta_h(U(i, 1))) * (H(i, 1)/k + alpha_h(U(i, 1)));
+    newN = 1/(1/k + 0.01*(U(i, 1) + 55)/(1 - exp(-(U(i, 1) + 55)/10)) + 0.125*exp(-(U(i, 1) + 65)/80)) * (N(i, 1)/k + 0.01*(U(i, 1) + 55)/(1 - exp(-(U(i, 1) + 55)/10)));
+    newM = 1/(1/k + 0.1*(U(i, 1) + 40)/(1 - exp(-(U(i, 1) + 40)/10)) + 4*exp(-(U(i, 1) + 65)/18)) * (M(i, 1)/k + 0.1*(U(i, 1) + 40)/(1 - exp(-(U(i, 1) + 40)/10)));
+    newH = 1/(1/k + 0.07*exp(-(U(i, 1) + 65)/20) + 1/(1 + exp(-(U(i, 1) + 35)/10))) * (H(i, 1)/k + 0.07*exp(-(U(i, 1) + 65)/20));
 
     % Edit the next U, N, M and H (redefining U, N, M and H vectors)
     N(:,1) = newN;
@@ -142,12 +155,12 @@ legend("Voltage at end of time across the axon.")
 figure(2)
 % now pick a position to plot all of the voltages
 % VOLTAGE IS THE SAME AT ANY POSITION
-position1 = 30; % (this is at positon x = 30*h cm = 30*0.01 = 0.3cm)
+position1 = 101; % (this is at positon x = 30*h cm = 30*0.01 = 0.3cm)
 t2 = linspace(0, total_time, n); % FULL MATRIX
 % t2 = linspace(0, total_time, n*k*2); % MATRIX AT EVERY 50th iteration
 % t2 = linspace(0, total_time, n*k); % MATRIX AT EVERY 100th iteration
 plot(t2, Uall(:,position1))
-legend("Voltage at x = 0.3cm")
+legend(sprintf('Voltage at x = %g cm', P))
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
@@ -157,7 +170,7 @@ hold on
 plot(t2, Mall(:,position1))
 hold on
 plot(t2, Hall(:,position1))
-legend("N at x = 0.3cm", "M at x = 0.3cm", "H at x = 0.3cm")
+legend(sprintf('N at x = %g cm', P), sprintf('M at x = %g cm', P), sprintf('H at x = %g cm', P))
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
