@@ -2,6 +2,8 @@ clear all
 close all
 clc
 
+syms alpha_n(V) beta_n(V) alpha_m(V) beta_m(V) alpha_h(V) beta_h(V) 
+
 % defining all of the initial and constant variables
 c_m = 0.001; % membrane capacitance (mS / (ohm*cm^2))
 r_l = 30; % membrane resistance (ohms * cm)
@@ -17,10 +19,18 @@ E_k = -77; % (mV)
 E_Na = 50; % (mV)
 E_L = -54.4; % (mV)
 
+% The following are functions of voltage
+alpha_n(V) = 0.01*(V + 55)/(1 - exp(-(V + 55)/10));
+beta_n(V) = 0.125*exp(-(V + 65)/80);
+alpha_m(V) = 0.1*(V + 40)/(1 - exp(-(V + 40)/10));
+beta_m(V) = 4*exp(-(V + 65)/18);
+alpha_h(V) = 0.07*exp(-(V + 65)/20);
+beta_h(V) = 1/(1 + exp(-(V + 35)/10));
+
 % adding sodium conductance (sitmulus)
-S = 0.01;
+S = 0.0006;
 T0 = 5; % start time of when stimulus is added (in ms)
-T1 = 5; % end time of when stimulus is added (in ms)
+T1 = 5.1; % end time of when stimulus is added (in ms)
 
 % INITIAL CONDITIONS
 N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
@@ -91,12 +101,12 @@ for j = 1:(n-1)
 
     newU = A\b;
 
-    newN = 1/(1/k + 0.01*(U(i, 1) + 55)/(1 - exp(-(U(i, 1) + 55)/10)) + 0.125*exp(-(U(i, 1) + 65)/80)) * (N(i, 1)/k + 0.01*(U(i, 1) + 55)/(1 - exp(-(U(i, 1) + 55)/10)));
-    newM = 1/(1/k + 0.1*(U(i, 1) + 40)/(1 - exp(-(U(i, 1) + 40)/10)) + 4*exp(-(U(i, 1) + 65)/18)) * (M(i, 1)/k + 0.1*(U(i, 1) + 40)/(1 - exp(-(U(i, 1) + 40)/10)));
-    newH = 1/(1/k + 0.07*exp(-(U(i, 1) + 65)/20) + 1/(1 + exp(-(U(i, 1) + 35)/10))) * (H(i, 1)/k + 0.07*exp(-(U(i, 1) + 65)/20));
+    newN = 1/(1/k + alpha_n(U(i, 1)) + beta_n(U(i, 1))) * (N(i, 1)/k + alpha_n(U(i, 1)));
+    newM = 1/(1/k + alpha_m(U(i, 1)) + beta_m(U(i, 1))) * (M(i, 1)/k + alpha_m(U(i, 1)));
+    newH = 1/(1/k + alpha_h(U(i, 1)) + beta_h(U(i, 1))) * (H(i, 1)/k + alpha_h(U(i, 1)));
 
     % Edit the next U, N, M and H (redefining U, N, M and H vectors)
-    N(:,1) = newN; 
+    N(:,1) = newN;
     M(:,1) = newM;
     H(:,1) = newH;
     U(:,1) = newU;
