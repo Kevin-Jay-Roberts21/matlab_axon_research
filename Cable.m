@@ -33,7 +33,7 @@ S = 0;
 % if start and end time are the same, no stimulus will be added
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5; % end time of when stimulus is added (in ms)
-P = 1; % position of adding the stimulus (in cm)
+P = 0.01; % position of adding the stimulus (in cm)
 
 
 % INITIAL CONDITIONS
@@ -155,7 +155,7 @@ legend("Voltage at end of time across the axon.")
 figure(2)
 % now pick a position to plot all of the voltages
 % VOLTAGE IS THE SAME AT ANY POSITION
-position1 = 101; % (this is at positon x = 30*h cm = 30*0.01 = 0.3cm)
+position1 = 200; % (this is at positon x = 30*h cm = 30*0.01 = 0.3cm)
 t2 = linspace(0, total_time, n); % FULL MATRIX
 % t2 = linspace(0, total_time, n*k*2); % MATRIX AT EVERY 50th iteration
 % t2 = linspace(0, total_time, n*k); % MATRIX AT EVERY 100th iteration
