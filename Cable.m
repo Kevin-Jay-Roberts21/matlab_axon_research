@@ -29,11 +29,11 @@ alpha_h(V) = 0.07*exp(-(V + 65)/20);
 beta_h(V) = 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (sitmulus)
-S = 0;
+S = 0.01;
 % if start and end time are the same, no stimulus will be added
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5; % end time of when stimulus is added (in ms)
-P = 0.01; % position of adding the stimulus (in cm)
+P = 1; % position of adding the stimulus (in cm)
 
 
 % INITIAL CONDITIONS
@@ -79,10 +79,10 @@ for j = 1:(n-1)
         a5 = g_k*N(i, 1)^4*E_k + g_Na*M(i, 1)^3*H(i, 1)*E_Na + g_L*E_L;
 
         % adding the stimulus during a certain time interval: (T0 - T1)
-        % if j*k >= T0 && j*k <= T1
-        %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
-        %     a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
-        % end
+        if j*k >= T0 && j*k <= T1
+            a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
+            a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
+        end
         
         % adding the stimulus at a specfic position: P
         if i*h == P
@@ -147,32 +147,55 @@ for j = 1:(n-1)
 
 end 
 
-figure(1)
-t1 = linspace(0, 5, m);
-plot(t1, U)
-legend("Voltage at end of time across the axon.")
-
-figure(2)
 % now pick a position to plot all of the voltages
 % VOLTAGE IS THE SAME AT ANY POSITION
-position1 = 200; % (this is at positon x = 30*h cm = 30*0.01 = 0.3cm)
+position1 = 98; % (this is at positon x = 30*h cm = 30*0.01 = 0.3cm)
+position2 = 100;
+position3 = 101; 
+position4 = 200; 
+position5 = 250;
+
+
+% Times to observe the voltage along the axon
+time1 = 5; % in ms
+time2 = 15; % in ms
+time3 = 20; % in ms
+
+figure(1)
+t1 = linspace(0, 5, m);
+plot(t1, Uall(time1/h,:))
+hold on
+plot(t1, Uall(time2/h,:))
+hold on
+plot(t1, Uall(time3/h,:))
+legend(sprintf('Voltage accross the axon at time t = %g ms', time1), sprintf('Voltage accross the axon at time t = %g ms', time2), sprintf('Voltage accross the axon at time t = %g ms', time3))
+ylabel("Axon voltage.")
+xlabel("Axon length.")
+
+figure(2)
 t2 = linspace(0, total_time, n); % FULL MATRIX
 % t2 = linspace(0, total_time, n*k*2); % MATRIX AT EVERY 50th iteration
 % t2 = linspace(0, total_time, n*k); % MATRIX AT EVERY 100th iteration
 plot(t2, Uall(:,position1))
-legend(sprintf('Voltage at x = %g cm', P))
+hold on
+plot(t2, Uall(:,position2))
+hold on
+plot(t2, Uall(:,position3))
+hold on
+plot(t2, Uall(:,position4))
+legend(sprintf('Voltage at x = %g cm', position1*h),sprintf('Voltage at x = %g cm', position2*h),sprintf('Voltage at x = %g cm', position3*h),sprintf('Voltage at x = %g cm', position4*h))
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
-figure(3)
-plot(t2, Nall(:,position1))
-hold on
-plot(t2, Mall(:,position1))
-hold on
-plot(t2, Hall(:,position1))
-legend(sprintf('N at x = %g cm', P), sprintf('M at x = %g cm', P), sprintf('H at x = %g cm', P))
-ylabel("Voltage in millivolts.")
-xlabel("Time in milliseconds.")
+% figure(3)
+% plot(t2, Nall(:,position1))
+% hold on
+% plot(t2, Mall(:,position1))
+% hold on
+% plot(t2, Hall(:,position1))
+% legend(sprintf('N at x = %g cm', P), sprintf('M at x = %g cm', P), sprintf('H at x = %g cm', P))
+% ylabel("Voltage in millivolts.")
+% xlabel("Time in milliseconds.")
 
 
 
