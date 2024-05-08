@@ -28,8 +28,8 @@ beta_m(V) = 4*exp(-(V + 65)/18);
 alpha_h(V) = 0.07*exp(-(V + 65)/20);
 beta_h(V) = 1/(1 + exp(-(V + 35)/10));
 
-% adding sodium conductance (sitmulus)
-S = 0.01;
+% adding sodium conductance (stimulus)
+S = 4;
 % if start and end time are the same, no stimulus will be added
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5; % end time of when stimulus is added (in ms)
@@ -80,15 +80,17 @@ for j = 1:(n-1)
 
         % adding the stimulus during a certain time interval: (T0 - T1)
         if j*k >= T0 && j*k <= T1
-            a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
-            a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
+            if i*h == P
+                a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
+                a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
+            end
         end
         
-        % adding the stimulus at a specfic position: P
-        if i*h == P
-            a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
-            a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
-        end
+%         % adding the stimulus at a specfic position: P
+%         if i*h == P
+%             a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
+%             a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
+%         end
 
 
         % add if statements here for the first row of A and the last row of
@@ -149,17 +151,19 @@ end
 
 % now pick a position to plot all of the voltages
 % VOLTAGE IS THE SAME AT ANY POSITION
-position1 = 98; % (this is at positon x = 30*h cm = 30*0.01 = 0.3cm)
-position2 = 100;
-position3 = 101; 
-position4 = 200; 
-position5 = 250;
+position1 = 25; % (this is at positon x = 30*h cm = 30*0.01 = 0.3cm)
+position2 = 50;
+position3 = 100; 
+position4 = 150; 
+position5 = 200;
 
 
 % Times to observe the voltage along the axon
-time1 = 5; % in ms
-time2 = 15; % in ms
-time3 = 20; % in ms
+time1 = 1; % in ms
+time2 = 5; % in ms
+time3 = 8; % in ms
+time4 = 9; % in ms
+time5 = 12; % in ms
 
 figure(1)
 t1 = linspace(0, 5, m);
@@ -168,7 +172,11 @@ hold on
 plot(t1, Uall(time2/h,:))
 hold on
 plot(t1, Uall(time3/h,:))
-legend(sprintf('Voltage accross the axon at time t = %g ms', time1), sprintf('Voltage accross the axon at time t = %g ms', time2), sprintf('Voltage accross the axon at time t = %g ms', time3))
+hold on
+plot(t1, Uall(time4/h,:))
+hold on
+plot(t1, Uall(time5/h,:))
+legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4), sprintf('Voltage of the axon at time t = %g ms', time5))
 ylabel("Axon voltage.")
 xlabel("Axon length.")
 
@@ -183,7 +191,9 @@ hold on
 plot(t2, Uall(:,position3))
 hold on
 plot(t2, Uall(:,position4))
-legend(sprintf('Voltage at x = %g cm', position1*h),sprintf('Voltage at x = %g cm', position2*h),sprintf('Voltage at x = %g cm', position3*h),sprintf('Voltage at x = %g cm', position4*h))
+hold on
+plot(t2, Uall(:,position5))
+legend(sprintf('Voltage at x = %g cm', position1*h),sprintf('Voltage at x = %g cm', position2*h),sprintf('Voltage at x = %g cm', position3*h),sprintf('Voltage at x = %g cm', position4*h), sprintf('Voltage at x = %g cm', position5*h))
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
