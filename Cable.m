@@ -29,11 +29,12 @@ alpha_h(V) = 0.07*exp(-(V + 65)/20);
 beta_h(V) = 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 4;
+S = 0.01;
 % if start and end time are the same, no stimulus will be added
 T0 = 5; % start time of when stimulus is added (in ms)
-T1 = 5; % end time of when stimulus is added (in ms)
-P = 1; % position of adding the stimulus (in cm)
+T1 = 5.1; % end time of when stimulus is added (in ms)
+P0 = 1; % position of adding the stimulus (in cm)
+P1 = 1.1;
 
 
 % INITIAL CONDITIONS
@@ -80,17 +81,15 @@ for j = 1:(n-1)
 
         % adding the stimulus during a certain time interval: (T0 - T1)
         if j*k >= T0 && j*k <= T1
-            if i*h == P
-                a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
-                a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
-            end
+            a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
+            a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
         end
         
 %         % adding the stimulus at a specfic position: P
-%         if i*h == P
-%             a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
-%             a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
-%         end
+        if i*h >= P0 && i*h <= P1
+            a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
+            a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
+        end
 
 
         % add if statements here for the first row of A and the last row of
@@ -115,7 +114,12 @@ for j = 1:(n-1)
     % newN = 1/(1/k + alpha_n(U(i, 1)) + beta_n(U(i, 1))) * (N(i, 1)/k + alpha_n(U(i, 1)));
     % newM = 1/(1/k + alpha_m(U(i, 1)) + beta_m(U(i, 1))) * (M(i, 1)/k + alpha_m(U(i, 1)));
     % newH = 1/(1/k + alpha_h(U(i, 1)) + beta_h(U(i, 1))) * (H(i, 1)/k + alpha_h(U(i, 1)));
-
+    
+    % ISSUE HERE %
+    % We can't just pick a position i because the the voltage U(i, 1) is
+    % not longer that same at every x position. NEED to address what
+    % position to use. MAY be worth just creating empty matrices form the
+    % beginning and using those.
     newN = 1/(1/k + 0.01*(U(i, 1) + 55)/(1 - exp(-(U(i, 1) + 55)/10)) + 0.125*exp(-(U(i, 1) + 65)/80)) * (N(i, 1)/k + 0.01*(U(i, 1) + 55)/(1 - exp(-(U(i, 1) + 55)/10)));
     newM = 1/(1/k + 0.1*(U(i, 1) + 40)/(1 - exp(-(U(i, 1) + 40)/10)) + 4*exp(-(U(i, 1) + 65)/18)) * (M(i, 1)/k + 0.1*(U(i, 1) + 40)/(1 - exp(-(U(i, 1) + 40)/10)));
     newH = 1/(1/k + 0.07*exp(-(U(i, 1) + 65)/20) + 1/(1 + exp(-(U(i, 1) + 35)/10))) * (H(i, 1)/k + 0.07*exp(-(U(i, 1) + 65)/20));
@@ -154,14 +158,14 @@ end
 position1 = 25; % (this is at positon x = 30*h cm = 30*0.01 = 0.3cm)
 position2 = 50;
 position3 = 100; 
-position4 = 150; 
+position4 = 110; 
 position5 = 200;
 
 
 % Times to observe the voltage along the axon
 time1 = 1; % in ms
 time2 = 5; % in ms
-time3 = 8; % in ms
+time3 = 6; % in ms
 time4 = 9; % in ms
 time5 = 12; % in ms
 
@@ -197,15 +201,15 @@ legend(sprintf('Voltage at x = %g cm', position1*h),sprintf('Voltage at x = %g c
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
-% figure(3)
-% plot(t2, Nall(:,position1))
-% hold on
-% plot(t2, Mall(:,position1))
-% hold on
-% plot(t2, Hall(:,position1))
-% legend(sprintf('N at x = %g cm', P), sprintf('M at x = %g cm', P), sprintf('H at x = %g cm', P))
-% ylabel("Voltage in millivolts.")
-% xlabel("Time in milliseconds.")
+figure(3)
+plot(t2, Nall(:,position4))
+hold on
+plot(t2, Mall(:,position4))
+hold on
+plot(t2, Hall(:,position4))
+legend(sprintf('N at x = %g cm', position4*h), sprintf('M at x = %g cm', position4*h), sprintf('H at x = %g cm', position4*h))
+ylabel("Probabilities of ion channels opening/closing.")
+xlabel("Time in milliseconds.")
 
 
 
