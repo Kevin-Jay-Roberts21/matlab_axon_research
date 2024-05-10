@@ -188,7 +188,7 @@ hold on
 plot(t1, Uall(time4/h,:))
 legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4))
 ylabel("Voltage in millivolts.")
-xlabel("Time in milliseconds.")
+xlabel("Length of the axon in cm.")
 
 figure(2)
 t2 = linspace(0, total_time, n); % FULL MATRIX
