@@ -29,7 +29,7 @@ alpha_h(V) = 0.07*exp(-(V + 65)/20);
 beta_h(V) = 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 0.01;
+S = 0.0005;
 % if start and end time are the same, no stimulus will be added
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
@@ -45,19 +45,19 @@ V_initial = -64.9997; % (mV) Voltage (eq: -64.9997)
 
 m = d/h; % number of columns of the matrices (length of axon divided by space step)
 
-U = zeros(m, 1);
-N = zeros(m, 1);
-M = zeros(m, 1);
-H = zeros(m, 1);
+U = zeros(1, m);
+N = zeros(1, m);
+M = zeros(1, m);
+H = zeros(1, m);
 A = zeros(m);
 b = zeros(m, 1);
 Uall = [];
 
 % setting the initial U H M and N conditions in the vectors:
-U(:,1) = V_initial;
-N(:,1) = N_0;
-M(:,1) = M_0;
-H(:,1) = H_0;
+U(1,:) = V_initial;
+N(1,:) = N_0;
+M(1,:) = M_0;
+H(1,:) = H_0;
 
 Uall(1,:) = U;
 Nall(1,:) = N;
@@ -74,22 +74,22 @@ for j = 1:(n-1)
 
         % defining coefficients
         a1 = -a/(2*r_l*h^2);
-        a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + g_Na*M(i, 1)^3*H(i, 1) + g_L;
+        a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + g_Na*M(1, i)^3*H(1, i) + g_L;
         a3 = -a/(2*r_l*h^2); 
         a4 = c_m/k; 
-        a5 = g_k*N(i, 1)^4*E_k + g_Na*M(i, 1)^3*H(i, 1)*E_Na + g_L*E_L;
+        a5 = g_k*N(1, i)^4*E_k + g_Na*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
 
         % adding the stimulus during a certain time interval: (T0 - T1)
         if j*k >= T0 && j*k <= T1
-            a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
-            a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
+            a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+            a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         end
         
 %         % adding the stimulus at a specfic position: P
-        if i*h >= P0 && i*h <= P1
-            a2 = a/(r_l*h^2) + c_m/k + g_k*N(i, 1)^4 + (g_Na*M(i, 1)^3*H(i, 1) + S) + g_L;
-            a5 = g_k*N(i, 1)^4*E_k + (g_Na*M(i, 1)^3*H(i, 1) + S)*E_Na + g_L*E_L;
-        end
+        % if i*h >= P0 && i*h <= P1
+        %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+        %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        % end
 
 
         % add if statements here for the first row of A and the last row of
@@ -106,11 +106,11 @@ for j = 1:(n-1)
             A(i, i-1) = a1;
             A(i, i) = a2;
             A(i, i+1) = a3;
-            b(i, 1) = a4*U(i, 1) + a5; 
+            b(i, 1) = a4*U(1, i) + a5; 
         end
     end
 
-    newU = A\b;
+    newU = transpose(A\b);
     % newN = 1/(1/k + alpha_n(U(i, 1)) + beta_n(U(i, 1))) * (N(i, 1)/k + alpha_n(U(i, 1)));
     % newM = 1/(1/k + alpha_m(U(i, 1)) + beta_m(U(i, 1))) * (M(i, 1)/k + alpha_m(U(i, 1)));
     % newH = 1/(1/k + alpha_h(U(i, 1)) + beta_h(U(i, 1))) * (H(i, 1)/k + alpha_h(U(i, 1)));
@@ -120,15 +120,25 @@ for j = 1:(n-1)
     % not longer that same at every x position. NEED to address what
     % position to use. MAY be worth just creating empty matrices form the
     % beginning and using those.
-    newN = 1/(1/k + 0.01*(U(i, 1) + 55)/(1 - exp(-(U(i, 1) + 55)/10)) + 0.125*exp(-(U(i, 1) + 65)/80)) * (N(i, 1)/k + 0.01*(U(i, 1) + 55)/(1 - exp(-(U(i, 1) + 55)/10)));
-    newM = 1/(1/k + 0.1*(U(i, 1) + 40)/(1 - exp(-(U(i, 1) + 40)/10)) + 4*exp(-(U(i, 1) + 65)/18)) * (M(i, 1)/k + 0.1*(U(i, 1) + 40)/(1 - exp(-(U(i, 1) + 40)/10)));
-    newH = 1/(1/k + 0.07*exp(-(U(i, 1) + 65)/20) + 1/(1 + exp(-(U(i, 1) + 35)/10))) * (H(i, 1)/k + 0.07*exp(-(U(i, 1) + 65)/20));
+    % newN = 1/(1/k + 0.01*(U(i, 1) + 55)/(1 - exp(-(U(i, 1) + 55)/10)) + 0.125*exp(-(U(i, 1) + 65)/80)) * (N(i, 1)/k + 0.01*(U(i, 1) + 55)/(1 - exp(-(U(i, 1) + 55)/10)));
+    % newM = 1/(1/k + 0.1*(U(i, 1) + 40)/(1 - exp(-(U(i, 1) + 40)/10)) + 4*exp(-(U(i, 1) + 65)/18)) * (M(i, 1)/k + 0.1*(U(i, 1) + 40)/(1 - exp(-(U(i, 1) + 40)/10)));
+    % newH = 1/(1/k + 0.07*exp(-(U(i, 1) + 65)/20) + 1/(1 + exp(-(U(i, 1) + 35)/10))) * (H(i, 1)/k + 0.07*exp(-(U(i, 1) + 65)/20));
+    
+    % this is a new i, different from the above for loop
+    newN = zeros(1, m);
+    newM = zeros(1, m);
+    newH = zeros(1, m);
+    for i = 1:m
+        newN(1, i) = 1/(1/k + 0.01*(U(1, i) + 55)/(1 - exp(-(U(1, i) + 55)/10)) + 0.125*exp(-(U(1, i) + 65)/80)) * (N(1, i)/k + 0.01*(U(1, i) + 55)/(1 - exp(-(U(1, i) + 55)/10)));
+        newM(1, i) = 1/(1/k + 0.1*(U(1, i) + 40)/(1 - exp(-(U(1, i) + 40)/10)) + 4*exp(-(U(1, i) + 65)/18)) * (M(1, i)/k + 0.1*(U(1, i) + 40)/(1 - exp(-(U(1, i) + 40)/10)));
+        newH(1, i) = 1/(1/k + 0.07*exp(-(U(1, i) + 65)/20) + 1/(1 + exp(-(U(1, i) + 35)/10))) * (H(1, i)/k + 0.07*exp(-(U(1, i) + 65)/20));
+    end
 
     % Edit the next U, N, M and H (redefining U, N, M and H vectors)
-    N(:,1) = newN;
-    M(:,1) = newM;
-    H(:,1) = newH;
-    U(:,1) = newU;
+    N(1,:) = newN;
+    M(1,:) = newM;
+    H(1,:) = newH;
+    U(1,:) = newU;
 
     % USE FOR GRABBING AT EVERY ITERATION
     Uall(j+1,:) = U;
@@ -158,16 +168,16 @@ end
 position1 = 25; % (this is at positon x = 30*h cm = 30*0.01 = 0.3cm)
 position2 = 50;
 position3 = 100; 
-position4 = 110; 
+position4 = 150; 
 position5 = 200;
 
 
 % Times to observe the voltage along the axon
 time1 = 1; % in ms
 time2 = 5; % in ms
-time3 = 6; % in ms
-time4 = 9; % in ms
-time5 = 12; % in ms
+time3 = 10; % in ms
+time4 = 15; % in ms
+time5 = 20; % in ms
 
 figure(1)
 t1 = linspace(0, 5, m);
