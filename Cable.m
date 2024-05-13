@@ -29,7 +29,7 @@ alpha_h(V) = 0.07*exp(-(V + 65)/20);
 beta_h(V) = 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 0.004;
+S = 0.003;
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
 P0 = 1; % position of adding the stimulus (in cm)
