@@ -35,6 +35,8 @@ T1 = 5.1; % end time of when stimulus is added (in ms)
 P0 = 1; % position of adding the stimulus (in cm)
 P1 = 1.1;
 
+% P2=2;
+
 
 % INITIAL CONDITIONS
 N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
