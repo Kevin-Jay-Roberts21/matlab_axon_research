@@ -21,12 +21,12 @@ E_Na = 50; % (mV)
 E_L = -54.4; % (mV)
 
 % The following are functions of voltage
-alpha_n(V) = 0.01*(V + 55)/(1 - exp(-(V + 55)/10));
-beta_n(V) = 0.125*exp(-(V + 65)/80);
-alpha_m(V) = 0.1*(V + 40)/(1 - exp(-(V + 40)/10));
-beta_m(V) = 4*exp(-(V + 65)/18);
-alpha_h(V) = 0.07*exp(-(V + 65)/20);
-beta_h(V) = 1/(1 + exp(-(V + 35)/10));
+alpha_n = @(V) 0.01*(V + 55)/(1 - exp(-(V + 55)/10));
+beta_n = @(V) 0.125*exp(-(V + 65)/80);
+alpha_m = @(V) 0.1*(V + 40)/(1 - exp(-(V + 40)/10));
+beta_m = @(V) 4*exp(-(V + 65)/18);
+alpha_h = @(V) 0.07*exp(-(V + 65)/20);
+beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
 S = 0.004;
@@ -34,9 +34,6 @@ T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
 P0 = 1; % position of adding the stimulus (in cm)
 P1 = 1.1;
-
-% P2=2; % another test
-
 
 % INITIAL CONDITIONS
 N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
@@ -112,27 +109,15 @@ for j = 1:(n-1)
     end
 
     newU = transpose(A\b);
-    % newN = 1/(1/k + alpha_n(U(i, 1)) + beta_n(U(i, 1))) * (N(i, 1)/k + alpha_n(U(i, 1)));
-    % newM = 1/(1/k + alpha_m(U(i, 1)) + beta_m(U(i, 1))) * (M(i, 1)/k + alpha_m(U(i, 1)));
-    % newH = 1/(1/k + alpha_h(U(i, 1)) + beta_h(U(i, 1))) * (H(i, 1)/k + alpha_h(U(i, 1)));
-    
-    % ISSUE HERE %
-    % We can't just pick a position i because the the voltage U(i, 1) is
-    % not longer that same at every x position. NEED to address what
-    % position to use. MAY be worth just creating empty matrices form the
-    % beginning and using those.
-    % newN = 1/(1/k + 0.01*(U(i, 1) + 55)/(1 - exp(-(U(i, 1) + 55)/10)) + 0.125*exp(-(U(i, 1) + 65)/80)) * (N(i, 1)/k + 0.01*(U(i, 1) + 55)/(1 - exp(-(U(i, 1) + 55)/10)));
-    % newM = 1/(1/k + 0.1*(U(i, 1) + 40)/(1 - exp(-(U(i, 1) + 40)/10)) + 4*exp(-(U(i, 1) + 65)/18)) * (M(i, 1)/k + 0.1*(U(i, 1) + 40)/(1 - exp(-(U(i, 1) + 40)/10)));
-    % newH = 1/(1/k + 0.07*exp(-(U(i, 1) + 65)/20) + 1/(1 + exp(-(U(i, 1) + 35)/10))) * (H(i, 1)/k + 0.07*exp(-(U(i, 1) + 65)/20));
     
     % this is a new i, different from the above for loop
     newN = zeros(1, m);
     newM = zeros(1, m);
     newH = zeros(1, m);
     for i = 1:m
-        newN(1, i) = 1/(1/k + 0.01*(U(1, i) + 55)/(1 - exp(-(U(1, i) + 55)/10)) + 0.125*exp(-(U(1, i) + 65)/80)) * (N(1, i)/k + 0.01*(U(1, i) + 55)/(1 - exp(-(U(1, i) + 55)/10)));
-        newM(1, i) = 1/(1/k + 0.1*(U(1, i) + 40)/(1 - exp(-(U(1, i) + 40)/10)) + 4*exp(-(U(1, i) + 65)/18)) * (M(1, i)/k + 0.1*(U(1, i) + 40)/(1 - exp(-(U(1, i) + 40)/10)));
-        newH(1, i) = 1/(1/k + 0.07*exp(-(U(1, i) + 65)/20) + 1/(1 + exp(-(U(1, i) + 35)/10))) * (H(1, i)/k + 0.07*exp(-(U(1, i) + 65)/20));
+        newN(1, i) = 1/(1/k + alpha_n(U(1, i)) + beta_n(U(1, i))) * (N(1, i)/k + alpha_n(U(1, i)));
+        newM(1, i) = 1/(1/k + alpha_m(U(1, i)) + beta_m(U(1, i))) * (M(1, i)/k + alpha_m(U(1, i)));
+        newH(1, i) = 1/(1/k + alpha_h(U(1, i)) + beta_h(U(1, i))) * (H(1, i)/k + alpha_h(U(1, i)));
     end
 
     % Edit the next U, N, M and H (redefining U, N, M and H vectors)
