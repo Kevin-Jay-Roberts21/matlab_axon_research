@@ -2,9 +2,6 @@ clear all
 close all
 clc
 
-% NOTE: USING syms slows down code significantly, not sure why.
-syms alpha_n(V) beta_n(V) alpha_m(V) beta_m(V) alpha_h(V) beta_h(V) 
-
 % defining all of the initial and constant variables
 c_m = 0.001; % membrane capacitance (mS / (ohm*cm^2))
 r_l = 30; % membrane resistance (ohms * cm)
