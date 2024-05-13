@@ -35,7 +35,7 @@ T1 = 5.1; % end time of when stimulus is added (in ms)
 P0 = 1; % position of adding the stimulus (in cm)
 P1 = 1.1;
 
-% P2=2;
+% P2=2; % another test
 
 
 % INITIAL CONDITIONS
