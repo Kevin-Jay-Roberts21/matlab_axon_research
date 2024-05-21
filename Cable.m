@@ -27,10 +27,11 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
 S = 0.004;
-T0 = 5; % start time of when stimulus is added (in ms)
-T1 = 5.1; % end time of when stimulus is added (in ms)
-P0 = 1; % position of adding the stimulus (in cm)
+T0 = 0; % start time of when stimulus is added (in ms)
+T1 = 0.1; % end time of when stimulus is added (in ms)
+P0 = 0; % position of adding the stimulus (in cm)
 P1 = 1.1;
+
 
 % INITIAL CONDITIONS
 N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
@@ -75,16 +76,18 @@ for j = 1:(n-1)
         a5 = g_k*N(1, i)^4*E_k + g_Na*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
 
         % adding the stimulus during a certain time interval: (T0 - T1)
-        if j*k >= T0 && j*k <= T1 && i*h >= P0 && i*h <= P1
-            a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-            a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
-        end
-        
-       % adding the stimulus at a specfic position: P
-%         if i*h >= P0 && i*h <= P1
+%         if (i*h >= NM1_start && i*h <= NM1_end) && (i*h >= NM2_start && i*h <= NM2_end)
 %             a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
 %             a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
 %         end
+            
+           
+            
+        % adding the stimulus at a specfic position: P
+        if i*h >= P0 && i*h <= P1 
+            a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+            a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        end
 
 
         % add if statements here for the first row of A and the last row of
