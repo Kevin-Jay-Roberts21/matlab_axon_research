@@ -151,10 +151,10 @@ end
 
 % now pick a position to plot all of the voltages
 % VOLTAGE IS THE SAME AT ANY POSITION
-position1 = 50; % (this is at positon x = 30*h cm = 30*0.01 = 0.3cm)
-position2 = 100;
-position3 = 200; 
-position4 = 300; 
+position1 = 0.5; % in cm
+position2 = 1; % in cm
+position3 = 2; % in cm
+position4 = 3; % in cm
 
 
 
@@ -181,24 +181,24 @@ figure(2)
 t2 = linspace(0, total_time, n); % FULL MATRIX
 % t2 = linspace(0, total_time, n*k*2); % MATRIX AT EVERY 50th iteration
 % t2 = linspace(0, total_time, n*k); % MATRIX AT EVERY 100th iteration
-plot(t2, Uall(:,position1))
+plot(t2, Uall(:,position1/h))
 hold on
-plot(t2, Uall(:,position2))
+plot(t2, Uall(:,position2/h))
 hold on
-plot(t2, Uall(:,position3))
+plot(t2, Uall(:,position3/h))
 hold on
-plot(t2, Uall(:,position4))
-legend(sprintf('Voltage at x = %g cm', position1*h),sprintf('Voltage at x = %g cm', position2*h),sprintf('Voltage at x = %g cm', position3*h),sprintf('Voltage at x = %g cm', position4*h))
+plot(t2, Uall(:,position4/h))
+legend(sprintf('Voltage at x = %g cm', position1),sprintf('Voltage at x = %g cm', position2),sprintf('Voltage at x = %g cm', position3),sprintf('Voltage at x = %g cm', position4))
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
 figure(3)
-plot(t2, Nall(:,position4))
+plot(t2, Nall(:,position4/h))
 hold on
-plot(t2, Mall(:,position4))
+plot(t2, Mall(:,position4/h))
 hold on
-plot(t2, Hall(:,position4))
-legend(sprintf('N at x = %g cm', position4*h), sprintf('M at x = %g cm', position4*h), sprintf('H at x = %g cm', position4*h))
+plot(t2, Hall(:,position4/h))
+legend(sprintf('N at x = %g cm', position4), sprintf('M at x = %g cm', position4), sprintf('H at x = %g cm', position4))
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
