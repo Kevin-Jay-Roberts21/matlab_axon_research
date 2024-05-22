@@ -3,7 +3,7 @@ close all
 clc
 
 % defining all of the initial and constant variables
-c_m = 0.001; % membrane capacitance (mS / (ohm*cm^2))
+c_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
 r_l = 30; % specific intracellular resistivity (ohms * cm)
 a = 0.0025; % axon radius (cm)
 d = 5; % axon length (cm)
