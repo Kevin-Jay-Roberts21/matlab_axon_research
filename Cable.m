@@ -147,7 +147,7 @@ for j = 1:(n-1)
 %         Hall(round(j/100)+1,:) = H;
 %     end
 
-end 
+end
 
 % now pick a position to plot all of the voltages
 % VOLTAGE IS THE SAME AT ANY POSITION
