@@ -2,23 +2,27 @@ clear all
 close all
 clc
 
+% in this file, I use a radius and length of axon in terms of micrometers
+% instead of centimeters. We don't have to convert anything else to
+% micrometers as these lengths will cancel themselves out.
+
 % In this file, as opposed to having everything in terms of cm, I converted
 % everything to be in terms of micrometers or um. NOTE: WE MUST take into
 % account that this will change the space step, we may now make the space
 % step quite a bit larger than h = 0.01.
 
 % defining all of the initial and constant variables
-c_m = 1*10^(-11); % membrane capacitance (ms / (ohm*um^2))
-r_l = 30000; % specific intracellular resistivity (ohms * um)
+c_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
+r_l = 30; % specific intracellular resistivity (ohms * cm)
 a = 25; % axon radius (um)
 h = 0.1; % space step (MAY CHANGE LATER)
 total_time = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
-g_Na = 1.2*10^(-9); % (1/(ohm*um^2))
-g_k = 3.6*10^(-10); % (1/(ohm*um^2))
-g_L = 3*10^(-12); % (1/(ohm*um^2))
-E_k = -77; % (mV)
+g_Na = 0.12; % (1/(ohm*cm^2))
+g_k = 0.036; % (1/(ohm*cm^2))
+g_L = 0.0003; % (1/(ohm*cm^2))
 E_Na = 50; % (mV)
+E_k = -77; % (mV)
 E_L = -54.4; % (mV)
 
 % The following are functions of voltage
@@ -30,7 +34,7 @@ alpha_h = @(V) 0.07*exp(-(V + 65)/20);
 beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 0.004; % (in 1/(ohm*um^2))
+S = 0.00017; % (in 1/(ohm*um^2))
 T0 = 0; % start time of when stimulus is added (in ms)
 T1 = 0.1; % end time of when stimulus is added (in ms)
 
@@ -40,7 +44,7 @@ P1 = 1; % ending position of adding the stimulus (in um)
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have
-num_of_nodes = 5
+num_of_nodes = 3
 nodal_length = 2.3 % (in um)
 myelinated_length = 85 % (in um)
 d = (nodal_length * num_of_nodes) + (myelinated_length * num_of_nodes) % axon length (in cm)
@@ -61,7 +65,9 @@ M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
 H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
 V_initial = -64.9997; % (mV) Voltage (eq: -64.9997)
 
-m = d/h; % number of columns of the matrices (length of axon divided by space step)
+% should be careful about rounding here. For some reason matlab thinks that
+% something like 3.678e3 is not considered an interger sometimes
+m = round(d/h); % number of columns of the matrices (length of axon divided by space step)
 
 U = zeros(1, m);
 N = zeros(1, m);
@@ -92,16 +98,18 @@ for j = 1:(n-1)
         
         % using l as the index   
         for l = 1:size(nodal_regions, 2) % for the number of columns in nodal_regions
-            
+
             % if inside a nodal region
             if i*h >= nodal_regions(1, l) && i*h <= nodal_regions(2, l)
                 g_k = g_k; 
                 g_Na = g_Na;
-            
+                g_L = g_L;
+
             % if inside a myelinated region
             else
                 g_k = 0; 
                 g_Na = 0;
+                g_L = 0;
             end
         end 
 
@@ -113,16 +121,16 @@ for j = 1:(n-1)
         a5 = g_k*N(1, i)^4*E_k + g_Na*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
 
         % adding the stimulus during a certain time interval: (T0 - T1)
-%         if (i*h >= NM1_start && i*h <= NM1_end) && (i*h >= NM2_start && i*h <= NM2_end)
-%             a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-%             a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
-%         end
+        % if i*h >= T0 && i*h <= T1
+        %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+        %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        % end
             
         
 
 
-        % adding the stimulus at a specfic position: P
-        if i*h >= P0 && i*h <= P1 
+        % adding the stimulus every in the second nodal section
+        if i*h >= nodal_regions(1, 2) && i*h <= nodal_regions(2, 2)
             a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
             a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         end
@@ -192,7 +200,7 @@ end
 position1 = 1; % in um
 position2 = 100; % in um
 position3 = 200; % in um
-position4 = 300; % in um
+position4 = 250; % in um
 
 
 
@@ -231,11 +239,11 @@ ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
 figure(3)
-plot(t2, Nall(:,position4/h))
+plot(t2, Nall(:,position1/h))
 hold on
-plot(t2, Mall(:,position4/h))
+plot(t2, Mall(:,position1/h))
 hold on
-plot(t2, Hall(:,position4/h))
+plot(t2, Hall(:,position1/h))
 legend(sprintf('N at x = %g um', position4), sprintf('M at x = %g um', position4), sprintf('H at x = %g um', position4))
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
