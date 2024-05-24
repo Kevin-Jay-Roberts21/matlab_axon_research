@@ -26,11 +26,11 @@ alpha_h = @(V) 0.07*exp(-(V + 65)/20);
 beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 0.1;
+S = 0.001; % (in 1/(ohm*cm^2))
 T0 = 0; % start time of when stimulus is added (in ms)
 T1 = 1; % end time of when stimulus is added (in ms)
 P0 = 0; % position of adding the stimulus (in cm)
-P1 = 0.1;
+P1 = 0.05;
 
 
 % INITIAL CONDITIONS
@@ -76,7 +76,7 @@ for j = 1:(n-1)
         a5 = g_k*N(1, i)^4*E_k + g_Na*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
 
         % % adding the stimulus during a certain time interval: (T0 - T1)
-        % if i*h >= T0 && i*h <= T1
+        % if j*k >= T0 && j*k <= T1
         %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
         %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         % end
@@ -87,8 +87,8 @@ for j = 1:(n-1)
         %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         % end
 
-        % adding stimulus in specific sapce AND time interval:
-        if (i*h >= T0 && i*h <= T1) && (i*h >= P0 && i*h <= P1)
+        % % adding stimulus in specific space AND time interval:
+        if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
             a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
             a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         end
@@ -154,10 +154,10 @@ end
 
 % now pick a position to plot all of the voltages
 % VOLTAGE IS THE SAME AT ANY POSITION
-position1 = 0.5; % in cm
-position2 = 1; % in cm
-position3 = 2; % in cm
-position4 = 3; % in cm
+position1 = 0.01; % in cm
+position2 = 0.05; % in cm
+position3 = 0.08; % in cm
+position4 = 0.1; % in cm
 
 
 
