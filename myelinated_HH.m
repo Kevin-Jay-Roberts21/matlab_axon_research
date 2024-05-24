@@ -12,15 +12,15 @@ clc
 % step quite a bit larger than h = 0.01.
 
 % defining all of the initial and constant variables
-c_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
-r_l = 30; % specific intracellular resistivity (ohms * cm)
+c_m = 1*10^(-11); % membrane capacitance (ms / (ohm*um^2))
+r_l = 300000; % specific intracellular resistivity (ohms * um)
 a = 25; % axon radius (um)
-h = 0.1; % space step (MAY CHANGE LATER)
+h = 1; % space step (MAY CHANGE LATER)
 total_time = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
-g_Na = 0.12; % (1/(ohm*cm^2))
-g_k = 0.036; % (1/(ohm*cm^2))
-g_L = 0.0003; % (1/(ohm*cm^2))
+g_Na = 1.2*10^(-9); % (1/(ohm*um^2))
+g_k = 3.6*10^(-10); % (1/(ohm*um^2))
+g_L = 3*10^(-12); % (1/(ohm*um^2))
 E_Na = 50; % (mV)
 E_k = -77; % (mV)
 E_L = -54.4; % (mV)
@@ -34,29 +34,27 @@ alpha_h = @(V) 0.07*exp(-(V + 65)/20);
 beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 0.00017; % (in 1/(ohm*um^2))
+S = 1*10^(-11); % (in 1/(ohm*um^2))
 T0 = 0; % start time of when stimulus is added (in ms)
-T1 = 0.1; % end time of when stimulus is added (in ms)
+T1 = 1; % end time of when stimulus is added (in ms)
 
 % NOTE: the stimulus MUST be added in a nodal region from (0um to 1um is fine)
 P0 = 0; % position of adding the stimulus (in um)
-P1 = 1; % ending position of adding the stimulus (in um)
+P1 = 500; % ending position of adding the stimulus (in um)
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have
-num_of_nodes = 3
-nodal_length = 2.3 % (in um)
-myelinated_length = 85 % (in um)
-d = (nodal_length * num_of_nodes) + (myelinated_length * num_of_nodes) % axon length (in cm)
+num_of_nodes = 12;
+nodal_length = 2.3; % (in um)
+myelinated_length = 85; % (in um)
+d = (nodal_length * num_of_nodes) + (myelinated_length * num_of_nodes); % axon length (in cm)
 
 % creating a list of nodel regions [[start_pos1, end_pos1], [start_pos2, end_pos2], ...]
 
-nodal_regions = []
+nodal_regions = [];
 for i = 0:num_of_nodes
     nodal_regions(:,i+1) = [(i*nodal_length)+(i*myelinated_length), (i*nodal_length)+(i*myelinated_length)+nodal_length];
 end
-
-nodal_regions(2, 1)
 
 
 % INITIAL CONDITIONS
@@ -97,21 +95,21 @@ for j = 1:(n-1)
     for i = 1:m
         
         % using l as the index   
-        for l = 1:size(nodal_regions, 2) % for the number of columns in nodal_regions
-
-            % if inside a nodal region
-            if i*h >= nodal_regions(1, l) && i*h <= nodal_regions(2, l)
-                g_k = g_k; 
-                g_Na = g_Na;
-                g_L = g_L;
-
-            % if inside a myelinated region
-            else
-                g_k = 0; 
-                g_Na = 0;
-                g_L = 0;
-            end
-        end 
+        % for l = 1:size(nodal_regions, 2) % for the number of columns in nodal_regions
+        % 
+        %     % if inside a nodal region
+        %     if i*h >= nodal_regions(1, l) && i*h <= nodal_regions(2, l)
+        %         g_k = g_k; 
+        %         g_Na = g_Na;
+        %         g_L = g_L;
+        % 
+        %     % if inside a myelinated region
+        %     else
+        %         g_k = 0; 
+        %         g_Na = 0;
+        %         g_L = 0;
+        %     end
+        % end 
 
         % defining coefficients
         a1 = -a/(2*r_l*h^2);
@@ -120,21 +118,23 @@ for j = 1:(n-1)
         a4 = c_m/k; 
         a5 = g_k*N(1, i)^4*E_k + g_Na*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
 
-        % adding the stimulus during a certain time interval: (T0 - T1)
-        % if i*h >= T0 && i*h <= T1
+        % % adding the stimulus during a certain time interval: (T0 - T1)
+        % if j*k >= T0 && j*k <= T1
         %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
         %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         % end
-            
-        
+        % 
+        % % adding the stimulus at a spacial interval: (P0 - P1)
+        % if i*h >= P0 && i*h <= P1 
+        %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+        %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        % end
 
-
-        % adding the stimulus every in the second nodal section
-        if i*h >= nodal_regions(1, 2) && i*h <= nodal_regions(2, 2)
+        % % adding stimulus in specific space AND time interval:
+        if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
             a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
             a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         end
-
 
         % add if statements here for the first row of A and the last row of
         % A
@@ -197,10 +197,10 @@ end
 
 % now pick a position to plot all of the voltages
 % VOLTAGE IS THE SAME AT ANY POSITION
-position1 = 1; % in um
-position2 = 100; % in um
-position3 = 200; % in um
-position4 = 250; % in um
+position1 = 100; % in um
+position2 = 500; % in um
+position3 = 800; % in um
+position4 = 1000; % in um
 
 
 
@@ -239,11 +239,11 @@ ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
 figure(3)
-plot(t2, Nall(:,position1/h))
+plot(t2, Nall(:,position4/h))
 hold on
-plot(t2, Mall(:,position1/h))
+plot(t2, Mall(:,position4/h))
 hold on
-plot(t2, Hall(:,position1/h))
+plot(t2, Hall(:,position4/h))
 legend(sprintf('N at x = %g um', position4), sprintf('M at x = %g um', position4), sprintf('H at x = %g um', position4))
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
