@@ -125,16 +125,16 @@ for j = 1:(n-1)
         % end
         % 
         % % adding the stimulus at a spacial interval: (P0 - P1)
-        % if i*h >= P0 && i*h <= P1 
-        %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-        %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
-        % end
-
-        % % adding stimulus in specific space AND time interval:
-        if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
+        if i*h >= P0 && i*h <= P1 
             a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
             a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         end
+
+        % % adding stimulus in specific space AND time interval:
+        % if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
+        %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+        %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        % end
 
         % add if statements here for the first row of A and the last row of
         % A
@@ -212,13 +212,13 @@ time4 = 14; % in ms
 
 figure(1)
 t1 = linspace(0, d, m);
-plot(t1, Uall(time1/h,:))
+plot(t1, Uall(time1/k,:))
 hold on
-plot(t1, Uall(time2/h,:))
+plot(t1, Uall(time2/k,:))
 hold on
-plot(t1, Uall(time3/h,:))
+plot(t1, Uall(time3/k,:))
 hold on
-plot(t1, Uall(time4/h,:))
+plot(t1, Uall(time4/k,:))
 legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4))
 ylabel("Voltage in millivolts.")
 xlabel("Length of the axon in um.")
