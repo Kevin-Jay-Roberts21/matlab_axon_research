@@ -49,6 +49,13 @@ nodal_length = 2.3; % (in um)
 myelinated_length = 85; % (in um)
 d = (nodal_length * num_of_nodes) + (myelinated_length * num_of_nodes); % axon length (in um)
 
+% create some function for g_k and g_na here at each nodal/nonnodal region
+% and change the radius of the axon
+%%%%%%%%%%
+
+
+
+
 % creating a list of nodel regions [[start_pos1, end_pos1], [start_pos2, end_pos2], ...]
 
 nodal_regions = [];
@@ -63,7 +70,7 @@ M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
 H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
 V_initial = -64.9997; % (mV) Voltage (eq: -64.9997)
 
-% should be careful about rounding here. For some reason matlab thinks that
+% should be CAREFUL about rounding here. For some reason matlab thinks that
 % something like 3.678e3 is not considered an interger sometimes
 m = round(d/h); % number of columns of the matrices (length of axon divided by space step)
 
@@ -101,13 +108,11 @@ for j = 1:(n-1)
             if i*h >= nodal_regions(1, l) && i*h <= nodal_regions(2, l)
                 g_k = g_k; 
                 g_Na = g_Na;
-                g_L = g_L;
 
             % if inside a myelinated region
             else
                 g_k = 0; 
                 g_Na = 0;
-                g_L = 0;
             end
         end 
 
@@ -122,7 +127,7 @@ for j = 1:(n-1)
         % if j*k >= T0 && j*k <= T1
         %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
         %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
-         % end
+        % end
         % 
         % % adding the stimulus at a spacial interval: (P0 - P1)
         if i*h >= P0 && i*h <= P1 
