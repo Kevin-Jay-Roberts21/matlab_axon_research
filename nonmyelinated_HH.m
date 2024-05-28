@@ -82,16 +82,16 @@ for j = 1:(n-1)
         % end
         % 
         % % adding the stimulus at a spacial interval: (P0 - P1)
-        if i*h >= P0 && i*h <= P1 
-            a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-            a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
-        end
-
-        % % adding stimulus in specific space AND time interval:
-        % if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
+        % if i*h >= P0 && i*h <= P1 
         %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
         %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         % end
+
+        % % adding stimulus in specific space AND time interval:
+        if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
+            a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+            a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        end
 
         % add if statements here for the first row of A and the last row of
         % A

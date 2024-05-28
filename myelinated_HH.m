@@ -47,7 +47,7 @@ P1 = 500; % ending position of adding the stimulus (in um)
 num_of_nodes = 12;
 nodal_length = 2.3; % (in um)
 myelinated_length = 85; % (in um)
-d = (nodal_length * num_of_nodes) + (myelinated_length * num_of_nodes); % axon length (in cm)
+d = (nodal_length * num_of_nodes) + (myelinated_length * num_of_nodes); % axon length (in um)
 
 % creating a list of nodel regions [[start_pos1, end_pos1], [start_pos2, end_pos2], ...]
 
@@ -122,19 +122,23 @@ for j = 1:(n-1)
         % if j*k >= T0 && j*k <= T1
         %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
         %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
-        % end
+         % end
         % 
         % % adding the stimulus at a spacial interval: (P0 - P1)
-        if i*h >= P0 && i*h <= P1 
-            a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-            a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
-        end
-
-        % % adding stimulus in specific space AND time interval:
-        % if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
+        % if i*h >= P0 && i*h <= P1 
         %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
         %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         % end
+
+        % % adding stimulus in specific space AND time interval:
+        if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
+            % to replicate what the nonmyelinated_HH.m file has, we have to
+            % add the stimulus at every 100 iterations
+            if mod(i*h, 100)==0
+                a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+                a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+            end 
+        end
 
         % add if statements here for the first row of A and the last row of
         % A
