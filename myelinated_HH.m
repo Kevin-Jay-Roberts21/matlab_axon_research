@@ -34,7 +34,7 @@ alpha_h = @(V) 0.07*exp(-(V + 65)/20);
 beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 1*10^(-11); % (in 1/(ohm*um^2))
+S = 1*10^(-12); % (in 1/(ohm*um^2))
 T0 = 0; % start time of when stimulus is added (in ms)
 T1 = 1; % end time of when stimulus is added (in ms)
 
@@ -95,21 +95,21 @@ for j = 1:(n-1)
     for i = 1:m
         
         % using l as the index   
-        % for l = 1:size(nodal_regions, 2) % for the number of columns in nodal_regions
-        % 
-        %     % if inside a nodal region
-        %     if i*h >= nodal_regions(1, l) && i*h <= nodal_regions(2, l)
-        %         g_k = g_k; 
-        %         g_Na = g_Na;
-        %         g_L = g_L;
-        % 
-        %     % if inside a myelinated region
-        %     else
-        %         g_k = 0; 
-        %         g_Na = 0;
-        %         g_L = 0;
-        %     end
-        % end 
+        for l = 1:size(nodal_regions, 2) % for the number of columns in nodal_regions
+
+            % if inside a nodal region
+            if i*h >= nodal_regions(1, l) && i*h <= nodal_regions(2, l)
+                g_k = g_k; 
+                g_Na = g_Na;
+                g_L = g_L;
+
+            % if inside a myelinated region
+            else
+                g_k = 0; 
+                g_Na = 0;
+                g_L = 0;
+            end
+        end 
 
         % defining coefficients
         a1 = -a/(2*r_l*h^2);
@@ -125,20 +125,20 @@ for j = 1:(n-1)
          % end
         % 
         % % adding the stimulus at a spacial interval: (P0 - P1)
-        % if i*h >= P0 && i*h <= P1 
-        %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-        %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
-        % end
+        if i*h >= P0 && i*h <= P1 
+            a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+            a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        end
 
         % % adding stimulus in specific space AND time interval:
-        if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
-            % to replicate what the nonmyelinated_HH.m file has, we have to
-            % add the stimulus at every 100 iterations
-            if mod(i*h, 100)==0
-                a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-                a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
-            end 
-        end
+        % if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
+        %     % to replicate what the nonmyelinated_HH.m file has, we have to
+        %     % add the stimulus at every 100 iterations
+        %     if mod(i*h, 100)==0
+        %         a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+        %         a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        %     end 
+        % end
 
         % add if statements here for the first row of A and the last row of
         % A
@@ -252,6 +252,15 @@ legend(sprintf('N at x = %g um', position4), sprintf('M at x = %g um', position4
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
+% figure(4)
+% plot(t1, Nall(time1/k,:))
+% hold on
+% plot(t1, Mall(time1/k,:))
+% hold on
+% plot(t1, Hall(time1/k,:))
+% legend(sprintf('N at t = %g ms', time1), sprintf('M at t = %g ms', time1), sprintf('H at t = %g ms',  time1))
+% ylabel("Probabilities of ion channels opening/closing.")
+% xlabel("Length of axon in um.")
 
 
 
