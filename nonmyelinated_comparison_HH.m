@@ -15,7 +15,7 @@ clc
 c_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
 r_l = 30; % specific intracellular resistivity (ohms * cm)
 a = 0.0025; % axon radius (cm)
-h = 0.01; % space step (MAY CHANGE LATER)
+h = 0.0001; % space step (MAY CHANGE LATER)
 total_time = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_k = 0.036; % (1/(ohm*cm^2))
@@ -34,13 +34,13 @@ alpha_h = @(V) 0.07*exp(-(V + 65)/20);
 beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 0.001; % (in 1/(ohm*cm^2))
+S = 0.1; % (in 1/(ohm*cm^2))
 T0 = 0; % start time of when stimulus is added (in ms)
 T1 = 1; % end time of when stimulus is added (in ms)
 
 % NOTE: the stimulus MUST be added in a nodal region from (0um to 1um is fine)
 P0 = 0; % position of adding the stimulus (in cm)
-P1 = 0.05; % ending position of adding the stimulus (in cm)
+P1 = 0.0002; % ending position of adding the stimulus (in cm)
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
@@ -171,22 +171,22 @@ for j = 1:(n-1)
 
 end
 
-% now pick a position to plot all of the voltages
-% VOLTAGE IS THE SAME AT ANY POSITION
-position1 = 0.01; % in cm
-position2 = 0.05; % in cm
-position3 = 0.08; % in cm
-position4 = 0.1; % in cm
+% now pick a position to plot all of the voltages (multiply by 10000 to get
+% units in um)
+position1 = 0.001; % in cm 
+position2 = 0.005; % in cm
+position3 = 0.008; % in cm
+position4 = 0.01; % in cm
 
 
 
 % Times to observe the voltage along the axon
-time1 = 5; % in ms
-time2 = 8; % in ms
-time3 = 12; % in ms
-time4 = 14; % in ms
+time1 = 1; % in ms
+time2 = 2; % in ms
+time3 = 3; % in ms
+time4 = 4; % in ms
 
-d_in_um = d*10000
+d_in_um = d*10000; % using this value to display plots in um instead of cm
 
 figure(1)
 t1 = linspace(0, d_in_um, m);
@@ -212,7 +212,7 @@ hold on
 plot(t2, Uall(:,position3/h))
 hold on
 plot(t2, Uall(:,position4/h))
-legend(sprintf('Voltage at x = %g cm', position1),sprintf('Voltage at x = %g cm', position2),sprintf('Voltage at x = %g cm', position3),sprintf('Voltage at x = %g cm', position4))
+legend(sprintf('Voltage at x = %g um', position1*10000),sprintf('Voltage at x = %g um', position2*10000),sprintf('Voltage at x = %g um', position3*10000),sprintf('Voltage at x = %g um', position4*10000))
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
