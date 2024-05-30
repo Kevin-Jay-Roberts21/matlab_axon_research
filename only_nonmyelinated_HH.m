@@ -8,7 +8,7 @@ r_l = 30; % specific intracellular resistivity (ohms * cm)
 a = 0.0025; % axon radius (cm)
 d = 5; % axon length (cm)
 h = 0.01; % space step (MAY CHANGE LATER)
-total_time = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
+total_time = 50; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_k = 0.036; % (1/(ohm*cm^2))
 g_Na = 0.12; % (1/(ohm*cm^2))
@@ -26,11 +26,11 @@ alpha_h = @(V) 0.07*exp(-(V + 65)/20);
 beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 0.001; % (in 1/(ohm*cm^2))
-T0 = 0; % start time of when stimulus is added (in ms)
-T1 = 1; % end time of when stimulus is added (in ms)
-P0 = 0; % position of adding the stimulus (in cm)
-P1 = 0.05;
+S = 0.00245; % (in 1/(ohm*cm^2))
+T0 = 5; % start time of when stimulus is added (in ms)
+T1 = 5.1; % end time of when stimulus is added (in ms)
+P0 = 1; % position of adding the stimulus (in cm)
+P1 = 1.1;
 
 
 % INITIAL CONDITIONS
@@ -154,18 +154,23 @@ end
 
 % now pick a position to plot all of the voltages
 % VOLTAGE IS THE SAME AT ANY POSITION
-position1 = 0.01; % in cm
-position2 = 0.05; % in cm
-position3 = 0.08; % in cm
-position4 = 0.1; % in cm
-
+position1 = 1; % in cm
+position2 = 2; % in cm
+position3 = 3; % in cm
+position4 = 4; % in cm
+position5 = 5; % in cm
+position6 = 1.5; % in cm
+position7 = 2.5; % in cm
+position8 = 3.5; % in cm
+position9 = 4.5; % in cm
+position10 = 0.5; % in cm
 
 
 % Times to observe the voltage along the axon
 time1 = 5; % in ms
 time2 = 8; % in ms
 time3 = 12; % in ms
-time4 = 14; % in ms
+time4 = 25; % in ms
 
 figure(1)
 t1 = linspace(0, d, m);
@@ -191,7 +196,19 @@ hold on
 plot(t2, Uall(:,position3/h))
 hold on
 plot(t2, Uall(:,position4/h))
-legend(sprintf('Voltage at x = %g cm', position1),sprintf('Voltage at x = %g cm', position2),sprintf('Voltage at x = %g cm', position3),sprintf('Voltage at x = %g cm', position4))
+hold on
+plot(t2, Uall(:,position5/h))
+hold on
+plot(t2, Uall(:,position6/h))
+hold on
+plot(t2, Uall(:,position7/h))
+hold on
+plot(t2, Uall(:,position8/h))
+hold on
+plot(t2, Uall(:,position9/h))
+hold on
+plot(t2, Uall(:,position10/h))
+legend(sprintf('Voltage at x = %g cm', position1),sprintf('Voltage at x = %g cm', position2),sprintf('Voltage at x = %g cm', position3),sprintf('Voltage at x = %g cm', position4),sprintf('Voltage at x = %g cm', position5),sprintf('Voltage at x = %g cm', position6),sprintf('Voltage at x = %g cm', position7),sprintf('Voltage at x = %g cm', position8),sprintf('Voltage at x = %g cm', position9),sprintf('Voltage at x = %g cm', position10))
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
