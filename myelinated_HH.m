@@ -6,12 +6,18 @@ clc
 % length of the axon to 0.1 for example and shrink the space step.
 
 % defining all of the initial and constant variables
-c_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
-r_l = 30; % specific intracellular resistivity (ohms * cm)
-h = 0.0001; % space step (MAY CHANGE LATER)
+c_m = 0.001; % membrane capacitance (ms / (ohm*cm^2)) (could try nodal capacitance of 2)
+r_l = 70; % specific intracellular resistivity (or axoplasmic resistivity) (ohms * cm)
+nonmyelinated_radius = 0.000165; % (cm)
+myelinated_radius = 0.0003; % (cm)
+h = 0.0001; % space step (this)
 total_time = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
+nonmyelinated_g_k = 0.036; % (1/(ohm*cm^2))
+myelinated_g_k = 0; % (1/(ohm*cm^2))
+nonmyelinated_g_Na = 0.12; % (1/(ohm*cm^2))
+myelinated_g_Na = 0; % (1/(ohm*cm^2))
 E_k = -77; % (mV)
 E_Na = 50; % (mV)
 E_L = -54.4; % (mV)
@@ -26,7 +32,7 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 12;
+num_of_nodes = 5;
 % the first number is in um, the *10^(-4) converts it to cm
 nodal_length = 2.3*10^(-4); % (in cm)
 myelinated_length = 85*10^(-4); % (in cm)
@@ -57,19 +63,19 @@ end
 % finally, we make a, g_Na, and g_k certain values if the conditions above
 % are met or not the first element of the summation is if x is in a nodal
 % region, the second element is if the x is in a myelinated region.
-a = @(x) 0.0025*a(x) + 0.005*(a(x)==0); % axon radius (where both values (0.0025 and 0.005) are in cm)
-g_k = @(x) 0.036*g_k(x) + 0*(g_k(x)==0); % (g_k is in 1/(ohm*cm^2))
-g_Na = @(x) 0.12*g_Na(x) + 0*(g_Na(x)==0); % (g_Na is in 1/(ohm*cm^2))
+a = @(x) nonmyelinated_radius*a(x) + myelinated_radius*(a(x)==0); % axon radius (where both values (0.0025 and 0.005) are in cm)
+g_k = @(x) nonmyelinated_g_k*g_k(x) + myelinated_g_k*(g_k(x)==0); % (g_k is in 1/(ohm*cm^2))
+g_Na = @(x) nonmyelinated_g_Na*g_Na(x) + myelinated_g_Na*(g_Na(x)==0); % (g_Na is in 1/(ohm*cm^2))
 
 
 % adding sodium conductance (stimulus)
-S = 0.1; % (in 1/(ohm*cm^2))
+S = 0.01; % (in 1/(ohm*cm^2))
 T0 = 0; % start time of when stimulus is added (in ms)
 T1 = 1; % end time of when stimulus is added (in ms)
 
 % NOTE: the stimulus MUST be added in a nodal region from (0um to 1um is fine)
 P0 = 0; % position of adding the stimulus (in cm)
-P1 = 0.0002; % ending position of adding the stimulus (in cm)
+P1 = 0.0002; % ending position of adding the stimulus (in cm or *10^4 in um)
 
 
 % INITIAL CONDITIONS
@@ -195,11 +201,21 @@ end
 
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
-position1 = 0.001; % in cm 
-position2 = 0.005; % in cm
-position3 = 0.008; % in cm
-position4 = 0.01; % in cm
+position1 = 0.0001; % in cm 
+position2 = 0.0002; % in cm
+position3 = 0.0003; % in cm
+position4 = 0.001; % in cm
+position5 = 0.0015; % in cm 
+position6 = 0.002; % in cm
+position7 = 0.0025; % in cm
+position8 = 0.003; % in cm
+position9 = 0.0035; % in cm 
+position10 = 0.004; % in cm
 
+position1/h
+position2/h
+position3/h
+position4/h
 
 
 % Times to observe the voltage along the axon
@@ -208,7 +224,7 @@ time2 = 2; % in ms
 time3 = 3; % in ms
 time4 = 4; % in ms
 
-d_in_um = d*10000; % using this value to display plots in um instead of cm
+d_in_um = round(d*10000); % using this value to display plots in um instead of cm
 
 figure(1)
 t1 = linspace(0, d_in_um, m);
@@ -231,10 +247,22 @@ plot(t2, Uall(:,position1/h))
 hold on
 plot(t2, Uall(:,position2/h))
 hold on
-plot(t2, Uall(:,position3/h))
+plot(t2, Uall(:,round(position3/h)))
 hold on
 plot(t2, Uall(:,position4/h))
-legend(sprintf('Voltage at x = %g um', position1*10000),sprintf('Voltage at x = %g um', position2*10000),sprintf('Voltage at x = %g um', position3*10000),sprintf('Voltage at x = %g um', position4*10000))
+hold on
+plot(t2, Uall(:,position5/h))
+hold on
+plot(t2, Uall(:,position6/h))
+hold on
+plot(t2, Uall(:,position7/h))
+hold on
+plot(t2, Uall(:,position8/h))
+hold on
+plot(t2, Uall(:,position9/h))
+hold on
+plot(t2, Uall(:,position10/h))
+legend(sprintf('Voltage at x = %g um', position1*10000),sprintf('Voltage at x = %g um', position2*10000),sprintf('Voltage at x = %g um', position3*10000),sprintf('Voltage at x = %g um', position4*10000),sprintf('Voltage at x = %g um', position5*10000),sprintf('Voltage at x = %g um', position6*10000),sprintf('Voltage at x = %g um', position7*10000),sprintf('Voltage at x = %g um', position8*10000),sprintf('Voltage at x = %g um', position9*10000),sprintf('Voltage at x = %g um', position10*10000))
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
