@@ -26,7 +26,7 @@ alpha_h = @(V) 0.07*exp(-(V + 65)/20);
 beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 0.00245; % (in 1/(ohm*cm^2))
+S = 0.003947; % (in 1/(ohm*cm^2))
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
 P0 = 1; % position of adding the stimulus (in cm)
@@ -154,23 +154,30 @@ end
 
 % now pick a position to plot all of the voltages
 % VOLTAGE IS THE SAME AT ANY POSITION
-position1 = 1; % in cm
-position2 = 2; % in cm
-position3 = 3; % in cm
-position4 = 4; % in cm
-position5 = 5; % in cm
-position6 = 1.5; % in cm
-position7 = 2.5; % in cm
-position8 = 3.5; % in cm
+position1 = 0.5; % in cm
+position2 = 1; % in cm
+position3 = 1.5; % in cm
+position4 = 2; % in cm
+position5 = 2.5; % in cm
+position6 = 3; % in cm
+position7 = 3.5; % in cm
+position8 = 4; % in cm
 position9 = 4.5; % in cm
-position10 = 0.5; % in cm
+position10 = 4.9; % in cm
 
 
 % Times to observe the voltage along the axon
 time1 = 5; % in ms
-time2 = 8; % in ms
-time3 = 12; % in ms
-time4 = 25; % in ms
+time2 = 6; % in ms
+time3 = 8; % in ms
+time4 = 10; % in ms
+time5 = 10.5; % in ms
+time6 = 10.8; % in ms
+time7 = 11; % in ms
+time8 = 11.5; % in ms
+time9 = 13; % in ms
+time10 = 20; % in ms
+
 
 figure(1)
 t1 = linspace(0, d, m);
@@ -181,7 +188,19 @@ hold on
 plot(t1, Uall(time3/k,:))
 hold on
 plot(t1, Uall(time4/k,:))
-legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4))
+hold on
+plot(t1, Uall(time5/k,:))
+hold on
+plot(t1, Uall(time6/k,:))
+hold on
+plot(t1, Uall(time7/k,:))
+hold on
+plot(t1, Uall(time8/k,:))
+hold on
+plot(t1, Uall(time9/k,:))
+hold on
+plot(t1, Uall(time10/k,:))
+legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4), sprintf('Voltage of the axon at time t = %g ms', time5), sprintf('Voltage of the axon at time t = %g ms', time6), sprintf('Voltage of the axon at time t = %g ms', time7), sprintf('Voltage of the axon at time t = %g ms', time8), sprintf('Voltage of the axon at time t = %g ms', time9), sprintf('Voltage of the axon at time t = %g ms', time10))
 ylabel("Voltage in millivolts.")
 xlabel("Length of the axon in cm.")
 
