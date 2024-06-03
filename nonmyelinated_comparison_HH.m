@@ -44,7 +44,7 @@ P1 = 0.0002; % ending position of adding the stimulus (in cm)
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 5;
+num_of_nodes = 12;
 % the first number is in um, the *10^(-4) converts it to cm
 nodal_length = 2.3*10^(-4); % (in cm)
 myelinated_length = 85*10^(-4); % (in cm)
@@ -184,17 +184,19 @@ position8 = 0.003; % in cm
 position9 = 0.0035; % in cm 
 position10 = 0.004; % in cm
 
-position1/h
-position2/h
-position3/h
-position4/h
-
 
 % Times to observe the voltage along the axon
-time1 = 1; % in ms
-time2 = 2; % in ms
-time3 = 3; % in ms
-time4 = 4; % in ms
+time1 = 0.1; % in ms
+time2 = 1; % in ms
+time3 = 2; % in ms
+time4 = 3; % in ms
+time5 = 4; % in ms
+time6 = 5; % in ms
+time7 = 6; % in ms
+time8 = 7; % in ms
+time9 = 8; % in ms
+time10 = 9; % in ms
+
 
 d_in_um = round(d*10000); % using this value to display plots in um instead of cm
 
@@ -207,7 +209,19 @@ hold on
 plot(t1, Uall(time3/k,:))
 hold on
 plot(t1, Uall(time4/k,:))
-legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4))
+hold on
+plot(t1, Uall(time5/k,:))
+hold on
+plot(t1, Uall(time6/k,:))
+hold on
+plot(t1, Uall(time7/k,:))
+hold on
+plot(t1, Uall(time8/k,:))
+hold on
+plot(t1, Uall(time9/k,:))
+hold on
+plot(t1, Uall(time10/k,:))
+legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4), sprintf('Voltage of the axon at time t = %g ms', time5), sprintf('Voltage of the axon at time t = %g ms', time6), sprintf('Voltage of the axon at time t = %g ms', time7), sprintf('Voltage of the axon at time t = %g ms', time8), sprintf('Voltage of the axon at time t = %g ms', time9), sprintf('Voltage of the axon at time t = %g ms', time10))
 ylabel("Voltage in millivolts.")
 xlabel("Length of the axon in um.")
 
