@@ -69,7 +69,7 @@ g_Na = @(x) nonmyelinated_g_Na*g_Na(x) + myelinated_g_Na*(g_Na(x)==0); % (g_Na i
 
 
 % adding sodium conductance (stimulus)
-S = 0.01; % (in 1/(ohm*cm^2))
+S = 0.1; %0.01; % (in 1/(ohm*cm^2))
 T0 = 0; % start time of when stimulus is added (in ms)
 T1 = 1; % end time of when stimulus is added (in ms)
 
