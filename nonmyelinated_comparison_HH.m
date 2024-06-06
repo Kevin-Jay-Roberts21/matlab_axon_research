@@ -12,18 +12,18 @@ clc
 
 
 % defining all of the initial and constant variables
-c_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
-r_l = 30; % specific intracellular resistivity (ohms * cm)
+c_m = 0.002; % membrane capacitance (ms / (ohm*cm^2))
+r_l = 70; % specific intracellular resistivity (ohms * cm)
 a = 0.000165; % axon radius (cm)
 h = 0.0001; % space step (MAY CHANGE LATER)
 total_time = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
-g_k = 0.036; % (1/(ohm*cm^2))
-g_Na = 0.12; % (1/(ohm*cm^2))
-g_L = 0.0003; % (1/(ohm*cm^2))
-E_k = -77; % (mV)
+g_k = 0.08; % (1/(ohm*cm^2))
+g_Na = 3; % (1/(ohm*cm^2))
+g_L = 0.08; % (1/(ohm*cm^2))
+E_k = -84; % (mV)
 E_Na = 50; % (mV)
-E_L = -54.4; % (mV)
+E_L = -83.38; % (mV)
 
 % The following are functions of voltage
 alpha_n = @(V) 0.01*(V + 55)/(1 - exp(-(V + 55)/10));
@@ -34,7 +34,7 @@ alpha_h = @(V) 0.07*exp(-(V + 65)/20);
 beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 0.1; % (in 1/(ohm*cm^2))
+S = 1.148949; % (in 1/(ohm*cm^2))
 T0 = 0; % start time of when stimulus is added (in ms)
 T1 = 1; % end time of when stimulus is added (in ms)
 
@@ -44,17 +44,17 @@ P1 = 0.0002; % ending position of adding the stimulus (in cm)
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 12;
+num_of_nodes = 3;
 % the first number is in um, the *10^(-4) converts it to cm
-nodal_length = 2.3*10^(-4); % (in cm)
-myelinated_length = 85*10^(-4); % (in cm)
+nodal_length = 50*10^(-4); % (in cm)
+myelinated_length = 200*10^(-4); % (in cm)
 d = (nodal_length * num_of_nodes) + (myelinated_length * num_of_nodes); % axon length (in cm)
 
 % INITIAL CONDITIONS
-N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
-M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
-H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
-V_initial = -64.9997; % (mV) Voltage (eq: -64.9997)
+N_0 = 0.1009; % probability that potassium gate is open (eq: 0.1009)
+M_0 = 0.0051; % probability that Sodium activation gate is open (eq: 0.0051)
+H_0 = 0.9571; % probability that Sodium inactivation gate is open (eq: 0.9571)
+V_initial = -83.3794; % (mV) Voltage (eq: -83.3794)
 
 % should be CAREFUL about rounding here. For some reason matlab thinks that
 % something like 3.678e3 is not considered an interger sometimes
@@ -175,27 +175,27 @@ end
 % units in um)
 position1 = 0.0001; % in cm 
 position2 = 0.0002; % in cm
-position3 = 0.0003; % in cm
-position4 = 0.001; % in cm
-position5 = 0.0015; % in cm 
-position6 = 0.002; % in cm
-position7 = 0.0025; % in cm
-position8 = 0.003; % in cm
-position9 = 0.0035; % in cm 
-position10 = 0.004; % in cm
+position3 = 0.001; % in cm
+position4 = 0.005; % in cm
+position5 = 0.01; % in cm 
+position6 = 0.02; % in cm
+position7 = 0.03; % in cm
+position8 = 0.04; % in cm
+position9 = 0.05; % in cm 
+position10 = 0.06; % in cm
 
 
 % Times to observe the voltage along the axon
-time1 = 0.1; % in ms
-time2 = 1; % in ms
-time3 = 2; % in ms
-time4 = 3; % in ms
-time5 = 4; % in ms
-time6 = 5; % in ms
-time7 = 6; % in ms
-time8 = 7; % in ms
-time9 = 8; % in ms
-time10 = 9; % in ms
+time1 = 0.05; % in ms
+time2 = 0.1; % in ms
+time3 = 0.5; % in ms
+time4 = 1; % in ms
+time5 = 1.5; % in ms
+time6 = 2.5; % in ms
+time7 = 3; % in ms
+time8 = 4; % in ms
+time9 = 5; % in ms
+time10 = 6; % in ms
 
 
 d_in_um = round(d*10000); % using this value to display plots in um instead of cm
