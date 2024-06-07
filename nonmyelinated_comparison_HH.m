@@ -33,22 +33,22 @@ beta_m = @(V) 4*exp(-(V + 65)/18);
 alpha_h = @(V) 0.07*exp(-(V + 65)/20);
 beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
+% defining nodal regions, and the axon length will be based on how many
+% regions we have 
+num_of_nodes = 7;
+% the first number is in um, the *10^(-4) converts it to cm
+nodal_length = 10*10^(-4); % (in cm)
+myelinated_length = 85*10^(-4); % (in cm)
+d = (nodal_length * num_of_nodes) + (myelinated_length * num_of_nodes); % axon length (in cm)
+
 % adding sodium conductance (stimulus)
-S = 1.148949; % (in 1/(ohm*cm^2))
+S = 1.148948; % (in 1/(ohm*cm^2))
 T0 = 0; % start time of when stimulus is added (in ms)
 T1 = 1; % end time of when stimulus is added (in ms)
 
 % NOTE: the stimulus MUST be added in a nodal region from (0um to 1um is fine)
 P0 = 0; % position of adding the stimulus (in cm)
 P1 = 0.0002; % ending position of adding the stimulus (in cm)
-
-% defining nodal regions, and the axon length will be based on how many
-% regions we have 
-num_of_nodes = 3;
-% the first number is in um, the *10^(-4) converts it to cm
-nodal_length = 50*10^(-4); % (in cm)
-myelinated_length = 200*10^(-4); % (in cm)
-d = (nodal_length * num_of_nodes) + (myelinated_length * num_of_nodes); % axon length (in cm)
 
 % INITIAL CONDITIONS
 N_0 = 0.1009; % probability that potassium gate is open (eq: 0.1009)
@@ -174,15 +174,15 @@ end
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
 position1 = 0.0001; % in cm 
-position2 = 0.0002; % in cm
-position3 = 0.001; % in cm
-position4 = 0.005; % in cm
-position5 = 0.01; % in cm 
-position6 = 0.02; % in cm
-position7 = 0.03; % in cm
-position8 = 0.04; % in cm
-position9 = 0.05; % in cm 
-position10 = 0.06; % in cm
+position2 = 0.0025; % in cm
+position3 = 0.0050; % in cm
+position4 = 0.0100; % in cm
+position5 = 0.0150; % in cm 
+position6 = 0.0200; % in cm
+position7 = 0.0300; % in cm
+position8 = 0.0400; % in cm
+position9 = 0.0500; % in cm 
+position10 = 0.0600; % in cm
 
 
 % Times to observe the voltage along the axon
