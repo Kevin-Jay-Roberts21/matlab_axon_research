@@ -37,8 +37,8 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 % regions we have 
 num_of_nodes = 7;
 % the first number is in um, the *10^(-4) converts it to cm
-nodal_length = 10*10^(-4); % (in cm)
-myelinated_length = 85*10^(-4); % (in cm)
+nodal_length = 5*10^(-4); % (in cm)
+myelinated_length = 95*10^(-4); % (in cm)
 d = (nodal_length * num_of_nodes) + (myelinated_length * num_of_nodes); % axon length (in cm)
 
 % adding sodium conductance (stimulus)
@@ -174,15 +174,15 @@ end
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
 position1 = 0.0001; % in cm 
-position2 = 0.0025; % in cm
-position3 = 0.0050; % in cm
-position4 = 0.0100; % in cm
-position5 = 0.0150; % in cm 
-position6 = 0.0200; % in cm
-position7 = 0.0300; % in cm
-position8 = 0.0400; % in cm
-position9 = 0.0500; % in cm 
-position10 = 0.0600; % in cm
+position2 = 0.0050; % in cm
+position3 = 0.0100; % in cm
+position4 = 0.0150; % in cm
+position5 = 0.0200; % in cm 
+position6 = 0.0250; % in cm
+position7 = 0.0350; % in cm
+position8 = 0.0450; % in cm
+position9 = 0.0550; % in cm 
+position10 = 0.0650; % in cm
 
 
 % Times to observe the voltage along the axon
@@ -243,7 +243,7 @@ plot(t2, Uall(:,position6/h))
 hold on
 plot(t2, Uall(:,position7/h))
 hold on
-plot(t2, Uall(:,position8/h))
+plot(t2, Uall(:,round(position8/h)))
 hold on
 plot(t2, Uall(:,position9/h))
 hold on
