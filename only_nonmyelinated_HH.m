@@ -26,7 +26,7 @@ alpha_h = @(V) 0.07*exp(-(V + 65)/20);
 beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 0.0005; % (in 1/(ohm*cm^2))
+S = 0.003948; % (in 1/(ohm*cm^2))
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
 P0 = 1; % position of adding the stimulus (in cm)
@@ -76,10 +76,10 @@ for j = 1:(n-1)
         a5 = g_k*N(1, i)^4*E_k + g_Na*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
 
         % % adding the stimulus during a certain time interval: (T0 - T1)
-        if j*k >= T0 && j*k <= T1
-            a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-            a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
-        end
+        % if j*k >= T0 && j*k <= T1
+        %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+        %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        % end
         % 
         % adding the stimulus at a spacial interval: (P0 - P1)
         % if i*h >= P0 && i*h <= P1 
@@ -87,11 +87,11 @@ for j = 1:(n-1)
         %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         % end
 
-        % % adding stimulus in specific space AND time interval:
-        % if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
-        %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-        %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
-        % end
+        % adding stimulus in specific space AND time interval:
+        if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
+            a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+            a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        end
 
         % add if statements here for the first row of A and the last row of
         % A
@@ -190,17 +190,17 @@ hold on
 plot(t1, Uall(time4/k,:))
 hold on
 plot(t1, Uall(time5/k,:))
-% hold on
-% plot(t1, Uall(time6/k,:))
-% hold on
-% plot(t1, Uall(time7/k,:))
-% hold on
-% plot(t1, Uall(time8/k,:))
-% hold on
-% plot(t1, Uall(time9/k,:))
-% hold on
-% plot(t1, Uall(time10/k,:))
-legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4), sprintf('Voltage of the axon at time t = %g ms', time5))%, sprintf('Voltage of the axon at time t = %g ms', time6), sprintf('Voltage of the axon at time t = %g ms', time7), sprintf('Voltage of the axon at time t = %g ms', time8), sprintf('Voltage of the axon at time t = %g ms', time9), sprintf('Voltage of the axon at time t = %g ms', time10))
+hold on
+plot(t1, Uall(time6/k,:))
+hold on
+plot(t1, Uall(time7/k,:))
+hold on
+plot(t1, Uall(time8/k,:))
+hold on
+plot(t1, Uall(time9/k,:))
+hold on
+plot(t1, Uall(time10/k,:))
+legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4), sprintf('Voltage of the axon at time t = %g ms', time5), sprintf('Voltage of the axon at time t = %g ms', time6), sprintf('Voltage of the axon at time t = %g ms', time7), sprintf('Voltage of the axon at time t = %g ms', time8), sprintf('Voltage of the axon at time t = %g ms', time9), sprintf('Voltage of the axon at time t = %g ms', time10))
 ylabel("Voltage in millivolts.")
 xlabel("Length of the axon in cm.")
 
@@ -217,17 +217,17 @@ hold on
 plot(t2, Uall(:,position4/h))
 hold on
 plot(t2, Uall(:,position5/h))
-% hold on
-% plot(t2, Uall(:,position6/h))
-% hold on
-% plot(t2, Uall(:,position7/h))
-% hold on
-% plot(t2, Uall(:,position8/h))
-% hold on
-% plot(t2, Uall(:,position9/h))
-% hold on
-% plot(t2, Uall(:,position10/h))
-legend(sprintf('Voltage at x = %g cm', position1),sprintf('Voltage at x = %g cm', position2),sprintf('Voltage at x = %g cm', position3),sprintf('Voltage at x = %g cm', position4),sprintf('Voltage at x = %g cm', position5))%,sprintf('Voltage at x = %g cm', position6),sprintf('Voltage at x = %g cm', position7),sprintf('Voltage at x = %g cm', position8),sprintf('Voltage at x = %g cm', position9),sprintf('Voltage at x = %g cm', position10))
+hold on
+plot(t2, Uall(:,position6/h))
+hold on
+plot(t2, Uall(:,position7/h))
+hold on
+plot(t2, Uall(:,position8/h))
+hold on
+plot(t2, Uall(:,position9/h))
+hold on
+plot(t2, Uall(:,position10/h))
+legend(sprintf('Voltage at x = %g cm', position1),sprintf('Voltage at x = %g cm', position2),sprintf('Voltage at x = %g cm', position3),sprintf('Voltage at x = %g cm', position4),sprintf('Voltage at x = %g cm', position5),sprintf('Voltage at x = %g cm', position6),sprintf('Voltage at x = %g cm', position7),sprintf('Voltage at x = %g cm', position8),sprintf('Voltage at x = %g cm', position9),sprintf('Voltage at x = %g cm', position10))
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 

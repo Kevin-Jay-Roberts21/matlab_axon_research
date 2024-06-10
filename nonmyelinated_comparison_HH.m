@@ -42,7 +42,7 @@ myelinated_length = 85*10^(-4); % (in cm)
 d = (nodal_length * num_of_nodes) + (myelinated_length * num_of_nodes); % axon length (in cm)
 
 % adding sodium conductance (stimulus)
-S = 1.148948; % (in 1/(ohm*cm^2))
+S = 1.148949; % (in 1/(ohm*cm^2))
 T0 = 0; % start time of when stimulus is added (in ms)
 T1 = 1; % end time of when stimulus is added (in ms)
 

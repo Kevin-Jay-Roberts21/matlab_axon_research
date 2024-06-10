@@ -87,7 +87,7 @@ g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); % (g_Na is in 1/(
 
 
 % adding sodium conductance (stimulus)
-S = 0.937840; %0.01; % (in 1/(ohm*cm^2))
+S = 0.937848; %0.01; % (in 1/(ohm*cm^2))
 T0 = 0; % start time of when stimulus is added (in ms)
 T1 = 1; % end time of when stimulus is added (in ms)
 
