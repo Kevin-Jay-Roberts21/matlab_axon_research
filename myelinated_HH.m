@@ -37,12 +37,12 @@ num_of_nodes = 7;
 % the first number is in um, the *10^(-4) converts it to cm
 nodal_length = 5*10^(-4); % (in cm)
 myelinated_length = 95*10^(-4); % (in cm)
-d = (nodal_length * num_of_nodes) + (myelinated_length * num_of_nodes); % axon length (in cm)
+d = (nodal_length * num_of_nodes) + (myelinated_length * (num_of_nodes - 1)); % axon length (in cm)
 
 
 % creating a list of nodel regions [[start_pos1, end_pos1], [start_pos2, end_pos2], ...]
 nodal_regions = [];
-for i = 0:num_of_nodes
+for i = 0:(num_of_nodes-1)
     nodal_regions(:,i+1) = [(i*nodal_length)+(i*myelinated_length), (i*nodal_length)+(i*myelinated_length)+nodal_length];
 end
 
@@ -73,7 +73,7 @@ g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); % (g_Na is in 1/(
 
 
 % adding sodium conductance (stimulus)
-S = 1.04; %0.01; % (in 1/(ohm*cm^2))
+S = 0; %0.01; % (in 1/(ohm*cm^2))
 T0 = 0; % start time of when stimulus is added (in ms)
 T1 = 1; % end time of when stimulus is added (in ms)
 
