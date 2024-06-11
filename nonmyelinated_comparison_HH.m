@@ -42,7 +42,7 @@ myelinated_length = 95*10^(-4); % (in cm)
 d = (nodal_length * num_of_nodes) + (myelinated_length * (num_of_nodes - 1)); % axon length (in cm)
 
 % adding sodium conductance (stimulus)
-S = 1.148948; % (in 1/(ohm*cm^2))
+S = 1.148949; % (in 1/(ohm*cm^2))
 T0 = 0; % start time of when stimulus is added (in ms)
 T1 = 1; % end time of when stimulus is added (in ms)
 
@@ -182,7 +182,7 @@ position6 = 0.0250; % in cm
 position7 = 0.0350; % in cm
 position8 = 0.0450; % in cm
 position9 = 0.0550; % in cm 
-position10 = 0.0650; % in cm
+position10 = 0.0600; % in cm
 
 
 % Times to observe the voltage along the axon
@@ -229,35 +229,35 @@ figure(2)
 t2 = linspace(0, total_time, n); % FULL MATRIX
 % t2 = linspace(0, total_time, n*k*2); % MATRIX AT EVERY 50th iteration
 % t2 = linspace(0, total_time, n*k); % MATRIX AT EVERY 100th iteration
-plot(t2, Uall(:,position1/h))
+plot(t2, Uall(:,round(position1/h)))
 hold on
-plot(t2, Uall(:,position2/h))
+plot(t2, Uall(:,round(position2/h)))
 hold on
 plot(t2, Uall(:,round(position3/h)))
 hold on
-plot(t2, Uall(:,position4/h))
+plot(t2, Uall(:,round(position4/h)))
 hold on
-plot(t2, Uall(:,position5/h))
+plot(t2, Uall(:,round(position5/h)))
 hold on
-plot(t2, Uall(:,position6/h))
+plot(t2, Uall(:,round(position6/h)))
 hold on
-plot(t2, Uall(:,position7/h))
+plot(t2, Uall(:,round(position7/h)))
 hold on
 plot(t2, Uall(:,round(position8/h)))
 hold on
-plot(t2, Uall(:,position9/h))
+plot(t2, Uall(:,round(position9/h)))
 hold on
-plot(t2, Uall(:,position10/h))
+plot(t2, Uall(:,round(position10/h)))
 legend(sprintf('Voltage at x = %g um', position1*10000),sprintf('Voltage at x = %g um', position2*10000),sprintf('Voltage at x = %g um', position3*10000),sprintf('Voltage at x = %g um', position4*10000),sprintf('Voltage at x = %g um', position5*10000),sprintf('Voltage at x = %g um', position6*10000),sprintf('Voltage at x = %g um', position7*10000),sprintf('Voltage at x = %g um', position8*10000),sprintf('Voltage at x = %g um', position9*10000),sprintf('Voltage at x = %g um', position10*10000))
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
 figure(3)
-plot(t2, Nall(:,position4/h))
+plot(t2, Nall(:,round(position4/h)))
 hold on
-plot(t2, Mall(:,position4/h))
+plot(t2, Mall(:,round(position4/h)))
 hold on
-plot(t2, Hall(:,position4/h))
+plot(t2, Hall(:,round(position4/h)))
 legend(sprintf('N at x = %g cm', position4), sprintf('M at x = %g cm', position4), sprintf('H at x = %g cm', position4))
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
