@@ -73,7 +73,7 @@ g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); % (g_Na is in 1/(
 
 
 % adding sodium conductance (stimulus)
-S = 1000000; %0.01; % (in 1/(ohm*cm^2))
+S = 50; %0.01; % (in 1/(ohm*cm^2))
 T0 = 0; % start time of when stimulus is added (in ms)
 T1 = 1; % end time of when stimulus is added (in ms)
 
@@ -205,14 +205,14 @@ end
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
 position1 = 0.0001; % in cm 
-position2 = 0.0025; % in cm
-position3 = 0.0050; % in cm
-position4 = 0.0101; % in cm
-position5 = 0.0103; % in cm 
-position6 = 0.0201; % in cm
-position7 = 0.0203; % in cm
-position8 = 0.0300; % in cm
-position9 = 0.0500; % in cm 
+position2 = 0.0050; % in cm
+position3 = 0.0100; % in cm
+position4 = 0.0150; % in cm
+position5 = 0.0200; % in cm 
+position6 = 0.0250; % in cm
+position7 = 0.0350; % in cm
+position8 = 0.0450; % in cm
+position9 = 0.0550; % in cm 
 position10 = 0.0600; % in cm
 
 % Times to observe the voltage along the axon
