@@ -10,7 +10,7 @@ c_m_nodal = 0.002; % membrane capacitance (ms / (ohm*cm^2))
 c_m_internodal = 0.001; % (ms / (ohm*cm^2))
 r_l = 70; % specific intracellular resistivity (or axoplasmic resistivity) (ohms * cm)
 radius_nodal = 0.000165; % (cm)
-radius_internodal = 0.0005; % (cm)
+radius_internodal = 0.0003; % (cm)
 h = 0.0001; % space step (this)
 total_time = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
@@ -73,7 +73,7 @@ g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); % (g_Na is in 1/(
 
 
 % adding sodium conductance (stimulus)
-S = 1000000000; %0.01; % (in 1/(ohm*cm^2))
+S = 10000000000000000; %0.01; % (in 1/(ohm*cm^2))
 T0 = 0; % start time of when stimulus is added (in ms)
 T1 = 1; % end time of when stimulus is added (in ms)
 
@@ -205,21 +205,21 @@ end
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
 position1 = 0.0001; % in cm 
-position2 = 0.0050; % in cm
-position3 = 0.0100; % in cm
-position4 = 0.0150; % in cm
-position5 = 0.0200; % in cm 
-position6 = 0.0250; % in cm
-position7 = 0.0350; % in cm
+position2 = 0.0100; % in cm
+position3 = 0.0200; % in cm
+position4 = 0.0300; % in cm
+position5 = 0.0400; % in cm 
+position6 = 0.0500; % in cm
+position7 = 0.0600; % in cm
 
 % Times to observe the voltage along the axon
-time1 = 1; % in ms
-time2 = 5; % in ms
-time3 = 5.5; % in ms
-time4 = 6; % in ms
-time5 = 6.2; % in ms
-time6 = 6.5; % in ms
-time7 = 7; % in ms
+time1 = 0.5; % in ms
+time2 = 1.1; % in ms
+time3 = 1.5; % in ms
+time4 = 2; % in ms
+time5 = 4; % in ms
+time6 = 6; % in ms
+time7 = 9; % in ms
 
 d_in_um = round(d*10000); % using this value to display plots in um instead of cm
 
@@ -246,7 +246,7 @@ figure(2)
 t2 = linspace(0, total_time, n); % FULL MATRIX
 % t2 = linspace(0, total_time, n*k*2); % MATRIX AT EVERY 50th iteration
 % t2 = linspace(0, total_time, n*k); % MATRIX AT EVERY 100th iteration
-plot(t2, Uall(:,round(position1/h)), 'something')
+plot(t2, Uall(:,round(position1/h)))
 hold on
 plot(t2, Uall(:,round(position2/h)))
 hold on

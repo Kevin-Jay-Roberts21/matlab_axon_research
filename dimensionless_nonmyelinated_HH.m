@@ -10,7 +10,7 @@ r_l = 30; % specific intracellular resistivity (ohms * cm)
 a = 0.0025; % axon radius (cm)
 d = 5; % axon length (cm)
 h = 0.01; % space step (MAY CHANGE LATER)
-total_time = 100; % we only ever want to run up to 35 ms (where we find equilibrium)
+total_time = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_k = 0.036; % (1/(ohm*cm^2))
 g_Na = 0.12; % (1/(ohm*cm^2))
@@ -50,18 +50,30 @@ beta_h_tilde = @(V) t_c*beta_h(V*V_c);
 
 
 % adding sodium conductance (stimulus)
-S = 0; % (in 1/(ohm*cm^2))
+
+% recall that we are in terms of tau and chi now, namely, if I had the time
+% interval as T0-T1 before, now it should be: T0_tau = T0/t_c -
+% T1_tau = T1/t_c AND for the space interval if it was P0-P1, now it should
+% be P0_chi = P0/x_c - P1_chi = P1/x_c.
+S = 0.9; % (in 1/(ohm*cm^2))
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
 P0 = 1; % position of adding the stimulus (in cm)
 P1 = 1.1;
+
+T0_tau = T0/t_c;
+T1_tau = T1/t_c;
+P0_chi = P0/x_c; 
+P1_chi = P1/x_c;
+
+
 
 
 % INITIAL CONDITIONS
 N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
 M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
 H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
-V_initial = -64.9997; % (mV) Voltage (eq: -64.9997)
+V_initial = -2.5999; % (mV) Voltage (eq: -64.9997) new equilibrium is: -2.59999 
 
 m = d/h; % number of columns of the matrices (length of axon divided by space step)
 
@@ -110,7 +122,9 @@ for j = 1:(n-1)
         %     a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*(g_Na_tilde*M(1, i)^3*H(1, i)+ S) + k*g_L_tilde;
         %     a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*(g_Na_tilde*M(1, i)^3*H(1, i) + S)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
         % end
+        
 
+        % HOW TO ADD THE STIMULUS TO THE DIMENSIONLESS PARAMETER??
         % adding stimulus in specific space AND time interval:
         if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
             a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*(g_Na_tilde*M(1, i)^3*H(1, i)+ S) + k*g_L_tilde;
