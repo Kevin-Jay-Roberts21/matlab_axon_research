@@ -185,10 +185,6 @@ position4 = 2; % in cm
 position5 = 2.5; % in cm
 position6 = 3; % in cm
 position7 = 3.5; % in cm
-position8 = 4; % in cm
-position9 = 4.5; % in cm
-position10 = 5; % in cm
-
 
 % Times to observe the voltage along the axon
 time1 = 5; % in ms
@@ -198,10 +194,6 @@ time4 = 10; % in ms
 time5 = 10.5; % in ms
 time6 = 10.8; % in ms
 time7 = 11; % in ms
-time8 = 11.5; % in ms
-time9 = 13; % in ms
-time10 = 15; % in ms
-
 
 figure(1)
 t1 = linspace(0, d, m);
@@ -218,13 +210,7 @@ hold on
 plot(t1, Uall(time6/k,:))
 hold on
 plot(t1, Uall(time7/k,:))
-hold on
-plot(t1, Uall(time8/k,:))
-hold on
-plot(t1, Uall(time9/k,:))
-hold on
-plot(t1, Uall(time10/k,:))
-legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4), sprintf('Voltage of the axon at time t = %g ms', time5), sprintf('Voltage of the axon at time t = %g ms', time6), sprintf('Voltage of the axon at time t = %g ms', time7), sprintf('Voltage of the axon at time t = %g ms', time8), sprintf('Voltage of the axon at time t = %g ms', time9), sprintf('Voltage of the axon at time t = %g ms', time10))
+legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4), sprintf('Voltage of the axon at time t = %g ms', time5), sprintf('Voltage of the axon at time t = %g ms', time6), sprintf('Voltage of the axon at time t = %g ms', time7))
 ylabel("Voltage in millivolts.")
 xlabel("Length of the axon in cm.")
 
@@ -245,13 +231,7 @@ hold on
 plot(t2, Uall(:,position6/h))
 hold on
 plot(t2, Uall(:,position7/h))
-hold on
-plot(t2, Uall(:,position8/h))
-hold on
-plot(t2, Uall(:,position9/h))
-hold on
-plot(t2, Uall(:,position10/h))
-legend(sprintf('Voltage at x = %g cm', position1),sprintf('Voltage at x = %g cm', position2),sprintf('Voltage at x = %g cm', position3),sprintf('Voltage at x = %g cm', position4),sprintf('Voltage at x = %g cm', position5),sprintf('Voltage at x = %g cm', position6),sprintf('Voltage at x = %g cm', position7),sprintf('Voltage at x = %g cm', position8),sprintf('Voltage at x = %g cm', position9),sprintf('Voltage at x = %g cm', position10))
+legend(sprintf('Voltage at x = %g cm', position1),sprintf('Voltage at x = %g cm', position2),sprintf('Voltage at x = %g cm', position3),sprintf('Voltage at x = %g cm', position4),sprintf('Voltage at x = %g cm', position5),sprintf('Voltage at x = %g cm', position6),sprintf('Voltage at x = %g cm', position7))
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 

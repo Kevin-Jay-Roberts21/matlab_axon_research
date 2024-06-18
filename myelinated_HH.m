@@ -10,7 +10,7 @@ c_m_nodal = 0.002; % membrane capacitance (ms / (ohm*cm^2))
 c_m_internodal = 0.001; % (ms / (ohm*cm^2))
 r_l = 70; % specific intracellular resistivity (or axoplasmic resistivity) (ohms * cm)
 radius_nodal = 0.000165; % (cm)
-radius_internodal = 0.0003; % (cm)
+radius_internodal = 0.0005; % (cm)
 h = 0.0001; % space step (this)
 total_time = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
@@ -73,9 +73,9 @@ g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); % (g_Na is in 1/(
 
 
 % adding sodium conductance (stimulus)
-S = 10; %0.01; % (in 1/(ohm*cm^2))
-T0 = 5; % start time of when stimulus is added (in ms)
-T1 = 6; % end time of when stimulus is added (in ms)
+S = 1000000000; %0.01; % (in 1/(ohm*cm^2))
+T0 = 0; % start time of when stimulus is added (in ms)
+T1 = 1; % end time of when stimulus is added (in ms)
 
 % NOTE: the stimulus MUST be added in a nodal region from (0um to 1um is fine)
 P0 = 0; % position of adding the stimulus (in cm)
@@ -211,9 +211,6 @@ position4 = 0.0150; % in cm
 position5 = 0.0200; % in cm 
 position6 = 0.0250; % in cm
 position7 = 0.0350; % in cm
-position8 = 0.0450; % in cm
-position9 = 0.0550; % in cm 
-position10 = 0.0600; % in cm
 
 % Times to observe the voltage along the axon
 time1 = 1; % in ms
@@ -223,10 +220,6 @@ time4 = 6; % in ms
 time5 = 6.2; % in ms
 time6 = 6.5; % in ms
 time7 = 7; % in ms
-time8 = 8; % in ms
-time9 = 9; % in ms
-time10 = 10; % in ms
-
 
 d_in_um = round(d*10000); % using this value to display plots in um instead of cm
 
@@ -245,13 +238,7 @@ hold on
 plot(t1, Uall(time6/k,:))
 hold on
 plot(t1, Uall(time7/k,:))
-hold on
-plot(t1, Uall(time8/k,:))
-hold on
-plot(t1, Uall(time9/k,:))
-hold on
-plot(t1, Uall(time10/k,:))
-legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4), sprintf('Voltage of the axon at time t = %g ms', time5), sprintf('Voltage of the axon at time t = %g ms', time6), sprintf('Voltage of the axon at time t = %g ms', time7), sprintf('Voltage of the axon at time t = %g ms', time8), sprintf('Voltage of the axon at time t = %g ms', time9), sprintf('Voltage of the axon at time t = %g ms', time10))
+legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4), sprintf('Voltage of the axon at time t = %g ms', time5), sprintf('Voltage of the axon at time t = %g ms', time6), sprintf('Voltage of the axon at time t = %g ms', time7))
 ylabel("Voltage in millivolts.")
 xlabel("Length of the axon in um.")
 
@@ -259,7 +246,7 @@ figure(2)
 t2 = linspace(0, total_time, n); % FULL MATRIX
 % t2 = linspace(0, total_time, n*k*2); % MATRIX AT EVERY 50th iteration
 % t2 = linspace(0, total_time, n*k); % MATRIX AT EVERY 100th iteration
-plot(t2, Uall(:,round(position1/h)))
+plot(t2, Uall(:,round(position1/h)), 'something')
 hold on
 plot(t2, Uall(:,round(position2/h)))
 hold on
@@ -272,13 +259,7 @@ hold on
 plot(t2, Uall(:,round(position6/h)))
 hold on
 plot(t2, Uall(:,round(position7/h)))
-hold on
-plot(t2, Uall(:,round(position8/h)))
-hold on
-plot(t2, Uall(:,round(position9/h)))
-hold on
-plot(t2, Uall(:,round(position10/h)))
-legend(sprintf('Voltage at x = %g um', position1*10000),sprintf('Voltage at x = %g um', position2*10000),sprintf('Voltage at x = %g um', position3*10000),sprintf('Voltage at x = %g um', position4*10000),sprintf('Voltage at x = %g um', position5*10000),sprintf('Voltage at x = %g um', position6*10000),sprintf('Voltage at x = %g um', position7*10000),sprintf('Voltage at x = %g um', position8*10000),sprintf('Voltage at x = %g um', position9*10000),sprintf('Voltage at x = %g um', position10*10000))
+legend(sprintf('Voltage at x = %g um', position1*10000),sprintf('Voltage at x = %g um', position2*10000),sprintf('Voltage at x = %g um', position3*10000),sprintf('Voltage at x = %g um', position4*10000),sprintf('Voltage at x = %g um', position5*10000),sprintf('Voltage at x = %g um', position6*10000),sprintf('Voltage at x = %g um', position7*10000))
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
