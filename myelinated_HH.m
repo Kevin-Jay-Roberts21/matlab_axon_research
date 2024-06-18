@@ -73,9 +73,9 @@ g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); % (g_Na is in 1/(
 
 
 % adding sodium conductance (stimulus)
-S = 50; %0.01; % (in 1/(ohm*cm^2))
-T0 = 0; % start time of when stimulus is added (in ms)
-T1 = 1; % end time of when stimulus is added (in ms)
+S = 10; %0.01; % (in 1/(ohm*cm^2))
+T0 = 5; % start time of when stimulus is added (in ms)
+T1 = 6; % end time of when stimulus is added (in ms)
 
 % NOTE: the stimulus MUST be added in a nodal region from (0um to 1um is fine)
 P0 = 0; % position of adding the stimulus (in cm)
@@ -216,16 +216,16 @@ position9 = 0.0550; % in cm
 position10 = 0.0600; % in cm
 
 % Times to observe the voltage along the axon
-time1 = 0.05; % in ms
-time2 = 0.1; % in ms
-time3 = 0.5; % in ms
-time4 = 1; % in ms
-time5 = 1.5; % in ms
-time6 = 2.5; % in ms
-time7 = 3; % in ms
-time8 = 4; % in ms
-time9 = 5; % in ms
-time10 = 6; % in ms
+time1 = 1; % in ms
+time2 = 5; % in ms
+time3 = 5.5; % in ms
+time4 = 6; % in ms
+time5 = 6.2; % in ms
+time6 = 6.5; % in ms
+time7 = 7; % in ms
+time8 = 8; % in ms
+time9 = 9; % in ms
+time10 = 10; % in ms
 
 
 d_in_um = round(d*10000); % using this value to display plots in um instead of cm
