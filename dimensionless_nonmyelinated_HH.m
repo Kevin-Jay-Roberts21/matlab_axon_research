@@ -9,8 +9,8 @@ c_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
 r_l = 30; % specific intracellular resistivity (ohms * cm)
 a = 0.0025; % axon radius (cm)
 d = 5; % axon length (cm)
-h = 0.01; % space step (MAY CHANGE LATER)
-total_time = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
+h = 0.002; % space step (MAY CHANGE LATER)
+T = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_k = 0.036; % (1/(ohm*cm^2))
 g_Na = 0.12; % (1/(ohm*cm^2))
@@ -46,8 +46,8 @@ alpha_m_tilde = @(V) t_c*alpha_m(V*V_c);
 beta_m_tilde = @(V) t_c*beta_m(V*V_c);
 alpha_h_tilde = @(V) t_c*alpha_h(V*V_c);
 beta_h_tilde = @(V) t_c*beta_h(V*V_c);
-
-
+T_tilde = T/t_c; % since t_c = 1, nothing changes, but this is still good to do if t_c is not 1.
+d_tilde = d/x_c;
 
 % adding sodium conductance (stimulus)
 
@@ -55,17 +55,17 @@ beta_h_tilde = @(V) t_c*beta_h(V*V_c);
 % interval as T0-T1 before, now it should be: T0_tau = T0/t_c -
 % T1_tau = T1/t_c AND for the space interval if it was P0-P1, now it should
 % be P0_chi = P0/x_c - P1_chi = P1/x_c.
-S = 0.9; % (in 1/(ohm*cm^2))
+S = 0.003947; % (in 1/(ohm*cm^2))
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
 P0 = 1; % position of adding the stimulus (in cm)
 P1 = 1.1;
 
-T0_tau = T0/t_c;
-T1_tau = T1/t_c;
-P0_chi = P0/x_c; 
-P1_chi = P1/x_c;
-
+T0_tilde = T0/t_c;
+T1_tilde = T1/t_c;
+P0_tilde = P0/x_c; 
+P1_tilde = P1/x_c;
+S_tilde = t_c*S/c_m;
 
 
 
@@ -75,7 +75,7 @@ M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
 H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
 V_initial = -2.5999; % (mV) Voltage (eq: -64.9997) new equilibrium is: -2.59999 
 
-m = d/h; % number of columns of the matrices (length of axon divided by space step)
+m = d_tilde/h; % number of columns of the matrices (length of axon divided by space step)
 
 U = zeros(1, m);
 N = zeros(1, m);
@@ -96,7 +96,7 @@ Nall(1,:) = N;
 Mall(1,:) = M; 
 Hall(1,:) = H;
 
-n = total_time/k; % total time is k*n
+n = T_tilde/k; % total time is k*n
 
 % j is the time step
 for j = 1:(n-1)
@@ -112,23 +112,21 @@ for j = 1:(n-1)
         a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*g_Na_tilde*M(1, i)^3*H(1, i)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
 
         % % adding the stimulus during a certain time interval: (T0 - T1)
-        % if j*k >= T0 && j*k <= T1
-        %     a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*(g_Na_tilde*M(1, i)^3*H(1, i)+ S) + k*g_L_tilde;
-        %     a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*(g_Na_tilde*M(1, i)^3*H(1, i) + S)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
+        % if j*k >= T0_tilde && j*k <= T1_tilde
+        %     a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*(g_Na_tilde*M(1, i)^3*H(1, i)+ S_tilde) + k*g_L_tilde;
+        %     a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*(g_Na_tilde*M(1, i)^3*H(1, i) + S_tilde)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
         % end
         % 
         % adding the stimulus at a spacial interval: (P0 - P1)
-        % if i*h >= P0 && i*h <= P1 
-        %     a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*(g_Na_tilde*M(1, i)^3*H(1, i)+ S) + k*g_L_tilde;
-        %     a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*(g_Na_tilde*M(1, i)^3*H(1, i) + S)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
+        % if i*h >= P0_tilde && i*h <= P1_tilde 
+        %     a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*(g_Na_tilde*M(1, i)^3*H(1, i)+ S_tilde) + k*g_L_tilde;
+        %     a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*(g_Na_tilde*M(1, i)^3*H(1, i) + S_tilde)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
         % end
         
-
-        % HOW TO ADD THE STIMULUS TO THE DIMENSIONLESS PARAMETER??
         % adding stimulus in specific space AND time interval:
-        if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
-            a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*(g_Na_tilde*M(1, i)^3*H(1, i)+ S) + k*g_L_tilde;
-            a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*(g_Na_tilde*M(1, i)^3*H(1, i) + S)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
+        if (j*k >= T0_tilde && j*k <= T1_tilde) && (i*h >= P0_tilde && i*h <= P1_tilde)
+            a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*(g_Na_tilde*M(1, i)^3*H(1, i)+ S_tilde) + k*g_L_tilde;
+            a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*(g_Na_tilde*M(1, i)^3*H(1, i) + S_tilde)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
         end
 
         % add if statements here for the first row of A and the last row of
@@ -191,14 +189,13 @@ for j = 1:(n-1)
 end
 
 % now pick a position to plot all of the voltages
-% VOLTAGE IS THE SAME AT ANY POSITION
-position1 = 0.5; % in cm
-position2 = 1; % in cm
-position3 = 1.5; % in cm
-position4 = 2; % in cm
-position5 = 2.5; % in cm
-position6 = 3; % in cm
-position7 = 3.5; % in cm
+position1 = 0.1; % in cm
+position2 = 0.2; % in cm
+position3 = 0.3; % in cm
+position4 = 0.4; % in cm
+position5 = 0.5; % in cm
+position6 = 0.6; % in cm
+position7 = 0.7; % in cm
 
 % Times to observe the voltage along the axon
 time1 = 5; % in ms
@@ -210,7 +207,7 @@ time6 = 10.8; % in ms
 time7 = 11; % in ms
 
 figure(1)
-t1 = linspace(0, d, m);
+t1 = linspace(0, d_tilde, m);
 plot(t1, Uall(time1/k,:))
 hold on
 plot(t1, Uall(time2/k,:))
@@ -224,40 +221,64 @@ hold on
 plot(t1, Uall(time6/k,:))
 hold on
 plot(t1, Uall(time7/k,:))
-legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4), sprintf('Voltage of the axon at time t = %g ms', time5), sprintf('Voltage of the axon at time t = %g ms', time6), sprintf('Voltage of the axon at time t = %g ms', time7))
-ylabel("Voltage in millivolts.")
-xlabel("Length of the axon in cm.")
+legendStrings1 = {
+    sprintf('$\\tilde{V_m}$ at $\\tilde{t} = %g$', time1), ...
+    sprintf('$\\tilde{V_m}$ at $\\tilde{t} = %g$', time2), ...
+    sprintf('$\\tilde{V_m}$ at $\\tilde{t} = %g$', time3), ...
+    sprintf('$\\tilde{V_m}$ at $\\tilde{t} = %g$', time4), ...
+    sprintf('$\\tilde{V_m}$ at $\\tilde{t} = %g$', time5), ...
+    sprintf('$\\tilde{V_m}$ at $\\tilde{t} = %g$', time6), ...
+    sprintf('$\\tilde{V_m}$ at $\\tilde{t} = %g$', time7)};
+
+legend(legendStrings1, 'Interpreter','latex')
+ylabel("Dimensionless Voltage $\tilde{V_m}$.", 'Interpreter','latex')
+xlabel("Dimensionless length $\tilde{d}$ of the axon.", 'Interpreter','latex')
 
 figure(2)
-t2 = linspace(0, total_time, n); % FULL MATRIX
-% t2 = linspace(0, total_time, n*k*2); % MATRIX AT EVERY 50th iteration
-% t2 = linspace(0, total_time, n*k); % MATRIX AT EVERY 100th iteration
-plot(t2, Uall(:,position1/h))
+t2 = linspace(0, T_tilde, n); % FULL MATRIX
+% t2 = linspace(0, T_tilde, n*k*2); % MATRIX AT EVERY 50th iteration
+% t2 = linspace(0, T_tilde, n*k); % MATRIX AT EVERY 100th iteration
+plot(t2, Uall(:,round(position1/h)))
 hold on
-plot(t2, Uall(:,position2/h))
+plot(t2, Uall(:,round(position2/h)))
 hold on
-plot(t2, Uall(:,position3/h))
+plot(t2, Uall(:,round(position3/h)))
 hold on
-plot(t2, Uall(:,position4/h))
+plot(t2, Uall(:,round(position4/h)))
 hold on
-plot(t2, Uall(:,position5/h))
+plot(t2, Uall(:,round(position5/h)))
 hold on
-plot(t2, Uall(:,position6/h))
+plot(t2, Uall(:,round(position6/h)))
 hold on
-plot(t2, Uall(:,position7/h))
-legend(sprintf('Voltage at x = %g cm', position1),sprintf('Voltage at x = %g cm', position2),sprintf('Voltage at x = %g cm', position3),sprintf('Voltage at x = %g cm', position4),sprintf('Voltage at x = %g cm', position5),sprintf('Voltage at x = %g cm', position6),sprintf('Voltage at x = %g cm', position7))
-ylabel("Voltage in millivolts.")
-xlabel("Time in milliseconds.")
+plot(t2, Uall(:,round(position7/h)))
+legendStrings2 = {
+        sprintf('$\\tilde{V_m}$ at $\\tilde{x} = %g$', position1), ...
+        sprintf('$\\tilde{V_m}$ at $\\tilde{x} = %g$', position2), ...
+        sprintf('$\\tilde{V_m}$ at $\\tilde{x} = %g$', position3), ...
+        sprintf('$\\tilde{V_m}$ at $\\tilde{x} = %g$', position4), ...
+        sprintf('$\\tilde{V_m}$ at $\\tilde{x} = %g$', position5), ...
+        sprintf('$\\tilde{V_m}$ at $\\tilde{x} = %g$', position6), ...
+        sprintf('$\\tilde{V_m}$ at $\\tilde{x} = %g$', position7)};
+
+legend(legendStrings2, 'Interpreter', 'latex')
+ylabel("Dimensionless Voltage $\tilde{V_m}$.", 'Interpreter','latex')
+xlabel("Dimensionless Time $\tilde{T}$.", 'Interpreter','latex')
 
 figure(3)
-plot(t2, Nall(:,position4/h))
+plot(t2, Nall(:,round(position4/h)))
 hold on
-plot(t2, Mall(:,position4/h))
+plot(t2, Mall(:,round(position4/h)))
 hold on
-plot(t2, Hall(:,position4/h))
-legend(sprintf('N at x = %g cm', position4), sprintf('M at x = %g cm', position4), sprintf('H at x = %g cm', position4))
+plot(t2, Hall(:,round(position4/h)))
+legendStrings3 = {
+    sprintf('N at $\\tilde{x} = %g$', position4), ...
+    sprintf('M at $\\tilde{x} = %g$', position4), ...
+    sprintf('H at $\\tilde{x} = %g$', position4)};
+
+
+legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
-xlabel("Time in milliseconds.")
+xlabel("Dimensionless Time $\tilde{T}$.", 'Interpreter','latex')
 
 
 
