@@ -5,25 +5,23 @@ clc
 % SPECIAL NOTES: to get results in terms of micrometers, just change the 
 % length of the axon to 0.1 for example and shrink the space step.
 
-% We create the distance d, or length, of the axon here using nodal structure, 
-% but we do not include any functions or conditions here to change the radius 
-% or conductances of the axon because we are only using this file to compare
-% with the results from the myelinated_HH.m file.
-
-
 % defining all of the initial and constant variables
-c_m = 0.002; % membrane capacitance (ms / (ohm*cm^2))
-r_l = 70; % specific intracellular resistivity (ohms * cm)
-a = 0.000165; % axon radius (cm)
-h = 0.0001; % space step (MAY CHANGE LATER)
-total_time = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
+c_m_nodal = 0.001; % membrane capacitance (ms / (ohm*cm^2))
+c_m_internodal = 0.002; % (ms / (ohm*cm^2))
+r_l = 30; % specific intracellular resistivity (or axoplasmic resistivity) (ohms * cm)
+radius_nodal = 0.0025; % (cm)
+radius_internodal = 0.005; % (cm)
+h = 0.01; % space step (this)
+T = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
-g_k = 0.08; % (1/(ohm*cm^2))
-g_Na = 3; % (1/(ohm*cm^2))
-g_L = 0.08; % (1/(ohm*cm^2))
-E_k = -84; % (mV)
+g_L = 0.0003; % (1/(ohm*cm^2))
+g_k_nodal = 0.036; % (1/(ohm*cm^2))
+g_k_internodal = 0; % (1/(ohm*cm^2))
+g_Na_nodal = 0.12; % (1/(ohm*cm^2))
+g_Na_internodal = 0; % (1/(ohm*cm^2))
+E_k = -77; % (mV)
 E_Na = 50; % (mV)
-E_L = -83.38; % (mV)
+E_L = -54.4; % (mV)
 
 % The following are functions of voltage
 alpha_n = @(V) 0.01*(V + 55)/(1 - exp(-(V + 55)/10));
@@ -35,26 +33,59 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 7;
+num_of_nodes = 6;
 % the first number is in um, the *10^(-4) converts it to cm
-nodal_length = 5*10^(-4); % (in cm)
-myelinated_length = 95*10^(-4); % (in cm)
+nodal_length = 0.01; % (in cm)
+myelinated_length = 0.99; % (in cm)
 d = (nodal_length * num_of_nodes) + (myelinated_length * (num_of_nodes - 1)); % axon length (in cm)
 
+
+% creating a list of nodel regions [[start_pos1, end_pos1], [start_pos2, end_pos2], ...]
+nodal_regions = [];
+for i = 0:(num_of_nodes-1)
+    nodal_regions(:,i+1) = [(i*nodal_length)+(i*myelinated_length), (i*nodal_length)+(i*myelinated_length)+nodal_length];
+end
+
+% (the following conductances and radius are fcns of space, to mimmick myelin)
+% starting each of the functions with a condition. This condition being the
+% values of each if the position is in the first nodal region
+a = @(x) (x >= nodal_regions(1, 1) && x <= nodal_regions(2, 1));
+c_m = @(x) (x >= nodal_regions(1, 1) && x <= nodal_regions(2, 1));
+g_Na = @(x) (x >= nodal_regions(1, 1) && x <= nodal_regions(2, 1));
+g_k = @(x) (x >= nodal_regions(1, 1) && x <= nodal_regions(2, 1));
+
+% creating a for loop that will turn the a, g_k and g_Na into piecewise
+% functions, having different values in nodal regions vs myelinated regions 
+for i = 2:num_of_nodes
+    a = @(x) a(x) || (x >= nodal_regions(1, i) && x <= nodal_regions(2, i));
+    c_m = @(x) c_m(x) || (x >= nodal_regions(1, i) && x <= nodal_regions(2, i));
+    g_Na = @(x) g_Na(x) || (x >= nodal_regions(1, i) && x <= nodal_regions(2, i));
+    g_k = @(x) g_k(x) || (x >= nodal_regions(1, i) && x <= nodal_regions(2, i));
+end
+
+% finally, we make a, g_Na, and g_k certain values if the conditions above
+% are met or not the first element of the summation is if x is in a nodal
+% region, the second element is if the x is in a myelinated region.
+a = @(x) radius_nodal*a(x) + radius_internodal*(a(x)==0); % axon radius (where both values (0.0025 and 0.005) are in cm)
+c_m = @(x) c_m_nodal*c_m(x) + c_m_internodal*(c_m(x)==0);
+g_k = @(x) g_k_nodal*g_k(x) + g_k_internodal*(g_k(x)==0); % (g_k is in 1/(ohm*cm^2))
+g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); % (g_Na is in 1/(ohm*cm^2))
+
+
 % adding sodium conductance (stimulus)
-S = 1.148949; % (in 1/(ohm*cm^2))
-T0 = 0; % start time of when stimulus is added (in ms)
-T1 = 1; % end time of when stimulus is added (in ms)
+S = 10; %0.022963; % (in 1/(ohm*cm^2))
+T0 = 5; % start time of when stimulus is added (in ms)
+T1 = 5.1; % end time of when stimulus is added (in ms)
 
 % NOTE: the stimulus MUST be added in a nodal region from (0um to 1um is fine)
-P0 = 0; % position of adding the stimulus (in cm)
-P1 = 0.0002; % ending position of adding the stimulus (in cm)
+P0 = 1; % position of adding the stimulus (in cm)
+P1 = 1.01; % ending position of adding the stimulus (in cm or *10^4 in um)
 
 % INITIAL CONDITIONS
-N_0 = 0.1009; % probability that potassium gate is open (eq: 0.1009)
-M_0 = 0.0051; % probability that Sodium activation gate is open (eq: 0.0051)
-H_0 = 0.9571; % probability that Sodium inactivation gate is open (eq: 0.9571)
-V_initial = -83.3794; % (mV) Voltage (eq: -83.3794)
+N_0 = 0.4749; % probability that potassium gate is open (eq: 0.3177)
+M_0 = 0.1575; % probability that Sodium activation gate is open (eq: 0.0529)
+H_0 = 0.2636; % probability that Sodium inactivation gate is open (eq: 0.5961)
+V_initial = -55.4388; % (mV) Voltage (eq: -64.9997)
 
 % should be CAREFUL about rounding here. For some reason matlab thinks that
 % something like 3.678e3 is not considered an interger sometimes
@@ -79,7 +110,7 @@ Nall(1,:) = N;
 Mall(1,:) = M; 
 Hall(1,:) = H;
 
-n = total_time/k; % total time is k*n
+n = T/k; % total time is k*n
 
 % j is the time step
 for j = 1:(n-1)
@@ -88,28 +119,28 @@ for j = 1:(n-1)
     for i = 1:m
 
         % defining coefficients
-        a1 = -a/(2*r_l*h^2);
-        a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + g_Na*M(1, i)^3*H(1, i) + g_L;
-        a3 = -a/(2*r_l*h^2); 
-        a4 = c_m/k; 
-        a5 = g_k*N(1, i)^4*E_k + g_Na*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
+        a1 = -a(i*h)/(2*r_l*h^2);
+        a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + g_Na(i*h)*M(1, i)^3*H(1, i) + g_L;
+        a3 = -a(i*h)/(2*r_l*h^2); 
+        a4 = c_m(i*h)/k; 
+        a5 = g_k(i*h)*N(1, i)^4*E_k + g_Na(i*h)*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
 
         % % adding the stimulus during a certain time interval: (T0 - T1)
         % if j*k >= T0 && j*k <= T1
-        %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-        %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        %     a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + (g_Na(i*h)*M(1, i)^3*H(1, i) + S) + g_L;
+        %     a5 = g_k(i*h)*N(1, i)^4*E_k + (g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         % end
         % 
         % % adding the stimulus at a spacial interval: (P0 - P1)
         % if i*h >= P0 && i*h <= P1 
-        %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-        %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        %     a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + (g_Na(i*h)*M(1, i)^3*H(1, i) + S) + g_L;
+        %     a5 = g_k(i*h)*N(1, i)^4*E_k + (g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         % end
 
         % % adding stimulus in specific space AND time interval:
         if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
-            a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-            a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+            a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + (g_Na(i*h)*M(1, i)^3*H(1, i) + S) + g_L;
+            a5 = g_k(i*h)*N(1, i)^4*E_k + (g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         end
 
         % add if statements here for the first row of A and the last row of
@@ -171,52 +202,60 @@ for j = 1:(n-1)
 
 end
 
+max(Uall(:))
+
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
-position1 = 0.0001; % in cm 
-position2 = 0.0050; % in cm
-position3 = 0.0100; % in cm
-position4 = 0.0150; % in cm
-position5 = 0.0200; % in cm 
-position6 = 0.0250; % in cm
-position7 = 0.0350; % in cm
+position1 = 0.5; % in cm 
+position2 = 1; % in cm
+position3 = 1.01; % in cm
+position4 = 1.05; % in cm
+position5 = 1.1; % in cm 
+position6 = 1.5; % in cm
+position7 = 2; % in cm
 
 
 % Times to observe the voltage along the axon
-time1 = 0.05; % in ms
-time2 = 0.1; % in ms
-time3 = 0.5; % in ms
-time4 = 1; % in ms
-time5 = 1.5; % in ms
-time6 = 2.5; % in ms
-time7 = 3; % in ms
+time1 = 1; % in ms
+time2 = 5; % in ms
+time3 = 5.1; % in ms
+time4 = 5.5; % in ms
+time5 = 6; % in ms
+time6 = 7; % in ms
+time7 = 10; % in ms
 
-
-d_in_um = round(d*10000); % using this value to display plots in um instead of cm
 
 figure(1)
-t1 = linspace(0, d_in_um, m);
-plot(t1, Uall(time1/k,:))
+t1 = linspace(0, d, m);
+plot(t1, Uall(round(time1/k),:))
 hold on
-plot(t1, Uall(time2/k,:))
+plot(t1, Uall(round(time2/k),:))
 hold on
-plot(t1, Uall(time3/k,:))
+plot(t1, Uall(round(time3/k),:))
 hold on
-plot(t1, Uall(time4/k,:))
+plot(t1, Uall(round(time4/k),:))
 hold on
-plot(t1, Uall(time5/k,:))
+plot(t1, Uall(round(time5/k),:))
 hold on
-plot(t1, Uall(time6/k,:))
+plot(t1, Uall(round(time6/k),:))
 hold on
-plot(t1, Uall(time7/k,:))
-legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4), sprintf('Voltage of the axon at time t = %g ms', time5), sprintf('Voltage of the axon at time t = %g ms', time6), sprintf('Voltage of the axon at time t = %g ms', time7))
+plot(t1, Uall(round(time7/k),:))
+legendStrings1 = {
+    sprintf('Voltage of the axon at time t = %g ms', time1), ...
+    sprintf('Voltage of the axon at time t = %g ms', time2), ...
+    sprintf('Voltage of the axon at time t = %g ms', time3), ...
+    sprintf('Voltage of the axon at time t = %g ms', time4), ...
+    sprintf('Voltage of the axon at time t = %g ms', time5), ...
+    sprintf('Voltage of the axon at time t = %g ms', time6), ...
+    sprintf('Voltage of the axon at time t = %g ms', time7)};
+legend(legendStrings1, 'Interpreter','latex')
 ylabel("Voltage in millivolts.")
 xlabel("Length of the axon in um.")
 
 figure(2)
-t2 = linspace(0, total_time, n); % FULL MATRIX
-% t2 = linspace(0, total_time, n*k*2); % MATRIX AT EVERY 50th iteration
-% t2 = linspace(0, total_time, n*k); % MATRIX AT EVERY 100th iteration
+t2 = linspace(0, T, n); % FULL MATRIX
+% t2 = linspace(0, T, n*k*2); % MATRIX AT EVERY 50th iteration
+% t2 = linspace(0, T, n*k); % MATRIX AT EVERY 100th iteration
 plot(t2, Uall(:,round(position1/h)))
 hold on
 plot(t2, Uall(:,round(position2/h)))
@@ -230,17 +269,29 @@ hold on
 plot(t2, Uall(:,round(position6/h)))
 hold on
 plot(t2, Uall(:,round(position7/h)))
-legend(sprintf('Voltage at x = %g um', position1*10000),sprintf('Voltage at x = %g um', position2*10000),sprintf('Voltage at x = %g um', position3*10000),sprintf('Voltage at x = %g um', position4*10000),sprintf('Voltage at x = %g um', position5*10000),sprintf('Voltage at x = %g um', position6*10000),sprintf('Voltage at x = %g um', position7*10000))
+legendStrings2 = {
+        sprintf('Voltage at x = %g cm', position1), ...
+        sprintf('Voltage at x = %g cm', position2), ...
+        sprintf('Voltage at x = %g cm', position3), ...
+        sprintf('Voltage at x = %g cm', position4), ...
+        sprintf('Voltage at x = %g cm', position5), ...
+        sprintf('Voltage at x = %g cm', position6), ...
+        sprintf('Voltage at x = %g cm', position7)};
+legend(legendStrings2, 'Interpreter', 'latex')
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
 figure(3)
-plot(t2, Nall(:,round(position4/h)))
+plot(t2, Nall(:,round(position1/h)))
 hold on
-plot(t2, Mall(:,round(position4/h)))
+plot(t2, Mall(:,round(position1/h)))
 hold on
-plot(t2, Hall(:,round(position4/h)))
-legend(sprintf('N at x = %g cm', position4), sprintf('M at x = %g cm', position4), sprintf('H at x = %g cm', position4))
+plot(t2, Hall(:,round(position1/h)))
+legendStrings3 = {
+    sprintf('N at x = %g cm', position3), ...
+    sprintf('M at x = %g cm', position3), ...
+    sprintf('H at x = %g cm', position3)};
+legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
