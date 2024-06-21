@@ -7,10 +7,10 @@ clc
 
 % defining all of the initial and constant variables
 c_m_nodal = 0.001; % membrane capacitance (ms / (ohm*cm^2))
-c_m_internodal = 0.002; % (ms / (ohm*cm^2))
+c_m_internodal = 0.001; % (ms / (ohm*cm^2))
 r_l = 30; % specific intracellular resistivity (or axoplasmic resistivity) (ohms * cm)
 radius_nodal = 0.0025; % (cm)
-radius_internodal = 0.005; % (cm)
+radius_internodal = 0.0025; % (cm)
 h = 0.01; % space step (this)
 T = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
@@ -73,7 +73,7 @@ g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); % (g_Na is in 1/(
 
 
 % adding sodium conductance (stimulus)
-S = 10; %0.022963; % (in 1/(ohm*cm^2))
+S = 10000; % (in 1/(ohm*cm^2))
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
 
@@ -207,47 +207,55 @@ max(Uall(:))
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
 position1 = 0.5; % in cm 
-position2 = 1; % in cm
-position3 = 1.01; % in cm
-position4 = 1.05; % in cm
-position5 = 1.1; % in cm 
-position6 = 1.5; % in cm
-position7 = 2; % in cm
+position2 = 1;
+position3 = 1.01; 
+position4 = 1.05; 
+position5 = 1.1; 
+position6 = 1.5; 
+position7 = 2; 
+position8 = 3;
+position9 = 4;
+position10 = 4.5;
 
+list_of_positions = [position1
+                     position2
+                     position3
+                     position4
+                     position5
+                     position6
+                     position7
+                     position8
+                     position9
+                     position10];
 
 % Times to observe the voltage along the axon
-time1 = 1; % in ms
-time2 = 5; % in ms
-time3 = 5.1; % in ms
-time4 = 5.5; % in ms
-time5 = 6; % in ms
-time6 = 7; % in ms
-time7 = 10; % in ms
+time1 = 5; % in ms
+time2 = 5.1; % in ms
+time3 = 6; % in ms
+time4 = 8; % in ms
+time5 = 12.7; % in ms
+time6 = 14; % in ms
+time7 = 16; % in ms
 
+list_of_times = [time1
+                 time2
+                 time3
+                 time4
+                 time5
+                 time6
+                 time7];
 
 figure(1)
 t1 = linspace(0, d, m);
+legendStrings1 = {};
 plot(t1, Uall(round(time1/k),:))
-hold on
-plot(t1, Uall(round(time2/k),:))
-hold on
-plot(t1, Uall(round(time3/k),:))
-hold on
-plot(t1, Uall(round(time4/k),:))
-hold on
-plot(t1, Uall(round(time5/k),:))
-hold on
-plot(t1, Uall(round(time6/k),:))
-hold on
-plot(t1, Uall(round(time7/k),:))
-legendStrings1 = {
-    sprintf('Voltage of the axon at time t = %g ms', time1), ...
-    sprintf('Voltage of the axon at time t = %g ms', time2), ...
-    sprintf('Voltage of the axon at time t = %g ms', time3), ...
-    sprintf('Voltage of the axon at time t = %g ms', time4), ...
-    sprintf('Voltage of the axon at time t = %g ms', time5), ...
-    sprintf('Voltage of the axon at time t = %g ms', time6), ...
-    sprintf('Voltage of the axon at time t = %g ms', time7)};
+for i = 2:length(list_of_times)
+    hold on
+    plot(t1, Uall(round(list_of_times(i)/k),:))
+end
+for i  = 1:length(list_of_times)
+    legendStrings1{end+1} = sprintf('Voltage of the axon at time t = %g ms', list_of_times(i));
+end
 legend(legendStrings1, 'Interpreter','latex')
 ylabel("Voltage in millivolts.")
 xlabel("Length of the axon in um.")
@@ -256,30 +264,22 @@ figure(2)
 t2 = linspace(0, T, n); % FULL MATRIX
 % t2 = linspace(0, T, n*k*2); % MATRIX AT EVERY 50th iteration
 % t2 = linspace(0, T, n*k); % MATRIX AT EVERY 100th iteration
+legendStrings2 = {};
 plot(t2, Uall(:,round(position1/h)))
-hold on
-plot(t2, Uall(:,round(position2/h)))
-hold on
-plot(t2, Uall(:,round(position3/h)))
-hold on
-plot(t2, Uall(:,round(position4/h)))
-hold on
-plot(t2, Uall(:,round(position5/h)))
-hold on
-plot(t2, Uall(:,round(position6/h)))
-hold on
-plot(t2, Uall(:,round(position7/h)))
-legendStrings2 = {
-        sprintf('Voltage at x = %g cm', position1), ...
-        sprintf('Voltage at x = %g cm', position2), ...
-        sprintf('Voltage at x = %g cm', position3), ...
-        sprintf('Voltage at x = %g cm', position4), ...
-        sprintf('Voltage at x = %g cm', position5), ...
-        sprintf('Voltage at x = %g cm', position6), ...
-        sprintf('Voltage at x = %g cm', position7)};
+for i = 2:length(list_of_positions)
+    hold on
+    plot(t2, Uall(:,round(list_of_positions(i)/h)))
+end
+for i = 1:length(list_of_positions)
+    legendStrings2{end+1} = sprintf('Voltage at x = %g cm', list_of_positions(i));
+end
 legend(legendStrings2, 'Interpreter', 'latex')
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
+
+[M1, I1] = max(Uall(:,round(position7/h)))
+[M2, I2] = min(Uall(:,round(position7/h)))
+
 
 figure(3)
 plot(t2, Nall(:,round(position1/h)))

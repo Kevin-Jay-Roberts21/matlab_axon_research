@@ -12,7 +12,7 @@ r_l = 70; % specific intracellular resistivity (or axoplasmic resistivity) (ohms
 radius_nodal = 0.000165; % (cm)
 radius_internodal = 0.0003; % (cm)
 h = 0.0001; % space step (this)
-total_time = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
+T = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.08; % (1/(ohm*cm^2))
 g_k_nodal = 0.08; % (1/(ohm*cm^2))
@@ -110,7 +110,7 @@ Nall(1,:) = N;
 Mall(1,:) = M; 
 Hall(1,:) = H;
 
-n = total_time/k; % total time is k*n
+n = T/k; % total time is k*n
 
 % j is the time step
 for j = 1:(n-1)
@@ -212,6 +212,14 @@ position5 = 0.0400; % in cm
 position6 = 0.0500; % in cm
 position7 = 0.0600; % in cm
 
+list_of_positions = [position1
+                     position2
+                     position3
+                     position4
+                     position5
+                     position6
+                     position7];
+
 % Times to observe the voltage along the axon
 time1 = 0.5; % in ms
 time2 = 1.1; % in ms
@@ -221,55 +229,63 @@ time5 = 4; % in ms
 time6 = 6; % in ms
 time7 = 9; % in ms
 
+list_of_times = [time1
+                 time2
+                 time3
+                 time4
+                 time5
+                 time6
+                 time7];
+
 d_in_um = round(d*10000); % using this value to display plots in um instead of cm
 
 figure(1)
 t1 = linspace(0, d_in_um, m);
-plot(t1, Uall(time1/k,:))
-hold on
-plot(t1, Uall(time2/k,:))
-hold on
-plot(t1, Uall(time3/k,:))
-hold on
-plot(t1, Uall(time4/k,:))
-hold on
-plot(t1, Uall(time5/k,:))
-hold on
-plot(t1, Uall(time6/k,:))
-hold on
-plot(t1, Uall(time7/k,:))
-legend(sprintf('Voltage of the axon at time t = %g ms', time1), sprintf('Voltage of the axon at time t = %g ms', time2), sprintf('Voltage of the axon at time t = %g ms', time3), sprintf('Voltage of the axon at time t = %g ms', time4), sprintf('Voltage of the axon at time t = %g ms', time5), sprintf('Voltage of the axon at time t = %g ms', time6), sprintf('Voltage of the axon at time t = %g ms', time7))
+legendStrings1 = {};
+plot(t1, Uall(round(time1/k),:))
+for i = 2:length(list_of_times)
+    hold on
+    plot(t1, Uall(round(list_of_times(i)/k),:))
+end
+for i  = 1:length(list_of_times)
+    legendStrings1{end+1} = sprintf('Voltage of the axon at time t = %g ms', list_of_times(i));
+end
+legend(legendStrings1, 'Interpreter','latex')
 ylabel("Voltage in millivolts.")
 xlabel("Length of the axon in um.")
 
 figure(2)
-t2 = linspace(0, total_time, n); % FULL MATRIX
-% t2 = linspace(0, total_time, n*k*2); % MATRIX AT EVERY 50th iteration
-% t2 = linspace(0, total_time, n*k); % MATRIX AT EVERY 100th iteration
+t2 = linspace(0, T, n); % FULL MATRIX
+% t2 = linspace(0, T, n*k*2); % MATRIX AT EVERY 50th iteration
+% t2 = linspace(0, T, n*k); % MATRIX AT EVERY 100th iteration
+legendStrings2 = {};
 plot(t2, Uall(:,round(position1/h)))
-hold on
-plot(t2, Uall(:,round(position2/h)))
-hold on
-plot(t2, Uall(:,round(position3/h)))
-hold on
-plot(t2, Uall(:,round(position4/h)))
-hold on
-plot(t2, Uall(:,round(position5/h)))
-hold on
-plot(t2, Uall(:,round(position6/h)))
-hold on
-plot(t2, Uall(:,round(position7/h)))
-legend(sprintf('Voltage at x = %g um', position1*10000),sprintf('Voltage at x = %g um', position2*10000),sprintf('Voltage at x = %g um', position3*10000),sprintf('Voltage at x = %g um', position4*10000),sprintf('Voltage at x = %g um', position5*10000),sprintf('Voltage at x = %g um', position6*10000),sprintf('Voltage at x = %g um', position7*10000))
+for i = 2:length(list_of_positions)
+    hold on
+    plot(t2, Uall(:,round(list_of_positions(i)/h)))
+end
+for i = 1:length(list_of_positions)
+    legendStrings2{end+1} = sprintf('Voltage at x = %g um', list_of_positions(i));
+end
+legend(legendStrings2, 'Interpreter', 'latex')
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
+[M1, I1] = max(Uall(:,round(position7/h)))
+[M2, I2] = min(Uall(:,round(position7/h)))
+
+
 figure(3)
-plot(t2, Nall(:,round(position4/h)))
+plot(t2, Nall(:,round(position1/h)))
 hold on
-plot(t2, Mall(:,round(position4/h)))
+plot(t2, Mall(:,round(position1/h)))
 hold on
-plot(t2, Hall(:,round(position4/h)))
-legend(sprintf('N at x = %g cm', position4), sprintf('M at x = %g cm', position4), sprintf('H at x = %g cm', position4))
+plot(t2, Hall(:,round(position1/h)))
+legendStrings3 = {
+    sprintf('N at x = %g um', position3), ...
+    sprintf('M at x = %g um', position3), ...
+    sprintf('H at x = %g um', position3)};
+legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
