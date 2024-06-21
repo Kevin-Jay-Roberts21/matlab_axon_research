@@ -227,8 +227,7 @@ legend(legendStrings2, 'Interpreter', 'latex')
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
-[M1, I1] = max(Uall(:,round(position7/h)))
-[M2, I2] = min(Uall(:,round(position7/h)))
+[speed, time_difference, voltage_difference] = repolarization_function(Uall, position3, V_initial, h, k)
 
 
 figure(3)

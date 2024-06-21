@@ -7,10 +7,10 @@ clc
 
 % defining all of the initial and constant variables
 c_m_nodal = 0.001; % membrane capacitance (ms / (ohm*cm^2))
-c_m_internodal = 0.001; % (ms / (ohm*cm^2))
+c_m_internodal = 0.002; % (ms / (ohm*cm^2))
 r_l = 30; % specific intracellular resistivity (or axoplasmic resistivity) (ohms * cm)
 radius_nodal = 0.0025; % (cm)
-radius_internodal = 0.0025; % (cm)
+radius_internodal = 0.005; % (cm)
 h = 0.01; % space step (this)
 T = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
@@ -73,7 +73,7 @@ g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); % (g_Na is in 1/(
 
 
 % adding sodium conductance (stimulus)
-S = 10000; % (in 1/(ohm*cm^2))
+S = 25; % (in 1/(ohm*cm^2))
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
 
@@ -86,6 +86,10 @@ N_0 = 0.4749; % probability that potassium gate is open (eq: 0.3177)
 M_0 = 0.1575; % probability that Sodium activation gate is open (eq: 0.0529)
 H_0 = 0.2636; % probability that Sodium inactivation gate is open (eq: 0.5961)
 V_initial = -55.4388; % (mV) Voltage (eq: -64.9997)
+% N_0 = 0.4640; % probability that potassium gate is open (eq: 0.3177)
+% M_0 = 0.1469; % probability that Sodium activation gate is open (eq: 0.0529)
+% H_0 = 0.2827; % probability that Sodium inactivation gate is open (eq: 0.5961)
+% V_initial = -56.3679; % (mV) Voltage (eq: -64.9997)
 
 % should be CAREFUL about rounding here. For some reason matlab thinks that
 % something like 3.678e3 is not considered an interger sometimes
@@ -277,8 +281,9 @@ legend(legendStrings2, 'Interpreter', 'latex')
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
-[M1, I1] = max(Uall(:,round(position7/h)))
-[M2, I2] = min(Uall(:,round(position7/h)))
+[speed, time_difference, voltage_difference] = repolarization_function(Uall, position3, V_initial, h, k)
+
+
 
 
 figure(3)
