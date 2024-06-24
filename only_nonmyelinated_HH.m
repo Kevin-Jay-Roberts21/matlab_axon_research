@@ -227,7 +227,10 @@ legend(legendStrings2, 'Interpreter', 'latex')
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
-[speed, time_difference, voltage_difference] = repolarization_function(Uall, position3, V_initial, h, k)
+% printing the repolarization information
+for i = 1:length(list_of_positions)
+    [speed, time_difference, voltage_difference] = repolarization_function(Uall, list_of_positions(i), V_initial, h, k)
+end
 
 
 figure(3)

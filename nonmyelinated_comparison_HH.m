@@ -15,9 +15,9 @@ h = 0.01; % space step (this)
 T = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
-g_k_nodal = 0.036; % (1/(ohm*cm^2))
+g_k_nodal = 0.08; % (1/(ohm*cm^2))
 g_k_internodal = 0; % (1/(ohm*cm^2))
-g_Na_nodal = 0.12; % (1/(ohm*cm^2))
+g_Na_nodal = 3; % (1/(ohm*cm^2))
 g_Na_internodal = 0; % (1/(ohm*cm^2))
 E_k = -77; % (mV)
 E_Na = 50; % (mV)
@@ -73,7 +73,7 @@ g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); % (g_Na is in 1/(
 
 
 % adding sodium conductance (stimulus)
-S = 25; % (in 1/(ohm*cm^2))
+S = 0; % (in 1/(ohm*cm^2))
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
 
@@ -82,14 +82,14 @@ P0 = 1; % position of adding the stimulus (in cm)
 P1 = 1.01; % ending position of adding the stimulus (in cm or *10^4 in um)
 
 % INITIAL CONDITIONS
-N_0 = 0.4749; % probability that potassium gate is open (eq: 0.3177)
-M_0 = 0.1575; % probability that Sodium activation gate is open (eq: 0.0529)
-H_0 = 0.2636; % probability that Sodium inactivation gate is open (eq: 0.5961)
-V_initial = -55.4388; % (mV) Voltage (eq: -64.9997)
-% N_0 = 0.4640; % probability that potassium gate is open (eq: 0.3177)
-% M_0 = 0.1469; % probability that Sodium activation gate is open (eq: 0.0529)
-% H_0 = 0.2827; % probability that Sodium inactivation gate is open (eq: 0.5961)
-% V_initial = -56.3679; % (mV) Voltage (eq: -64.9997)
+% N_0 = 0.4749; % probability that potassium gate is open (eq: 0.3177)
+% M_0 = 0.1575; % probability that Sodium activation gate is open (eq: 0.0529)
+% H_0 = 0.2636; % probability that Sodium inactivation gate is open (eq: 0.5961)
+% V_initial = -55.4388; % (mV) Voltage (eq: -64.9997)
+N_0 = 0.4640; % probability that potassium gate is open (eq: 0.3177)
+M_0 = 0.1469; % probability that Sodium activation gate is open (eq: 0.0529)
+H_0 = 0.2827; % probability that Sodium inactivation gate is open (eq: 0.5961)
+V_initial = -56.3679; % (mV) Voltage (eq: -64.9997)
 
 % should be CAREFUL about rounding here. For some reason matlab thinks that
 % something like 3.678e3 is not considered an interger sometimes
@@ -281,9 +281,11 @@ legend(legendStrings2, 'Interpreter', 'latex')
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
-[speed, time_difference, voltage_difference] = repolarization_function(Uall, position3, V_initial, h, k)
 
-
+% printing the repolarization information
+for i = 1:length(list_of_positions)
+    [speed, time_difference, voltage_difference] = repolarization_function(Uall, list_of_positions(i), V_initial, h, k)
+end
 
 
 figure(3)
