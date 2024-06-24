@@ -7,17 +7,17 @@ clc
 
 % defining all of the initial and constant variables
 c_m_nodal = 0.001; % membrane capacitance (ms / (ohm*cm^2))
-c_m_internodal = 0.002; % (ms / (ohm*cm^2))
+c_m_internodal = 0.001; % (ms / (ohm*cm^2))
 r_l = 30; % specific intracellular resistivity (or axoplasmic resistivity) (ohms * cm)
 radius_nodal = 0.0025; % (cm)
-radius_internodal = 0.005; % (cm)
-h = 0.01; % space step (this)
-T = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
+radius_internodal = 0.0025; % (cm)
+h = 0.0005; % space step (this)
+T = 15; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
-g_k_nodal = 0.08; % (1/(ohm*cm^2))
+g_k_nodal = 0.036; % (1/(ohm*cm^2))
 g_k_internodal = 0; % (1/(ohm*cm^2))
-g_Na_nodal = 3; % (1/(ohm*cm^2))
+g_Na_nodal = 0.12; % (1/(ohm*cm^2))
 g_Na_internodal = 0; % (1/(ohm*cm^2))
 E_k = -77; % (mV)
 E_Na = 50; % (mV)
@@ -33,10 +33,10 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 6;
+num_of_nodes = 11;
 % the first number is in um, the *10^(-4) converts it to cm
-nodal_length = 0.01; % (in cm)
-myelinated_length = 0.99; % (in cm)
+nodal_length = 0.0010; % (in cm)
+myelinated_length = 0.099; % (in cm)
 d = (nodal_length * num_of_nodes) + (myelinated_length * (num_of_nodes - 1)); % axon length (in cm)
 
 
@@ -73,23 +73,23 @@ g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); % (g_Na is in 1/(
 
 
 % adding sodium conductance (stimulus)
-S = 0; % (in 1/(ohm*cm^2))
-T0 = 5; % start time of when stimulus is added (in ms)
-T1 = 5.1; % end time of when stimulus is added (in ms)
+S = 0.5; % (in 1/(ohm*cm^2))
+T0 = 2; % start time of when stimulus is added (in ms)
+T1 = 2.1; % end time of when stimulus is added (in ms)
 
 % NOTE: the stimulus MUST be added in a nodal region from (0um to 1um is fine)
-P0 = 1; % position of adding the stimulus (in cm)
-P1 = 1.01; % ending position of adding the stimulus (in cm or *10^4 in um)
+P0 = 0.1000; % position of adding the stimulus (in cm)
+P1 = 0.1005; % ending position of adding the stimulus (in cm or *10^4 in um)
 
 % INITIAL CONDITIONS
 % N_0 = 0.4749; % probability that potassium gate is open (eq: 0.3177)
 % M_0 = 0.1575; % probability that Sodium activation gate is open (eq: 0.0529)
 % H_0 = 0.2636; % probability that Sodium inactivation gate is open (eq: 0.5961)
 % V_initial = -55.4388; % (mV) Voltage (eq: -64.9997)
-N_0 = 0.4640; % probability that potassium gate is open (eq: 0.3177)
-M_0 = 0.1469; % probability that Sodium activation gate is open (eq: 0.0529)
-H_0 = 0.2827; % probability that Sodium inactivation gate is open (eq: 0.5961)
-V_initial = -56.3679; % (mV) Voltage (eq: -64.9997)
+N_0 = 0.4672; % probability that potassium gate is open (eq: 0.3177)
+M_0 = 0.1499; % probability that Sodium activation gate is open (eq: 0.0529)
+H_0 = 0.2770; % probability that Sodium inactivation gate is open (eq: 0.5961)
+V_initial = -55.5340; % (mV) Voltage (eq: -64.9997)
 
 % should be CAREFUL about rounding here. For some reason matlab thinks that
 % something like 3.678e3 is not considered an interger sometimes
@@ -210,16 +210,16 @@ max(Uall(:))
 
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
-position1 = 0.5; % in cm 
-position2 = 1;
-position3 = 1.01; 
-position4 = 1.05; 
-position5 = 1.1; 
-position6 = 1.5; 
-position7 = 2; 
-position8 = 3;
-position9 = 4;
-position10 = 4.5;
+position1 = 0.001; % in cm 
+position2 = 0.0015;
+position3 = 0.02; 
+position4 = 0.03; 
+position5 = 0.1; 
+position6 = 0.2; 
+position7 = 0.3; 
+position8 = 0.4;
+position9 = 0.5;
+position10 = 0.6;
 
 list_of_positions = [position1
                      position2
@@ -233,13 +233,13 @@ list_of_positions = [position1
                      position10];
 
 % Times to observe the voltage along the axon
-time1 = 5; % in ms
-time2 = 5.1; % in ms
-time3 = 6; % in ms
-time4 = 8; % in ms
-time5 = 12.7; % in ms
-time6 = 14; % in ms
-time7 = 16; % in ms
+time1 = 2; % in ms
+time2 = 2.1; % in ms
+time3 = 5; % in ms
+time4 = 10; % in ms
+time5 = 11; % in ms
+time6 = 11.5; % in ms
+time7 = 12; % in ms
 
 list_of_times = [time1
                  time2
@@ -283,9 +283,9 @@ xlabel("Time in milliseconds.")
 
 
 % printing the repolarization information
-for i = 1:length(list_of_positions)
-    [speed, time_difference, voltage_difference] = repolarization_function(Uall, list_of_positions(i), V_initial, h, k)
-end
+% for i = 1:length(list_of_positions)
+%     [speed, time_difference, voltage_difference] = repolarization_function(Uall, list_of_positions(i), V_initial, h, k)
+% end
 
 
 figure(3)
