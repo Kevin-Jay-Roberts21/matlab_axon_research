@@ -33,11 +33,16 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 11;
+num_of_nodes = 41;
+
+% make the ion channels uniform
+
+
+
 % the first number is in um, the *10^(-4) converts it to cm
 nodal_length = 0.0010; % (in cm)
-myelinated_length = 0.099; % (in cm)
-d = (nodal_length * num_of_nodes) + (myelinated_length * (num_of_nodes - 1)); % axon length (in cm)
+myelinated_length = 0.024; % (in cm)
+d = (myelinated_length*(num_of_nodes-1)) + (nodal_length*(num_of_nodes-1)) + nodal_length; % axon length (in cm)
 
 
 % creating a list of nodel regions [[start_pos1, end_pos1], [start_pos2, end_pos2], ...]
@@ -123,28 +128,52 @@ for j = 1:(n-1)
     for i = 1:m
 
         % defining coefficients
-        a1 = -a(i*h)/(2*r_l*h^2);
-        a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + g_Na(i*h)*M(1, i)^3*H(1, i) + g_L;
-        a3 = -a(i*h)/(2*r_l*h^2); 
-        a4 = c_m(i*h)/k; 
-        a5 = g_k(i*h)*N(1, i)^4*E_k + g_Na(i*h)*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
+        % first set of a's
+        % a1 = -a(i*h)/(2*r_l*h^2);
+        % a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + g_Na(i*h)*M(1, i)^3*H(1, i) + g_L;
+        % a3 = -a(i*h)/(2*r_l*h^2); 
+        % a4 = c_m(i*h)/k; 
+        % a5 = g_k(i*h)*N(1, i)^4*E_k + g_Na(i*h)*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
+        % second set of a's
+        a1 = -k*a(i*h)/(2*r_l*c_m(i*h)*h^2);
+        a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*N(1, i)^4/c_m(i*h) + k*g_Na(i*h)*M(1, i)^3*H(1, i)/c_m(i*h) + k*g_L/c_m(i*h);
+        a3 = -k*a(i*h)/(2*r_l*c_m(i*h)*h^2); 
+        a4 = 1; 
+        a5 = k*g_k(i*h)*N(1, i)^4*E_k/c_m(i*h) + k*g_Na(i*h)*M(1, i)^3*H(1, i)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
+
+
 
         % % adding the stimulus during a certain time interval: (T0 - T1)
         % if j*k >= T0 && j*k <= T1
-        %     a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + (g_Na(i*h)*M(1, i)^3*H(1, i) + S) + g_L;
-        %     a5 = g_k(i*h)*N(1, i)^4*E_k + (g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        %   % must be used for the first set of a's
+        %   a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + (g_Na(i*h)*M(1, i)^3*H(1, i) + S) + g_L;
+        %   a5 = g_k(i*h)*N(1, i)^4*E_k + (g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        % 
+        %   % must be used for the second set of a's
+        %   % a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*N(1, i)^4/c_m(i*h) + k*(g_Na(i*h)*M(1, i)^3*H(1, i) + S)/c_m(i*h) + k*g_L/c_m(i*h);
+        %   % a5 = k*g_k(i*h)*N(1, i)^4*E_k/c_m(i*h) + k*(g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
         % end
         % 
-        % % adding the stimulus at a spacial interval: (P0 - P1)
+        % adding the stimulus at a spacial interval: (P0 - P1)
         % if i*h >= P0 && i*h <= P1 
-        %     a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + (g_Na(i*h)*M(1, i)^3*H(1, i) + S) + g_L;
-        %     a5 = g_k(i*h)*N(1, i)^4*E_k + (g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        %     % must be used for the first set of a's
+        %     % a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + (g_Na(i*h)*M(1, i)^3*H(1, i) + S) + g_L;
+        %     % a5 = g_k(i*h)*N(1, i)^4*E_k + (g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        % 
+        %    % must be used for the second set of a's
+        %    a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*N(1, i)^4/c_m(i*h) + k*(g_Na(i*h)*M(1, i)^3*H(1, i) + S)/c_m(i*h) + k*g_L/c_m(i*h);
+        %    a5 = k*g_k(i*h)*N(1, i)^4*E_k/c_m(i*h) + k*(g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
         % end
-
-        % % adding stimulus in specific space AND time interval:
+        % adding stimulus in specific space AND time interval:
         if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
-            a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + (g_Na(i*h)*M(1, i)^3*H(1, i) + S) + g_L;
-            a5 = g_k(i*h)*N(1, i)^4*E_k + (g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+            
+            % must be used for the first set of a's
+            % a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + (g_Na(i*h)*M(1, i)^3*H(1, i) + S) + g_L;
+            % a5 = g_k(i*h)*N(1, i)^4*E_k + (g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+            
+            % must be used for the second set of a's
+            a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*N(1, i)^4/c_m(i*h) + k*(g_Na(i*h)*M(1, i)^3*H(1, i) + S)/c_m(i*h) + k*g_L/c_m(i*h);
+            a5 = k*g_k(i*h)*N(1, i)^4*E_k/c_m(i*h) + k*(g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
         end
 
         % add if statements here for the first row of A and the last row of

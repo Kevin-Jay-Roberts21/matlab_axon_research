@@ -8,7 +8,7 @@ r_l = 30; % specific intracellular resistivity (ohms * cm)
 a = 0.0025; % axon radius (cm)
 d = 1.0005; % axon length (cm)
 h = 0.0005; % space step (MAY CHANGE LATER)
-T = 20; % we only ever want to run up to 35 ms (where we find equilibrium)
+T = 15; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_k = 0.036; % (1/(ohm*cm^2))
 g_Na = 0.12; % (1/(ohm*cm^2))
@@ -62,6 +62,8 @@ Hall(1,:) = H;
 
 n = T/k; % total time is k*n
 
+tic; % tracking the time
+
 % j is the time step
 for j = 1:(n-1)
 
@@ -69,35 +71,52 @@ for j = 1:(n-1)
     for i = 1:m
 
         % defining coefficients
-        a1 = -a/(2*r_l*h^2);
-        a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + g_Na*M(1, i)^3*H(1, i) + g_L;
-        a3 = -a/(2*r_l*h^2); 
-        a4 = c_m/k; 
-        a5 = g_k*N(1, i)^4*E_k + g_Na*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
+        % first set of a's
+        % a1 = -a/(2*r_l*h^2);
+        % a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + g_Na*M(1, i)^3*H(1, i) + g_L;
+        % a3 = -a/(2*r_l*h^2); 
+        % a4 = c_m/k; 
+        % a5 = g_k*N(1, i)^4*E_k + g_Na*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
+        % second set of a's
+        a1 = -k*a/(2*r_l*c_m*h^2);
+        a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*N(1, i)^4/c_m + k*g_Na*M(1, i)^3*H(1, i)/c_m + k*g_L/c_m;
+        a3 = -k*a/(2*r_l*c_m*h^2); 
+        a4 = 1; 
+        a5 = k*g_k*N(1, i)^4*E_k/c_m + k*g_Na*M(1, i)^3*H(1, i)*E_Na/c_m + k*g_L*E_L/c_m;
+
+
 
         % % adding the stimulus during a certain time interval: (T0 - T1)
         % if j*k >= T0 && j*k <= T1
-        %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-        %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        %   % must be used for the first set of a's
+        %   a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+        %   a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        % 
+        %   % must be used for the second set of a's
+        %   % a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*N(1, i)^4/c_m + k*(g_Na*M(1, i)^3*H(1, i) + S)/c_m + k*g_L/c_m;
+        %   % a5 = k*g_k*N(1, i)^4*E_k/c_m + k*(g_Na*M(1, i)^3*H(1, i) + S)*E_Na/c_m + k*g_L*E_L/c_m;
         % end
         % 
         % adding the stimulus at a spacial interval: (P0 - P1)
         % if i*h >= P0 && i*h <= P1 
-        %     a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-        %     a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
-        % end
-        % if i == 200 && j == 100
-        %     i*h
-        %     P0
-        %     P1
-        %     j*k
-        %     T0
+        %     % must be used for the first set of a's
+        %     % a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+        %     % a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
         % 
-        % end 
+        %    % must be used for the second set of a's
+        %    a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*N(1, i)^4/c_m + k*(g_Na*M(1, i)^3*H(1, i) + S)/c_m + k*g_L/c_m;
+        %    a5 = k*g_k*N(1, i)^4*E_k/c_m + k*(g_Na*M(1, i)^3*H(1, i) + S)*E_Na/c_m + k*g_L*E_L/c_m;
+        % end
         % adding stimulus in specific space AND time interval:
         if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
-            a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-            a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+            
+            % must be used for the first set of a's
+            % a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
+            % a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+            
+            % must be used for the second set of a's
+            a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*N(1, i)^4/c_m + k*(g_Na*M(1, i)^3*H(1, i) + S)/c_m + k*g_L/c_m;
+            a5 = k*g_k*N(1, i)^4*E_k/c_m + k*(g_Na*M(1, i)^3*H(1, i) + S)*E_Na/c_m + k*g_L*E_L/c_m;
         end
 
         % add if statements here for the first row of A and the last row of
@@ -159,6 +178,7 @@ for j = 1:(n-1)
 
 end
 
+elapsedtime = toc % getting the end time
 max(Uall(:))
 
 % now pick a position to plot all of the voltages (multiply by 10000 to get
@@ -173,6 +193,13 @@ position7 = 0.3;
 position8 = 0.4;
 position9 = 0.5;
 position10 = 0.6;
+% position1 = 0.5; % in cm
+% position2 = 1; % in cm
+% position3 = 1.5; % in cm
+% position4 = 2; % in cm
+% position5 = 2.5; % in cm
+% position6 = 3; % in cm
+% position7 = 3.5; % in cm
 
 list_of_positions = [position1
                      position2
@@ -180,10 +207,7 @@ list_of_positions = [position1
                      position4
                      position5
                      position6
-                     position7
-                     position8
-                     position9
-                     position10];
+                     position7];
 
 % Times to observe the voltage along the axon
 time1 = 2; % in ms
@@ -193,6 +217,13 @@ time4 = 10; % in ms
 time5 = 11; % in ms
 time6 = 11.5; % in ms
 time7 = 12; % in ms
+% time1 = 5; % in ms
+% time2 = 6; % in ms
+% time3 = 8; % in ms
+% time4 = 10; % in ms
+% time5 = 10.5; % in ms
+% time6 = 10.8; % in ms
+% time7 = 11; % in ms
 
 list_of_times = [time1
                  time2
@@ -241,11 +272,11 @@ xlabel("Time in milliseconds.")
 
 
 figure(3)
-plot(t2, Nall(:,round(position1/h)))
+plot(t2, Nall(:,round(position3/h)))
 hold on
-plot(t2, Mall(:,round(position1/h)))
+plot(t2, Mall(:,round(position3/h)))
 hold on
-plot(t2, Hall(:,round(position1/h)))
+plot(t2, Hall(:,round(position3/h)))
 legendStrings3 = {
     sprintf('N at x = %g cm', position3), ...
     sprintf('M at x = %g cm', position3), ...

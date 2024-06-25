@@ -55,7 +55,7 @@ d_tilde = d/x_c;
 % interval as T0-T1 before, now it should be: T0_tau = T0/t_c -
 % T1_tau = T1/t_c AND for the space interval if it was P0-P1, now it should
 % be P0_chi = P0/x_c - P1_chi = P1/x_c.
-S = 0.003947; % (in 1/(ohm*cm^2))
+S = 0.003948; % (in 1/(ohm*cm^2))
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
 P0 = 1; % position of adding the stimulus (in cm)
@@ -231,11 +231,11 @@ for i = 2:length(list_of_times)
     plot(t1, Uall(round(list_of_times(i)/k),:))
 end
 for i  = 1:length(list_of_times)
-    legendStrings1{end+1} = sprintf('Voltage of the axon at time t = %g ms', list_of_times(i));
+    legendStrings1{end+1} = sprintf('$\\tilde{V_m}$ at $\\tilde{t} = %g$', list_of_times(i));
 end
 legend(legendStrings1, 'Interpreter','latex')
-ylabel("Voltage in millivolts.")
-xlabel("Length of the axon in um.")
+ylabel("Dimensionless Voltage $\tilde{V_m}$.", 'Interpreter','latex')
+xlabel("Dimensionless length $\tilde{d}$ of the axon.", 'Interpreter','latex')
 
 figure(2)
 t2 = linspace(0, T, n); % FULL MATRIX
@@ -248,30 +248,26 @@ for i = 2:length(list_of_positions)
     plot(t2, Uall(:,round(list_of_positions(i)/h)))
 end
 for i = 1:length(list_of_positions)
-    legendStrings2{end+1} = sprintf('Voltage at x = %g cm', list_of_positions(i));
+    legendStrings2{end+1} = sprintf('$\\tilde{V_m}$ at $\\tilde{x} = %g$', list_of_positions(i));
 end
 legend(legendStrings2, 'Interpreter', 'latex')
-ylabel("Voltage in millivolts.")
-xlabel("Time in milliseconds.")
-
-[M1, I1] = max(Uall(:,round(position7/h)))
-[M2, I2] = min(Uall(:,round(position7/h)))
+ylabel("Dimensionless Voltage $\tilde{V_m}$.", 'Interpreter','latex')
+xlabel("Dimensionless Time $\tilde{T}$.", 'Interpreter','latex')
 
 
 figure(3)
-plot(t2, Nall(:,round(position1/h)))
+plot(t2, Nall(:,round(position3/h)))
 hold on
-plot(t2, Mall(:,round(position1/h)))
+plot(t2, Mall(:,round(position3/h)))
 hold on
-plot(t2, Hall(:,round(position1/h)))
+plot(t2, Hall(:,round(position3/h)))
 legendStrings3 = {
-    sprintf('N at x = %g cm', position3), ...
-    sprintf('M at x = %g cm', position3), ...
-    sprintf('H at x = %g cm', position3)};
+    sprintf('N at $\\tilde{x} = %g$', position3), ...
+    sprintf('M at $\\tilde{x} = %g$', position3), ...
+    sprintf('H at $\\tilde{x} = %g$', position3)};
 legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
-xlabel("Time in milliseconds.")
-
+xlabel("Dimensionless Time $\tilde{T}$.", 'Interpreter','latex')
 
 
 
