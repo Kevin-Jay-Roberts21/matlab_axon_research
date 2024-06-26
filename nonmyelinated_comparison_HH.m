@@ -12,7 +12,7 @@ r_l = 30; % specific intracellular resistivity (or axoplasmic resistivity) (ohms
 radius_nodal = 0.0025; % (cm)
 radius_internodal = 0.0025; % (cm)
 h = 0.0005; % space step (this)
-T = 15; % we only ever want to run up to 35 ms (where we find equilibrium)
+T = 10; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
 g_k_nodal = 0.036; % (1/(ohm*cm^2))
@@ -41,7 +41,7 @@ num_of_nodes = 41;
 
 % the first number is in um, the *10^(-4) converts it to cm
 nodal_length = 0.0010; % (in cm)
-myelinated_length = 0.024; % (in cm)
+myelinated_length = 0.024; % (in cm)iu
 d = (myelinated_length*(num_of_nodes-1)) + (nodal_length*(num_of_nodes-1)) + nodal_length; % axon length (in cm)
 
 
@@ -50,6 +50,7 @@ nodal_regions = [];
 for i = 0:(num_of_nodes-1)
     nodal_regions(:,i+1) = [(i*nodal_length)+(i*myelinated_length), (i*nodal_length)+(i*myelinated_length)+nodal_length];
 end
+
 
 % (the following conductances and radius are fcns of space, to mimmick myelin)
 % starting each of the functions with a condition. This condition being the
@@ -123,7 +124,7 @@ n = T/k; % total time is k*n
 
 % j is the time step
 for j = 1:(n-1)
-
+    j
     % i is the space step
     for i = 1:m
 
@@ -265,10 +266,10 @@ list_of_positions = [position1
 time1 = 2; % in ms
 time2 = 2.1; % in ms
 time3 = 5; % in ms
-time4 = 10; % in ms
-time5 = 11; % in ms
-time6 = 11.5; % in ms
-time7 = 12; % in ms
+time4 = 6; % in ms
+time5 = 7; % in ms
+time6 = 8; % in ms
+time7 = 9; % in ms
 
 list_of_times = [time1
                  time2
