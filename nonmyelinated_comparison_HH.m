@@ -12,7 +12,7 @@ r_l = 30; % specific intracellular resistivity (or axoplasmic resistivity) (ohms
 radius_nodal = 0.0025; % (cm)
 radius_internodal = 0.0025; % (cm)
 h = 0.0005; % space step (this)
-T = 10; % we only ever want to run up to 35 ms (where we find equilibrium)
+T = 15; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
 g_k_nodal = 0.036; % (1/(ohm*cm^2))
@@ -33,7 +33,7 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 41;
+num_of_nodes = 31;
 
 % make the ion channels uniform
 
@@ -41,7 +41,7 @@ num_of_nodes = 41;
 
 % the first number is in um, the *10^(-4) converts it to cm
 nodal_length = 0.0010; % (in cm)
-myelinated_length = 0.024; % (in cm)iu
+myelinated_length = 0.0115; % (in cm)
 d = (myelinated_length*(num_of_nodes-1)) + (nodal_length*(num_of_nodes-1)) + nodal_length; % axon length (in cm)
 
 
@@ -79,11 +79,10 @@ g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); % (g_Na is in 1/(
 
 
 % adding sodium conductance (stimulus)
-S = 0.5; % (in 1/(ohm*cm^2))
+S = 10; % (in 1/(ohm*cm^2))
 T0 = 2; % start time of when stimulus is added (in ms)
 T1 = 2.1; % end time of when stimulus is added (in ms)
-
-% NOTE: the stimulus MUST be added in a nodal region from (0um to 1um is fine)
+% NOTE: the stimulus MUST be added in a nodal region
 P0 = 0.1000; % position of adding the stimulus (in cm)
 P1 = 0.1005; % ending position of adding the stimulus (in cm or *10^4 in um)
 
@@ -96,6 +95,10 @@ N_0 = 0.4672; % probability that potassium gate is open (eq: 0.3177)
 M_0 = 0.1499; % probability that Sodium activation gate is open (eq: 0.0529)
 H_0 = 0.2770; % probability that Sodium inactivation gate is open (eq: 0.5961)
 V_initial = -55.5340; % (mV) Voltage (eq: -64.9997)
+% N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
+% M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
+% H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
+% V_initial = -64.9997; % (mV) Voltage (eq: -64.9997)
 
 % should be CAREFUL about rounding here. For some reason matlab thinks that
 % something like 3.678e3 is not considered an interger sometimes
@@ -137,10 +140,10 @@ for j = 1:(n-1)
         % a5 = g_k(i*h)*N(1, i)^4*E_k + g_Na(i*h)*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
         % second set of a's
         a1 = -k*a(i*h)/(2*r_l*c_m(i*h)*h^2);
-        a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*N(1, i)^4/c_m(i*h) + k*g_Na(i*h)*M(1, i)^3*H(1, i)/c_m(i*h) + k*g_L/c_m(i*h);
+        a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*(N(1, i)^4)/c_m(i*h) + k*g_Na(i*h)*(M(1, i)^3)*H(1, i)/c_m(i*h) + k*g_L/c_m(i*h);
         a3 = -k*a(i*h)/(2*r_l*c_m(i*h)*h^2); 
         a4 = 1; 
-        a5 = k*g_k(i*h)*N(1, i)^4*E_k/c_m(i*h) + k*g_Na(i*h)*M(1, i)^3*H(1, i)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
+        a5 = k*g_k(i*h)*(N(1, i)^4)*E_k/c_m(i*h) + k*g_Na(i*h)*(M(1, i)^3)*H(1, i)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
 
 
 
@@ -173,8 +176,8 @@ for j = 1:(n-1)
             % a5 = g_k(i*h)*N(1, i)^4*E_k + (g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
             
             % must be used for the second set of a's
-            a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*N(1, i)^4/c_m(i*h) + k*(g_Na(i*h)*M(1, i)^3*H(1, i) + S)/c_m(i*h) + k*g_L/c_m(i*h);
-            a5 = k*g_k(i*h)*N(1, i)^4*E_k/c_m(i*h) + k*(g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
+            a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*(N(1, i)^4)/c_m(i*h) + k*(g_Na(i*h)*(M(1, i)^3)*H(1, i) + S)/c_m(i*h) + k*g_L/c_m(i*h);
+            a5 = k*g_k(i*h)*(N(1, i)^4)*E_k/c_m(i*h) + k*(g_Na(i*h)*(M(1, i)^3)*H(1, i) + S)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
         end
 
         % add if statements here for the first row of A and the last row of
@@ -257,19 +260,16 @@ list_of_positions = [position1
                      position4
                      position5
                      position6
-                     position7
-                     position8
-                     position9
-                     position10];
+                     position7];
 
 % Times to observe the voltage along the axon
 time1 = 2; % in ms
 time2 = 2.1; % in ms
-time3 = 5; % in ms
-time4 = 6; % in ms
-time5 = 7; % in ms
-time6 = 8; % in ms
-time7 = 9; % in ms
+time3 = 3; % in ms
+time4 = 4; % in ms
+time5 = 5; % in ms
+time6 = 6; % in ms
+time7 = 7; % in ms
 
 list_of_times = [time1
                  time2
@@ -292,7 +292,7 @@ for i  = 1:length(list_of_times)
 end
 legend(legendStrings1, 'Interpreter','latex')
 ylabel("Voltage in millivolts.")
-xlabel("Length of the axon in um.")
+xlabel("Length of the axon in cm.")
 
 figure(2)
 t2 = linspace(0, T, n); % FULL MATRIX

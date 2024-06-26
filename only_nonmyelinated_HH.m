@@ -8,7 +8,7 @@ r_l = 30; % specific intracellular resistivity (ohms * cm)
 a = 0.0025; % axon radius (cm)
 d = 1.0005; % axon length (cm)
 h = 0.0005; % space step (MAY CHANGE LATER)
-T = 15; % we only ever want to run up to 35 ms (where we find equilibrium)
+T = 20; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_k = 0.036; % (1/(ohm*cm^2))
 g_Na = 0.12; % (1/(ohm*cm^2))
@@ -79,10 +79,10 @@ for j = 1:(n-1)
         % a5 = g_k*N(1, i)^4*E_k + g_Na*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
         % second set of a's
         a1 = -k*a/(2*r_l*c_m*h^2);
-        a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*N(1, i)^4/c_m + k*g_Na*M(1, i)^3*H(1, i)/c_m + k*g_L/c_m;
+        a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*(N(1, i)^4)/c_m + k*g_Na*(M(1, i)^3)*H(1, i)/c_m + k*g_L/c_m;
         a3 = -k*a/(2*r_l*c_m*h^2); 
         a4 = 1; 
-        a5 = k*g_k*N(1, i)^4*E_k/c_m + k*g_Na*M(1, i)^3*H(1, i)*E_Na/c_m + k*g_L*E_L/c_m;
+        a5 = k*g_k*N(1, i)^4*E_k/c_m + k*g_Na*(M(1, i)^3)*H(1, i)*E_Na/c_m + k*g_L*E_L/c_m;
 
 
 
@@ -115,8 +115,8 @@ for j = 1:(n-1)
             % a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
             
             % must be used for the second set of a's
-            a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*N(1, i)^4/c_m + k*(g_Na*M(1, i)^3*H(1, i) + S)/c_m + k*g_L/c_m;
-            a5 = k*g_k*N(1, i)^4*E_k/c_m + k*(g_Na*M(1, i)^3*H(1, i) + S)*E_Na/c_m + k*g_L*E_L/c_m;
+            a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*(N(1, i)^4)/c_m + k*(g_Na*(M(1, i)^3)*H(1, i) + S)/c_m + k*g_L/c_m;
+            a5 = k*g_k*(N(1, i)^4)*E_k/c_m + k*(g_Na*(M(1, i)^3)*H(1, i) + S)*E_Na/c_m + k*g_L*E_L/c_m;
         end
 
         % add if statements here for the first row of A and the last row of
