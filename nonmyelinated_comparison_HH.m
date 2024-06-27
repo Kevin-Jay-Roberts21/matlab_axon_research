@@ -15,9 +15,9 @@ h = 0.0005; % space step (this)
 T = 15; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
-g_k_nodal = 0.036; % (1/(ohm*cm^2))
+g_k_nodal = 0.08; % (1/(ohm*cm^2))
 g_k_internodal = 0; % (1/(ohm*cm^2))
-g_Na_nodal = 0.12; % (1/(ohm*cm^2))
+g_Na_nodal = 0.5; % (1/(ohm*cm^2))
 g_Na_internodal = 0; % (1/(ohm*cm^2))
 E_k = -77; % (mV)
 E_Na = 50; % (mV)
@@ -79,7 +79,7 @@ g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); % (g_Na is in 1/(
 
 
 % adding sodium conductance (stimulus)
-S = 10; % (in 1/(ohm*cm^2))
+S = 0.1; % (in 1/(ohm*cm^2))
 T0 = 2; % start time of when stimulus is added (in ms)
 T1 = 2.1; % end time of when stimulus is added (in ms)
 % NOTE: the stimulus MUST be added in a nodal region
@@ -266,10 +266,10 @@ list_of_positions = [position1
 time1 = 2; % in ms
 time2 = 2.1; % in ms
 time3 = 3; % in ms
-time4 = 4; % in ms
-time5 = 5; % in ms
-time6 = 6; % in ms
-time7 = 7; % in ms
+time4 = 3.2; % in ms
+time5 = 3.5; % in ms
+time6 = 3.7; % in ms
+time7 = 4; % in ms
 
 list_of_times = [time1
                  time2
