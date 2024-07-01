@@ -2,16 +2,16 @@ clear all
 close all
 clc
 
-% this is the nondimensionalized discretization of the HH PDE
+% this is the nondimensionalized discretization of the HH PDE for squid
+% giant axons
+
 
 % defining all of the initial and constant variables
 c_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
 r_l = 30; % specific intracellular resistivity (ohms * cm)
 a = 0.0025; % axon radius (cm)
 d = 5; % axon length (cm)
-h = 0.002; % space step (MAY CHANGE LATER)
 T = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
-k = 0.01; % time step (MAY CHANGE LATER)
 g_k = 0.036; % (1/(ohm*cm^2))
 g_Na = 0.12; % (1/(ohm*cm^2))
 g_L = 0.0003; % (1/(ohm*cm^2))
@@ -49,8 +49,10 @@ beta_h_tilde = @(V) t_c*beta_h(V*V_c);
 T_tilde = T/t_c; % since t_c = 1, nothing changes, but this is still good to do if t_c is not 1.
 d_tilde = d/x_c;
 
-% adding sodium conductance (stimulus)
+h = 0.002; % space step
+k = 0.01; % time step
 
+% adding sodium conductance (stimulus)
 % recall that we are in terms of tau and chi now, namely, if I had the time
 % interval as T0-T1 before, now it should be: T0_tau = T0/t_c -
 % T1_tau = T1/t_c AND for the space interval if it was P0-P1, now it should
@@ -61,6 +63,7 @@ T1 = 5.1; % end time of when stimulus is added (in ms)
 P0 = 1; % position of adding the stimulus (in cm)
 P1 = 1.1;
 
+% converted to dimensionless
 T0_tilde = T0/t_c;
 T1_tilde = T1/t_c;
 P0_tilde = P0/x_c; 
@@ -68,22 +71,24 @@ P1_tilde = P1/x_c;
 S_tilde = t_c*S/c_m;
 
 
-
 % INITIAL CONDITIONS
 N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
 M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
 H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
-V_initial = -2.5999; % (mV) Voltage (eq: -64.9997) new equilibrium is: -2.59999 
+V_initial = -64.9997/V_c; % (mV) Voltage (eq: -64.9997) new equilibrium is: -2.59999 
 
-m = d_tilde/h; % number of columns of the matrices (length of axon divided by space step)
+% number of columns of the matrices (length of axon divided by space step)
+m = d_tilde/h; 
 
+% initial vectors
 U = zeros(1, m);
 N = zeros(1, m);
 M = zeros(1, m);
 H = zeros(1, m);
+
+% A and b matrix and vector (will be solved in Ax = b style)
 A = zeros(m);
 b = zeros(m, 1);
-Uall = [];
 
 % setting the initial U H M and N conditions in the vectors:
 U(1,:) = V_initial;
@@ -91,12 +96,23 @@ N(1,:) = N_0;
 M(1,:) = M_0;
 H(1,:) = H_0;
 
+% Final matri with voltage of axon at every time and space step
 Uall(1,:) = U;
+
+% Final matrix with probabilities at every time and space step
 Nall(1,:) = N;
 Mall(1,:) = M; 
 Hall(1,:) = H;
 
-n = T_tilde/k; % total time is k*n
+% defining new time vector (each time vector has m elements)
+newU = zeros(1, m);
+newN = zeros(1, m);
+newM = zeros(1, m);
+newH = zeros(1, m);
+
+
+% number of rows in final matrices
+n = T_tilde/k;
 
 % j is the time step
 for j = 1:(n-1)
@@ -111,26 +127,25 @@ for j = 1:(n-1)
         a4 = 1; 
         a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*g_Na_tilde*M(1, i)^3*H(1, i)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
 
-        % % adding the stimulus during a certain time interval: (T0 - T1)
+        % % adding the stimulus temporally only: (T0 - T1)
         % if j*k >= T0_tilde && j*k <= T1_tilde
         %     a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*(g_Na_tilde*M(1, i)^3*H(1, i)+ S_tilde) + k*g_L_tilde;
         %     a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*(g_Na_tilde*M(1, i)^3*H(1, i) + S_tilde)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
         % end
-        % 
-        % adding the stimulus at a spacial interval: (P0 - P1)
+        
+        % adding the stimulus spatially only: (P0 - P1)
         % if i*h >= P0_tilde && i*h <= P1_tilde 
         %     a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*(g_Na_tilde*M(1, i)^3*H(1, i)+ S_tilde) + k*g_L_tilde;
         %     a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*(g_Na_tilde*M(1, i)^3*H(1, i) + S_tilde)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
         % end
         
-        % adding stimulus in specific space AND time interval:
+        % adding stimulus temporally and spatially:
         if (j*k >= T0_tilde && j*k <= T1_tilde) && (i*h >= P0_tilde && i*h <= P1_tilde)
             a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*(g_Na_tilde*M(1, i)^3*H(1, i)+ S_tilde) + k*g_L_tilde;
             a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*(g_Na_tilde*M(1, i)^3*H(1, i) + S_tilde)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
         end
 
-        % add if statements here for the first row of A and the last row of
-        % A
+        % constructing the A and b matrix and vector
         if i == 1
             A(1, 1) = 1/h;
             A(1, 2) = -1/h;
@@ -147,12 +162,10 @@ for j = 1:(n-1)
         end
     end
 
+    % setting newU (the solution from Ax = b)
     newU = transpose(A\b);
     
-    % this is a new i, different from the above for loop
-    newN = zeros(1, m);
-    newM = zeros(1, m);
-    newH = zeros(1, m);
+    % setting newN, newM, newH vectors (this is a new i, different from the above for loop)
     for i = 1:m
         newN(1, i) = 1/(1/k + alpha_n_tilde(U(1, i)) + beta_n_tilde(U(1, i))) * (N(1, i)/k + alpha_n_tilde(U(1, i)));
         newM(1, i) = 1/(1/k + alpha_m_tilde(U(1, i)) + beta_m_tilde(U(1, i))) * (M(1, i)/k + alpha_m_tilde(U(1, i)));
@@ -165,7 +178,7 @@ for j = 1:(n-1)
     H(1,:) = newH;
     U(1,:) = newU;
 
-    % USE FOR GRABBING AT EVERY ITERATION
+    % adding the newly defined vectors to the 'all' matrices
     Uall(j+1,:) = U;
     Nall(j+1,:) = N;
     Mall(j+1,:) = M;
@@ -222,14 +235,17 @@ list_of_times = [time1
                  time6
                  time7];
 
+% plotting Voltage vs Axon length             
 figure(1)
 t1 = linspace(0, d, m);
-legendStrings1 = {};
 plot(t1, Uall(round(time1/k),:))
 for i = 2:length(list_of_times)
     hold on
     plot(t1, Uall(round(list_of_times(i)/k),:))
 end
+
+% describing plots using legends
+legendStrings1 = {};
 for i  = 1:length(list_of_times)
     legendStrings1{end+1} = sprintf('$\\tilde{V_m}$ at $\\tilde{t} = %g$', list_of_times(i));
 end
@@ -237,16 +253,19 @@ legend(legendStrings1, 'Interpreter','latex')
 ylabel("Dimensionless Voltage $\tilde{V_m}$.", 'Interpreter','latex')
 xlabel("Dimensionless length $\tilde{d}$ of the axon.", 'Interpreter','latex')
 
+% plotting Voltage vs Time
 figure(2)
 t2 = linspace(0, T, n); % FULL MATRIX
 % t2 = linspace(0, T, n*k*2); % MATRIX AT EVERY 50th iteration
 % t2 = linspace(0, T, n*k); % MATRIX AT EVERY 100th iteration
-legendStrings2 = {};
 plot(t2, Uall(:,round(position1/h)))
 for i = 2:length(list_of_positions)
     hold on
     plot(t2, Uall(:,round(list_of_positions(i)/h)))
 end
+
+% describing plots using legends
+legendStrings2 = {};
 for i = 1:length(list_of_positions)
     legendStrings2{end+1} = sprintf('$\\tilde{V_m}$ at $\\tilde{x} = %g$', list_of_positions(i));
 end
@@ -254,7 +273,7 @@ legend(legendStrings2, 'Interpreter', 'latex')
 ylabel("Dimensionless Voltage $\tilde{V_m}$.", 'Interpreter','latex')
 xlabel("Dimensionless Time $\tilde{T}$.", 'Interpreter','latex')
 
-
+%plotting N, M, H probability vs time (at a certain position)
 figure(3)
 plot(t2, Nall(:,round(position3/h)))
 hold on
@@ -268,8 +287,6 @@ legendStrings3 = {
 legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Dimensionless Time $\tilde{T}$.", 'Interpreter','latex')
-
-
 
 
 % save U,N,,'cable_0.01'  % this is for...
