@@ -42,7 +42,7 @@ H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
 V_initial = -64.9997; % (mV) Voltage (eq: -64.9997)
 
 % number of columns of the matrices (length of axon divided by space step)
-m = d/h; 
+m = d/h + 1; 
 
 % initial vectors
 U = zeros(1, m);
@@ -112,7 +112,6 @@ for j = 1:(n-1)
         a5 = k*g_k*N(i)^4*E_k/c_m + k*g_Na*(M(i)^3)*H(i)*E_Na/c_m + k*g_L*E_L/c_m;
 
 
-
         % % adding the stimulus temporally only: (T0 - T1)
         % if j*k >= T0 && j*k <= T1
         %   % must be used for Choice 1
@@ -161,7 +160,7 @@ for j = 1:(n-1)
             A(i, i-1) = a1;
             A(i, i) = a2;
             A(i, i+1) = a3;
-            b(i, 1) = a4*U(1, i) + a5; 
+            b(i, 1) = a4*U(i) + a5; 
         end
     end
     

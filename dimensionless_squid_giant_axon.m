@@ -78,7 +78,7 @@ H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
 V_initial = -64.9997/V_c; % (mV) Voltage (eq: -64.9997) new equilibrium is: -2.59999 
 
 % number of columns of the matrices (length of axon divided by space step)
-m = d_tilde/h; 
+m = d_tilde/h + 1; 
 
 % initial vectors
 U = zeros(1, m);

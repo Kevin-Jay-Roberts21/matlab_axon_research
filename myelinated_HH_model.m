@@ -94,7 +94,7 @@ V_initial = -55.5340; % (mV) Voltage (eq: -64.9997)
 % V_initial = -64.9997; % (mV) Voltage (eq: -64.9997)
 
 % number of columns of the matrices (length of axon divided by space step)
-m = d/h;
+m = d/h+1;
 
 % initial vectors
 U = zeros(1, m);
