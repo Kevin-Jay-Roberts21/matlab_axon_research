@@ -29,12 +29,11 @@ alpha_h = @(V) 0.07*exp(-(V + 65)/20);
 beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 0.05; % (in 1/(ohm*cm^2))
+S = 0.003948; % (in 1/(ohm*cm^2))
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
 P0 = 1; % position of adding the stimulus (in cm)
 P1 = 1.1;
-
 
 % INITIAL CONDITIONS
 N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
@@ -80,47 +79,60 @@ n = T/k;
 
 % j is the time step
 for j = 1:(n-1)
-
+    
+    
+    % setting newN, newM, newH vectors (this is a new i, different from the above for loop)
+    for i = 1:m
+        newN(i) = 1/(1/k + alpha_n(U(i)) + beta_n(U(i))) * (N(i)/k + alpha_n(U(i)));
+        newM(i) = 1/(1/k + alpha_m(U(i)) + beta_m(U(i))) * (M(i)/k + alpha_m(U(i)));
+        newH(i) = 1/(1/k + alpha_h(U(i)) + beta_h(U(i))) * (H(i)/k + alpha_h(U(i)));
+    end
+    
+    % Edit the next U, N, M and H (redefining U, N, M and H vectors)
+    N = newN;
+    M = newM;
+    H = newH;
+    
     % i is the space step
     for i = 1:m
 
         % defining coefficients
         % Choice 1 set of variables (see powerpoint for Choice 1 & 2 meaning)
         % a1 = -a/(2*r_l*h^2);
-        % a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + g_Na*M(1, i)^3*H(1, i) + g_L;
+        % a2 = a/(r_l*h^2) + c_m/k + g_k*N(i)^4 + g_Na*M(i)^3*H(i) + g_L;
         % a3 = -a/(2*r_l*h^2); 
         % a4 = c_m/k; 
-        % a5 = g_k*N(1, i)^4*E_k + g_Na*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
+        % a5 = g_k*N(i)^4*E_k + g_Na*M(i)^3*H(i)*E_Na + g_L*E_L;
         
         % Choice 2 set of variables
         a1 = -k*a/(2*r_l*c_m*h^2);
-        a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*(N(1, i)^4)/c_m + k*g_Na*(M(1, i)^3)*H(1, i)/c_m + k*g_L/c_m;
+        a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*(N(i)^4)/c_m + k*g_Na*(M(i)^3)*H(i)/c_m + k*g_L/c_m;
         a3 = -k*a/(2*r_l*c_m*h^2); 
         a4 = 1; 
-        a5 = k*g_k*N(1, i)^4*E_k/c_m + k*g_Na*(M(1, i)^3)*H(1, i)*E_Na/c_m + k*g_L*E_L/c_m;
+        a5 = k*g_k*N(i)^4*E_k/c_m + k*g_Na*(M(i)^3)*H(i)*E_Na/c_m + k*g_L*E_L/c_m;
 
 
 
         % % adding the stimulus temporally only: (T0 - T1)
         % if j*k >= T0 && j*k <= T1
         %   % must be used for Choice 1
-        %   a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-        %   a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        %   a2 = a/(r_l*h^2) + c_m/k + g_k*N(i)^4 + (g_Na*M(i)^3*H(i) + S) + g_L;
+        %   a5 = g_k*N(i)^4*E_k + (g_Na*M(i)^3*H(i) + S)*E_Na + g_L*E_L;
         % 
         %   % must be used for Choice 2
-        %   % a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*N(1, i)^4/c_m + k*(g_Na*M(1, i)^3*H(1, i) + S)/c_m + k*g_L/c_m;
-        %   % a5 = k*g_k*N(1, i)^4*E_k/c_m + k*(g_Na*M(1, i)^3*H(1, i) + S)*E_Na/c_m + k*g_L*E_L/c_m;
+        %   % a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*N(i)^4/c_m + k*(g_Na*M(i)^3*H(i) + S)/c_m + k*g_L/c_m;
+        %   % a5 = k*g_k*N(i)^4*E_k/c_m + k*(g_Na*M(i)^3*H(i) + S)*E_Na/c_m + k*g_L*E_L/c_m;
         % end
         
         % adding the stimulus spacially only: (P0 - P1)
         % if i*h >= P0 && i*h <= P1 
         %     % must be used for Choice 1
-        %     % a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-        %     % a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        %     % a2 = a/(r_l*h^2) + c_m/k + g_k*N(i)^4 + (g_Na*M(i)^3*H(i) + S) + g_L;
+        %     % a5 = g_k*N(i)^4*E_k + (g_Na*M(i)^3*H(i) + S)*E_Na + g_L*E_L;
         % 
         %    % must be used for Choice 2
-        %    a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*N(1, i)^4/c_m + k*(g_Na*M(1, i)^3*H(1, i) + S)/c_m + k*g_L/c_m;
-        %    a5 = k*g_k*N(1, i)^4*E_k/c_m + k*(g_Na*M(1, i)^3*H(1, i) + S)*E_Na/c_m + k*g_L*E_L/c_m;
+        %    a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*N(i)^4/c_m + k*(g_Na*M(i)^3*H(i) + S)/c_m + k*g_L/c_m;
+        %    a5 = k*g_k*N(i)^4*E_k/c_m + k*(g_Na*M(i)^3*H(i) + S)*E_Na/c_m + k*g_L*E_L/c_m;
         % end
         
         
@@ -128,12 +140,12 @@ for j = 1:(n-1)
         if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
             
             % must be used for Choice 1
-            % a2 = a/(r_l*h^2) + c_m/k + g_k*N(1, i)^4 + (g_Na*M(1, i)^3*H(1, i) + S) + g_L;
-            % a5 = g_k*N(1, i)^4*E_k + (g_Na*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+            % a2 = a/(r_l*h^2) + c_m/k + g_k*N(i)^4 + (g_Na*M(i)^3*H(i) + S) + g_L;
+            % a5 = g_k*N(i)^4*E_k + (g_Na*M(i)^3*H(i) + S)*E_Na + g_L*E_L;
             
             % must be used for Choice 2
-            a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*(N(1, i)^4)/c_m + k*(g_Na*(M(1, i)^3)*H(1, i) + S)/c_m + k*g_L/c_m;
-            a5 = k*g_k*(N(1, i)^4)*E_k/c_m + k*(g_Na*(M(1, i)^3)*H(1, i) + S)*E_Na/c_m + k*g_L*E_L/c_m;
+            a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*(N(i)^4)/c_m + k*(g_Na*(M(i)^3)*H(i) + S)/c_m + k*g_L/c_m;
+            a5 = k*g_k*(N(i)^4)*E_k/c_m + k*(g_Na*(M(i)^3)*H(i) + S)*E_Na/c_m + k*g_L*E_L/c_m;
         end
 
         % constructing the A and b matrix and vector
@@ -155,20 +167,8 @@ for j = 1:(n-1)
     
     % setting newU (the solution from Ax = b)
     newU = transpose(A\b);
+    U = newU;
     
-    % setting newN, newM, newH vectors (this is a new i, different from the above for loop)
-    for i = 1:m
-        newN(1, i) = 1/(1/k + alpha_n(U(1, i)) + beta_n(U(1, i))) * (N(1, i)/k + alpha_n(U(1, i)));
-        newM(1, i) = 1/(1/k + alpha_m(U(1, i)) + beta_m(U(1, i))) * (M(1, i)/k + alpha_m(U(1, i)));
-        newH(1, i) = 1/(1/k + alpha_h(U(1, i)) + beta_h(U(1, i))) * (H(1, i)/k + alpha_h(U(1, i)));
-    end
-
-    % Edit the next U, N, M and H (redefining U, N, M and H vectors)
-    N(1,:) = newN;
-    M(1,:) = newM;
-    H(1,:) = newH;
-    U(1,:) = newU;
-
     % adding the newly defined vectors to the 'all' matrices
     Uall(j+1,:) = U;
     Nall(j+1,:) = N;
