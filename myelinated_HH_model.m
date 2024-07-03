@@ -132,58 +132,69 @@ n = T/k;
 % j is the time step
 for j = 1:(n-1)
     j
+    % setting newN, newM, newH vectors (this is a new i, different from the above for loop)
+    for i = 1:m
+        newN(i) = 1/(1/k + alpha_n(U(i)) + beta_n(U(i))) * (N(i)/k + alpha_n(U(i)));
+        newM(i) = 1/(1/k + alpha_m(U(i)) + beta_m(U(i))) * (M(i)/k + alpha_m(U(i)));
+        newH(i) = 1/(1/k + alpha_h(U(i)) + beta_h(U(i))) * (H(i)/k + alpha_h(U(i)));
+    end
+
+    % Edit the next U, N, M and H (redefining U, N, M and H vectors)
+    N = newN;
+    M = newM;
+    H = newH;
+    
     % i is the space step
     for i = 1:m
 
         % defining coefficients
         % Choice 1 set of variables (see powerpoint for Choice 1 & 2 meaning)
         % a1 = -a(i*h)/(2*r_l*h^2);
-        % a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + g_Na(i*h)*M(1, i)^3*H(1, i) + g_L;
+        % a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(i)^4 + g_Na(i*h)*M(i)^3*H(i) + g_L;
         % a3 = -a(i*h)/(2*r_l*h^2); 
         % a4 = c_m(i*h)/k; 
-        % a5 = g_k(i*h)*N(1, i)^4*E_k + g_Na(i*h)*M(1, i)^3*H(1, i)*E_Na + g_L*E_L;
+        % a5 = g_k(i*h)*N(i)^4*E_k + g_Na(i*h)*M(i)^3*H(i)*E_Na + g_L*E_L;
         
         % Choice 2 set of variables
         a1 = -k*a(i*h)/(2*r_l*c_m(i*h)*h^2);
-        a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*(N(1, i)^4)/c_m(i*h) + k*g_Na(i*h)*(M(1, i)^3)*H(1, i)/c_m(i*h) + k*g_L/c_m(i*h);
+        a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*(N(i)^4)/c_m(i*h) + k*g_Na(i*h)*(M(i)^3)*H(i)/c_m(i*h) + k*g_L/c_m(i*h);
         a3 = -k*a(i*h)/(2*r_l*c_m(i*h)*h^2); 
         a4 = 1; 
-        a5 = k*g_k(i*h)*(N(1, i)^4)*E_k/c_m(i*h) + k*g_Na(i*h)*(M(1, i)^3)*H(1, i)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
-
+        a5 = k*g_k(i*h)*(N(i)^4)*E_k/c_m(i*h) + k*g_Na(i*h)*(M(i)^3)*H(i)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
 
 
         % % adding the stimulus temporally only: (T0 - T1)
         % if j*k >= T0 && j*k <= T1
         %   % must be used Choice 1
-        %   a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + (g_Na(i*h)*M(1, i)^3*H(1, i) + S) + g_L;
-        %   a5 = g_k(i*h)*N(1, i)^4*E_k + (g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        %   a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(i)^4 + (g_Na(i*h)*M(i)^3*H(i) + S) + g_L;
+        %   a5 = g_k(i*h)*N(i)^4*E_k + (g_Na(i*h)*M(i)^3*H(i) + S)*E_Na + g_L*E_L;
         % 
         %   % must be used for Choice 2
-        %   % a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*N(1, i)^4/c_m(i*h) + k*(g_Na(i*h)*M(1, i)^3*H(1, i) + S)/c_m(i*h) + k*g_L/c_m(i*h);
-        %   % a5 = k*g_k(i*h)*N(1, i)^4*E_k/c_m(i*h) + k*(g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
+        %   % a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*N(i)^4/c_m(i*h) + k*(g_Na(i*h)*M(i)^3*H(i) + S)/c_m(i*h) + k*g_L/c_m(i*h);
+        %   % a5 = k*g_k(i*h)*N(i)^4*E_k/c_m(i*h) + k*(g_Na(i*h)*M(i)^3*H(i) + S)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
         % end
          
         % adding the stimulus spatially only: (P0 - P1)
         % if i*h >= P0 && i*h <= P1 
         %     % must be used for Choice 1
-        %     % a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + (g_Na(i*h)*M(1, i)^3*H(1, i) + S) + g_L;
-        %     % a5 = g_k(i*h)*N(1, i)^4*E_k + (g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+        %     % a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(i)^4 + (g_Na(i*h)*M(i)^3*H(i) + S) + g_L;
+        %     % a5 = g_k(i*h)*N(i)^4*E_k + (g_Na(i*h)*M(i)^3*H(i) + S)*E_Na + g_L*E_L;
         % 
         %    % must be used for Choice 2
-        %    a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*N(1, i)^4/c_m(i*h) + k*(g_Na(i*h)*M(1, i)^3*H(1, i) + S)/c_m(i*h) + k*g_L/c_m(i*h);
-        %    a5 = k*g_k(i*h)*N(1, i)^4*E_k/c_m(i*h) + k*(g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
+        %    a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*N(i)^4/c_m(i*h) + k*(g_Na(i*h)*M(i)^3*H(i) + S)/c_m(i*h) + k*g_L/c_m(i*h);
+        %    a5 = k*g_k(i*h)*N(i)^4*E_k/c_m(i*h) + k*(g_Na(i*h)*M(i)^3*H(i) + S)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
         % end
         
         % adding stimulus temporally and spatially:
         if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
             
             % must be used for Choice 1
-            % a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(1, i)^4 + (g_Na(i*h)*M(1, i)^3*H(1, i) + S) + g_L;
-            % a5 = g_k(i*h)*N(1, i)^4*E_k + (g_Na(i*h)*M(1, i)^3*H(1, i) + S)*E_Na + g_L*E_L;
+            % a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(i)^4 + (g_Na(i*h)*M(i)^3*H(i) + S) + g_L;
+            % a5 = g_k(i*h)*N(i)^4*E_k + (g_Na(i*h)*M(i)^3*H(i) + S)*E_Na + g_L*E_L;
             
             % must be used for Choice 2
-            a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*(N(1, i)^4)/c_m(i*h) + k*(g_Na(i*h)*(M(1, i)^3)*H(1, i) + S)/c_m(i*h) + k*g_L/c_m(i*h);
-            a5 = k*g_k(i*h)*(N(1, i)^4)*E_k/c_m(i*h) + k*(g_Na(i*h)*(M(1, i)^3)*H(1, i) + S)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
+            a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*(N(i)^4)/c_m(i*h) + k*(g_Na(i*h)*(M(i)^3)*H(i) + S)/c_m(i*h) + k*g_L/c_m(i*h);
+            a5 = k*g_k(i*h)*(N(i)^4)*E_k/c_m(i*h) + k*(g_Na(i*h)*(M(i)^3)*H(i) + S)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
         end
 
         % constructing the A and b matrix and vector
@@ -205,19 +216,7 @@ for j = 1:(n-1)
 
     % setting newU (the solution from Ax = b))
     newU = transpose(A\b);
-    
-    % setting newN, newM, newH vectors (this is a new i, different from the above for loop)
-    for i = 1:m
-        newN(1, i) = 1/(1/k + alpha_n(U(1, i)) + beta_n(U(1, i))) * (N(1, i)/k + alpha_n(U(1, i)));
-        newM(1, i) = 1/(1/k + alpha_m(U(1, i)) + beta_m(U(1, i))) * (M(1, i)/k + alpha_m(U(1, i)));
-        newH(1, i) = 1/(1/k + alpha_h(U(1, i)) + beta_h(U(1, i))) * (H(1, i)/k + alpha_h(U(1, i)));
-    end
-
-    % Edit the next U, N, M and H (redefining U, N, M and H vectors)
-    N(1,:) = newN;
-    M(1,:) = newM;
-    H(1,:) = newH;
-    U(1,:) = newU;
+    U = newU;
 
     % adding the newly defined vectors to the 'all' matrices
     Uall(j+1,:) = U;
