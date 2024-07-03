@@ -110,39 +110,50 @@ newN = zeros(1, m);
 newM = zeros(1, m);
 newH = zeros(1, m);
 
-
 % number of rows in final matrices
 n = T_tilde/k;
 
 % j is the time step
 for j = 1:(n-1)
 
+    % setting newN, newM, newH vectors (this is a new i, different from the above for loop)
+    for i = 1:m
+        newN(i) = 1/(1/k + alpha_n_tilde(U(i)) + beta_n_tilde(U(i))) * (N(i)/k + alpha_n_tilde(U(i)));
+        newM(i) = 1/(1/k + alpha_m_tilde(U(i)) + beta_m_tilde(U(i))) * (M(i)/k + alpha_m_tilde(U(i)));
+        newH(i) = 1/(1/k + alpha_h_tilde(U(i)) + beta_h_tilde(U(i))) * (H(i)/k + alpha_h_tilde(U(i)));
+    end
+
+    % Edit the next U, N, M and H (redefining U, N, M and H vectors)
+    N = newN;
+    M = newM;
+    H = newH;
+    
     % i is the space step
     for i = 1:m
-
+        
         % defining coefficients
         a1 = -k*gamma/h^2;
-        a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*g_Na_tilde*M(1, i)^3*H(1, i) + k*g_L_tilde;
+        a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(i)^4 + k*g_Na_tilde*M(i)^3*H(i) + k*g_L_tilde;
         a3 = -k*gamma/h^2;
         a4 = 1; 
-        a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*g_Na_tilde*M(1, i)^3*H(1, i)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
+        a5 = k*g_k_tilde*N(i)^4*E_k_tilde + k*g_Na_tilde*M(i)^3*H(i)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
 
         % % adding the stimulus temporally only: (T0 - T1)
         % if j*k >= T0_tilde && j*k <= T1_tilde
-        %     a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*(g_Na_tilde*M(1, i)^3*H(1, i)+ S_tilde) + k*g_L_tilde;
-        %     a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*(g_Na_tilde*M(1, i)^3*H(1, i) + S_tilde)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
+        %     a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(i)^4 + k*(g_Na_tilde*M(i)^3*H(i)+ S_tilde) + k*g_L_tilde;
+        %     a5 = k*g_k_tilde*N(i)^4*E_k_tilde + k*(g_Na_tilde*M(i)^3*H(i) + S_tilde)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
         % end
         
         % adding the stimulus spatially only: (P0 - P1)
         % if i*h >= P0_tilde && i*h <= P1_tilde 
-        %     a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*(g_Na_tilde*M(1, i)^3*H(1, i)+ S_tilde) + k*g_L_tilde;
-        %     a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*(g_Na_tilde*M(1, i)^3*H(1, i) + S_tilde)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
+        %     a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(i)^4 + k*(g_Na_tilde*M(i)^3*H(i)+ S_tilde) + k*g_L_tilde;
+        %     a5 = k*g_k_tilde*N(i)^4*E_k_tilde + k*(g_Na_tilde*M(i)^3*H(i) + S_tilde)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
         % end
         
         % adding stimulus temporally and spatially:
         if (j*k >= T0_tilde && j*k <= T1_tilde) && (i*h >= P0_tilde && i*h <= P1_tilde)
-            a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(1, i)^4 + k*(g_Na_tilde*M(1, i)^3*H(1, i)+ S_tilde) + k*g_L_tilde;
-            a5 = k*g_k_tilde*N(1, i)^4*E_k_tilde + k*(g_Na_tilde*M(1, i)^3*H(1, i) + S_tilde)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
+            a2 = 1 + 2*k*gamma/h^2 + k*g_k_tilde*N(i)^4 + k*(g_Na_tilde*M(i)^3*H(i)+ S_tilde) + k*g_L_tilde;
+            a5 = k*g_k_tilde*N(i)^4*E_k_tilde + k*(g_Na_tilde*M(i)^3*H(i) + S_tilde)*E_Na_tilde + k*g_L_tilde*E_L_tilde;
         end
 
         % constructing the A and b matrix and vector
@@ -158,25 +169,13 @@ for j = 1:(n-1)
             A(i, i-1) = a1;
             A(i, i) = a2;
             A(i, i+1) = a3;
-            b(i, 1) = a4*U(1, i) + a5; 
+            b(i, 1) = a4*U(i) + a5; 
         end
     end
 
     % setting newU (the solution from Ax = b)
     newU = transpose(A\b);
-    
-    % setting newN, newM, newH vectors (this is a new i, different from the above for loop)
-    for i = 1:m
-        newN(1, i) = 1/(1/k + alpha_n_tilde(U(1, i)) + beta_n_tilde(U(1, i))) * (N(1, i)/k + alpha_n_tilde(U(1, i)));
-        newM(1, i) = 1/(1/k + alpha_m_tilde(U(1, i)) + beta_m_tilde(U(1, i))) * (M(1, i)/k + alpha_m_tilde(U(1, i)));
-        newH(1, i) = 1/(1/k + alpha_h_tilde(U(1, i)) + beta_h_tilde(U(1, i))) * (H(1, i)/k + alpha_h_tilde(U(1, i)));
-    end
-
-    % Edit the next U, N, M and H (redefining U, N, M and H vectors)
-    N(1,:) = newN;
-    M(1,:) = newM;
-    H(1,:) = newH;
-    U(1,:) = newU;
+    U = newU;
 
     % adding the newly defined vectors to the 'all' matrices
     Uall(j+1,:) = U;
