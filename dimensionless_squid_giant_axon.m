@@ -57,7 +57,7 @@ k = 0.01; % time step
 % interval as T0-T1 before, now it should be: T0_tau = T0/t_c -
 % T1_tau = T1/t_c AND for the space interval if it was P0-P1, now it should
 % be P0_chi = P0/x_c - P1_chi = P1/x_c.
-S = 0.003948; % (in 1/(ohm*cm^2))
+S = 0.003912; % (in 1/(ohm*cm^2))
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
 P0 = 1; % position of adding the stimulus (in cm)
@@ -287,4 +287,4 @@ end
 % ylabel("Probabilities of ion channels opening/closing.")
 % xlabel("Dimensionless Time $\tilde{T}$.", 'Interpreter','latex')
 
-save('dimless_stim_0.05.mat');
+save('dimless_stim_0.003912.mat');
