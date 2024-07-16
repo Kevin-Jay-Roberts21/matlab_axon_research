@@ -1,4 +1,6 @@
-
+%%%%%%%%%%%%%%%%%%%%
+% PLOTTING 2 LINES %
+%%%%%%%%%%%%%%%%%%%%
 
 % Comparing the dimensionless vs dimensional simulations
 dimnal_stim_003948 = load('dimnal_stim_0.003948.mat');
@@ -10,38 +12,112 @@ dimless_stim_05 = load('dimless_stim_0.05.mat');
 
 % norms of each matrix comparison
 % conclude that the matrices are very similar due to 10^-9 norm or smaller
-norm(dimnal_stim_003948.Uall-dimless_stim_003948.Uall*25)
-norm(dimnal_stim_003947.Uall-dimless_stim_003947.Uall*25)
-norm(dimnal_stim_05.Uall-dimless_stim_05.Uall*25)
+norm(dimnal_stim_003948.Uall-dimless_stim_003948.Uall*25);
+norm(dimnal_stim_003947.Uall-dimless_stim_003947.Uall*25);
+norm(dimnal_stim_05.Uall-dimless_stim_05.Uall*25);
 
 d = dimnal_stim_003948.d;
 T = dimnal_stim_003948.T;
 m = dimnal_stim_003948.m;
 n = dimnal_stim_003948.n;
 k = dimnal_stim_003948.k;
+h = dimnal_stim_003948.h;
 t_c = dimless_stim_003948.t_c;
 x_c = dimless_stim_003948.x_c;
 
 observed_time = 10; % in ms
 observed_position = 2; % in cm
 
-figure(1)
-t1 = linspace(0, d, m);
-plot(t1, dimnal_stim_003948.Uall(round(observed_time/k),:))
-hold on
-plot(t1, dimless_stim_003948.Uall(round(observed_time/k),:))
-legend({sprintf('Voltage of the axon at time t = %g ms', observed_time), sprintf('$\\tilde{V_m}$ at $\\tilde{t} = %g$', observed_time/t_c)}, 'Interpreter','latex')
-ylabel("Voltage in millivolts.")
-xlabel("Length of the axon in cm.")
+% figure(1)
+% t1 = linspace(0, d, m);
+% plot(t1, dimnal_stim_003948.Uall(round(observed_time/k),:))
+% hold on
+% plot(t1, dimless_stim_003948.Uall(round(observed_time/k),:))
+% legend({sprintf('Voltage of the axon at time t = %g ms', observed_time), sprintf('$\\tilde{V_m}$ at $\\tilde{t} = %g$', observed_time/t_c)}, 'Interpreter','latex')
+% ylabel("Voltage in millivolts.")
+% xlabel("Length of the axon in cm.")
+% 
+% figure(2)
+% t2 = linspace(0, T, n);
+% plot(t2, dimnal_stim_003948.Uall(:,round(observed_position/h)))
+% hold on
+% plot(t2, dimless_stim_003948.Uall(:,round(observed_position/h)))
+% legend({sprintf('Voltage at x = %g cm', observed_position), sprintf('$\\tilde{V_m}$ at $\\tilde{x} = %g$', observed_position/x_c)}, 'Interpreter','latex')
+% ylabel("Voltage in millivolts.")
+% xlabel("Time in milliseconds.")
 
-figure(2)
-t2 = linspace(0, T, n);
-plot(t2, dimnal_stim_003948.Uall(:,round(observed_position/h)))
-hold on
-plot(t2, dimless_stim_003948.Uall(:,round(observed_position/h)))
-legend({sprintf('Voltage at x = %g cm', observed_position), sprintf('$\\tilde{V_m}$ at $\\tilde{x} = %g$', observed_position/x_c)}, 'Interpreter','latex')
-ylabel("Voltage in millivolts.")
-xlabel("Time in milliseconds.")
+
+%%%%%%%%%%%%%%%%%%%%%%
+% PLOTTING ANIMATION %
+%%%%%%%%%%%%%%%%%%%%%%
+
+% data = load('dimnal_stim_0.003948.mat').Uall;
+% 
+% % x axis is the axon length
+% t1 = linspace(0, d, m); 
+% 
+% figure(1);
+% hold on;
+% 
+% xmin = 0;
+% xmax = d;
+% ymin = -90;
+% ymax = 60;
+% 
+% axis([xmin xmax ymin ymax]);  % Set axis limits
+% xlabel('Axon length in cm');
+% ylabel('Voltage of axon in mV');
+% 
+% % Loop through each vector and plot them one by one
+% for i = 1:n
+%     x = data(i,:);  % Get x-coordinates of current vector
+%     
+%     % Plot the vector
+%     plot(t1, x, 'b-', 'LineWidth', 2);  % Note the order of y and x here
+%     
+%     text(xmin + 0.1 * (xmax - xmin), ymax - 0.1 * (ymax - ymin), sprintf('Time: %.2f ms', round(i*k, 2)), 'FontSize', 12, 'BackgroundColor', 'w');
+%     
+%     % Add a pause to create animation effect
+%     pause(0.001);
+%     
+%     cla;
+% end
+
+% x axis is the axon time
+t2 = linspace(0, T, n); 
+
+figure(2);
+hold on;
+
+xmin = 0;
+xmax = T;
+ymin = -90;
+ymax = 60;
+
+axis([xmin xmax ymin ymax]);  % Set axis limits
+xlabel('Time in ms');
+ylabel('Voltage of axon in mV');
+
+% Loop through each vector and plot them one by one
+for i = 1:m
+    x = data(:,i);  % Get x-coordinates of current vector
+    
+    % Plot the vector
+    plot(t2, x, 'b-', 'LineWidth', 2);  % Note the order of y and x here
+    
+    text(xmin + 0.1 * (xmax - xmin), ymax - 0.1 * (ymax - ymin), sprintf('Space: %.2f ms', round(i*h, 2)), 'FontSize', 12, 'BackgroundColor', 'w');
+    
+    % Add a pause to create animation effect
+    pause(0.01);
+    
+    cla;
+end
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PLOTTING MULTIPLE LINES %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % % now pick a position to plot all of the voltages (multiply by 10000 to get
 % % units in um)
