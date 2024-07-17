@@ -214,9 +214,9 @@ time1 = 5; % in ms
 time2 = 6; % in ms
 time3 = 8; % in ms
 time4 = 10; % in ms
-time5 = 10.5; % in ms
-time6 = 10.8; % in ms
-time7 = 11; % in ms
+time5 = 11; % in ms
+time6 = 12; % in ms
+time7 = 13; % in ms
 
 list_of_times = [time1
                  time2
@@ -279,4 +279,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('dimnal_stim_0.003912.mat');
+% save('dimnal_stim_0.003912.mat');

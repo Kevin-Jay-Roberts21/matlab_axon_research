@@ -32,7 +32,7 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 31;
+num_of_nodes = 21;
 nodal_length = 0.0010; % (in cm)
 myelinated_length = 0.0115; % (in cm)
 d = (myelinated_length*(num_of_nodes-1)) + (nodal_length*(num_of_nodes-1)) + nodal_length; % axon length (in cm)
@@ -71,7 +71,7 @@ g_k = @(x) g_k_nodal*g_k(x) + g_k_internodal*(g_k(x)==0);
 g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); 
 
 % adding sodium conductance (stimulus)
-S = 0.371; % (in 1/(ohm*cm^2))
+S = 0.5; % (in 1/(ohm*cm^2))
 T0 = 2; % start time of when stimulus is added (in ms)
 T1 = 2.1; % end time of when stimulus is added (in ms)
 
@@ -334,5 +334,4 @@ ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
 
-% save U,N,,'cable_0.01'  % this is for...
-% save(U, M, N, H, 'test' % this 
+save('myelin_stim_0.5.mat');
