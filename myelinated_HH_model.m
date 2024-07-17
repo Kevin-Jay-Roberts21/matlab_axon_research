@@ -14,9 +14,9 @@ h = 0.0005; % space step (this)
 T = 10; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
-g_k_nodal = 0.08; % (1/(ohm*cm^2))
+g_k_nodal = 0.05; % (1/(ohm*cm^2))
 g_k_internodal = 0; % (1/(ohm*cm^2))
-g_Na_nodal = 0.5; % (1/(ohm*cm^2))
+g_Na_nodal = 0.3; % (1/(ohm*cm^2))
 g_Na_internodal = 0; % (1/(ohm*cm^2))
 E_k = -77; % (mV)
 E_Na = 50; % (mV)
@@ -33,9 +33,9 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
 num_of_nodes = 21;
-nodal_length = 0.0010; % (in cm)
+nodal_length = 0.0005; % (in cm)
 myelinated_length = 0.0115; % (in cm)
-d = (myelinated_length*(num_of_nodes-1)) + (nodal_length*(num_of_nodes-1)) + nodal_length; % axon length (in cm)
+L = (myelinated_length*(num_of_nodes-1)) + (nodal_length*(num_of_nodes-1)) + nodal_length; % axon length (in cm)
 
 % creating a list of nodel regions [[start_pos1, end_pos1], [start_pos2, end_pos2], ...]
 % reasoning for this here is to use nodal_regions to describe the 4 spacial
@@ -76,8 +76,8 @@ T0 = 2; % start time of when stimulus is added (in ms)
 T1 = 2.1; % end time of when stimulus is added (in ms)
 
 % NOTE: the stimulus MUST be added in a nodal region
-P0 = 0.1000; % position of adding the stimulus (in cm)
-P1 = 0.1005; % ending position of adding the stimulus (in cm or *10^4 in um)
+P0 = 0.0120; % position of adding the stimulus (in cm)
+P1 = 0.0125; % ending position of adding the stimulus (in cm or *10^4 in um)
 
 % INITIAL CONDITIONS (commented out are different I.C. for different situations)
 % N_0 = 0.4749; % probability that potassium gate is open (eq: 0.3177)
@@ -94,7 +94,7 @@ V_initial = -55.5340; % (mV) Voltage (eq: -64.9997)
 % V_initial = -64.9997; % (mV) Voltage (eq: -64.9997)
 
 % number of columns of the matrices (length of axon divided by space step)
-m = d/h+1;
+m = round(L/h)+1;
 
 % initial vectors
 U = zeros(1, m);
@@ -245,15 +245,15 @@ end
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
 position1 = 0.001; % in cm 
-position2 = 0.0015;
-position3 = 0.02; 
-position4 = 0.03; 
-position5 = 0.1; 
-position6 = 0.2; 
-position7 = 0.3; 
-position8 = 0.4;
-position9 = 0.5;
-position10 = 0.6;
+position2 = 0.05;
+position3 = 0.10; 
+position4 = 0.12; 
+position5 = 0.14; 
+position6 = 0.16; 
+position7 = 0.18; 
+position8 = 0.2;
+position9 = 0.22;
+position10 = 0.24;
 
 list_of_positions = [position1
                      position2
@@ -261,7 +261,10 @@ list_of_positions = [position1
                      position4
                      position5
                      position6
-                     position7];
+                     position7
+                     position8
+                     position9
+                     position10];
 
 % Times to observe the voltage along the axon
 time1 = 2; % in ms
@@ -282,7 +285,7 @@ list_of_times = [time1
 
 % plotting Voltage vs Axon length
 figure(1)
-t1 = linspace(0, d, m);
+t1 = linspace(0, L, m);
 plot(t1, Uall(round(time1/k),:))
 for i = 2:length(list_of_times)
     hold on
@@ -334,4 +337,4 @@ ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
 
-save('myelin_stim_0.5.mat');
+% save('myelin_stim_0.5_g_change.mat');
