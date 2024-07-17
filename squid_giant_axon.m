@@ -9,7 +9,7 @@ clc
 c_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
 r_l = 30; % specific intracellular resistivity (ohms * cm)
 a = 0.0025; % axon radius (cm)
-d = 5; % axon length (cm)
+L = 5; % axon length (cm)
 h = 0.01; % space step (MAY CHANGE LATER)
 T = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
@@ -42,7 +42,7 @@ H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
 V_initial = -64.9997; % (mV) Voltage (eq: -64.9997)
 
 % number of columns of the matrices (length of axon divided by space step)
-m = d/h + 1; 
+m = L/h + 1; 
 
 % initial vectors
 U = zeros(1, m);
@@ -228,7 +228,7 @@ list_of_times = [time1
 
 % plotting Voltage vs Axon length
 figure(1)
-t1 = linspace(0, d, m);
+t1 = linspace(0, L, m);
 plot(t1, Uall(round(time1/k),:))
 for i = 2:length(list_of_times)
     hold on
