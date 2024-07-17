@@ -18,7 +18,7 @@ data6 = load('dimless_stim_0.05.mat');
 % Loading in Myelinated Axon data
 data7 = load('myelin_stim_0.371.mat');
 data8 = load('myelin_stim_0.5.mat');
-
+data9 = load('myelin_stim_0.5_nodel_0.0005.mat')
 
 % norms of each matrix comparison
 % conclude that the matrices are very similar due to 10^-9 norm or smaller
@@ -65,13 +65,13 @@ norm(data3.Uall-data6.Uall*25)
 % PLOTTING MYELINATED AXON %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% d = data8.d;
-% T = data8.T;
-% m = data8.m;
-% n = data8.n;
-% k = data8.k;
-% h = data8.h;
-
+d = data8.d;
+T = data8.T;
+m = data8.m;
+n = data8.n;
+k = data8.k;
+h = data8.h;
+% 
 % % SPATIAL PROFILE %
 % % x axis is the axon length
 % t1 = linspace(0, d, m); 
@@ -106,39 +106,39 @@ norm(data3.Uall-data6.Uall*25)
 %     cla;
 % end
 
-% % TEMPORAL PROFILE %
+% TEMPORAL PROFILE %
 % x axis is the axon time
-% t2 = linspace(0, T, n); 
-% 
-% figure(2);
-% hold on;
-% 
-% xmin = 0;
-% xmax = T;
-% ymin = -90;
-% ymax = 60;
-% 
-% axis([xmin xmax ymin ymax]);  % Set axis limits
-% xlabel('Time in ms');
-% ylabel('Voltage of axon in mV');
-% 
-% % Loop through each vector and plot them one by one
-% for i = 1:m
-%     x1 = data8.Uall(:,i);  
-% %     x2 = data8.Uall(:,i);
-%     
-%     % Plot the vector
-%     plot(t2, x1, 'b-');
-%     hold on
-% %     plot(t2, x2, 'r-');
-%     
-%     text(xmin + 0.1 * (xmax - xmin), ymax - 0.1 * (ymax - ymin), sprintf('Space: %.2f cm', round(i*h, 2)), 'FontSize', 12, 'BackgroundColor', 'w');
-%     
-%     % Add a pause to create animation effect
-%     pause(0.01);
-%     
-%     cla;
-% end
+t2 = linspace(0, T, n); 
+
+figure(2);
+hold on;
+
+xmin = 0;
+xmax = T;
+ymin = -90;
+ymax = 60;
+
+axis([xmin xmax ymin ymax]);  % Set axis limits
+xlabel('Time in ms');
+ylabel('Voltage of axon in mV');
+
+% Loop through each vector and plot them one by one
+for i = 1:m
+    x1 = data8.Uall(:,i);  
+%     x2 = data8.Uall(:,i);
+    
+    % Plot the vector
+    plot(t2, x1, 'b-');
+    hold on
+%     plot(t2, x2, 'r-');
+    
+    text(xmin + 0.1 * (xmax - xmin), ymax - 0.1 * (ymax - ymin), sprintf('Space: %.2f cm', round(i*h, 2)), 'FontSize', 12, 'BackgroundColor', 'w');
+    
+    % Add a pause to create animation effect
+    pause(0.01);
+    
+    cla;
+end
 
 
 
@@ -150,46 +150,46 @@ norm(data3.Uall-data6.Uall*25)
 %%%%% SQUID AXON %%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
-d = data1.d;
-T = data1.T;
-m = data1.m;
-n = data1.n;
-k = data1.k;
-h = data1.h;
-
-% SPATIAL PROFILE %
-% x axis is the axon length
-t1 = linspace(0, d, m); 
-
-figure(1);
-hold on;
-
-xmin = 0;
-xmax = d;
-ymin = -90;
-ymax = 60;
-
-axis([xmin xmax ymin ymax]);  % Set axis limits
-xlabel('Axon length in cm');
-ylabel('Voltage of axon in mV');
-
-% Loop through each vector and plot them one by one
-for i = 1:n
-    x1 = data1.Uall(i,:);
-    x2 = data4.Uall(i,:);
-    
-    % Plot the vector
-    plot(t1, x1, 'b-');
-    hold on
-    plot(t1, x2, 'r-');
-    
-    text(xmin + 0.1 * (xmax - xmin), ymax - 0.1 * (ymax - ymin), sprintf('Time: %.2f ms', round(i*k, 2)), 'FontSize', 12, 'BackgroundColor', 'w');
-    
-    % Add a pause to create animation effect
-    pause(0.001);
-    
-    cla;
-end
+% d = data1.d;
+% T = data1.T;
+% m = data1.m;
+% n = data1.n;
+% k = data1.k;
+% h = data1.h;
+% 
+% % SPATIAL PROFILE %
+% % x axis is the axon length
+% t1 = linspace(0, d, m); 
+% 
+% figure(1);
+% hold on;
+% 
+% xmin = 0;
+% xmax = d;
+% ymin = -90;
+% ymax = 60;
+% 
+% axis([xmin xmax ymin ymax]);  % Set axis limits
+% xlabel('Axon length in cm');
+% ylabel('Voltage of axon in mV');
+% 
+% % Loop through each vector and plot them one by one
+% for i = 1:n
+%     x1 = data1.Uall(i,:);
+%     x2 = data4.Uall(i,:);
+%     
+%     % Plot the vector
+%     plot(t1, x1, 'b-');
+%     hold on
+%     plot(t1, x2, 'r-');
+%     
+%     text(xmin + 0.1 * (xmax - xmin), ymax - 0.1 * (ymax - ymin), sprintf('Time: %.2f ms', round(i*k, 2)), 'FontSize', 12, 'BackgroundColor', 'w');
+%     
+%     % Add a pause to create animation effect
+%     pause(0.001);
+%     
+%     cla;
+% end
 % 
 % % TEMPORAL PROFILE %
 % % x axis is the axon time
