@@ -150,46 +150,46 @@ norm(data3.Uall-data6.Uall*25)
 %%%%% SQUID AXON %%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
-% d = data1.d;
-% T = data1.T;
-% m = data1.m;
-% n = data1.n;
-% k = data1.k;
-% h = data1.h;
-% 
-% % SPATIAL PROFILE %
-% % x axis is the axon length
-% t1 = linspace(0, d, m); 
-% 
-% figure(1);
-% hold on;
-% 
-% xmin = 0;
-% xmax = d;
-% ymin = -90;
-% ymax = 60;
-% 
-% axis([xmin xmax ymin ymax]);  % Set axis limits
-% xlabel('Axon length in cm');
-% ylabel('Voltage of axon in mV');
-% 
-% % Loop through each vector and plot them one by one
-% for i = 1:n
-%     x1 = data1.Uall(i,:);
-%     x2 = data2.Uall(i,:);
-%     
-%     % Plot the vector
-%     plot(t1, x1, 'b-');
-%     hold on
-%     plot(t1, x2, 'r-');
-%     
-%     text(xmin + 0.1 * (xmax - xmin), ymax - 0.1 * (ymax - ymin), sprintf('Time: %.2f ms', round(i*k, 2)), 'FontSize', 12, 'BackgroundColor', 'w');
-%     
-%     % Add a pause to create animation effect
-%     pause(0.001);
-%     
-%     cla;
-% end
+d = data1.d;
+T = data1.T;
+m = data1.m;
+n = data1.n;
+k = data1.k;
+h = data1.h;
+
+% SPATIAL PROFILE %
+% x axis is the axon length
+t1 = linspace(0, d, m); 
+
+figure(1);
+hold on;
+
+xmin = 0;
+xmax = d;
+ymin = -90;
+ymax = 60;
+
+axis([xmin xmax ymin ymax]);  % Set axis limits
+xlabel('Axon length in cm');
+ylabel('Voltage of axon in mV');
+
+% Loop through each vector and plot them one by one
+for i = 1:n
+    x1 = data1.Uall(i,:);
+    x2 = data4.Uall(i,:);
+    
+    % Plot the vector
+    plot(t1, x1, 'b-');
+    hold on
+    plot(t1, x2, 'r-');
+    
+    text(xmin + 0.1 * (xmax - xmin), ymax - 0.1 * (ymax - ymin), sprintf('Time: %.2f ms', round(i*k, 2)), 'FontSize', 12, 'BackgroundColor', 'w');
+    
+    % Add a pause to create animation effect
+    pause(0.001);
+    
+    cla;
+end
 % 
 % % TEMPORAL PROFILE %
 % % x axis is the axon time
