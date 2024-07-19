@@ -14,9 +14,9 @@ h = 0.0005; % space step (this)
 T = 10; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
-g_k_nodal = 0.05; % (1/(ohm*cm^2))
+g_k_nodal = 0.065; % (1/(ohm*cm^2))
 g_k_internodal = 0; % (1/(ohm*cm^2))
-g_Na_nodal = 0.3; % (1/(ohm*cm^2))
+g_Na_nodal = 0.435; % (1/(ohm*cm^2))
 g_Na_internodal = 0; % (1/(ohm*cm^2))
 E_k = -77; % (mV)
 E_Na = 50; % (mV)
@@ -32,7 +32,7 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 21;
+num_of_nodes = 85;
 nodal_length = 0.0005; % (in cm)
 myelinated_length = 0.0115; % (in cm)
 L = (myelinated_length*(num_of_nodes-1)) + (nodal_length*(num_of_nodes-1)) + nodal_length; % axon length (in cm)
@@ -337,4 +337,4 @@ ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
 
-% save('myelin_stim_0.5_g_change.mat');
+save('myelin_stim_0.5_length_1_2.mat');
