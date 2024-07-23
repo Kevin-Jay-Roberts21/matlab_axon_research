@@ -7,39 +7,56 @@ clc
 
 % defining all of the initial and constant variables
 c_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
-r_l = 30; % specific intracellular resistivity (ohms * cm)
-a = 0.0025; % axon radius (cm)
+r_l = 38.18; % specific intracellular resistivity (ohms * cm)
+a = 0.0238; % axon radius (cm)
 L = 5; % axon length (cm)
 h = 0.01; % space step (MAY CHANGE LATER)
-T = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
+T = 20; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
-g_k = 0.036; % (1/(ohm*cm^2))
-g_Na = 0.12; % (1/(ohm*cm^2))
-g_L = 0.0003; % (1/(ohm*cm^2))
-E_k = -77; % (mV)
-E_Na = 50; % (mV)
-E_L = -54.4; % (mV)
+g_k = 0.000435; % (1/(ohm*cm^2))
+g_Na = 0.000065; % (1/(ohm*cm^2))
+g_L = 0.0; % (1/(ohm*cm^2))
+E_k = -82; % Equilibrium Potential for Potassium Ions (mV)
+E_Na = 45; % Equilibrium Potential for Sodium Ions (mV)
+E_L = -70; % Equilibrium Potential for Leak Channels (mV)
 
 % The following are functions of voltage
-alpha_n = @(V) 0.01*(V + 55)/(1 - exp(-(V + 55)/10));
-beta_n = @(V) 0.125*exp(-(V + 65)/80);
-alpha_m = @(V) 0.1*(V + 40)/(1 - exp(-(V + 40)/10));
-beta_m = @(V) 4*exp(-(V + 65)/18);
-alpha_h = @(V) 0.07*exp(-(V + 65)/20);
-beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
+% Saltatory Conduction 2023 Probability Functions
+alpha_n = @(V) 0.01*(10 - V)/(exp((10 - V)/10) - 1);
+beta_n = @(V) 0.125*exp(-V/80);
+alpha_m = @(V) (2.5 - 0.1*V)/(exp((25 - V)/10) - 1);
+beta_m = @(V) 4*exp(-V/18);
+alpha_h = @(V) 0.07*exp(-V/20);
+beta_h = @(V) 1/(exp((30 - V)/10) + 1);
+
+% Mathematical Neuroscience Probability Functions
+% alpha_n = @(V) 0.01*(V + 55)/(1 - exp(-(V + 55)/10));
+% beta_n = @(V) 0.125*exp(-(V + 65)/80);
+% alpha_m = @(V) 0.1*(V + 40)/(1 - exp(-(V + 40)/10));
+% beta_m = @(V) 4*exp(-(V + 65)/18);
+% alpha_h = @(V) 0.07*exp(-(V + 65)/20);
+% beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 0.003912; % (in 1/(ohm*cm^2))
+S = 0.2; % (in 1/(ohm*cm^2))
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
 P0 = 1; % position of adding the stimulus (in cm)
 P1 = 1.1;
 
 % INITIAL CONDITIONS
+% for math neuroscience parameters
+% N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
+% M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
+% H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
+% V_initial = -64.9997; % (mV) Voltage (eq: -64.9997)
+
+% for saltatory conduction parameters
 N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
 M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
 H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
-V_initial = -64.9997; % (mV) Voltage (eq: -64.9997)
+V_initial = -81.3963; % (mV) Voltage (eq: -64.9997)
+
 
 % number of columns of the matrices (length of axon divided by space step)
 m = L/h + 1; 
@@ -279,4 +296,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('dimnal_stim_0.003912.mat');
+% save('salt_cond2023_params_stim.mat');
