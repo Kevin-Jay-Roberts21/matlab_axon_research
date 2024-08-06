@@ -256,20 +256,25 @@ h = data10.h;
 
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
-position1 = 0.4075; % in cm
-position2 = 0.4085; % in cm
-position3 = 0.4555; % in cm
-position4 = 0.4565; % in cm
-position5 = 0.5035; % in cm
-position6 = 0.5045; % in cm
-position7 = 0.7; % in cm
+node1 = 0.4440;
+node2 = 0.4565;
+segments = (node2-node1)/h;
+recorded = 5;
+
+
+position1 = node1; % in cm
+position2 = node1 + 5*h; % in cm
+position3 = node1 + (5*h*2); % in cm
+position4 = node1 + (5*h*3); % in cm
+position5 = node2; % in cm
+position6 = 0.4560; % in cm
+position7 = 0.4565; % in cm
 
 list_of_positions = [position1
                      position2
                      position3
                      position4
-                     position5
-                     position6];
+                     position5];
 
 % Times to observe the voltage along the axon
 time1 = 2; % in ms
@@ -321,23 +326,30 @@ end
 % describing plots using legends
 legendStrings2 = {};
 for i = 1:length(list_of_positions)
-    legendStrings2{end+1} = sprintf('Voltage at x = %g cm', list_of_positions(i));
+    message = "Voltage at x = %g cm";
+    if list_of_positions(i) == 0.4440
+        message = "NODE 1: x = %g cm";
+    elseif list_of_positions(i) == 0.4565
+        message = "NODE 2: x = %g cm";
+    end
+    
+    legendStrings2{end+1} = sprintf(message, list_of_positions(i));
 end
 legend(legendStrings2, 'Interpreter', 'latex')
 ylabel("Voltage in millivolts.")
 xlabel("Time in milliseconds.")
 
 % plotting N, M, H probability vs time (at a certain position)
-figure(3)
-plot(t2, Nall(:,round(position3/h)))
-hold on
-plot(t2, Mall(:,round(position3/h)))
-hold on
-plot(t2, Hall(:,round(position3/h)))
-legendStrings3 = {
-    sprintf('N at x = %g cm', position3), ...
-    sprintf('M at x = %g cm', position3), ...
-    sprintf('H at x = %g cm', position3)};
-legend(legendStrings3, 'Interpreter','latex')
-ylabel("Probabilities of ion channels opening/closing.")
-xlabel("Time in milliseconds.")
+% figure(3)
+% plot(t2, Nall(:,round(position3/h)))
+% hold on
+% plot(t2, Mall(:,round(position3/h)))
+% hold on
+% plot(t2, Hall(:,round(position3/h)))
+% legendStrings3 = {
+%     sprintf('N at x = %g cm', position3), ...
+%     sprintf('M at x = %g cm', position3), ...
+%     sprintf('H at x = %g cm', position3)};
+% legend(legendStrings3, 'Interpreter','latex')
+% ylabel("Probabilities of ion channels opening/closing.")
+% xlabel("Time in milliseconds.")
