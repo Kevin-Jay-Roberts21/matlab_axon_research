@@ -266,50 +266,50 @@ position1 = node1; % in cm
 position2 = node1 + 5*h; % in cm
 position3 = node1 + (5*h*2); % in cm
 position4 = node1 + (5*h*3); % in cm
-position5 = node2; % in cm
-position6 = 0.4560; % in cm
+position5 = node1 + (5*h*4); % in cm
+position6 = node2; % in cm
 position7 = 0.4565; % in cm
 
 list_of_positions = [position1
                      position2
                      position3
                      position4
-                     position5];
+                     position5
+                     position6];
 
 % Times to observe the voltage along the axon
-time1 = 2; % in ms
-time2 = 4; % in ms
-time3 = 5; % in ms
-time4 = 6; % in ms
-time5 = 7; % in ms
-time6 = 8; % in ms
-time7 = 9; % in ms
+time1 = 5.39; % in ms
+time2 = 5.40; % in ms
+time3 = 5.41; % in ms
+time4 = 5.42; % in ms
+time5 = 5.43; % in ms
+time6 = 5.44; % in ms
+time7 = 5.45; % in ms
 
 list_of_times = [time1
                  time2
                  time3
                  time4
                  time5
-                 time6
-                 time7];
+                 time6];
 
-% % plotting Voltage vs Axon length
-% figure(1)
-% t1 = linspace(0, d, m);
-% plot(t1, data10.Uall(round(time1/k),:))
-% for i = 2:length(list_of_times)
-%     hold on
-%     plot(t1, data10.Uall(round(list_of_times(i)/k),:))
-% end
-% 
-% % describing plots using legends
-% legendStrings1 = {};
-% for i  = 1:length(list_of_times)
-%     legendStrings1{end+1} = sprintf('Voltage of the axon at time t = %g ms', list_of_times(i));
-% end
-% legend(legendStrings1, 'Interpreter','latex')
-% ylabel("Voltage in millivolts.")
-% xlabel("Length of the axon in cm.")
+% plotting Voltage vs Axon length
+figure(1)
+t1 = linspace(0, d, m);
+plot(t1, data10.Uall(round(time1/k),:))
+for i = 2:length(list_of_times)
+    hold on
+    plot(t1, data10.Uall(round(list_of_times(i)/k),:))
+end
+
+% describing plots using legends
+legendStrings1 = {};
+for i  = 1:length(list_of_times)
+    legendStrings1{end+1} = sprintf('Voltage of the axon at time t = %g ms', list_of_times(i));
+end
+legend(legendStrings1, 'Interpreter','latex')
+ylabel("Voltage in millivolts.")
+xlabel("Length of the axon in cm.")
 
 % plotting Voltage vs Time
 figure(2)
@@ -331,6 +331,8 @@ for i = 1:length(list_of_positions)
         message = "NODE 1: x = %g cm";
     elseif list_of_positions(i) == 0.4565
         message = "NODE 2: x = %g cm";
+    else
+        message = sprintf('V at %d/5 of myelin', i-1);
     end
     
     legendStrings2{end+1} = sprintf(message, list_of_positions(i));

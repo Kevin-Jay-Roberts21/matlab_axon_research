@@ -11,12 +11,12 @@ r_l = 30; % specific intracellular resistivity (or axoplasmic resistivity) (ohms
 radius_nodal = 0.0025; % (cm)
 radius_internodal = 0.0025; % (cm)
 h = 0.0005; % space step (this)
-T = 10; % we only ever want to run up to 35 ms (where we find equilibrium)
+T = 6; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
-g_k_nodal = 0.065; % (1/(ohm*cm^2))
+g_k_nodal = 0.1; % (1/(ohm*cm^2))
 g_k_internodal = 0; % (1/(ohm*cm^2))
-g_Na_nodal = 0.435; % (1/(ohm*cm^2))
+g_Na_nodal = 0.8; % (1/(ohm*cm^2))
 g_Na_internodal = 0; % (1/(ohm*cm^2))
 E_k = -77; % (mV)
 E_Na = 50; % (mV)
@@ -32,7 +32,7 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 85;
+num_of_nodes = 20;
 nodal_length = 0.0005; % (in cm)
 myelinated_length = 0.0115; % (in cm)
 L = (myelinated_length*(num_of_nodes-1)) + (nodal_length*(num_of_nodes-1)) + nodal_length; % axon length (in cm)
@@ -244,16 +244,16 @@ end
 
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
-position1 = 0.001; % in cm 
-position2 = 0.05;
-position3 = 0.10; 
-position4 = 0.12; 
-position5 = 0.14; 
-position6 = 0.16; 
-position7 = 0.18; 
-position8 = 0.2;
-position9 = 0.22;
-position10 = 0.24;
+position1 = 0.020; % in cm 
+position2 = 0.040;
+position3 = 0.060; 
+position4 = 0.080; 
+position5 = 0.100; 
+position6 = 0.120; 
+position7 = 0.140; 
+position8 = 0.160;
+position9 = 0.180;
+position10 = 0.200;
 
 list_of_positions = [position1
                      position2
@@ -329,12 +329,12 @@ plot(t2, Mall(:,round(position1/h)))
 hold on
 plot(t2, Hall(:,round(position1/h)))
 legendStrings3 = {
-    sprintf('N at x = %g cm', position3), ...
-    sprintf('M at x = %g cm', position3), ...
-    sprintf('H at x = %g cm', position3)};
+    sprintf('N at x = %g cm', position1), ...
+    sprintf('M at x = %g cm', position1), ...
+    sprintf('H at x = %g cm', position1)};
 legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
 
-save('myelin_stim_0.5_length_1_2.mat');
+save('myelin_stim_0.5_gk_0.15.mat');
