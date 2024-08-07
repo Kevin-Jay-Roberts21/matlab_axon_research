@@ -32,7 +32,7 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 20;
+num_of_nodes = 40;
 nodal_length = 0.0005; % (in cm)
 myelinated_length = 0.0115; % (in cm)
 L = (myelinated_length*(num_of_nodes-1)) + (nodal_length*(num_of_nodes-1)) + nodal_length; % axon length (in cm)
@@ -244,16 +244,16 @@ end
 
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
-position1 = 0.020; % in cm 
-position2 = 0.040;
-position3 = 0.060; 
-position4 = 0.080; 
-position5 = 0.100; 
-position6 = 0.120; 
-position7 = 0.140; 
-position8 = 0.160;
-position9 = 0.180;
-position10 = 0.200;
+position1 = 0.040; % in cm 
+position2 = 0.080;
+position3 = 0.120; 
+position4 = 0.160; 
+position5 = 0.200; 
+position6 = 0.240; 
+position7 = 0.280; 
+position8 = 0.350;
+position9 = 0.420;
+position10 = 0.450;
 
 list_of_positions = [position1
                      position2
