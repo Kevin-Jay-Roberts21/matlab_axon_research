@@ -14,9 +14,9 @@ h = 0.0005; % space step (this)
 T = 6; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
-g_k_nodal = 0.1; % (1/(ohm*cm^2))
+g_k_nodal = 0.08; % (1/(ohm*cm^2))
 g_k_internodal = 0; % (1/(ohm*cm^2))
-g_Na_nodal = 0.8; % (1/(ohm*cm^2))
+g_Na_nodal = 1; % (1/(ohm*cm^2))
 g_Na_internodal = 0; % (1/(ohm*cm^2))
 E_k = -77; % (mV)
 E_Na = 50; % (mV)
@@ -32,7 +32,7 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 40;
+num_of_nodes = 100;
 nodal_length = 0.0005; % (in cm)
 myelinated_length = 0.0115; % (in cm)
 L = (myelinated_length*(num_of_nodes-1)) + (nodal_length*(num_of_nodes-1)) + nodal_length; % axon length (in cm)
@@ -72,8 +72,8 @@ g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0);
 
 % adding sodium conductance (stimulus)
 S = 0.5; % (in 1/(ohm*cm^2))
-T0 = 2; % start time of when stimulus is added (in ms)
-T1 = 2.1; % end time of when stimulus is added (in ms)
+T0 = 0.5; % start time of when stimulus is added (in ms)
+T1 = 0.6; % end time of when stimulus is added (in ms)
 
 % NOTE: the stimulus MUST be added in a nodal region
 P0 = 0.0120; % position of adding the stimulus (in cm)
@@ -337,4 +337,4 @@ ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
 
-save('myelin_stim_0.5_gk_0.15.mat');
+save('myelin_stim_0.5_gNa_1.mat');
