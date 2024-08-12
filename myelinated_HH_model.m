@@ -8,15 +8,15 @@ clc
 c_m_nodal = 0.001; % membrane capacitance (ms / (ohm*cm^2))
 c_m_internodal = 0.001; % (ms / (ohm*cm^2))
 r_l = 30; % specific intracellular resistivity (or axoplasmic resistivity) (ohms * cm)
-radius_nodal = 0.0025; % (cm)
-radius_internodal = 0.0025; % (cm)
+radius_nodal = 0.0000434; % (cm)
+radius_internodal = 0.0000434; % (cm)
 h = 0.0005; % space step (this)
 T = 6; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
-g_k_nodal = 0.08; % (1/(ohm*cm^2))
+g_k_nodal = 0.036; % (1/(ohm*cm^2))
 g_k_internodal = 0; % (1/(ohm*cm^2))
-g_Na_nodal = 1.5; % (1/(ohm*cm^2))
+g_Na_nodal = 0.12; % (1/(ohm*cm^2))
 g_Na_internodal = 0; % (1/(ohm*cm^2))
 E_k = -77; % (mV)
 E_Na = 50; % (mV)
@@ -32,7 +32,7 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 100;
+num_of_nodes = 20;
 nodal_length = 0.0005; % (in cm)
 myelinated_length = 0.0115; % (in cm)
 L = (myelinated_length*(num_of_nodes-1)) + (nodal_length*(num_of_nodes-1)) + nodal_length; % axon length (in cm)
@@ -87,7 +87,7 @@ P1 = 0.0125; % ending position of adding the stimulus (in cm or *10^4 in um)
 N_0 = 0.4672; % probability that potassium gate is open (eq: 0.3177)
 M_0 = 0.1499; % probability that Sodium activation gate is open (eq: 0.0529)
 H_0 = 0.2770; % probability that Sodium inactivation gate is open (eq: 0.5961)
-V_initial = -55.5340; % (mV) Voltage (eq: -64.9997)
+V_initial = -68; % (mV) Voltage (eq: -64.9997)
 % N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
 % M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
 % H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
@@ -244,16 +244,16 @@ end
 
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
-position1 = 0.040; % in cm 
-position2 = 0.080;
-position3 = 0.120; 
-position4 = 0.160; 
-position5 = 0.200; 
-position6 = 0.240; 
-position7 = 0.280; 
-position8 = 0.350;
-position9 = 0.420;
-position10 = 0.450;
+position1 = 0.005; % in cm 
+position2 = 0.007;
+position3 = 0.010; 
+position4 = 0.013; 
+position5 = 0.015; 
+position6 = 0.016; 
+position7 = 0.017; 
+position8 = 0.018;
+position9 = 0.020;
+position10 = 0.021;
 
 list_of_positions = [position1
                      position2
@@ -337,4 +337,4 @@ ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
 
-save('myelin_stim_0.5_gNa_1.5.mat');
+% save('myelin_stim_0.5_gNa_1.5.mat');
