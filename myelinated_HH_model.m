@@ -8,15 +8,15 @@ clc
 c_m_nodal = 0.001; % membrane capacitance (ms / (ohm*cm^2))
 c_m_internodal = 0.001; % (ms / (ohm*cm^2))
 r_l = 30; % specific intracellular resistivity (or axoplasmic resistivity) (ohms * cm)
-radius_nodal = 0.0000434; % (cm)
-radius_internodal = 0.0000434; % (cm)
+radius_nodal = 0.0001; % (cm)
+radius_internodal = 0.0001; % (cm)
 h = 0.0005; % space step (this)
-T = 6; % we only ever want to run up to 35 ms (where we find equilibrium)
+T = 30; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
 g_k_nodal = 0.036; % (1/(ohm*cm^2))
 g_k_internodal = 0; % (1/(ohm*cm^2))
-g_Na_nodal = 0.12; % (1/(ohm*cm^2))
+g_Na_nodal = 0.5; % (1/(ohm*cm^2))
 g_Na_internodal = 0; % (1/(ohm*cm^2))
 E_k = -77; % (mV)
 E_Na = 50; % (mV)
@@ -32,7 +32,7 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 20;
+num_of_nodes = 15;
 nodal_length = 0.0005; % (in cm)
 myelinated_length = 0.0115; % (in cm)
 L = (myelinated_length*(num_of_nodes-1)) + (nodal_length*(num_of_nodes-1)) + nodal_length; % axon length (in cm)
@@ -71,9 +71,9 @@ g_k = @(x) g_k_nodal*g_k(x) + g_k_internodal*(g_k(x)==0);
 g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); 
 
 % adding sodium conductance (stimulus)
-S = 0.5; % (in 1/(ohm*cm^2))
-T0 = 0.5; % start time of when stimulus is added (in ms)
-T1 = 0.6; % end time of when stimulus is added (in ms)
+S = 0; % (in 1/(ohm*cm^2))
+T0 = 0.1; % start time of when stimulus is added (in ms)
+T1 = 0.2; % end time of when stimulus is added (in ms)
 
 % NOTE: the stimulus MUST be added in a nodal region
 P0 = 0.0120; % position of adding the stimulus (in cm)
@@ -245,15 +245,15 @@ end
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
 position1 = 0.005; % in cm 
-position2 = 0.007;
-position3 = 0.010; 
-position4 = 0.013; 
-position5 = 0.015; 
-position6 = 0.016; 
-position7 = 0.017; 
-position8 = 0.018;
-position9 = 0.020;
-position10 = 0.021;
+position2 = 0.020;
+position3 = 0.040; 
+position4 = 0.060; 
+position5 = 0.080; 
+position6 = 0.100; 
+position7 = 0.120; 
+position8 = 0.140;
+position9 = 0.150;
+position10 = 0.160;
 
 list_of_positions = [position1
                      position2
