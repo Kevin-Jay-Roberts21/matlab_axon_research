@@ -23,7 +23,10 @@ data10 = load('myelin_stim_0.5_length_1..mat')
 data11 = load('myelin_stim_0.5_length_1_2.mat')
 data12 = load('myelin_stim_0.5_gNa_1.mat')
 data13 = load('myelin_stim_0.5_radius_0.00005.mat')
-data14 = load('myelin_stim_0.5_radius_0.00005_longer.mat')
+data14 = load('myelin_stim_0.5_radius_0.00005_longer_NA0.5.mat')
+data15 = load('myelin_stim_0.5_radius_0.00005_longer_NA0.4.mat')
+data16 = load('myelin_stim_0.5_radius_0.00005_longer_NA0.3.mat')
+data17 = load('myelin_stim_0.5_radius_0.00005_closer_look.mat')
 
 % norms of each matrix comparison
 % conclude that the matrices are very similar due to 10^-9 norm or smaller
@@ -175,80 +178,83 @@ norm(data3.Uall-data6.Uall*25)
 %%%%% SQUID AXON %%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
-L = data14.L;
-T = data14.T;
-m = data14.m;
-n = data14.n;
-k = data14.k;
-h = data14.h;
+L = data17.L;
+T = data17.T;
+m = data17.m;
+n = data17.n;
+k = data17.k;
+h = data17.h;
 % 
 % % % SPATIAL PROFILE %
 % % % x axis is the axon length
-% t1 = linspace(0, L, m); 
-% 
-% figure(1);
-% hold on;
-% 
-% xmin = 0;
-% xmax = L;
-% ymin = -90;
-% ymax = 60;
-% 
-% axis([xmin xmax ymin ymax]);  % Set axis limits
-% xlabel('Axon length in cm');
-% ylabel('Voltage of axon in mV');
-% 
-% % Loop through each vector and plot them one by one
-% for i = 1:n
-%     x1 = data13.Uall(i,:);
-%     % x2 = data4.Uall(i,:);
-% 
-%     % Plot the vector
-%     plot(t1, x1, 'b-');
-%     hold on
-%     % plot(t1, x2, 'r-');
-% 
-%     text(xmin + 0.1 * (xmax - xmin), ymax - 0.1 * (ymax - ymin), sprintf('Time: %.2f ms', round(i*k, 2)), 'FontSize', 12, 'BackgroundColor', 'w');
-% 
-%     % Add a pause to create animation effect
-%     pause(0.005);
-% 
-%     cla;
-% end
+t1 = linspace(0, L, m); 
 
-% TEMPORAL PROFILE %
-% x axis is the axon time
-t2 = linspace(0, T, n); 
-
-figure(2);
+figure(1);
 hold on;
 
-xmin = 4;
-xmax = 7;
-ymin = 30;
-ymax = 45;
+xmin = 0;
+xmax = L;
+ymin = -90;
+ymax = 60;
 
 axis([xmin xmax ymin ymax]);  % Set axis limits
-xlabel('Time in ms');
+xlabel('Axon length in cm');
 ylabel('Voltage of axon in mV');
 
 % Loop through each vector and plot them one by one
-for i = 1:m
-    x1 = data14.Uall(:,i);  
-    % x2 = data13.Uall(:,i);
+for i = 1:n
+    x1 = data17.Uall(i,:);
+    % x2 = data4.Uall(i,:);
 
     % Plot the vector
-    plot(t2, x1, 'b-');
+    plot(t1, x1, 'b-');
     hold on
-    % plot(t2, x2, 'r-');
+    % plot(t1, x2, 'r-');
 
-    text(xmin + 0.1 * (xmax - xmin), ymax - 0.05 * (ymax - ymin), sprintf('Space: %.4f cm', round(i*h, 4)), 'FontSize', 12, 'BackgroundColor', 'w');
+    text(xmin + 0.1 * (xmax - xmin), ymax - 0.1 * (ymax - ymin), sprintf('Time: %.3f ms', round(i*k, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
 
     % Add a pause to create animation effect
-    pause(0.05);
+    pause(0.001);
 
     cla;
 end
+
+% TEMPORAL PROFILE %
+% x axis is the axon time
+% t2 = linspace(0, T, n); 
+% 
+% figure(2);
+% hold on;
+% 
+% xmin = 5;
+% xmax = 7;
+% ymin = 30;
+% ymax = 45;
+% 
+% axis([xmin xmax ymin ymax]);  % Set axis limits
+% xlabel('Time in ms');
+% ylabel('Voltage of axon in mV');
+% 
+% % Loop through each vector and plot them one by one
+% for i = 1:m
+%     x1 = data17.Uall(:,i);  
+%     % x2 = data15.Uall(:,i);
+%     % x3 = data16.Uall(:,i);
+% 
+%     % Plot the vector
+%     plot(t2, x1, 'b-');
+%     hold on
+%     % plot(t2, x2, 'r-');
+%     % hold on
+%     % plot(t2, x3, 'g-');
+% 
+%     text(xmin + 0.1 * (xmax - xmin), ymax - 0.05 * (ymax - ymin), sprintf('Space: %.5f cm', round(i*h, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
+% 
+%     % Add a pause to create animation effect
+%     pause(0.001);
+% 
+%     cla;
+% end
 
 
 
@@ -256,17 +262,17 @@ end
 % PLOTTING MULTIPLE LINES IN MYELINATED SECTION %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% L = data13.L;
-% T = data13.T;
-% m = data13.m;
-% n = data13.n;
-% k = data13.k;
-% h = data13.h;
+% L = data14.L;
+% T = data14.T;
+% m = data14.m;
+% n = data14.n;
+% k = data14.k;
+% h = data14.h;
 % 
 % % now pick a position to plot all of the voltages (multiply by 10000 to get
 % % units in um)
-% node1 = 0.0840;
-% node2 = 0.0965;
+% node1 = 0.3000;
+% node2 = 0.3125;
 % segments = (node2-node1)/h;
 % recorded = 5;
 % 
@@ -282,6 +288,7 @@ end
 % position9 = node2 + (5*h*3); % in cm
 % position10 = node2 + (5*h*4); % in cm
 % position11 = node2 + (5*h*5); % in cm
+% position12 = node2 + (5*h*6); % in cm
 % 
 % list_of_positions = [position1
 %                      position2
@@ -289,7 +296,12 @@ end
 %                      position4
 %                      position5
 %                      position6
-%                      ];
+%                      position7
+%                      position8
+%                      position9
+%                      position10
+%                      position11
+%                      position12];
 % 
 % % Times to observe the voltage along the axon
 % time1 = 4; % in ms
@@ -310,10 +322,10 @@ end
 % % plotting Voltage vs Axon length
 % figure(1)
 % t1 = linspace(0, L, m);
-% plot(t1, data13.Uall(round(time1/k),:))
+% plot(t1, data14.Uall(round(time1/k),:))
 % for i = 2:length(list_of_times)
 %     hold on
-%     plot(t1, data13.Uall(round(list_of_times(i)/k),:))
+%     plot(t1, data14.Uall(round(list_of_times(i)/k),:))
 % end
 % 
 % % describing plots using legends
@@ -331,10 +343,10 @@ end
 % t2 = linspace(0, T, n); % FULL MATRIX
 % % t2 = linspace(0, T, n*k*2); % MATRIX AT EVERY 50th iteration
 % % t2 = linspace(0, T, n*k); % MATRIX AT EVERY 100th iteration
-% plot(t2, data13.Uall(:,round(position1/h)))
+% plot(t2, data14.Uall(:,round(position1/h)))
 % for i = 2:length(list_of_positions)
 %     hold on
-%     plot(t2, data13.Uall(:,round(list_of_positions(i)/h)))
+%     plot(t2, data14.Uall(:,round(list_of_positions(i)/h)))
 % end
 % 
 % % describing plots using legends
@@ -357,11 +369,11 @@ end
 % 
 % % plotting N, M, H probability vs time (at a certain position)
 % figure(3)
-% plot(t2, data13.Nall(:,round(position3/h)))
+% plot(t2, data14.Nall(:,round(position3/h)))
 % hold on
-% plot(t2, data13.Mall(:,round(position3/h)))
+% plot(t2, data14.Mall(:,round(position3/h)))
 % hold on
-% plot(t2, data13.Hall(:,round(position3/h)))
+% plot(t2, data14.Hall(:,round(position3/h)))
 % legendStrings3 = {
 %     sprintf('N at x = %g cm', position3), ...
 %     sprintf('M at x = %g cm', position3), ...
