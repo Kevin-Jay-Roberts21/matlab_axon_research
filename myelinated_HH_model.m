@@ -8,11 +8,11 @@ clc
 c_m_nodal = 0.001; % membrane capacitance (ms / (ohm*cm^2))
 c_m_internodal = 0.001; % (ms / (ohm*cm^2))
 r_l = 30; % specific intracellular resistivity (or axoplasmic resistivity) (ohms * cm)
-radius_nodal = 0.00005; % (cm)
+radius_nodal = 0.0002; % (cm)
 radius_internodal = 0.00005; % (cm)
-h = 0.00001; % space step (cm)
+h = 0.0005; % space step (cm)
 T = 10; % we only ever want to run up to 35 ms (where we find equilibrium)
-k = 0.001; % time step (MAY CHANGE LATER)
+k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
 g_k_nodal = 0.036; % (1/(ohm*cm^2))
 g_k_internodal = 0; % (1/(ohm*cm^2))
@@ -32,7 +32,7 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 3;
+num_of_nodes = 35;
 nodal_length = 0.0005; % (in cm)
 myelinated_length = 0.0115; % (in cm)
 L = (myelinated_length*(num_of_nodes-1)) + (nodal_length*(num_of_nodes-1)) + nodal_length; % axon length (in cm)
