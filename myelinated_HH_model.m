@@ -8,10 +8,10 @@ clc
 c_m_nodal = 0.001; % membrane capacitance (ms / (ohm*cm^2))
 c_m_internodal = 0.001; % (ms / (ohm*cm^2))
 r_l = 30; % specific intracellular resistivity (or axoplasmic resistivity) (ohms * cm)
-radius_nodal = 0.0002; % (cm)
+radius_nodal = 0.00005; % (cm)
 radius_internodal = 0.00005; % (cm)
-h = 0.0005; % space step (cm)
-T = 10; % we only ever want to run up to 35 ms (where we find equilibrium)
+h = 0.00001; % space step (cm)
+T = 7; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
 g_k_nodal = 0.036; % (1/(ohm*cm^2))
@@ -32,7 +32,7 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining nodal regions, and the axon length will be based on how many
 % regions we have 
-num_of_nodes = 35;
+num_of_nodes = 15;
 nodal_length = 0.0005; % (in cm)
 myelinated_length = 0.0115; % (in cm)
 L = (myelinated_length*(num_of_nodes-1)) + (nodal_length*(num_of_nodes-1)) + nodal_length; % axon length (in cm)
@@ -71,7 +71,7 @@ g_k = @(x) g_k_nodal*g_k(x) + g_k_internodal*(g_k(x)==0);
 g_Na = @(x) g_Na_nodal*g_Na(x) + g_Na_internodal*(g_Na(x)==0); 
 
 % adding sodium conductance (stimulus)
-S = 0; % (in 1/(ohm*cm^2))
+S = 10; % (in 1/(ohm*cm^2))
 T0 = 0.1; % start time of when stimulus is added (in ms)
 T1 = 0.2; % end time of when stimulus is added (in ms)
 
@@ -80,10 +80,17 @@ P0 = 0.0120; % position of adding the stimulus (in cm)
 P1 = 0.0125; % ending position of adding the stimulus (in cm or *10^4 in um)
 
 % INITIAL CONDITIONS (commented out are different I.C. for different situations)
-N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
-M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
-H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
-V_initial = -64.9997; % (mV) Voltage (eq: -64.9997)
+% N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
+% M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
+% H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
+% V_initial = -90; % (mV) Voltage (eq: -64.9997)
+
+% equilibrium conditions for Na cond. 0.5 and 15 nodes
+N_0 = 0.5065; % probability that potassium gate is open 
+M_0 = 0.1919; % probability that Sodium activation gate is open 
+H_0 = 0.2128; % probability that Sodium inactivation gate is open
+V_initial = -52.9326; % (mV) Voltage 
+
 
 % number of columns of the matrices (length of axon divided by space step)
 m = round(L/h)+1;
@@ -236,16 +243,16 @@ end
 
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
-position1 = 0.005; % in cm 
-position2 = 0.008;
-position3 = 0.011; 
-position4 = 0.013; 
-position5 = 0.016; 
-position6 = 0.018; 
-position7 = 0.020; 
-position8 = 0.021;
-position9 = 0.022;
-position10 = 0.024;
+position1 = 0.01; % in cm 
+position2 = 0.02;
+position3 = 0.03; 
+position4 = 0.04; 
+position5 = 0.05; 
+position6 = 0.06; 
+position7 = 0.09; 
+position8 = 0.12;
+position9 = 0.14;
+position10 = 0.16;
 
 list_of_positions = [position1
                      position2
@@ -328,5 +335,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-
-save('myelin_stim_0.5_radius_0.00005_closer_look.mat');
+save('myelin_stim_0.5_radius_0.00005_starting_at_equil_15_node_h_.00001.mat');

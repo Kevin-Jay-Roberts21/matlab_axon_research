@@ -26,7 +26,12 @@ data13 = load('myelin_stim_0.5_radius_0.00005.mat')
 data14 = load('myelin_stim_0.5_radius_0.00005_longer_NA0.5.mat')
 data15 = load('myelin_stim_0.5_radius_0.00005_longer_NA0.4.mat')
 data16 = load('myelin_stim_0.5_radius_0.00005_longer_NA0.3.mat')
-data18 = load('myelin_stim_0.5_radius_0.00005_changes_of_radius.mat') % RENAME THIS
+data17 = load('myelin_stim_0.5_radius_0.00005_diff_equ.mat')
+data18 = load('myelin_stim_0.5_radius_0.00005_starting_at_equil_15_node.mat')
+data19 = load('myelin_stim_0.5_radius_0.00005_starting_at_equil_15_node_h_.0001.mat')
+data20 = load('myelin_stim_0.5_radius_0.00005_starting_at_equil_15_node_h_.00005.mat')
+
+
 
 % norms of each matrix comparison
 % conclude that the matrices are very similar due to 10^-9 norm or smaller
@@ -203,13 +208,17 @@ h = data18.h;
 % 
 % % Loop through each vector and plot them one by one
 % for i = 1:n
-%     x1 = data17.Uall(i,:);
-%     % x2 = data4.Uall(i,:);
+%     x1 = data18.Uall(i,:);
+%     x2 = data19.Uall(i,:);
+%     x3 = data20.Uall(i,:);
 % 
 %     % Plot the vector
 %     plot(t1, x1, 'b-');
 %     hold on
-%     % plot(t1, x2, 'r-');
+%     plot(t1, x2, 'r-');
+%     hold on
+%     plot(t1, x3, 'b-');
+% 
 % 
 %     text(xmin + 0.1 * (xmax - xmin), ymax - 0.1 * (ymax - ymin), sprintf('Time: %.3f ms', round(i*k, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
 % 
@@ -237,21 +246,22 @@ ylabel('Voltage of axon in mV');
 
 % Loop through each vector and plot them one by one
 for i = 1:m
-    x1 = data14.Uall(:,i);  
-    x2 = data18.Uall(:,i);
-    % x3 = data16.Uall(:,i);
+    x1 = data18.Uall(:,i);  
+    x2 = data19.Uall(:,i);
+    x3 = data20.Uall(:,i);
 
     % Plot the vector
     plot(t2, x1, 'b-');
     hold on
     plot(t2, x2, 'r-');
     hold on
-    % plot(t2, x3, 'g-');
+    plot(t2, x3, 'g-');
+    hold on
 
     text(xmin + 0.1 * (xmax - xmin), ymax - 0.05 * (ymax - ymin), sprintf('Space: %.5f cm', round(i*h, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
 
     % Add a pause to create animation effect
-    pause(0.005);
+    pause(0.01);
 
     cla;
 end
