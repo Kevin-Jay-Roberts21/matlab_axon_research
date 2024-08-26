@@ -183,12 +183,12 @@ norm(data3.Uall-data6.Uall*25)
 %%%%% SQUID AXON %%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
-L = data18.L;
-T = data18.T;
-m = data18.m;
-n = data18.n;
-k = data18.k;
-h = data18.h;
+% L = data20.L;
+% T = data20.T;
+% m = data20.m;
+% n = data20.n;
+% k = data20.k;
+% h = data20.h;
 % 
 % % % SPATIAL PROFILE %
 % % % x axis is the axon length
@@ -230,8 +230,117 @@ h = data18.h;
 
 % TEMPORAL PROFILE %
 % x axis is the axon time
-t2 = linspace(0, T, n); 
+% t2 = linspace(0, T, n); 
+% 
+% figure(2);
+% hold on;
+% 
+% xmin = 0;
+% xmax = T;
+% ymin = -60;
+% ymax = 90;
+% 
+% axis([xmin xmax ymin ymax]);  % Set axis limits
+% xlabel('Time in ms');
+% ylabel('Voltage of axon in mV');
+% 
+% % Loop through each vector and plot them one by one
+% for i = 1:m
+%     x1 = data20.Uall(:,i);  
+%     % x2 = data19.Uall(:,i);
+%     % x3 = data20.Uall(:,i);
+% 
+%     % Plot the vector
+%     plot(t2, x1, 'b-');
+%     hold on
+%     % plot(t2, x2, 'r-');
+%     % hold on
+%     % plot(t2, x3, 'g-');
+%     % hold on
+% 
+%     text(xmin + 0.1 * (xmax - xmin), ymax - 0.05 * (ymax - ymin), sprintf('Space: %.5f cm', round(i*h, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
+% 
+%     % Add a pause to create animation effect
+%     pause(0.01);
+% 
+%     cla;
+% end
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PLOTTING DIFFERENT RESOLUTIONS %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+L = data18.L;
+L1 = data19.L;
+L2 = data20.L;
+T = data18.T;
+T1 = data19.T;
+T2 = data20.T;
+m = data18.m;
+m1 = data19.m;
+m2 = data20.m;
+n = data18.n;
+n1 = data19.n;
+n2 = data20.n;
+k = data18.k;
+k1 = data19.k;
+k2 = data20.k;
+h = data18.h;
+h1 = data19.h;
+h2 = data20.h;
+% 
+% % % SPATIAL PROFILE %
+% % % x axis is the axon length
+
+% figure(1);
+% hold on;
+% 
+% xmin = 0;
+% xmax = L;
+% ymin = -90;
+% ymax = 60;
+% 
+% axis([xmin xmax ymin ymax]);  % Set axis limits
+% xlabel('Axon length in cm');
+% ylabel('Voltage of axon in mV');
+% 
+% x1 = data18.Uall(1,:);
+% x2 = data19.Uall(1,:);
+% 
+% % Loop through each vector and plot them one by one
+% for i = 1:n2
+% 
+%     x1 = data18.Uall(i,:);    
+%     x2 = data19.Uall(i,:);
+%     x3 = data20.Uall(i,:);
+% 
+%     x_range = [0, L];
+%     t1 = linspace(x_range(1), x_range(2), length(x1));
+%     t2 = linspace(x_range(1), x_range(2), length(x2));
+%     t3 = linspace(x_range(1), x_range(2), length(x3));
+% 
+%     % Plot the vector
+%     plot(t1, x1, 'b-');
+%     hold on
+%     plot(t2, x2, 'r-');
+%     hold on
+%     plot(t3, x3, 'g-');
+%     hold on
+% 
+%     text(xmin + 0.1 * (xmax - xmin), ymax - 0.05 * (ymax - ymin), sprintf('Space: %.2f ms', round(i*k2, 2)), 'FontSize', 12, 'BackgroundColor', 'w');
+% 
+%     xlim(x_range);
+% 
+%     % Add a pause to create animation effect
+%     pause(0.01);
+% 
+%     cla;
+% end
+
+% TEMPORAL PROFILE %
+% x axis is the axon time
 figure(2);
 hold on;
 
@@ -240,31 +349,48 @@ xmax = T;
 ymin = -60;
 ymax = 90;
 
+
 axis([xmin xmax ymin ymax]);  % Set axis limits
 xlabel('Time in ms');
 ylabel('Voltage of axon in mV');
 
+x1 = data18.Uall(:,1);
+x2 = data19.Uall(:,1);
+
 % Loop through each vector and plot them one by one
-for i = 1:m
-    x1 = data18.Uall(:,i);  
-    x2 = data19.Uall(:,i);
+for i = 1:m2
+
+    if mod(i, 10) == 0
+        x1 = data18.Uall(:,round(i/10));
+    end
+    if mod(i, 2) == 0
+        x2 = data19.Uall(:,round(i/2));
+    end
     x3 = data20.Uall(:,i);
 
+    x_range = [0, T];
+    t1 = linspace(x_range(1), x_range(2), length(x1));
+    t2 = linspace(x_range(1), x_range(2), length(x2));
+    t3 = linspace(x_range(1), x_range(2), length(x3));
+
     % Plot the vector
-    plot(t2, x1, 'b-');
+    plot(t1, x1, 'b-');
     hold on
     plot(t2, x2, 'r-');
     hold on
-    plot(t2, x3, 'g-');
+    plot(t3, x3, 'g-');
     hold on
 
-    text(xmin + 0.1 * (xmax - xmin), ymax - 0.05 * (ymax - ymin), sprintf('Space: %.5f cm', round(i*h, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
+    text(xmin + 0.1 * (xmax - xmin), ymax - 0.05 * (ymax - ymin), sprintf('Space: %.5f cm', round(i*h2, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
+
+    xlim(x_range);
 
     % Add a pause to create animation effect
     pause(0.01);
 
     cla;
 end
+
 
 
 
