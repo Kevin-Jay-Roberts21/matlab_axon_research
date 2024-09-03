@@ -272,24 +272,24 @@ norm(data3.Uall-data6.Uall*25)
 % PLOTTING DIFFERENT RESOLUTIONS %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-L = data18.L;
-L1 = data19.L;
-L2 = data20.L;
-T = data18.T;
-T1 = data19.T;
-T2 = data20.T;
-m = data18.m;
-m1 = data19.m;
-m2 = data20.m;
-n = data18.n;
-n1 = data19.n;
-n2 = data20.n;
-k = data18.k;
-k1 = data19.k;
-k2 = data20.k;
-h = data18.h;
-h1 = data19.h;
-h2 = data20.h;
+% L = data18.L;
+% L1 = data19.L;
+% L2 = data20.L;
+% T = data18.T;
+% T1 = data19.T;
+% T2 = data20.T;
+% m = data18.m;
+% m1 = data19.m;
+% m2 = data20.m;
+% n = data18.n;
+% n1 = data19.n;
+% n2 = data20.n;
+% k = data18.k;
+% k1 = data19.k;
+% k2 = data20.k;
+% h = data18.h;
+% h1 = data19.h;
+% h2 = data20.h;
 % 
 % % % SPATIAL PROFILE %
 % % % x axis is the axon length
@@ -341,55 +341,55 @@ h2 = data20.h;
 
 % TEMPORAL PROFILE %
 % x axis is the axon time
-figure(2);
-hold on;
-
-xmin = 0;
-xmax = T;
-ymin = -60;
-ymax = 90;
-
-
-axis([xmin xmax ymin ymax]);  % Set axis limits
-xlabel('Time in ms');
-ylabel('Voltage of axon in mV');
-
-x1 = data18.Uall(:,1);
-x2 = data19.Uall(:,1);
-
-% Loop through each vector and plot them one by one
-for i = 1:m2
-
-    if mod(i, 10) == 0
-        x1 = data18.Uall(:,round(i/10));
-    end
-    if mod(i, 2) == 0
-        x2 = data19.Uall(:,round(i/2));
-    end
-    x3 = data20.Uall(:,i);
-
-    x_range = [0, T];
-    t1 = linspace(x_range(1), x_range(2), length(x1));
-    t2 = linspace(x_range(1), x_range(2), length(x2));
-    t3 = linspace(x_range(1), x_range(2), length(x3));
-
-    % Plot the vector
-    plot(t1, x1, 'b-');
-    hold on
-    plot(t2, x2, 'r-');
-    hold on
-    plot(t3, x3, 'g-');
-    hold on
-
-    text(xmin + 0.1 * (xmax - xmin), ymax - 0.05 * (ymax - ymin), sprintf('Space: %.5f cm', round(i*h2, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
-
-    xlim(x_range);
-
-    % Add a pause to create animation effect
-    pause(0.01);
-
-    cla;
-end
+% figure(2);
+% hold on;
+% 
+% xmin = 0;
+% xmax = T;
+% ymin = -60;
+% ymax = 90;
+% 
+% 
+% axis([xmin xmax ymin ymax]);  % Set axis limits
+% xlabel('Time in ms');
+% ylabel('Voltage of axon in mV');
+% 
+% x1 = data18.Uall(:,1);
+% x2 = data19.Uall(:,1);
+% 
+% % Loop through each vector and plot them one by one
+% for i = 1:m2
+% 
+%     if mod(i, 10) == 0
+%         x1 = data18.Uall(:,round(i/10));
+%     end
+%     if mod(i, 2) == 0
+%         x2 = data19.Uall(:,round(i/2));
+%     end
+%     x3 = data20.Uall(:,i);
+% 
+%     x_range = [0, T];
+%     t1 = linspace(x_range(1), x_range(2), length(x1));
+%     t2 = linspace(x_range(1), x_range(2), length(x2));
+%     t3 = linspace(x_range(1), x_range(2), length(x3));
+% 
+%     % Plot the vector
+%     plot(t1, x1, 'b-');
+%     hold on
+%     plot(t2, x2, 'r-');
+%     hold on
+%     plot(t3, x3, 'g-');
+%     hold on
+% 
+%     text(xmin + 0.1 * (xmax - xmin), ymax - 0.05 * (ymax - ymin), sprintf('Space: %.5f cm', round(i*h2, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
+% 
+%     xlim(x_range);
+% 
+%     % Add a pause to create animation effect
+%     pause(0.01);
+% 
+%     cla;
+% end
 
 
 
@@ -398,80 +398,80 @@ end
 % PLOTTING MULTIPLE LINES IN MYELINATED SECTION %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% L = data14.L;
-% T = data14.T;
-% m = data14.m;
-% n = data14.n;
-% k = data14.k;
-% h = data14.h;
+L = data18.L;
+T = data18.T;
+m = data18.m;
+n = data18.n;
+k = data18.k;
+h = data18.h;
 % 
 % % now pick a position to plot all of the voltages (multiply by 10000 to get
 % % units in um)
-% node1 = 0.3000;
-% node2 = 0.3125;
-% segments = (node2-node1)/h;
-% recorded = 5;
-% 
-% 
-% position1 = node1; % in cm
-% position2 = node1 + 5*h; % in cm
-% position3 = node1 + (5*h*2); % in cm
-% position4 = node1 + (5*h*3); % in cm
-% position5 = node1 + (5*h*4); % in cm
-% position6 = node2; % in cm
-% position7 = node2 + (5*h*1); % in cm
-% position8 = node2 + (5*h*2); % in cm
-% position9 = node2 + (5*h*3); % in cm
-% position10 = node2 + (5*h*4); % in cm
-% position11 = node2 + (5*h*5); % in cm
-% position12 = node2 + (5*h*6); % in cm
-% 
-% list_of_positions = [position1
-%                      position2
-%                      position3
-%                      position4
-%                      position5
-%                      position6
-%                      position7
-%                      position8
-%                      position9
-%                      position10
-%                      position11
-%                      position12];
-% 
-% % Times to observe the voltage along the axon
-% time1 = 4; % in ms
-% time2 = 4.5; % in ms
-% time3 = 5; % in ms
-% time4 = 5.5; % in ms
-% time5 = 6; % in ms
-% time6 = 6.5; % in ms
-% time7 = 7; % in ms
-% 
-% list_of_times = [time1
-%                  time2
-%                  time3
-%                  time4
-%                  time5
-%                  time6];
-% 
+node1 = 0.3000;
+node2 = 0.3125;
+segments = (node2-node1)/h;
+recorded = 5;
+
+
+position1 = node1; % in cm
+position2 = node1 + 5*h; % in cm
+position3 = node1 + (5*h*2); % in cm
+position4 = node1 + (5*h*3); % in cm
+position5 = node1 + (5*h*4); % in cm
+position6 = node2; % in cm
+position7 = node2 + (5*h*1); % in cm
+position8 = node2 + (5*h*2); % in cm
+position9 = node2 + (5*h*3); % in cm
+position10 = node2 + (5*h*4); % in cm
+position11 = node2 + (5*h*5); % in cm
+position12 = node2 + (5*h*6); % in cm
+
+list_of_positions = [position1
+                     position2
+                     position3
+                     position4
+                     position5
+                     position6
+                     position7
+                     position8
+                     position9
+                     position10
+                     position11
+                     position12];
+
+% Times to observe the voltage along the axon
+time1 = 1; % in ms
+time2 = 1.5; % in ms
+time3 = 2; % in ms
+time4 = 4; % in ms
+time5 = 5; % in ms
+time6 = 6; % in ms
+time7 = 7; % in ms
+
+list_of_times = [time1
+                 time2
+                 time3
+                 time4
+                 time5
+                 time6];
+
 % % plotting Voltage vs Axon length
-% figure(1)
-% t1 = linspace(0, L, m);
-% plot(t1, data14.Uall(round(time1/k),:))
-% for i = 2:length(list_of_times)
-%     hold on
-%     plot(t1, data14.Uall(round(list_of_times(i)/k),:))
-% end
-% 
-% % describing plots using legends
-% legendStrings1 = {};
-% for i  = 1:length(list_of_times)
-%     legendStrings1{end+1} = sprintf('Voltage of the axon at time t = %g ms', list_of_times(i));
-% end
-% legend(legendStrings1, 'Interpreter','latex')
-% ylabel("Voltage in millivolts.")
-% xlabel("Length of the axon in cm.")
+figure(1)
+t1 = linspace(0, L, m);
+plot(t1, data18.Uall(round(time1/k),:))
+for i = 2:length(list_of_times)
+    hold on
+    plot(t1, data18.Uall(round(list_of_times(i)/k),:))
+end
+
+% describing plots using legends
+legendStrings1 = {};
+for i  = 1:length(list_of_times)
+    legendStrings1{end+1} = sprintf('Voltage of the axon at time t = %g ms', list_of_times(i));
+end
+legend(legendStrings1, 'Interpreter','latex')
+ylabel("Voltage in millivolts.")
+xlabel("Length of the axon in cm.")
 % 
 % % plotting Voltage vs Time
 % figure(2)

@@ -10,7 +10,7 @@ c_m_internodal = 0.001; % (ms / (ohm*cm^2))
 r_l = 30; % specific intracellular resistivity (or axoplasmic resistivity) (ohms * cm)
 radius_nodal = 0.00005; % (cm)
 radius_internodal = 0.00005; % (cm)
-h = 0.00001; % space step (cm)
+h = 0.0005; % space step (cm)
 T = 7; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
@@ -335,4 +335,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('myelin_stim_0.5_radius_0.00005_starting_at_equil_15_node_h_.00001.mat');
+% save('myelin_stim_0.5_radius_0.00005_starting_at_equil_15_node_h_.00001.mat');
