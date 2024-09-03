@@ -2,11 +2,6 @@ clear all
 close all
 clc
 
-
-%%%%%%%%%%%%%%%%%%%%
-% PLOTTING 2 LINES %
-%%%%%%%%%%%%%%%%%%%%
-
 % Loading in Squid Axon data
 data1 = load('dimnal_stim_0.003912.mat');
 data2 = load('dimnal_stim_0.003911.mat');
@@ -31,13 +26,9 @@ data18 = load('myelin_stim_0.5_radius_0.00005_starting_at_equil_15_node.mat')
 data19 = load('myelin_stim_0.5_radius_0.00005_starting_at_equil_15_node_h_.0001.mat')
 data20 = load('myelin_stim_0.5_radius_0.00005_starting_at_equil_15_node_h_.00005.mat')
 
-
-
-% norms of each matrix comparison
-% conclude that the matrices are very similar due to 10^-9 norm or smaller
-norm(data1.Uall-data4.Uall*25)
-norm(data2.Uall-data5.Uall*25)
-norm(data3.Uall-data6.Uall*25)
+%%%%%%%%%%%%%%%%%%%%
+% PLOTTING 2 LINES %
+%%%%%%%%%%%%%%%%%%%%
 
 % d = data1.d;
 % T = data1.T;
@@ -398,80 +389,80 @@ norm(data3.Uall-data6.Uall*25)
 % PLOTTING MULTIPLE LINES IN MYELINATED SECTION %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-L = data18.L;
-T = data18.T;
-m = data18.m;
-n = data18.n;
-k = data18.k;
-h = data18.h;
+% L = data18.L;
+% T = data18.T;
+% m = data18.m;
+% n = data18.n;
+% k = data18.k;
+% h = data18.h;
+% % 
+% % % now pick a position to plot all of the voltages (multiply by 10000 to get
+% % % units in um)
+% node1 = 0.3000;
+% node2 = 0.3125;
+% segments = (node2-node1)/h;
+% recorded = 5;
 % 
-% % now pick a position to plot all of the voltages (multiply by 10000 to get
-% % units in um)
-node1 = 0.3000;
-node2 = 0.3125;
-segments = (node2-node1)/h;
-recorded = 5;
-
-
-position1 = node1; % in cm
-position2 = node1 + 5*h; % in cm
-position3 = node1 + (5*h*2); % in cm
-position4 = node1 + (5*h*3); % in cm
-position5 = node1 + (5*h*4); % in cm
-position6 = node2; % in cm
-position7 = node2 + (5*h*1); % in cm
-position8 = node2 + (5*h*2); % in cm
-position9 = node2 + (5*h*3); % in cm
-position10 = node2 + (5*h*4); % in cm
-position11 = node2 + (5*h*5); % in cm
-position12 = node2 + (5*h*6); % in cm
-
-list_of_positions = [position1
-                     position2
-                     position3
-                     position4
-                     position5
-                     position6
-                     position7
-                     position8
-                     position9
-                     position10
-                     position11
-                     position12];
-
-% Times to observe the voltage along the axon
-time1 = 1; % in ms
-time2 = 1.5; % in ms
-time3 = 2; % in ms
-time4 = 4; % in ms
-time5 = 5; % in ms
-time6 = 6; % in ms
-time7 = 7; % in ms
-
-list_of_times = [time1
-                 time2
-                 time3
-                 time4
-                 time5
-                 time6];
-
-% % plotting Voltage vs Axon length
-figure(1)
-t1 = linspace(0, L, m);
-plot(t1, data18.Uall(round(time1/k),:))
-for i = 2:length(list_of_times)
-    hold on
-    plot(t1, data18.Uall(round(list_of_times(i)/k),:))
-end
-
-% describing plots using legends
-legendStrings1 = {};
-for i  = 1:length(list_of_times)
-    legendStrings1{end+1} = sprintf('Voltage of the axon at time t = %g ms', list_of_times(i));
-end
-legend(legendStrings1, 'Interpreter','latex')
-ylabel("Voltage in millivolts.")
-xlabel("Length of the axon in cm.")
+% 
+% position1 = node1; % in cm
+% position2 = node1 + 5*h; % in cm
+% position3 = node1 + (5*h*2); % in cm
+% position4 = node1 + (5*h*3); % in cm
+% position5 = node1 + (5*h*4); % in cm
+% position6 = node2; % in cm
+% position7 = node2 + (5*h*1); % in cm
+% position8 = node2 + (5*h*2); % in cm
+% position9 = node2 + (5*h*3); % in cm
+% position10 = node2 + (5*h*4); % in cm
+% position11 = node2 + (5*h*5); % in cm
+% position12 = node2 + (5*h*6); % in cm
+% 
+% list_of_positions = [position1
+%                      position2
+%                      position3
+%                      position4
+%                      position5
+%                      position6
+%                      position7
+%                      position8
+%                      position9
+%                      position10
+%                      position11
+%                      position12];
+% 
+% % Times to observe the voltage along the axon
+% time1 = 1; % in ms
+% time2 = 1.5; % in ms
+% time3 = 2; % in ms
+% time4 = 4; % in ms
+% time5 = 5; % in ms
+% time6 = 6; % in ms
+% time7 = 7; % in ms
+% 
+% list_of_times = [time1
+%                  time2
+%                  time3
+%                  time4
+%                  time5
+%                  time6];
+% 
+% % % plotting Voltage vs Axon length
+% figure(1)
+% t1 = linspace(0, L, m);
+% plot(t1, data18.Uall(round(time1/k),:))
+% for i = 2:length(list_of_times)
+%     hold on
+%     plot(t1, data18.Uall(round(list_of_times(i)/k),:))
+% end
+% 
+% % describing plots using legends
+% legendStrings1 = {};
+% for i  = 1:length(list_of_times)
+%     legendStrings1{end+1} = sprintf('Voltage of the axon at time t = %g ms', list_of_times(i));
+% end
+% legend(legendStrings1, 'Interpreter','latex')
+% ylabel("Voltage in millivolts.")
+% xlabel("Length of the axon in cm.")
 % 
 % % plotting Voltage vs Time
 % figure(2)
