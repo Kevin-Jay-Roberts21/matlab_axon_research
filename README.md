@@ -10,3 +10,5 @@ A nondimensionalized Hodgkin Huxley Partial Differential Equation that has been 
 
 myelinated_HH_model.m
 A Backward Euler discretization of the Hodgkin Huxley Partial Differential Equation where the 4 variables (capacitance, radius, sodium conductance and potassium conductance) are modified to functions of space. Here we may consider axons of a much smaller length and radius, and include the functions of space in an attempt to understand ion channel distribution and mimic myelinated axons.
+
+Additionally, the plotter.m file is used to plot multiple lines and animation of data saved from the three .m codes described above.
