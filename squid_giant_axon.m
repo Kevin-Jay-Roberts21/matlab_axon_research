@@ -8,7 +8,7 @@ clc
 % defining all of the initial and constant variables
 c_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
 r_l = 30; % specific intracellular resistivity (ohms * cm)
-a = 0.0025; % axon radius (cm)
+a = 0.025; % axon radius (cm)
 L = 5; % axon length (cm)
 h = 0.01; % space step (MAY CHANGE LATER)
 T = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
