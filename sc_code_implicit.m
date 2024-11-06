@@ -29,6 +29,10 @@ N_0 = ; % (dimless) initial condition for gating variable n
 M_0 = ; % (dimless) initial condition for gating variable m
 H_0 = ; % (dimless) initial condition for gating variable h
 
+% defining some additional constants from the discretization
+b1 = 1 + C_m*a/(C_my*a_my);
+b2 = C_m/(C_my*R_my) - 1/R_m;
+
 % defining the total number of space steps and time steps
 m = L/dx + 1; % m is the number of space steps
 n = T/dt; % n is the number of time steps
@@ -48,13 +52,44 @@ N = N_0 * ones(1, m);
 M = M_0 * ones(1, m);
 H = H_0 * ones(1, m);
 
+% defining the variables e_l, d_l, f_l, variables for l in {1, 2, 3, 4, 5, 6, 7}
+e1 = -a*b1/(2*R_i*dx^2);
+e2 = C_m/dt + a*b1/(R_i*dx^2);
+e3 = e1;
+e4 = 0;
+e5 = C_m/dt - 1/R_m;
+e6 = b2;
+e7 = 0;
+
+d1 = -a^2/(2*a_my*R_i*dx^2);
+d2 = a/(R_i*dx^2);
+d3 = d1;
+d4 = C_m/dt;
+d5 = 0;
+d6 = C_my/dt - 1/R_my;
+d7 = 0;
+
+c1 = -a/(2*R_i*dx^2);
+c2 = C_m/dt + a/(R_i*dx^2);
+c3 = c1;
+c4 = 0;
+% NOTE: c_5 needs to be defined in the loop because it depends on n, m, h
+c6 = 0;
+c7 = G_K*E_K + G_Na*E_Na + G_L*E_L;
+
+% defining V_all as the vector Vm stacked on top of Vmy
+
+
+
+
 % defining some arbitrary constant variables used in discretization
 box_1 = a/(2*R_i)*(1 + C_m*a/(C_my*a_my));
 box_2 = C_m/(C_my*R_my) - 1/R_m;
 
 for j = 1:n
      
-    for i = 2:m-1
+    for i = 1:m
+        
         
         
     end
