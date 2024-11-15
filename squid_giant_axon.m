@@ -11,7 +11,7 @@ r_l = 30; % specific intracellular resistivity (ohms * cm)
 a = 0.025; % axon radius (cm)
 L = 5; % axon length (cm)
 h = 0.01; % space step (MAY CHANGE LATER)
-T = 35; % we only ever want to run up to 35 ms (where we find equilibrium)
+T = 20; % we only ever want to run up to 35 ms (where we find equilibrium)
 k = 0.01; % time step (MAY CHANGE LATER)
 g_k = 0.036; % (1/(ohm*cm^2))
 g_Na = 0.12; % (1/(ohm*cm^2))
@@ -29,7 +29,7 @@ alpha_h = @(V) 0.07*exp(-(V + 65)/20);
 beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % adding sodium conductance (stimulus)
-S = 0.2; % (in 1/(ohm*cm^2))
+S = 0.05; % (in 1/(ohm*cm^2))
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
 P0 = 1; % position of adding the stimulus (in cm)
