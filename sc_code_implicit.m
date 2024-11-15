@@ -7,9 +7,9 @@ dt = 0.01; % (ms) time step
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 5; % (dimless) number of axon segments
+n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 5; % (ms) the total time of the experiment
+T = 30; % (ms) the total time of the experiment
 a = 5.5*10^(-5); % (cm) axon radius in nodal region
 a_my = 5.623*10^(-5); % (cm) axon radius in myelinated section 
 C_m = 0.001; % (ms/(ohms*cm^2)) specific membrane capacitance
@@ -54,21 +54,19 @@ b_1 = @(x) (mod(x, N_s) > N_n).*(a/(2*R_i)).*(1 + C_m*a/(C_my*a_my)) + ...
 
 % defining the initial vectors
 Vm = V_m0 * ones(1, m1);
-Vmy = V_my0 * ones(1, m2);
+Vmy = V_my0 * ones(1, m1);
 N = N_0 * ones(1, m1);
 M = M_0 * ones(1, m1);
 H = H_0 * ones(1, m1);
 
+% defining the matrices to collect data at every time step
 Vm_all(1,:) = Vm;
 Vmy_all(1,:) = Vmy;
 N_all(1,:) = N;
 M_all(1,:) = M; 
 H_all(1,:) = H;
 
-length(Vm)
-length(Vmy)
-
-for j = 1:n
+for j = 1:(n-1)
 
     %%%%%%%%%%%%%%%%%%%%%%%
     % UPDATING N, M and H %
@@ -99,6 +97,10 @@ for j = 1:n
     A(1, 2) = -1/dx;
     A(m1, m1-1) = -1/dx;
     A(m1, m1) = 1/dx;
+    
+    % creating the first element of V_my, which is 0 since we start in a
+    % nodal region
+    newVmy(1) = 0;
     
 
     % updating the interior of V_m and V_my
@@ -135,17 +137,17 @@ for j = 1:n
         
         % within a nodal region
         else 
+            
+            newVmy(i) = 0; % 0 if in a nodal region
+            
             % updating the f function if in a nodal region
             f(i, 1) = (C_m/dt - G_K*(newN(i)^4) - G_Na*(newM(i)^3)*newH(i) - G_L)*Vm(i) + ...
                 G_K*(newN(i)^4)*E_L + G_Na*(newM(i)^3)*newH(i)*E_Na + G_L*E_L; 
         end
     end
     
-    % handling the neumann boundary conditions for Vm 
-    % (i.e. (V_{m,m1} - V_{m,m1-1})/dx = 0 => V_{m,m1} = V_{m,m1-1})
-    newVmy(m2) = dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(m2-1) - ...
-        2*dt*a^2/(C_my*a_my*R_i*dx^2)*Vm(m2) + ...
-        (1 - dt/(C_my*R_my))*Vmy(m2);  
+    % becuase this is technically in a nodal region
+    newVmy(m1) = 0;
 
     % Solving for V_m^{j+1}
     newVm = transpose(A\f);
@@ -162,5 +164,89 @@ for j = 1:n
     
 end
 
-length(newVm)
-length(newVmy)
+position1 = 0.03; % in cm
+position2 = 0.04; % in cm
+position3 = 0.05; % in cm
+position4 = 0.06; % in cm
+position5 = 0.07; % in cm
+position6 = 0.075; % in cm
+position7 = 0.08; % in cm
+
+list_of_positions = [position1
+                     position2
+                     position3
+                     position4
+                     position5
+                     position6
+                     position7];
+
+% Times to observe the voltage along the axon
+time1 = 0.5; % in ms
+time2 = 1; % in ms
+time3 = 1.5; % in ms
+time4 = 2; % in ms
+time5 = 2.5; % in ms
+time6 = 3; % in ms
+time7 = 4; % in ms
+
+list_of_times = [time1
+                 time2
+                 time3
+                 time4
+                 time5
+                 time6
+                 time7];
+
+% plotting Voltage vs Axon length
+figure(1)
+t1 = linspace(0, L, m1);
+plot(t1, Vm_all(round(time1/dt),:))
+for i = 2:length(list_of_times)
+    hold on
+    plot(t1, Vm_all(round(list_of_times(i)/dt),:))
+end
+
+% describing plots using legends
+legendStrings1 = {};
+for i  = 1:length(list_of_times)
+    legendStrings1{end+1} = sprintf('Voltage of the axon at time t = %g ms', list_of_times(i));
+end
+legend(legendStrings1, 'Interpreter','latex')
+ylabel("Voltage in millivolts.")
+xlabel("Length of the axon in cm.")
+
+% plotting Voltage vs Time
+figure(2)
+t2 = linspace(0, T, n); % FULL MATRIX
+length(t2)
+length(Vm_all(:,round(position1/dx)))
+
+plot(t2, Vm_all(:,round(position1/dx)))
+for i = 2:length(list_of_positions)
+    hold on
+    plot(t2, Vm_all(:,round(list_of_positions(i)/dx)))
+end
+
+% describing plots using legends
+legendStrings2 = {};
+for i = 1:length(list_of_positions)
+    legendStrings2{end+1} = sprintf('Voltage at x = %g cm', list_of_positions(i));
+end
+legend(legendStrings2, 'Interpreter', 'latex')
+ylabel("Voltage in millivolts.")
+xlabel("Time in milliseconds.")
+
+% plotting N, M, H probability vs time (at a certain position)
+figure(3)
+plot(t2, N_all(:,round(position3/dx)))
+hold on
+plot(t2, M_all(:,round(position3/dx)))
+hold on
+plot(t2, H_all(:,round(position3/dx)))
+legendStrings3 = {
+    sprintf('N at x = %g cm', position3), ...
+    sprintf('M at x = %g cm', position3), ...
+    sprintf('H at x = %g cm', position3)};
+legend(legendStrings3, 'Interpreter','latex')
+ylabel("Probabilities of ion channels opening/closing.")
+xlabel("Time in milliseconds.")
