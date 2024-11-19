@@ -9,7 +9,7 @@ L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 30; % (ms) the total time of the experiment
+T = 100; % (ms) the total time of the experiment
 a = 5.5*10^(-5); % (cm) axon radius in nodal region
 a_my = 5.623*10^(-5); % (cm) axon radius in myelinated section 
 C_m = 0.001; % (ms/(ohms*cm^2)) specific membrane capacitance
@@ -61,18 +61,40 @@ b_1 = @(x) (mod(x - 1, N_s) > N_n).*B_1 + ... % Internodal region
 % defining the initial vectors
 Vm = V_m0 * ones(1, m);
 Vmy = zeros(1, m);
-N = N_0 * ones(1, m);
-M = M_0 * ones(1, m);
-H = H_0 * ones(1, m);
+N = zeros(1, m);
+M = zeros(1, m);
+H = zeros(1, m);
 
-% putting 0's into the nodal regions of Vmy
-for i = 2:m
-    if mod(i - 1, N_s) <= N_n
-        Vmy(i) = 0; % Nodal region
+for i = 1:m
+    % putting 0's into the nodal regions of Vmy and 0's into the internodal
+    % regions of N, M and H
+    seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
+    myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
+    myelin_end = seg*(N_s); % End of internodal region in this segment
+    seg_start = (seg - 1)*(N_s); % index of the start of the segment
+
+    % Internodal region
+    if (i > myelin_start + 1) && (i < myelin_end + 1)
+        Vmy(i) = V_my0;
+        N(i) = 0;
+        M(i) = 0;
+        H(i) = 0;
+    % Nodal region
+    elseif (i > seg_start + 1) && (i < myelin_start + 1)
+        Vmy(i) = 0;
+        N(i) = N_0;
+        M(i) = M_0;
+        H(i) = H_0;
+    
+    % End points (we let Vmy, and N,M,H have ne effect on the end points)
     else
-        Vmy(i) = V_my0; % Internodal region
-    end
+        Vmy(i) = 0;
+        N(i) = 0;
+        M(i) = 0;
+        H(i) = 0;
+    end 
 end
+
 
 % defining the matrices to collect data at every time step
 Vm_all(1,:) = Vm;
@@ -82,26 +104,6 @@ M_all(1,:) = M;
 H_all(1,:) = H;
 
 for j = 1:(n-1)
-
-    %%%%%%%%%%%%%%%%%%%%%%%
-    % UPDATING N, M and H %
-    %%%%%%%%%%%%%%%%%%%%%%%
-    % solving for n^j+1, m^j+1, and h^j+1 given the initial Vm
-    for i = 1:m
-        newN(i) = 1/(1/dt + alpha_n(Vm(i)) + beta_n(Vm(i))) * (N(i)/dt + alpha_n(Vm(i)));
-        newM(i) = 1/(1/dt + alpha_m(Vm(i)) + beta_m(Vm(i))) * (M(i)/dt + alpha_m(Vm(i)));
-        newH(i) = 1/(1/dt + alpha_h(Vm(i)) + beta_h(Vm(i))) * (H(i)/dt + alpha_h(Vm(i)));
-    end
-
-    % Edit the next U, N, M and H (redefining U, N, M and H vectors)
-    N = newN;
-    M = newM;
-    H = newH;
-
-    % adding all of newN, newM, newH to the _all data
-    N_all(j+1,:) = N;
-    M_all(j+1,:) = M;
-    H_all(j+1,:) = H;
 
     % defining the A matrix and the f vector to solve for V_m
     A = zeros(m, m);
@@ -121,11 +123,12 @@ for j = 1:(n-1)
     % updating the interior of V_m and V_my
     for i = 2:m-1
 
-        % Using the following 3 definitions to determine nodal regions,
-        % internodal regions and end points
+        % putting 0's into the nodal regions of Vmy and 0's into the internodal
+        % regions of N, M and H
         seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
         myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
         myelin_end = seg*(N_s); % End of internodal region in this segment
+        seg_start = (seg - 1)*(N_s); % index of the start of the segment
 
         % updating the A matrix rows if in an internodal region
         % NOTE: the b function accounts for the piecewise values
@@ -133,19 +136,8 @@ for j = 1:(n-1)
         A(i, i) = C_m/dt + 2*b_1(i)/dx^2;
         A(i, i+1) = -b_1(i)/dx^2;
 
-        % If i is at an End Point
-        if (i == myelin_start + 1 || i == myelin_end - 1)
-            
-            % updating the f function at end point: the average (F_1 + F_1)/2
-            f(i, 1) = 0.5*((C_m/dt - 1/R_m)*Vm(i) + (1/R_m - C_m/(C_my*R_my))*Vmy(i) + ...
-                (C_m/dt - G_K*(newN(i)^4) - G_Na*(newM(i)^3)*newH(i) - G_L)*Vm(i) + ...
-                 G_K*(newN(i)^4)*E_L + G_Na*(newM(i)^3)*newH(i)*E_Na + G_L*E_L);
-            
-            % 0 if in at an end point
-            newVmy(i) = 0; 
-
         % If i is in an Internodal Region
-        elseif i >= myelin_start + 1 && i <= myelin_end - 1
+        if (i > myelin_start + 1) && (i < myelin_end + 1)
 
             % updating the f function if in an internodal region
             f(i, 1) = (C_m/dt - 1/R_m)*Vm(i) + (1/R_m - C_m/(C_my*R_my))*Vmy(i); 
@@ -154,17 +146,38 @@ for j = 1:(n-1)
             newVmy(i) = dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i-1) - ...
                 dt*a^2/(C_my*a_my*R_i*dx^2)*Vm(i) + ...
                 dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i+1) + ...
-                (C_my/dt - 1/R_my)*Vmy(i);   
+                (C_my/dt - 1/R_my)*Vmy(i);
+            
+            % probability equations are 0 in the internodal region
+            newN(i) = 0;
+            newM(i) = 0;
+            newH(i) = 0;
 
         % If i is in a Nodal Region
-        else 
-            
+        elseif (i > seg_start + 1) && (i < myelin_start + 1)
+
             % updating the f function if in a nodal region
-            f(i, 1) = (C_m/dt - G_K*(newN(i)^4) - G_Na*(newM(i)^3)*newH(i) - G_L)*Vm(i) + ...
-                G_K*(newN(i)^4)*E_L + G_Na*(newM(i)^3)*newH(i)*E_Na + G_L*E_L; 
-            
+            f(i, 1) = (C_m/dt - G_K*(N(i)^4) - G_Na*(M(i)^3)*H(i) - G_L)*Vm(i) + ...
+                G_K*(N(i)^4)*E_L + G_Na*(M(i)^3)*H(i)*E_Na + G_L*E_L; 
+
             % 0 if in a nodal region
-            newVmy(i) = 0; 
+            newVmy(i) = 0;
+            newN(i) = 1/(1/dt + alpha_n(Vm(i)) + beta_n(Vm(i))) * (N(i)/dt + alpha_n(Vm(i)));
+            newM(i) = 1/(1/dt + alpha_m(Vm(i)) + beta_m(Vm(i))) * (M(i)/dt + alpha_m(Vm(i)));
+            newH(i) = 1/(1/dt + alpha_h(Vm(i)) + beta_h(Vm(i))) * (H(i)/dt + alpha_h(Vm(i)));
+
+        % If i is at an End Point
+        else 
+            % updating the f function at end point: the average (F_1 + F_1)/2
+            f(i, 1) = 0.5*((C_m/dt - 1/R_m)*Vm(i) + (1/R_m - C_m/(C_my*R_my))*Vmy(i) + ...
+                (C_m/dt - G_K*(N(i)^4) - G_Na*(M(i)^3)*H(i) - G_L)*Vm(i) + ...
+                 G_K*(N(i)^4)*E_L + G_Na*(M(i)^3)*H(i)*E_Na + G_L*E_L);
+
+            % 0 if in at an end point
+            newVmy(i) = 0;
+            newN(i) = 0;
+            newM(i) = 0;
+            newH(i) = 0;
 
         end
     end
@@ -174,6 +187,9 @@ for j = 1:(n-1)
     % because this is technically in a nodal region at the end point
     % recall this experiment is not symmetric
     newVmy(m) = 0;
+    newN(m) = 0;
+    newM(m) = 0;
+    newH(m) = 0;
 
     % Solving for V_m^{j+1}
     newVm = transpose(A\f);
@@ -181,6 +197,9 @@ for j = 1:(n-1)
     % updating Vmy and Vm and adding the data to the _all matrices
     Vm = newVm;
     Vmy = newVmy;
+    N = newN;
+    M = newM;
+    H = newH;
 
     Vm_all(j+1,:) = Vm;
     Vmy_all(j+1,:) = Vmy;
