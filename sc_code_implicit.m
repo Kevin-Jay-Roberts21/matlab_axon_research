@@ -9,7 +9,7 @@ L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 100; % (ms) the total time of the experiment
+T = 10; % (ms) the total time of the experiment
 a = 5.5*10^(-5); % (cm) axon radius in nodal region
 a_my = 5.623*10^(-5); % (cm) axon radius in myelinated section 
 C_m = 0.001; % (ms/(ohms*cm^2)) specific membrane capacitance
@@ -48,7 +48,6 @@ alpha_h = @(V) 0.07*exp(-(V + 65)/20);
 beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % defining the b_1(x_i)
-
 B_1 = (a/(2*R_i))*(1 + C_m*a/(C_my*a_my)); % for internodal
 B_2 = a/(2*R_i); % for nodal
 B_3 = (B_1 + B_2)/2; % for boundary point
@@ -213,38 +212,34 @@ end
 % PICKING TIME AND POSITION SHOTS TO PLOT %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-position1 = 0.03; % in cm
-position2 = 0.04; % in cm
-position3 = 0.05; % in cm
-position4 = 0.06; % in cm
-position5 = 0.07; % in cm
-position6 = 0.075; % in cm
+position1 = 0.0245; % in cm
+position2 = 0.03; % in cm
+position3 = 0.0325; % in cm
+position4 = 0.05; % in cm
+position5 = 0.06; % in cm
+position6 = 0.07; % in cm
 position7 = 0.08; % in cm
 
 list_of_positions = [position1
                      position2
                      position3
                      position4
-                     position5
-                     position6
-                     position7];
+                     ];
 
 % Times to observe the voltage along the axon
-time1 = 0.5; % in ms
-time2 = 1; % in ms
-time3 = 1.5; % in ms
-time4 = 2; % in ms
-time5 = 2.5; % in ms
-time6 = 3; % in ms
-time7 = 4; % in ms
+time1 = 1; % in ms
+time2 = 2; % in ms
+time3 = 4; % in ms
+time4 = 5; % in ms
+time5 = 7; % in ms
+time6 = 8; % in ms
+time7 = 10; % in ms
 
 list_of_times = [time1
                  time2
                  time3
                  time4
-                 time5
-                 time6
-                 time7];
+                 ];
 
 
 
@@ -260,7 +255,7 @@ set(gcf, 'Position', [100, 100, 1200, 500]); % Increase width (1200)
 
 % Create subplot (1 row, 2 columns, 1st subplot)
 subplot(1, 2, 1);
-t1 = linspace(0, L, m);
+t1 = linspace(0, 10000*L, m);
 plot(t1, Vm_all(round(time1/dt),:));
 hold on
 for i = 2:length(list_of_times)
@@ -274,7 +269,7 @@ for i  = 1:length(list_of_times)
 end
 legend(legendStrings1, 'Interpreter','latex');
 ylabel("$V_m$ in millivolts.", 'Interpreter','latex');
-xlabel("Length of the axon in cm.");
+xlabel("Length of the axon in um.");
 
 % Second figure: Voltage vs Time at different positions
 % Create subplot (1 row, 2 columns, 2nd subplot)
@@ -289,7 +284,7 @@ end
 % Describing plots using legends
 legendStrings2 = {};
 for i = 1:length(list_of_positions)
-    legendStrings2{end+1} = sprintf('$V_m$ at x = %g cm', list_of_positions(i));
+    legendStrings2{end+1} = sprintf('$V_m$ at x = %g um', 10000*list_of_positions(i));
 end
 legend(legendStrings2, 'Interpreter', 'latex');
 ylabel("$V_m$ in millivolts.", 'Interpreter', 'latex');
@@ -310,7 +305,7 @@ set(gcf, 'Position', [100, 100, 1200, 500]); % Increase width (1200)
 
 % Create subplot (1 row, 2 columns, 1st subplot)
 subplot(1, 2, 1);
-t1 = linspace(0, L, m);
+t1 = linspace(0, L*10000, m);
 plot(t1, Vmy_all(round(time1/dt),:));
 hold on
 for i = 2:length(list_of_times)
@@ -324,7 +319,7 @@ for i  = 1:length(list_of_times)
 end
 legend(legendStrings1, 'Interpreter','latex');
 ylabel("$V_{my}$ in millivolts.", 'Interpreter','latex');
-xlabel("Length of the axon in cm.");
+xlabel("Length of the axon in um.");
 
 % Second figure: Voltage vs Time at different positions
 % Create subplot (1 row, 2 columns, 2nd subplot)
@@ -339,7 +334,7 @@ end
 % Describing plots using legends
 legendStrings2 = {};
 for i = 1:length(list_of_positions)
-    legendStrings2{end+1} = sprintf('$V_{my}$ at x = %g cm', list_of_positions(i));
+    legendStrings2{end+1} = sprintf('$V_{my}$ at x = %g um', 10000*list_of_positions(i));
 end
 legend(legendStrings2, 'Interpreter', 'latex');
 ylabel("$V_{my}$ in millivolts.", 'Interpreter', 'latex');
@@ -358,9 +353,9 @@ plot(t2, M_all(:,round(position3/dx)))
 hold on
 plot(t2, H_all(:,round(position3/dx)))
 legendStrings3 = {
-    sprintf('n at x = %g cm', position3), ...
-    sprintf('m at x = %g cm', position3), ...
-    sprintf('h at x = %g cm', position3)};
+    sprintf('n at x = %g um', 10000*position3), ...
+    sprintf('m at x = %g um', 10000*position3), ...
+    sprintf('h at x = %g um', 10000*position3)};
 legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
