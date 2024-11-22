@@ -9,7 +9,7 @@ L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 100; % (ms) the total time of the experiment
+T = 10; % (ms) the total time of the experiment
 a = 5.5*10^(-5); % (cm) axon radius in nodal region
 a_my = 5.623*10^(-5); % (cm) axon radius in myelinated section 
 C_m = 0.001; % (ms/(ohms*cm^2)) specific membrane capacitance
@@ -55,7 +55,9 @@ b_1 = @(x) (mod(x - 1, N_s) > N_n).*B_1 + ... % Internodal region
            (mod(x - 1, N_s) < N_n & mod(x - 1, N_s) ~= 0).*B_2 + ... % Nodal region
            ((mod(x - 1, N_s) == N_n) | (mod(x - 1, N_s) == 0)).*((B_1 + B_2)/2); % Boundary point      
       
-% defining the initial vectors
+%%%%%%%%%%%%%%%%%%
+% INITIALIZATION %
+%%%%%%%%%%%%%%%%%%
 Vm = V_m0 * ones(1, m);
 Vmy = zeros(1, m);
 N = zeros(1, m);
@@ -112,12 +114,7 @@ for j = 1:(n-1)
     A(1, 2) = -1/dx;
     A(m, m-1) = -1/dx;
     A(m, m) = 1/dx;
-
-    % creating the first element of V_my, which is 0 since we start in a
-    % nodal region
-    newVmy(1) = 0;
-
-
+    
     % updating the interior of V_m and V_my
     for i = 2:m-1
 
