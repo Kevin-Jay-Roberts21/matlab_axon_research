@@ -9,7 +9,7 @@ L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 10; % (ms) the total time of the experiment
+T = 100; % (ms) the total time of the experiment
 a = 5.5*10^(-5); % (cm) axon radius in nodal region
 a_my = 5.623*10^(-5); % (cm) axon radius in myelinated section 
 C_m = 0.001; % (ms/(ohms*cm^2)) specific membrane capacitance
@@ -36,8 +36,6 @@ N_s = N_n + N_my; % number of space steps in an entire axon segement
 % defining the total number of space steps and time steps
 m = L/dx + 1; % m1 is the number of space steps for V_m
 n = T/dt; % n is the number of time steps
-
-
 
 % defining the alpha_xi and beta_xi functions
 alpha_n = @(V) 0.01*(V + 55)/(1 - exp(-(V + 55)/10));
@@ -98,6 +96,7 @@ end
 % defining the matrices to collect data at every time step
 Vm_all(1,:) = Vm;
 Vmy_all(1,:) = Vmy;
+Vm_minus_Vmy(1,:) = Vm - Vmy;
 N_all(1,:) = N;
 M_all(1,:) = M; 
 H_all(1,:) = H;
@@ -202,6 +201,7 @@ for j = 1:(n-1)
 
     Vm_all(j+1,:) = Vm;
     Vmy_all(j+1,:) = Vmy;
+    Vm_minus_Vmy(j+1,:) = Vm - Vmy;
     N_all(j+1,:) = N;
     M_all(j+1,:) = M;
     H_all(j+1,:) = H;
@@ -343,10 +343,60 @@ xlabel("Time in milliseconds.");
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PLOTTING Vm-Vmy SPATIAL AND TEMPORAL PROFILES %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% First figure: Voltage along the axon at different times
+figure(3);
+
+% Adjust the figure size (Position [left, bottom, width, height])
+set(gcf, 'Position', [100, 100, 1200, 500]); % Increase width (1200)
+
+% Create subplot (1 row, 2 columns, 1st subplot)
+subplot(1, 2, 1);
+t1 = linspace(0, 10000*L, m);
+plot(t1, Vm_minus_Vmy(round(time1/dt),:));
+hold on
+for i = 2:length(list_of_times)
+    plot(t1, Vm_minus_Vmy(round(list_of_times(i)/dt),:));
+end
+
+% Describing plots using legends
+legendStrings1 = {};
+for i  = 1:length(list_of_times)
+    legendStrings1{end+1} = sprintf('$V_m - V_{my}$ at t = %g ms', list_of_times(i));
+end
+legend(legendStrings1, 'Interpreter','latex');
+ylabel("$V_m - V_{my}$ in millivolts.", 'Interpreter','latex');
+xlabel("Length of the axon in um.");
+
+% Second figure: Voltage vs Time at different positions
+% Create subplot (1 row, 2 columns, 2nd subplot)
+subplot(1, 2, 2);
+t2 = linspace(0, T, n); % FULL MATRIX
+plot(t2, Vm_minus_Vmy(:,round(position1/dx)));
+hold on
+for i = 2:length(list_of_positions)
+    plot(t2, Vm_minus_Vmy(:,round(list_of_positions(i)/dx)));
+end
+
+% Describing plots using legends
+legendStrings2 = {};
+for i = 1:length(list_of_positions)
+    legendStrings2{end+1} = sprintf('$V_m - V_{my}$ at x = %g um', 10000*list_of_positions(i));
+end
+legend(legendStrings2, 'Interpreter', 'latex');
+ylabel("$V_m - V_{my}$ in millivolts.", 'Interpreter', 'latex');
+xlabel("Time in milliseconds.");
+
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PLOTTING n, m, and h TEMPROAL PROFILES %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-figure(3)
+figure(4)
 plot(t2, N_all(:,round(position3/dx)))
 hold on
 plot(t2, M_all(:,round(position3/dx)))
