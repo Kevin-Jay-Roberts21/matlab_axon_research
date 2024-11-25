@@ -9,7 +9,7 @@ L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 10; % (ms) the total time of the experiment
+T = 50; % (ms) the total time of the experiment
 a = 5.5*10^(-5); % (cm) axon radius in nodal region
 a_my = 5.623*10^(-5); % (cm) axon radius in myelinated section 
 C_m = 0.001; % (ms/(ohms*cm^2)) specific membrane capacitance
@@ -64,6 +64,7 @@ N = zeros(1, m);
 M = zeros(1, m);
 H = zeros(1, m);
 
+
 for i = 1:m
     % putting 0's into the nodal regions of Vmy and 0's into the internodal
     % regions of N, M and H
@@ -84,16 +85,14 @@ for i = 1:m
         N(i) = N_0;
         M(i) = M_0;
         H(i) = H_0;
-    
     % End points (we let Vmy, and N,M,H have ne effect on the end points)
     else
-        Vmy(i) = 0;
-        N(i) = 0;
-        M(i) = 0;
-        H(i) = 0;
+        Vmy(i) = V_my0;
+        N(i) = N_0;
+        M(i) = M_0;
+        H(i) = H_0;
     end 
 end
-
 
 % defining the matrices to collect data at every time step
 Vm_all(1,:) = Vm;
@@ -168,11 +167,13 @@ for j = 1:(n-1)
                 (C_m/dt - G_K*(N(i)^4) - G_Na*(M(i)^3)*H(i) - G_L)*Vm(i) + ...
                  G_K*(N(i)^4)*E_L + G_Na*(M(i)^3)*H(i)*E_Na + G_L*E_L);
 
-            % 0 if in at an end point
-            newVmy(i) = 0;
-            newN(i) = 0;
-            newM(i) = 0;
-            newH(i) = 0;
+            newVmy(i) = dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i-1) - ...
+                dt*a^2/(C_my*a_my*R_i*dx^2)*Vm(i) + ...
+                dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i+1) + ...
+                (C_my/dt - 1/R_my)*Vmy(i);
+            newN(i) = 1/(1/dt + alpha_n(Vm(i)) + beta_n(Vm(i))) * (N(i)/dt + alpha_n(Vm(i)));
+            newM(i) = 1/(1/dt + alpha_m(Vm(i)) + beta_m(Vm(i))) * (M(i)/dt + alpha_m(Vm(i)));
+            newH(i) = 1/(1/dt + alpha_h(Vm(i)) + beta_h(Vm(i))) * (H(i)/dt + alpha_h(Vm(i)));
 
         end
     end
