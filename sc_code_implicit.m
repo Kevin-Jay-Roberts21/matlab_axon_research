@@ -1,15 +1,16 @@
+% Solving the Single Cable Model Using Finite Difference Method
+% Kevin Roberts
+% November 2024
+
+% SPECIAL NOTE: many of the for loops do the same thing, it may be worth
+% combining some of these for loops later
+
 clear all 
 close all
 clc
 
-dx = 0.0001; % (cm) space step
-dt = 0.01; % (ms) time step 
-L_my = 0.0075; % (cm) internodal length
-L_n = 0.0005; % (cm) nodal length
-L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 10; % (dimless) number of axon segments
-L = n_s*L_s; % (cm) total length of axon
-T = 10; % (ms) the total time of the experiment
+% Defining the material properties on other intrinsic parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 a = 5.5*10^(-5); % (cm) axon radius in nodal region
 a_my = 5.623*10^(-5); % (cm) axon radius in myelinated section 
 C_m = 0.001; % (ms/(ohms*cm^2)) specific membrane capacitance
@@ -23,50 +24,64 @@ G_L = 0.0003; % (S/cm^2) specific leak conductance
 E_K = -82; % (mV) Nernst potential for potassium ions
 E_Na = 45; % (mV) Nernst potential for sodium ions
 E_L = -59.4; % (mV) Nernst potential for leak channels
+
+% Defining the Mesh Parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+dx = 0.0001; % (cm) space step
+dt = 0.01; % (ms) time step 
+L_my = 0.0075; % (cm) internodal length
+L_n = 0.0005; % (cm) nodal length
+L_s = L_n + L_my; % (cm) length of an axon segment
+n_s = 10; % (dimless) number of axon segments
+L = n_s*L_s; % (cm) total length of axon
+T = 10; % (ms) the total time of the experiment
+N_n = round(L_n/dx); % number of space steps in a nodal region
+N_my = round(L_my/dx); % number of space steps in an internodal region
+N_s = N_n + N_my; % number of space steps in an entire axon segement
+m = L/dx + 1; % total number of space steps
+n = T/dt; % n is the number of time steps
+
+% Defining alpha/beta functions as well as the b_1 and f_1 functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% defining the alpha_xi and beta_xi functions
+alpha_n = @(Vm) 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10));
+beta_n = @(Vm) 0.125*exp(-(Vm + 65)/80);
+alpha_m = @(Vm) 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10));
+beta_m = @(Vm) 4*exp(-(Vm + 65)/18);
+alpha_h = @(Vm) 0.07*exp(-(Vm + 65)/20);
+beta_h = @(Vm) 1/(1 + exp(-(Vm + 35)/10));
+
+% defining the b_1(x_i)
+B_1 = (a/(2*R_i))*(1 + C_m*a/(C_my*a_my)); % for internodal
+B_2 = a/(2*R_i); % for nodal
+B_3 = (B_1 + B_2)/2; % for end point
+b_1 = @(ii) (mod(ii - 1, N_s) > N_n).*B_1 + ... % Internodal region
+           (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*B_2 + ... % Nodal region
+           ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*B_3; % Boundary point      
+
+% defining the f_1(x_i) function
+F_1 = @(Vm, Vmy) -Vm/R_m + (1/R_m - C_m/(C_my*R_my))*Vmy; % for internodal
+F_2 = @(Vm, n, m, h) (G_K*n^4 - G_Na*m^3*h - G_L)*Vm + G_K*n^4*E_L + G_Na*m^3*h*E_Na + G_L*E_L; % for nodal
+F_3 = @(Vm, Vmy, n, m, h) (F_1(Vm, Vmy) + F_2(Vm, n, m, h))/2; % for end point
+f_1 = @(ii, Vm, Vmy, n, m, h) (mod(ii - 1, N_s) > N_n).*F_1(Vm, Vmy) + ... % Internodal region
+           (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(Vm, n, m, h) + ... % Nodal region
+           ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*F_3(Vm, Vmy, n, m, h); % Boundary point        
+
+
+% Initialization
+%%%%%%%%%%%%%%%%
 V_m0 = -64.999; % (mV) initial condition for membrane potential 
 V_my0 = -1; % (mV) initial condition for axon potential in periaxonal space
 N_0 = 0.3177; % (dimless) initial condition for gating variable n
 M_0 = 0.0529; % (dimless) initial condition for gating variable m
 H_0 = 0.5961; % (dimless) initial condition for gating variable h
-
-N_n = round(L_n/dx); % number of space steps in a nodal region
-N_my = round(L_my/dx); % number of space steps in an internodal region
-N_s = N_n + N_my; % number of space steps in an entire axon segement
-
-% defining the total number of space steps and time steps
-m = L/dx + 1; % m1 is the number of space steps for V_m
-n = T/dt; % n is the number of time steps
-
-% defining the alpha_xi and beta_xi functions
-alpha_n = @(V) 0.01*(V + 55)/(1 - exp(-(V + 55)/10));
-beta_n = @(V) 0.125*exp(-(V + 65)/80);
-alpha_m = @(V) 0.1*(V + 40)/(1 - exp(-(V + 40)/10));
-beta_m = @(V) 4*exp(-(V + 65)/18);
-alpha_h = @(V) 0.07*exp(-(V + 65)/20);
-beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
-
-% defining the b_1(x_i)
-B_1 = (a/(2*R_i))*(1 + C_m*a/(C_my*a_my)); % for internodal
-B_2 = a/(2*R_i); % for nodal
-B_3 = (B_1 + B_2)/2; % for boundary point
-
-% this can be easily verified by testing points like b_1(5) for example
-b_1 = @(x) (mod(x - 1, N_s) > N_n).*B_1 + ... % Internodal region
-           (mod(x - 1, N_s) < N_n & mod(x - 1, N_s) ~= 0).*B_2 + ... % Nodal region
-           ((mod(x - 1, N_s) == N_n) | (mod(x - 1, N_s) == 0)).*((B_1 + B_2)/2); % Boundary point      
-      
-%%%%%%%%%%%%%%%%%%
-% INITIALIZATION %
-%%%%%%%%%%%%%%%%%%
 Vm = V_m0 * ones(1, m);
 Vmy = zeros(1, m);
 N = zeros(1, m);
 M = zeros(1, m);
 H = zeros(1, m);
-
-
-for i = 1:m
-    % putting 0's into the nodal regions of Vmy and 0's into the internodal
+for i = 2:m-1 % because we want to keep the end points for Vmy, n, m, h at 0
     % regions of N, M and H
     seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
     myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
@@ -102,82 +117,97 @@ N_all(1,:) = N;
 M_all(1,:) = M; 
 H_all(1,:) = H;
 
+
+% Defining the A matrix
+%%%%%%%%%%%%%%%%%%%%%%%
+A = zeros(m, m);
+% using the boundary conditions to define the top and bottom row of A
+A(1, 1) = 1/dx;
+A(1, 2) = -1/dx;
+A(m, m-1) = -1/dx;
+A(m, m) = 1/dx;
+
+for i = 2:(m-1)
+    % updating the A matrix rows if in an internodal region
+    % NOTE: the b function accounts for the piecewise values
+    % putting 0's into the nodal regions of Vmy and 0's into the internodal
+    % regions of N, M and H
+    seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
+    myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
+    myelin_end = seg*(N_s); % End of internodal region in this segment
+    seg_start = (seg - 1)*(N_s); % index of the start of the segment
+
+    % If i is in an Internodal Region
+    if (i > myelin_start + 1) && (i < myelin_end + 1)
+        A(i, i-1) = -b_1(i)/dx^2;
+        A(i, i) = C_m/dt + 2*b_1(i)/dx^2;
+        A(i, i+1) = -b_1(i)/dx^2;
+    % If i is in a Nodal Region
+    elseif (i > seg_start + 1) && (i < myelin_start + 1)
+        A(i, i-1) = -b_1(i)/dx^2;
+        A(i, i) = C_m/dt + 2*b_1(i)/dx^2;
+        A(i, i+1) = -b_1(i)/dx^2;
+    % If i is at an End Point (MIGHT HAVE TO SPECIFY FOR LEFT OR RIGHT END POINT)
+    else 
+        A(i, i-1) = -B_1/dx^2;
+        A(i, i) = C_m/dt + 2*B_3/dx^2;
+        A(i, i+1) = -B_2/dx^2;
+    end
+end
+
+% Running the time loop
+%%%%%%%%%%%%%%%%%%%%%%%
 for j = 1:(n-1)
-
-    % defining the A matrix and the f vector to solve for V_m
-    A = zeros(m, m);
-    f = zeros(m, 1);
-
-    % using the boundary conditions to define the top and bottom row of A
-    A(1, 1) = 1/dx;
-    A(1, 2) = -1/dx;
-    A(m, m-1) = -1/dx;
-    A(m, m) = 1/dx;
     
-    % updating the interior of V_m and V_my
+    % updating Vmy
     for i = 2:m-1
-
-        % putting 0's into the nodal regions of Vmy and 0's into the internodal
-        % regions of N, M and H
         seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
         myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
         myelin_end = seg*(N_s); % End of internodal region in this segment
         seg_start = (seg - 1)*(N_s); % index of the start of the segment
 
-        % updating the A matrix rows if in an internodal region
-        % NOTE: the b function accounts for the piecewise values
-        A(i, i-1) = -b_1(i)/dx^2;
-        A(i, i) = C_m/dt + 2*b_1(i)/dx^2;
-        A(i, i+1) = -b_1(i)/dx^2;
+        if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
+            newVmy(i) = dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i-1) - dt*a^2/(C_my*a_my*R_i*dx^2)*Vm(i) + dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i+1) + (C_my/dt - 1/R_my)*Vmy(i);
+        elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
+            newVmy(i) = 0;
+        else % End point
+            newVmy(i) = dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i-1) - dt*a^2/(C_my*a_my*R_i*dx^2)*Vm(i) + dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i+1) + (C_my/dt - 1/R_my)*Vmy(i);
+        end
+    end
+    
+    % updating the probability gate functions n, m and h
+    for i = 2:m-1
+        seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
+        myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
+        myelin_end = seg*(N_s); % End of internodal region in this segment
+        seg_start = (seg - 1)*(N_s); % index of the start of the segment
 
-        % If i is in an Internodal Region
-        if (i > myelin_start + 1) && (i < myelin_end + 1)
-
-            % updating the f function if in an internodal region
-            f(i, 1) = (C_m/dt - 1/R_m)*Vm(i) + (1/R_m - C_m/(C_my*R_my))*Vmy(i); 
-
-            % updating Vmy for the internodal region
-            newVmy(i) = dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i-1) - ...
-                dt*a^2/(C_my*a_my*R_i*dx^2)*Vm(i) + ...
-                dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i+1) + ...
-                (C_my/dt - 1/R_my)*Vmy(i);
-            
-            % probability equations are 0 in the internodal region
+        if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
             newN(i) = 0;
             newM(i) = 0;
             newH(i) = 0;
-
-        % If i is in a Nodal Region
-        elseif (i > seg_start + 1) && (i < myelin_start + 1)
-
-            % updating the f function if in a nodal region
-            f(i, 1) = (C_m/dt - G_K*(N(i)^4) - G_Na*(M(i)^3)*H(i) - G_L)*Vm(i) + ...
-                G_K*(N(i)^4)*E_L + G_Na*(M(i)^3)*H(i)*E_Na + G_L*E_L; 
-
-            % 0 if in a nodal region
-            newVmy(i) = 0;
+        elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
             newN(i) = 1/(1/dt + alpha_n(Vm(i)) + beta_n(Vm(i))) * (N(i)/dt + alpha_n(Vm(i)));
             newM(i) = 1/(1/dt + alpha_m(Vm(i)) + beta_m(Vm(i))) * (M(i)/dt + alpha_m(Vm(i)));
             newH(i) = 1/(1/dt + alpha_h(Vm(i)) + beta_h(Vm(i))) * (H(i)/dt + alpha_h(Vm(i)));
-
-        % If i is at an End Point
-        else 
-            % updating the f function at end point: the average (F_1 + F_1)/2
-            f(i, 1) = 0.5*((C_m/dt - 1/R_m)*Vm(i) + (1/R_m - C_m/(C_my*R_my))*Vmy(i) + ...
-                (C_m/dt - G_K*(N(i)^4) - G_Na*(M(i)^3)*H(i) - G_L)*Vm(i) + ...
-                 G_K*(N(i)^4)*E_L + G_Na*(M(i)^3)*H(i)*E_Na + G_L*E_L);
-
-            newVmy(i) = dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i-1) - ...
-                dt*a^2/(C_my*a_my*R_i*dx^2)*Vm(i) + ...
-                dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i+1) + ...
-                (C_my/dt - 1/R_my)*Vmy(i);
+        else % End point
             newN(i) = 1/(1/dt + alpha_n(Vm(i)) + beta_n(Vm(i))) * (N(i)/dt + alpha_n(Vm(i)));
             newM(i) = 1/(1/dt + alpha_m(Vm(i)) + beta_m(Vm(i))) * (M(i)/dt + alpha_m(Vm(i)));
             newH(i) = 1/(1/dt + alpha_h(Vm(i)) + beta_h(Vm(i))) * (H(i)/dt + alpha_h(Vm(i)));
-
         end
     end
-
+    
+    % updating the f function (end points are 0)
+    f = zeros(m, 1);
+    for i = 2:m-1
+        f(i, 1) = f_1(i, Vm(i), Vmy(i), N(i), M(i), H(i)); 
+    end
+    % updating the b function (end points are 0)
+    b = zeros(m, 1);
+    for i = 2:m-1
+        b(i, 1) = C_m/dt*Vm(i); 
+    end
+    
     j % showing the j index, just for seeing how long simulation takes 
 
     % because this is technically in a nodal region at the end point
@@ -188,7 +218,7 @@ for j = 1:(n-1)
     newH(m) = 0;
 
     % Solving for V_m^{j+1}
-    newVm = transpose(A\f);
+    newVm = transpose(A\(b+f));
 
     % updating Vmy and Vm and adding the data to the _all matrices
     Vm = newVm;
@@ -205,6 +235,9 @@ for j = 1:(n-1)
     H_all(j+1,:) = H;
 
 end
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PICKING TIME AND POSITION SHOTS TO PLOT %
