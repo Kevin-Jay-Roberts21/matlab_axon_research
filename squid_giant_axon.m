@@ -38,11 +38,11 @@ beta_h = @(Vm) 1/(1 + exp(-(Vm + 35)/10));
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_k = 0.05; % (in 1/(ohm*cm^2)) % stimulus value
-T0 = 5; % start time of when stimulus is added (in ms)
-T1 = 5.1; % end time of when stimulus is added (in ms)
-P0 = 1; % start position of adding the stimulus (in cm)
-P1 = 1.1; % end position of adding the stimulus (in cm)
+S_v = 0.05; % (in 1/(ohm*cm^2)) % stimulus value
+S_T0 = 5; % start time of when stimulus is added (in ms)
+S_T1 = 5.1; % end time of when stimulus is added (in ms)
+S_P0 = 1; % start position of adding the stimulus (in cm)
+S_P1 = 1.1; % end position of adding the stimulus (in cm)
 
 % INITIALIZATION
 %%%%%%%%%%%%%%%%
@@ -93,9 +93,9 @@ for j = 1:(n-1)
         a5 = dt*G_K*N(i)^4*E_K/C_m + dt*G_Na*(M(i)^3)*H(i)*E_Na/C_m + dt*G_L*E_L/C_m;
 
         % adding stimulus temporally and spatially:
-        if (j*dt >= T0 && j*dt <= T1) && (i*dx >= P0 && i*dx <= P1)
-            a2 = 1 + dt*a/(R_i*C_m*dx^2) + dt*G_K*(N(i)^4)/C_m + dt*(G_Na*(M(i)^3)*H(i) + S_k)/C_m + dt*G_L/C_m;
-            a5 = dt*G_K*(N(i)^4)*E_K/C_m + dt*(G_Na*(M(i)^3)*H(i) + S_k)*E_Na/C_m + dt*G_L*E_L/C_m;
+        if (j*dt >= S_T0 && j*dt <= S_T1) && (i*dx >= S_P0 && i*dx <= S_P1)
+            a2 = 1 + dt*a/(R_i*C_m*dx^2) + dt*G_K*(N(i)^4)/C_m + dt*(G_Na*(M(i)^3)*H(i) + S_v)/C_m + dt*G_L/C_m;
+            a5 = dt*G_K*(N(i)^4)*E_K/C_m + dt*(G_Na*(M(i)^3)*H(i) + S_v)*E_Na/C_m + dt*G_L*E_L/C_m;
         end
         
         % constructing the A matrix and b and f vectors
