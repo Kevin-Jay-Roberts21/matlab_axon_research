@@ -234,7 +234,8 @@ for j = 1:(n-1)
     N = newN;
     M = newM;
     H = newH;
-
+    
+    % Adding the updated vectors to the 'all' data
     Vm_all(j+1,:) = Vm;
     Vmy_all(j+1,:) = Vmy;
     Vm_minus_Vmy(j+1,:) = Vm - Vmy;
