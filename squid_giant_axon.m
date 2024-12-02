@@ -78,7 +78,7 @@ for j = 1:(n-1)
         newH(i) = 1/(1/dt + alpha_h(Vm(i)) + beta_h(Vm(i))) * (H(i)/dt + alpha_h(Vm(i)));
     end
     
-    % Edit the next U, N, M and H (redefining U, N, M and H vectors)
+    % Edit the next Vm, N, M and H (redefining Vm, N, M and H vectors)
     N = newN;
     M = newM;
     H = newH;
@@ -98,7 +98,7 @@ for j = 1:(n-1)
             a5 = dt*G_K*(N(i)^4)*E_K/C_m + dt*(G_Na*(M(i)^3)*H(i) + S_k)*E_Na/C_m + dt*G_L*E_L/C_m;
         end
         
-        % constructing the A and b matrix and vector
+        % constructing the A matrix and b and f vectors
         if i == 1
             A(1, 1) = 1/dx;
             A(1, 2) = -1/dx;
@@ -118,7 +118,7 @@ for j = 1:(n-1)
         end
     end
     
-    % setting newU (the solution from Ax = b)
+    % setting newVm
     newVm = transpose(A\(b+f));
     Vm = newVm;
     
