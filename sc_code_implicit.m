@@ -34,7 +34,7 @@ L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 10; % (ms) the total time of the experiment
+T = 50; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -102,7 +102,7 @@ for i = 2:m-1 % because we want to keep the end points for Vmy, n, m, h at 0
         N(i) = N_0;
         M(i) = M_0;
         H(i) = H_0;
-    % End points (we let Vmy, and N,M,H have ne effect on the end points)
+    % End points
     else
         Vmy(i) = V_my0;
         N(i) = N_0;
@@ -149,8 +149,13 @@ for i = 2:(m-1)
         A(i, i-1) = -b_1(i)/dx^2;
         A(i, i) = C_m/dt + 2*b_1(i)/dx^2;
         A(i, i+1) = -b_1(i)/dx^2;
-    % If i is at an End Point (MIGHT HAVE TO SPECIFY FOR LEFT OR RIGHT END POINT)
-    else 
+    % Left End Point
+    elseif i == myelin_start + 1
+        A(i, i-1) = -B_2/dx^2;
+        A(i, i) = C_m/dt + 2*B_3/dx^2;
+        A(i, i+1) = -B_1/dx^2;
+    % Right End Point
+    else
         A(i, i-1) = -B_1/dx^2;
         A(i, i) = C_m/dt + 2*B_3/dx^2;
         A(i, i+1) = -B_2/dx^2;
