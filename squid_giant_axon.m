@@ -1,92 +1,81 @@
+% Solving the Hodgkin Huxley Equation Using Finite Difference Method
+% Kevin Roberts
+% November 2024
+
 clear all
 close all
 clc
 
-% Tracking the Voltage of a Squid Giant Axon
-
-
-% defining all of the initial and constant variables
-c_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
-r_l = 30; % specific intracellular resistivity (ohms * cm)
+% Defining all of the material and intrinsic parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+C_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
+R_i = 30; % specific intracellular resistivity (ohms * cm)
 a = 0.025; % axon radius (cm)
-L = 5; % axon length (cm)
-h = 0.01; % space step (MAY CHANGE LATER)
-T = 20; % we only ever want to run up to 35 ms (where we find equilibrium)
-k = 0.01; % time step (MAY CHANGE LATER)
-g_k = 0.036; % (1/(ohm*cm^2))
-g_Na = 0.12; % (1/(ohm*cm^2))
-g_L = 0.0003; % (1/(ohm*cm^2))
-E_k = -77; % Equilibrium Potential for Potassium Ions (mV)
+G_K = 0.036; % (1/(ohm*cm^2))
+G_Na = 0.12; % (1/(ohm*cm^2))
+G_L = 0.0003; % (1/(ohm*cm^2))
+E_K = -77; % Equilibrium Potential for Potassium Ions (mV)
 E_Na = 50; % Equilibrium Potential for Sodium Ions (mV)
 E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
 
-% Mathematical Neuroscience Probability Functions
-alpha_n = @(V) 0.01*(V + 55)/(1 - exp(-(V + 55)/10));
-beta_n = @(V) 0.125*exp(-(V + 65)/80);
-alpha_m = @(V) 0.1*(V + 40)/(1 - exp(-(V + 40)/10));
-beta_m = @(V) 4*exp(-(V + 65)/18);
-alpha_h = @(V) 0.07*exp(-(V + 65)/20);
-beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
+% Defining the mesh parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+L = 5; % axon length (cm)
+dx = 0.01; % space step (MAY CHANGE LATER)
+T = 20; % we only ever want to run up to 35 ms (where we find equilibrium)
+dt = 0.01; % time step (MAY CHANGE LATER)
+m = L/dx + 1; % total number of space steps
+n = T/dt + 1; % total number of time steps
 
-% adding sodium conductance (stimulus)
-S = 0.05; % (in 1/(ohm*cm^2))
+% Defining alpha/beta functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+alpha_n = @(Vm) 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10));
+beta_n = @(Vm) 0.125*exp(-(Vm + 65)/80);
+alpha_m = @(Vm) 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10));
+beta_m = @(Vm) 4*exp(-(Vm + 65)/18);
+alpha_h = @(Vm) 0.07*exp(-(Vm + 65)/20);
+beta_h = @(Vm) 1/(1 + exp(-(Vm + 35)/10));
+
+% Stimulus Information
+%%%%%%%%%%%%%%%%%%%%%%
+S_k = 0.05; % (in 1/(ohm*cm^2)) % stimulus value
 T0 = 5; % start time of when stimulus is added (in ms)
 T1 = 5.1; % end time of when stimulus is added (in ms)
-P0 = 1; % position of adding the stimulus (in cm)
-P1 = 1.1;
+P0 = 1; % start position of adding the stimulus (in cm)
+P1 = 1.1; % end position of adding the stimulus (in cm)
 
-% INITIAL CONDITIONS
-% for math neuroscience parameters
+% INITIALIZATION
+%%%%%%%%%%%%%%%%
 N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
 M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
 H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
-U_0 = -64.9997; % (mV) Voltage (eq: -64.9997)
+V_m0 = -64.9997; % (mV) Voltage (eq: -64.9997)
+Vm = V_m0 * ones(1, m);
+N = N_0 * ones(1, m);
+M = M_0 * ones(1, m);
+H = H_0 * ones(1, m);
 
-% number of columns of the matrices (length of axon divided by space step)
-m = L/h + 1; 
+% defining the matrices to collect data at every time step
+Vm_all(1,:) = Vm;
+N_all(1,:) = N;
+M_all(1,:) = M; 
+H_all(1,:) = H;
 
-% initial vectors
-U = zeros(1, m);
-N = zeros(1, m);
-M = zeros(1, m);
-H = zeros(1, m);
-
-% A and b matrix and vector (will be solved in Ax = b style)
+% Initialize matrix A and vectors b and f
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 A = zeros(m);
 b = zeros(m, 1);
+f = zeros(m, 1);
 
-% setting the initial U H M and N conditions in the vectors:
-U(1,:) = U_0;
-N(1,:) = N_0;
-M(1,:) = M_0;
-H(1,:) = H_0;
-
-% Final matrix with voltage of axon at every time and space step
-Uall(1,:) = U;
-
-% Final matrix with probabilities at every time and space step
-Nall(1,:) = N;
-Mall(1,:) = M; 
-Hall(1,:) = H;
-
-% defining new time vectors (each time vector has m elements)
-newU = zeros(1, m);
-newN = zeros(1, m);
-newM = zeros(1, m);
-newH = zeros(1, m);
-
-% number of rows in final matrices
-n = T/k;
-
-% j is the time step
+% Starting the time loop
+%%%%%%%%%%%%%%%%%%%%%%%%
 for j = 1:(n-1)
-    
     
     % setting newN, newM, newH vectors (this is a new i, different from the above for loop)
     for i = 1:m
-        newN(i) = 1/(1/k + alpha_n(U(i)) + beta_n(U(i))) * (N(i)/k + alpha_n(U(i)));
-        newM(i) = 1/(1/k + alpha_m(U(i)) + beta_m(U(i))) * (M(i)/k + alpha_m(U(i)));
-        newH(i) = 1/(1/k + alpha_h(U(i)) + beta_h(U(i))) * (H(i)/k + alpha_h(U(i)));
+        newN(i) = 1/(1/dt + alpha_n(Vm(i)) + beta_n(Vm(i))) * (N(i)/dt + alpha_n(Vm(i)));
+        newM(i) = 1/(1/dt + alpha_m(Vm(i)) + beta_m(Vm(i))) * (M(i)/dt + alpha_m(Vm(i)));
+        newH(i) = 1/(1/dt + alpha_h(Vm(i)) + beta_h(Vm(i))) * (H(i)/dt + alpha_h(Vm(i)));
     end
     
     % Edit the next U, N, M and H (redefining U, N, M and H vectors)
@@ -97,100 +86,50 @@ for j = 1:(n-1)
     % i is the space step
     for i = 1:m
 
-        % defining coefficients
-        % Choice 1 set of variables (see powerpoint for Choice 1 & 2 meaning)
-        % a1 = -a/(2*r_l*h^2);
-        % a2 = a/(r_l*h^2) + c_m/k + g_k*N(i)^4 + g_Na*M(i)^3*H(i) + g_L;
-        % a3 = -a/(2*r_l*h^2); 
-        % a4 = c_m/k; 
-        % a5 = g_k*N(i)^4*E_k + g_Na*M(i)^3*H(i)*E_Na + g_L*E_L;
-        
-        % Choice 2 set of variables
-        a1 = -k*a/(2*r_l*c_m*h^2);
-        a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*(N(i)^4)/c_m + k*g_Na*(M(i)^3)*H(i)/c_m + k*g_L/c_m;
-        a3 = -k*a/(2*r_l*c_m*h^2); 
+        a1 = -dt*a/(2*R_i*C_m*dx^2);
+        a2 = 1 + dt*a/(R_i*C_m*dx^2) + dt*G_K*(N(i)^4)/C_m + dt*G_Na*(M(i)^3)*H(i)/C_m + dt*G_L/C_m;
+        a3 = -dt*a/(2*R_i*C_m*dx^2); 
         a4 = 1; 
-        a5 = k*g_k*N(i)^4*E_k/c_m + k*g_Na*(M(i)^3)*H(i)*E_Na/c_m + k*g_L*E_L/c_m;
+        a5 = dt*G_K*N(i)^4*E_K/C_m + dt*G_Na*(M(i)^3)*H(i)*E_Na/C_m + dt*G_L*E_L/C_m;
 
-
-        % % adding the stimulus temporally only: (T0 - T1)
-        % if j*k >= T0 && j*k <= T1
-        %   % must be used for Choice 1
-        %   a2 = a/(r_l*h^2) + c_m/k + g_k*N(i)^4 + (g_Na*M(i)^3*H(i) + S) + g_L;
-        %   a5 = g_k*N(i)^4*E_k + (g_Na*M(i)^3*H(i) + S)*E_Na + g_L*E_L;
-        % 
-        %   % must be used for Choice 2
-        %   % a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*N(i)^4/c_m + k*(g_Na*M(i)^3*H(i) + S)/c_m + k*g_L/c_m;
-        %   % a5 = k*g_k*N(i)^4*E_k/c_m + k*(g_Na*M(i)^3*H(i) + S)*E_Na/c_m + k*g_L*E_L/c_m;
-        % end
-        
-        % adding the stimulus spacially only: (P0 - P1)
-        % if i*h >= P0 && i*h <= P1 
-        %     % must be used for Choice 1
-        %     % a2 = a/(r_l*h^2) + c_m/k + g_k*N(i)^4 + (g_Na*M(i)^3*H(i) + S) + g_L;
-        %     % a5 = g_k*N(i)^4*E_k + (g_Na*M(i)^3*H(i) + S)*E_Na + g_L*E_L;
-        % 
-        %    % must be used for Choice 2
-        %    a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*N(i)^4/c_m + k*(g_Na*M(i)^3*H(i) + S)/c_m + k*g_L/c_m;
-        %    a5 = k*g_k*N(i)^4*E_k/c_m + k*(g_Na*M(i)^3*H(i) + S)*E_Na/c_m + k*g_L*E_L/c_m;
-        % end
-        
-        
         % adding stimulus temporally and spatially:
-        if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
-            
-            % must be used for Choice 1
-            % a2 = a/(r_l*h^2) + c_m/k + g_k*N(i)^4 + (g_Na*M(i)^3*H(i) + S) + g_L;
-            % a5 = g_k*N(i)^4*E_k + (g_Na*M(i)^3*H(i) + S)*E_Na + g_L*E_L;
-            
-            % must be used for Choice 2
-            a2 = 1 + k*a/(r_l*c_m*h^2) + k*g_k*(N(i)^4)/c_m + k*(g_Na*(M(i)^3)*H(i) + S)/c_m + k*g_L/c_m;
-            a5 = k*g_k*(N(i)^4)*E_k/c_m + k*(g_Na*(M(i)^3)*H(i) + S)*E_Na/c_m + k*g_L*E_L/c_m;
+        if (j*dt >= T0 && j*dt <= T1) && (i*dx >= P0 && i*dx <= P1)
+            a2 = 1 + dt*a/(R_i*C_m*dx^2) + dt*G_K*(N(i)^4)/C_m + dt*(G_Na*(M(i)^3)*H(i) + S_k)/C_m + dt*G_L/C_m;
+            a5 = dt*G_K*(N(i)^4)*E_K/C_m + dt*(G_Na*(M(i)^3)*H(i) + S_k)*E_Na/C_m + dt*G_L*E_L/C_m;
         end
-
+        
         % constructing the A and b matrix and vector
         if i == 1
-            A(1, 1) = 1/h;
-            A(1, 2) = -1/h;
-            b(1, 1) = 0;
+            A(1, 1) = 1/dx;
+            A(1, 2) = -1/dx;
+            b(1) = 0;
+            f(1) = 0;
         elseif i == m
-            A(m, m-1) = -1/h;
-            A(m, m) = 1/h;
-            b(m, 1) = 0;
+            A(m, m-1) = -1/dx;
+            A(m, m) = 1/dx;
+            b(m) = 0;
+            f(m) = 0;
         else
             A(i, i-1) = a1;
             A(i, i) = a2;
             A(i, i+1) = a3;
-            b(i, 1) = a4*U(i) + a5; 
+            b(i) = a4*Vm(i); 
+            f(i) = a5;
         end
     end
     
     % setting newU (the solution from Ax = b)
-    newU = transpose(A\b);
-    U = newU;
+    newVm = transpose(A\(b+f));
+    Vm = newVm;
     
     % adding the newly defined vectors to the 'all' matrices
-    Uall(j+1,:) = U;
-    Nall(j+1,:) = N;
-    Mall(j+1,:) = M;
-    Hall(j+1,:) = H;
-
-% USE FOR GRABBING AT EVERY 50th ITERATION
-%     if mod(j, 50) == 0
-%         Uall(round(j/50)+1,:) = U;
-%         Nall(round(j/50)+1,:) = N;
-%         Mall(round(j/50)+1,:) = M;
-%         Hall(round(j/50)+1,:) = H;
-%     end
-% USE FOR GRABBING AT EVERY 100th ITERATION
-%     if mod(j, 100) == 0
-%         Uall(round(j/100)+1,:) = U;
-%         Nall(round(j/100)+1,:) = N;
-%         Mall(round(j/100)+1,:) = M;
-%         Hall(round(j/100)+1,:) = H;
-%     end
+    Vm_all(j+1,:) = Vm;
+    N_all(j+1,:) = N;
+    M_all(j+1,:) = M;
+    H_all(j+1,:) = H;
 
 end
+
 
 % now pick a position to plot all of the voltages (multiply by 10000 to get
 % units in um)
@@ -230,52 +169,50 @@ list_of_times = [time1
 % plotting Voltage vs Axon length
 figure(1)
 t1 = linspace(0, L, m);
-plot(t1, Uall(round(time1/k),:))
+plot(t1, Vm_all(round(time1/dt),:))
 for i = 2:length(list_of_times)
     hold on
-    plot(t1, Uall(round(list_of_times(i)/k),:))
+    plot(t1, Vm_all(round(list_of_times(i)/dt),:))
 end
 
 % describing plots using legends
 legendStrings1 = {};
 for i  = 1:length(list_of_times)
-    legendStrings1{end+1} = sprintf('Voltage of the axon at time t = %g ms', list_of_times(i));
+    legendStrings1{end+1} = sprintf('$V_m$ at t = %g ms', list_of_times(i));
 end
 legend(legendStrings1, 'Interpreter','latex')
-ylabel("Voltage in millivolts.")
+ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex')
 xlabel("Length of the axon in cm.")
 
 % plotting Voltage vs Time
 figure(2)
 t2 = linspace(0, T, n); % FULL MATRIX
-% t2 = linspace(0, T, n*k*2); % MATRIX AT EVERY 50th iteration
-% t2 = linspace(0, T, n*k); % MATRIX AT EVERY 100th iteration
-plot(t2, Uall(:,round(position1/h)))
+plot(t2, Vm_all(:,round(position1/dx)))
 for i = 2:length(list_of_positions)
     hold on
-    plot(t2, Uall(:,round(list_of_positions(i)/h)))
+    plot(t2, Vm_all(:,round(list_of_positions(i)/dx)))
 end
 
 % describing plots using legends
 legendStrings2 = {};
 for i = 1:length(list_of_positions)
-    legendStrings2{end+1} = sprintf('Voltage at x = %g cm', list_of_positions(i));
+    legendStrings2{end+1} = sprintf('$V_m$ at x = %g cm', list_of_positions(i));
 end
 legend(legendStrings2, 'Interpreter', 'latex')
-ylabel("Voltage in millivolts.")
+ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex')
 xlabel("Time in milliseconds.")
 
 % plotting N, M, H probability vs time (at a certain position)
 figure(3)
-plot(t2, Nall(:,round(position3/h)))
+plot(t2, N_all(:,round(position3/dx)))
 hold on
-plot(t2, Mall(:,round(position3/h)))
+plot(t2, M_all(:,round(position3/dx)))
 hold on
-plot(t2, Hall(:,round(position3/h)))
+plot(t2, H_all(:,round(position3/dx)))
 legendStrings3 = {
-    sprintf('N at x = %g cm', position3), ...
-    sprintf('M at x = %g cm', position3), ...
-    sprintf('H at x = %g cm', position3)};
+    sprintf('n at x = %g cm', position3), ...
+    sprintf('m at x = %g cm', position3), ...
+    sprintf('h at x = %g cm', position3)};
 legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
