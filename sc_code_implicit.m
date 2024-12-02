@@ -34,17 +34,18 @@ L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 50; % (ms) the total time of the experiment
+T = 10; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
 m = L/dx + 1; % total number of space steps
-n = T/dt; % n is the number of time steps
+n = T/dt + 1; % n is the number of time steps
 
-% Defining alpha/beta functions as well as the b_1 and f_1 functions
+% Defining alpha/beta functions as well as the b_1 and f_1 functions and
+% gamma_4
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% defining the alpha_xi and beta_xi functions
+% defining the alpha and beta functions
 alpha_n = @(Vm) 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10));
 beta_n = @(Vm) 0.125*exp(-(Vm + 65)/80);
 alpha_m = @(Vm) 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10));
@@ -68,6 +69,7 @@ f_1 = @(ii, Vm, Vmy, n, m, h) (mod(ii - 1, N_s) > N_n).*F_1(Vm, Vmy) + ... % Int
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(Vm, n, m, h) + ... % Nodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*F_3(Vm, Vmy, n, m, h); % Boundary point        
 
+gamma_4 = C_m/dt;
 
 % Initialization
 %%%%%%%%%%%%%%%%
@@ -160,6 +162,7 @@ end
 for j = 1:(n-1)
     
     % updating Vmy
+    newVmy(1) = 0;
     for i = 2:m-1
         seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
         myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
@@ -174,8 +177,12 @@ for j = 1:(n-1)
             newVmy(i) = dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i-1) - dt*a^2/(C_my*a_my*R_i*dx^2)*Vm(i) + dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i+1) + (C_my/dt - 1/R_my)*Vmy(i);
         end
     end
+    newVmy(m) = 0;
     
     % updating the probability gate functions n, m and h
+    newN(1) = 0;
+    newM(1) = 0;
+    newH(1) = 0;
     for i = 2:m-1
         seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
         myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
@@ -196,6 +203,9 @@ for j = 1:(n-1)
             newH(i) = 1/(1/dt + alpha_h(Vm(i)) + beta_h(Vm(i))) * (H(i)/dt + alpha_h(Vm(i)));
         end
     end
+    newN(m) = 0;
+    newM(m) = 0;
+    newH(m) = 0;
     
     % updating the f function (end points are 0)
     f = zeros(m, 1);
@@ -205,17 +215,10 @@ for j = 1:(n-1)
     % updating the b function (end points are 0)
     b = zeros(m, 1);
     for i = 2:m-1
-        b(i, 1) = C_m/dt*Vm(i); 
+        b(i, 1) = gamma_4*Vm(i); 
     end
     
-    j % showing the j index, just for seeing how long simulation takes 
-
-    % because this is technically in a nodal region at the end point
-    % recall this experiment is not symmetric
-    newVmy(m) = 0;
-    newN(m) = 0;
-    newM(m) = 0;
-    newH(m) = 0;
+    j % showing the j index, just for seeing how long simulation takes     
 
     % Solving for V_m^{j+1}
     newVm = transpose(A\(b+f));
@@ -235,7 +238,6 @@ for j = 1:(n-1)
     H_all(j+1,:) = H;
 
 end
-
 
 
 
