@@ -41,6 +41,19 @@ N_s = N_n + N_my; % number of space steps in an entire axon segement
 m = L/dx + 1; % total number of space steps
 n = T/dt + 1; % n is the number of time steps
 
+% Stimulus Information
+%%%%%%%%%%%%%%%%%%%%%%
+S_v = 5; % (in 1/(ohm*cm^2)) % stimulus value
+S_T0 = 5; % start time of when stimulus is added (in ms)
+S_T1 = 5.1; % end time of when stimulus is added (in ms)
+S_P0 = 0.0001; % start position of adding the stimulus (in cm)
+S_P1 = 0.0004; % end position of adding the stimulus (in cm)
+% in the S function ii, is the space index and tt is the time index
+S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
+                    (tt * dt < S_T1 | abs(tt * dt - S_T1) <= 1e-10) & ...
+                    (abs(ii * dx - S_P0) <= 1e-10 | ii * dx > S_P0) & ...
+                    (ii * dx < S_P1 | abs(ii * dx - S_P1) <= 1e-10));
+
 % Defining alpha/beta functions as well as the b_1 and f_1 functions and gamma_4
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -62,11 +75,11 @@ b_1 = @(ii) (mod(ii - 1, N_s) > N_n).*B_1 + ... % Internodal region
 
 % defining the f_1(x_i) function
 F_1 = @(Vm, Vmy) -Vm/R_m + (1/R_m - C_m/(C_my*R_my))*Vmy; % for internodal
-F_2 = @(Vm, n, m, h) (-G_K*n^4 - G_Na*m^3*h - G_L)*Vm + G_K*n^4*E_K + G_Na*m^3*h*E_Na + G_L*E_L; % for nodal
-F_3 = @(Vm, Vmy, n, m, h) (F_1(Vm, Vmy) + F_2(Vm, n, m, h))/2; % for end point
-f_1 = @(ii, Vm, Vmy, n, m, h) (mod(ii - 1, N_s) > N_n).*F_1(Vm, Vmy) + ... % Internodal region
-           (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(Vm, n, m, h) + ... % Nodal region
-           ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*F_3(Vm, Vmy, n, m, h); % Boundary point        
+F_2 = @(Vm, n, m, h, ii, tt) (-G_K*n^4 - (G_Na*m^3*h + S(ii, tt)) - G_L)*Vm + G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L; % for nodal
+F_3 = @(Vm, Vmy, n, m, h, ii, tt) (F_1(Vm, Vmy) + F_2(Vm, n, m, h, ii, tt))/2; % for end point
+f_1 = @(Vm, Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vm, Vmy) + ... % Internodal region
+           (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(Vm, n, m, h, ii, tt) + ... % Nodal region
+           ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*F_3(Vm, Vmy, n, m, h, ii, tt); % Boundary point        
 
 gamma_4 = C_m/dt;
 
@@ -214,7 +227,7 @@ for j = 1:(n-1)
     % updating the f function (end points are 0)
     f = zeros(m, 1);
     for i = 2:m-1
-        f(i, 1) = f_1(i, Vm(i), Vmy(i), N(i), M(i), H(i)); 
+        f(i, 1) = f_1(Vm(i), Vmy(i), N(i), M(i), H(i), i, j); 
     end
     % updating the b function (end points are 0)
     b = zeros(m, 1);
