@@ -28,13 +28,13 @@ E_L = -59.4; % (mV) Nernst potential for leak channels
 % Defining the Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 dx = 0.0001; % (cm) space step
-dt = 0.01; % (ms) time step 
+dt = 0.0001; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 10; % (dimless) number of axon segments
+n_s = 5; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 50; % (ms) the total time of the experiment
+T = 10; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -65,27 +65,33 @@ beta_m = @(Vm) 4*exp(-(Vm + 65)/18);
 alpha_h = @(Vm) 0.07*exp(-(Vm + 65)/20);
 beta_h = @(Vm) 1/(1 + exp(-(Vm + 35)/10));
 
-% defining the b_1(x_i)
-B_1 = (a/(2*R_i))*(1 + C_m*a/(C_my*a_my)); % for internodal
-B_2 = a/(2*R_i); % for nodal
-B_3 = (B_1 + B_2)/2; % for end point
+% defining the b_1(x_i) function
+B_1 = (a/(2*R_i))*(1 + C_m*a/(C_my*a_my)); % Internodal region
+B_2 = a/(2*R_i); % Nodal region
+B_3 = (B_1 + B_2)/2; % End point
 b_1 = @(ii) (mod(ii - 1, N_s) > N_n).*B_1 + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*B_2 + ... % Nodal region
-           ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*B_3; % Boundary point      
+           ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*B_3; % End point      
 
+% defining the c_1(x_i) function
+C_1 = -1/R_m; % Internodal region
+C_2 = @(n, m, h, ii, tt) -G_K*n^4 - (G_Na*m^3*h + S(ii, tt)) - G_L; % Nodal region
+C_3 = @(n, m, h, ii, tt) (C_1 + C_2(n, m, h, ii, tt))/2; % End point
+c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
+           (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*C_2(n, m, h, ii, tt) + ... % Nodal region
+           ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*C_3(n, m, h, ii, tt); % End point        
+       
 % defining the f_1(x_i) function
-F_1 = @(Vm, Vmy) -Vm/R_m + (1/R_m - C_m/(C_my*R_my))*Vmy; % for internodal
-F_2 = @(Vm, n, m, h, ii, tt) (-G_K*n^4 - (G_Na*m^3*h + S(ii, tt)) - G_L)*Vm + G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L; % for nodal
-F_3 = @(Vm, Vmy, n, m, h, ii, tt) (F_1(Vm, Vmy) + F_2(Vm, n, m, h, ii, tt))/2; % for end point
-f_1 = @(Vm, Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vm, Vmy) + ... % Internodal region
-           (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(Vm, n, m, h, ii, tt) + ... % Nodal region
-           ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*F_3(Vm, Vmy, n, m, h, ii, tt); % Boundary point        
-
-gamma_4 = C_m/dt;
+F_1 = @(Vmy) (1/R_m - C_m/(C_my*R_my))*Vmy; % Internodal region
+F_2 = @(n, m, h, ii, tt) G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L; % Nodal region
+F_3 = @(Vmy, n, m, h, ii, tt) (F_1(Vmy) + F_2(n, m, h, ii, tt))/2; % End point
+f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Internodal region
+           (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(n, m, h, ii, tt) + ... % Nodal region
+           ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*F_3(Vmy, n, m, h, ii, tt); % End point        
 
 % Initialization
 %%%%%%%%%%%%%%%%
-V_m0 = -40.80; % (mV) initial condition for membrane potential 
+V_m0 = -64.39; %-40.80; % (mV) initial condition for membrane potential 
 V_my0 = -0.140041; % (mV) initial condition for axon potential in periaxonal space
 N_0 = 0.66928; % (dimless) initial condition for gating variable n
 M_0 = 0.478558; % (dimless) initial condition for gating variable m
@@ -147,21 +153,28 @@ for i = 2:(m-1)
     % putting 0's into the nodal regions of Vmy and 0's into the internodal
     % regions of N, M and H
     
-    gamma1 = -b_1(i+1/2)/dx^2;
-    gamma2 = C_m/dt + (b_1(i+1/2) + b_1(i-1/2))/dx^2;
-    gamma3 = -b_1(i-1/2)/dx^2;
-
+    gamma1 = -dt/(C_m*dx^2)*b_1(i+1/2);
+    gamma2 = 1 + dt/(C_m*dx^2)*(b_1(i+1/2) + b_1(i-1/2));
+    gamma3 = -dt/(C_m*dx^2)*b_1(i-1/2);
+    
     A(i, i-1) = gamma1;
     A(i, i) = gamma2;
     A(i, i+1) = gamma3;
-   
+    
 end
+
+% defining each eta (all of which are constants)
+eta1 = dt*a^2/(2*C_my*a_my*R_i*dx^2);
+eta2 = -dt*a^2/(C_my*a_my*R_i*dx^2);
+eta3 = dt*a^2/(2*C_my*a_my*R_i*dx^2);
+eta4 = 1 - dt/(C_my*R_my); % (1 - dt/(C_my*R_my))
 
 % Running the time loop
 %%%%%%%%%%%%%%%%%%%%%%%
 for j = 1:(n-1)
     
     % updating Vmy
+    %%%%%%%%%%%%%%
     newVmy(1) = 0;
     for i = 2:m-1
         seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
@@ -170,16 +183,17 @@ for j = 1:(n-1)
         seg_start = (seg - 1)*(N_s); % index of the start of the segment
 
         if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
-            newVmy(i) = dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i-1) - dt*a^2/(C_my*a_my*R_i*dx^2)*Vm(i) + dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i+1) + (C_my/dt - 1/R_my)*Vmy(i);
+            newVmy(i) = eta1*Vm(i-1) + eta2*Vm(i) + eta3*Vm(i+1) + eta4*Vmy(i);
         elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
             newVmy(i) = 0;
         else % End point
-            newVmy(i) = dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i-1) - dt*a^2/(C_my*a_my*R_i*dx^2)*Vm(i) + dt*a^2/(2*C_my*a_my*R_i*dx^2)*Vm(i+1) + (C_my/dt - 1/R_my)*Vmy(i);
+            newVmy(i) = eta1*Vm(i-1) + eta2*Vm(i) + eta3*Vm(i+1) + eta4*Vmy(i);
         end
     end
     newVmy(m) = 0;
     
     % updating the probability gate functions n, m and h
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     newN(1) = 0;
     newM(1) = 0;
     newH(1) = 0;
@@ -207,23 +221,30 @@ for j = 1:(n-1)
     newM(m) = 0;
     newH(m) = 0;
     
-    % updating the f function (end points are 0)
-    f = zeros(m, 1);
-    for i = 2:m-1
-        f(i, 1) = f_1(Vm(i), Vmy(i), N(i), M(i), H(i), i, j); 
-    end
+    % DEFINING b and f vectors
+    %%%%%%%%%%%%%%%%%%%%%%%%%%
+    gamma5 = dt/C_m;
+    
     % updating the b function (end points are 0)
     b = zeros(m, 1);
     for i = 2:m-1
-        b(i, 1) = gamma_4*Vm(i); 
+        gamma4 = 1 + dt/C_m * c_1(N(i), M(i), H(i), i, j);
+        b(i, 1) = gamma4 * Vm(i); 
+    end
+    % updating the f function (end points are 0)
+    f = zeros(m, 1);
+    for i = 2:m-1
+        f(i, 1) = gamma5 * f_1(Vmy(i), N(i), M(i), H(i), i, j); 
     end
     
     j % showing the j index, just for seeing how long simulation takes     
 
     % Solving for V_m^{j+1}
+    %%%%%%%%%%%%%%%%%%%%%%%
     newVm = transpose(A\(b+f));
 
     % updating Vmy and Vm and adding the data to the _all matrices
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     Vm = newVm;
     Vmy = newVmy;
     N = newN;
@@ -231,6 +252,7 @@ for j = 1:(n-1)
     H = newH;
     
     % Adding the updated vectors to the 'all' data
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     Vm_all(j+1,:) = Vm;
     Vmy_all(j+1,:) = Vmy;
     Vm_minus_Vmy(j+1,:) = Vm - Vmy;
@@ -301,7 +323,7 @@ end
 legend(legendStrings1, 'Interpreter','latex');
 ylabel("$V_m$ in millivolts.", 'Interpreter','latex');
 xlabel("Length of the axon in um.");
-% ylim([-70, 50])
+
 
 % Second figure: Voltage vs Time at different positions
 % Create subplot (1 row, 2 columns, 2nd subplot)
@@ -321,7 +343,7 @@ end
 legend(legendStrings2, 'Interpreter', 'latex');
 ylabel("$V_m$ in millivolts.", 'Interpreter', 'latex');
 xlabel("Time in milliseconds.");
-% ylim([-70, 50])
+
 
 
 
@@ -352,7 +374,7 @@ end
 legend(legendStrings1, 'Interpreter','latex');
 ylabel("$V_{my}$ in millivolts.", 'Interpreter','latex');
 xlabel("Length of the axon in um.");
-% ylim([-70, 50])
+
 
 % Second figure: Voltage vs Time at different positions
 % Create subplot (1 row, 2 columns, 2nd subplot)
@@ -372,7 +394,7 @@ end
 legend(legendStrings2, 'Interpreter', 'latex');
 ylabel("$V_{my}$ in millivolts.", 'Interpreter', 'latex');
 xlabel("Time in milliseconds.");
-% ylim([-70, 50])
+
 
 
 
@@ -402,7 +424,7 @@ end
 legend(legendStrings1, 'Interpreter','latex');
 ylabel("$V_m - V_{my}$ in millivolts.", 'Interpreter','latex');
 xlabel("Length of the axon in um.");
-% ylim([-70, 50])
+
 
 % Second figure: Voltage vs Time at different positions
 % Create subplot (1 row, 2 columns, 2nd subplot)
@@ -422,7 +444,8 @@ end
 legend(legendStrings2, 'Interpreter', 'latex');
 ylabel("$V_m - V_{my}$ in millivolts.", 'Interpreter', 'latex');
 xlabel("Time in milliseconds.");
-% ylim([-70, 50])
+
+
 
 
 
@@ -442,4 +465,3 @@ legendStrings3 = {
 legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
-% ylim([-70, 50])
