@@ -28,13 +28,13 @@ E_L = -59.4; % (mV) Nernst potential for leak channels
 % Defining the Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 dx = 0.0001; % (cm) space step
-dt = 0.0001; % (ms) time step 
+dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 5; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 10; % (ms) the total time of the experiment
+T = 50; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -68,7 +68,7 @@ beta_h = @(Vm) 1/(1 + exp(-(Vm + 35)/10));
 % defining the b_1(x_i) function
 B_1 = (a/(2*R_i))*(1 + C_m*a/(C_my*a_my)); % Internodal region
 B_2 = a/(2*R_i); % Nodal region
-B_3 = (B_1 + B_2)/2; % End point
+B_3 = (B_1 + B_2)/2; % End point (may not be used)
 b_1 = @(ii) (mod(ii - 1, N_s) > N_n).*B_1 + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*B_2 + ... % Nodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*B_3; % End point      
@@ -157,9 +157,9 @@ for i = 2:(m-1)
     gamma2 = 1 + dt/(C_m*dx^2)*(b_1(i+1/2) + b_1(i-1/2));
     gamma3 = -dt/(C_m*dx^2)*b_1(i-1/2);
     
-    A(i, i-1) = gamma1;
+    A(i, i-1) = gamma3;
     A(i, i) = gamma2;
-    A(i, i+1) = gamma3;
+    A(i, i+1) = gamma1;
     
 end
 
@@ -167,7 +167,7 @@ end
 eta1 = dt*a^2/(2*C_my*a_my*R_i*dx^2);
 eta2 = -dt*a^2/(C_my*a_my*R_i*dx^2);
 eta3 = dt*a^2/(2*C_my*a_my*R_i*dx^2);
-eta4 = 1 - dt/(C_my*R_my); % (1 - dt/(C_my*R_my))
+eta4 = 1 - dt/(C_my*R_my);
 
 % Running the time loop
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -183,11 +183,11 @@ for j = 1:(n-1)
         seg_start = (seg - 1)*(N_s); % index of the start of the segment
 
         if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
-            newVmy(i) = eta1*Vm(i-1) + eta2*Vm(i) + eta3*Vm(i+1) + eta4*Vmy(i);
+            newVmy(i) = eta1*Vm(i+1) + eta2*Vm(i) + eta3*Vm(i-1) + eta4*Vmy(i);
         elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
             newVmy(i) = 0;
         else % End point
-            newVmy(i) = eta1*Vm(i-1) + eta2*Vm(i) + eta3*Vm(i+1) + eta4*Vmy(i);
+            newVmy(i) = eta1*Vm(i+1) + eta2*Vm(i) + eta3*Vm(i-1) + eta4*Vmy(i);
         end
     end
     newVmy(m) = 0;
@@ -228,8 +228,8 @@ for j = 1:(n-1)
     % updating the b function (end points are 0)
     b = zeros(m, 1);
     for i = 2:m-1
-        gamma4 = 1 + dt/C_m * c_1(N(i), M(i), H(i), i, j);
-        b(i, 1) = gamma4 * Vm(i); 
+        gamma4 = 1 + (dt/C_m)*c_1(N(i), M(i), H(i), i, j);
+        b(i, 1) = gamma4*Vm(i); 
     end
     % updating the f function (end points are 0)
     f = zeros(m, 1);
@@ -269,12 +269,12 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 position1 = 0.01; % in cm
-position2 = 0.03; % in cm
-position3 = 0.039; % in cm
-position4 = 0.05; % in cm
-position5 = 0.06; % in cm
-position6 = 0.07; % in cm
-position7 = 0.08; % in cm
+position2 = 0.015; % in cm
+position3 = 0.02; % in cm
+position4 = 0.025; % in cm
+position5 = 0.03; % in cm
+position6 = 0.035; % in cm
+position7 = 0.04; % in cm
 
 list_of_positions = [position1
                      position7];
