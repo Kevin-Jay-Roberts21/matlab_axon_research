@@ -12,7 +12,8 @@ clc
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 a = 5.5*10^(-5); % (cm) axon radius in nodal region
-a_my = 5.623*10^(-5); % (cm) axon radius in myelinated section 
+a_my = a/0.698; % (cm) axon radius in myelinated section 
+
 C_m = 0.001; % (ms/(ohms*cm^2)) specific membrane capacitance
 C_my = 1.66*10^(-4); % (ms/(ohms*cm^2)) specific myelin capacitance
 R_i = 150; % (ohms*cm) intracellular resistivity
@@ -167,7 +168,8 @@ end
 eta1 = dt*a^2/(2*C_my*a_my*R_i*dx^2);
 eta2 = -dt*a^2/(C_my*a_my*R_i*dx^2);
 eta3 = dt*a^2/(2*C_my*a_my*R_i*dx^2);
-eta4 = 1 - dt/(C_my*R_my);
+eta4 = 1 - dt/(C_my*R_my); % correct derivation, but eta4 is approximately 1 here, causing instability
+% eta4 = C_m/dt - 1/R_my; % eta4 = 0.1 (somewhat reasonable results, but incorrect derivation, should also be C_my not C_m)
 
 % Running the time loop
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -228,13 +230,13 @@ for j = 1:(n-1)
     % updating the b function (end points are 0)
     b = zeros(m, 1);
     for i = 2:m-1
-        gamma4 = 1 + (dt/C_m)*c_1(N(i), M(i), H(i), i, j);
+        gamma4 = 1 + (dt/C_m)*c_1(newN(i), newM(i), newH(i), i, j);
         b(i, 1) = gamma4*Vm(i); 
     end
     % updating the f function (end points are 0)
     f = zeros(m, 1);
     for i = 2:m-1
-        f(i, 1) = gamma5 * f_1(Vmy(i), N(i), M(i), H(i), i, j); 
+        f(i, 1) = gamma5 * f_1(newVmy(i), newN(i), newM(i), newH(i), i, j); 
     end
     
     j % showing the j index, just for seeing how long simulation takes     
