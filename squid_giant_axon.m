@@ -22,7 +22,7 @@ E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 L = 5; % axon length (cm)
 dx = 0.01; % space step (MAY CHANGE LATER)
-T = 20; % we only ever want to run up to 35 ms (where we find equilibrium)
+T = 20; % (ms) Total Time
 dt = 0.01; % time step (MAY CHANGE LATER)
 m = L/dx + 1; % total number of space steps
 n = T/dt + 1; % total number of time steps
@@ -100,13 +100,13 @@ for j = 1:(n-1)
         
         % constructing the A matrix and b and f vectors
         if i == 1
-            A(1, 1) = 1/dx;
-            A(1, 2) = -1/dx;
+            A(1, 1) = 1;
+            A(1, 2) = -1;
             b(1) = 0;
             f(1) = 0;
         elseif i == m
-            A(m, m-1) = -1/dx;
-            A(m, m) = 1/dx;
+            A(m, m-1) = -1;
+            A(m, m) = 1;
             b(m) = 0;
             f(m) = 0;
         else
