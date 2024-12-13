@@ -110,9 +110,9 @@ for j = 1:(n-1)
             b(m) = 0;
             f(m) = 0;
         else
-            A(i, i-1) = a1;
+            A(i, i-1) = a3;
             A(i, i) = a2;
-            A(i, i+1) = a3;
+            A(i, i+1) = a1;
             b(i) = a4*Vm(i); 
             f(i) = a5;
         end
