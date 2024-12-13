@@ -12,7 +12,7 @@ radius_nodal = 0.00005; % (cm)
 radius_internodal = 0.00005; % (cm)
 h = 0.0005; % space step (cm)
 T = 7; % we only ever want to run up to 35 ms (where we find equilibrium)
-k = 0.01; % time step (MAY CHANGE LATER)
+dt = 0.01; % time step (MAY CHANGE LATER)
 g_L = 0.0003; % (1/(ohm*cm^2))
 g_k_nodal = 0.036; % (1/(ohm*cm^2))
 g_k_internodal = 0; % (1/(ohm*cm^2))
@@ -126,16 +126,16 @@ newM = zeros(1, m);
 newH = zeros(1, m);
 
 % number of rows in final matrices
-n = T/k;
+n = T/dt;
 
 % j is the time step
 for j = 1:(n-1)
     j
     % setting newN, newM, newH vectors (this is a new i, different from the above for loop)
     for i = 1:m
-        newN(i) = 1/(1/k + alpha_n(U(i)) + beta_n(U(i))) * (N(i)/k + alpha_n(U(i)));
-        newM(i) = 1/(1/k + alpha_m(U(i)) + beta_m(U(i))) * (M(i)/k + alpha_m(U(i)));
-        newH(i) = 1/(1/k + alpha_h(U(i)) + beta_h(U(i))) * (H(i)/k + alpha_h(U(i)));
+        newN(i) = 1/(1 + dt*alpha_n(U(i)) + dt*beta_n(U(i))) * (N(i) + dt*alpha_n(U(i)));
+        newM(i) = 1/(1 + dt*alpha_m(U(i)) + dt*beta_m(U(i))) * (M(i) + dt*alpha_m(U(i)));
+        newH(i) = 1/(1 + dt*alpha_h(U(i)) + dt*beta_h(U(i))) * (H(i) + dt*alpha_h(U(i)));
     end
 
     % Edit the next U, N, M and H (redefining U, N, M and H vectors)
@@ -155,11 +155,11 @@ for j = 1:(n-1)
         % a5 = g_k(i*h)*N(i)^4*E_k + g_Na(i*h)*M(i)^3*H(i)*E_Na + g_L*E_L;
         
         % Choice 2 set of variables
-        a1 = -k*a(i*h)/(2*r_l*c_m(i*h)*h^2);
-        a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*(N(i)^4)/c_m(i*h) + k*g_Na(i*h)*(M(i)^3)*H(i)/c_m(i*h) + k*g_L/c_m(i*h);
-        a3 = -k*a(i*h)/(2*r_l*c_m(i*h)*h^2); 
+        a1 = -dt*a(i*h)/(2*r_l*c_m(i*h)*h^2);
+        a2 = 1 + dt*a(i*h)/(r_l*c_m(i*h)*h^2) + dt*g_k(i*h)*(N(i)^4)/c_m(i*h) + dt*g_Na(i*h)*(M(i)^3)*H(i)/c_m(i*h) + dt*g_L/c_m(i*h);
+        a3 = -dt*a(i*h)/(2*r_l*c_m(i*h)*h^2); 
         a4 = 1; 
-        a5 = k*g_k(i*h)*(N(i)^4)*E_k/c_m(i*h) + k*g_Na(i*h)*(M(i)^3)*H(i)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
+        a5 = dt*g_k(i*h)*(N(i)^4)*E_k/c_m(i*h) + dt*g_Na(i*h)*(M(i)^3)*H(i)*E_Na/c_m(i*h) + dt*g_L*E_L/c_m(i*h);
 
 
         % % adding the stimulus temporally only: (T0 - T1)
@@ -185,15 +185,15 @@ for j = 1:(n-1)
         % end
         
         % adding stimulus temporally and spatially:
-        if (j*k >= T0 && j*k <= T1) && (i*h >= P0 && i*h <= P1)
+        if (j*dt >= T0 && j*dt <= T1) && (i*h >= P0 && i*h <= P1)
             
             % must be used for Choice 1
             % a2 = a(i*h)/(r_l*h^2) + c_m(i*h)/k + g_k(i*h)*N(i)^4 + (g_Na(i*h)*M(i)^3*H(i) + S) + g_L;
             % a5 = g_k(i*h)*N(i)^4*E_k + (g_Na(i*h)*M(i)^3*H(i) + S)*E_Na + g_L*E_L;
             
             % must be used for Choice 2
-            a2 = 1 + k*a(i*h)/(r_l*c_m(i*h)*h^2) + k*g_k(i*h)*(N(i)^4)/c_m(i*h) + k*(g_Na(i*h)*(M(i)^3)*H(i) + S)/c_m(i*h) + k*g_L/c_m(i*h);
-            a5 = k*g_k(i*h)*(N(i)^4)*E_k/c_m(i*h) + k*(g_Na(i*h)*(M(i)^3)*H(i) + S)*E_Na/c_m(i*h) + k*g_L*E_L/c_m(i*h);
+            a2 = 1 + dt*a(i*h)/(r_l*c_m(i*h)*h^2) + dt*g_k(i*h)*(N(i)^4)/c_m(i*h) + dt*(g_Na(i*h)*(M(i)^3)*H(i) + S)/c_m(i*h) + dt*g_L/c_m(i*h);
+            a5 = dt*g_k(i*h)*(N(i)^4)*E_k/c_m(i*h) + dt*(g_Na(i*h)*(M(i)^3)*H(i) + S)*E_Na/c_m(i*h) + dt*g_L*E_L/c_m(i*h);
         end
 
         % constructing the A and b matrix and vector
@@ -285,10 +285,10 @@ list_of_times = [time1
 % plotting Voltage vs Axon length
 figure(1)
 t1 = linspace(0, L, m);
-plot(t1, Uall(round(time1/k),:))
+plot(t1, Uall(round(time1/dt),:))
 for i = 2:length(list_of_times)
     hold on
-    plot(t1, Uall(round(list_of_times(i)/k),:))
+    plot(t1, Uall(round(list_of_times(i)/dt),:))
 end
 
 % describing plots using legends
