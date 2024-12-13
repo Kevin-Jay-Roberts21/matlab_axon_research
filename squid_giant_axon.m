@@ -44,8 +44,8 @@ S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 1; % start position of adding the stimulus (in cm)
 S_P1 = 1.1; % end position of adding the stimulus (in cm)
 
-% INITIALIZATION
-%%%%%%%%%%%%%%%%
+% Initialize Vm, n, m, h
+%%%%%%%%%%%%%%%%%%%%%%%%
 N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
 M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
 H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)

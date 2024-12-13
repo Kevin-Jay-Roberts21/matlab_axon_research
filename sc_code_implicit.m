@@ -11,11 +11,11 @@ clc
 
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-a = 5.5*10^(-5); % (cm) axon radius in nodal region
-a_my = a/0.698; % (cm) axon radius in myelinated section 
 C_m = 0.001; % (ms/(ohms*cm^2)) specific membrane capacitance
 C_my = 1.66*10^(-4); % (ms/(ohms*cm^2)) specific myelin capacitance
 R_i = 150; % (ohms*cm) intracellular resistivity
+a = 5.5*10^(-5); % (cm) axon radius in nodal region
+a_my = a/0.698; % (cm) axon radius in myelinated section 
 R_my = 2.4*10^5; % (ohms*cm^2) specific myelin resistance
 R_m = 2.5*10^3; % (ohms*cm^2) specific membrane resistance
 G_K = 0.036; % (S/cm^2) max specific potassium conductance
