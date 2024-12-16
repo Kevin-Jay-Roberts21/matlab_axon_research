@@ -12,12 +12,12 @@ clc
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 C_m = 0.001; % (ms/(ohms*cm^2)) specific membrane capacitance
-C_my = 1.66*10^(-4); % (ms/(ohms*cm^2)) specific myelin capacitance
+C_my = 0.000166; % (ms/(ohms*cm^2)) specific myelin capacitance
 R_i = 150; % (ohms*cm) intracellular resistivity
 a = 5.5*10^(-5); % (cm) axon radius in nodal region
 a_my = a/0.698; % (cm) axon radius in myelinated section 
 R_my = 2.4*10^5; % (ohms*cm^2) specific myelin resistance
-R_m = 2.5*10^3; % (ohms*cm^2) specific membrane resistance
+R_m = 2.5*10^4; % (ohms*cm^2) specific membrane resistance
 G_K = 0.036; % (S/cm^2) max specific potassium conductance
 G_Na = 0.12; % (S/cm^2) max specific sodium conductance 
 G_L = 0.0003; % (S/cm^2) specific leak conductance
@@ -32,9 +32,9 @@ dt = 0.01; % (ms) time step
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 5; % (dimless) number of axon segments
+n_s = 2; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 50; % (ms) the total time of the experiment
+T = 20; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -269,32 +269,30 @@ end
 % PICKING TIME AND POSITION SHOTS TO PLOT %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-position1 = 0.01; % in cm
-position2 = 0.015; % in cm
-position3 = 0.02; % in cm
-position4 = 0.025; % in cm
-position5 = 0.03; % in cm
-position6 = 0.035; % in cm
-position7 = 0.04; % in cm
+
+
+position1 = L*0.25; % in cm
+position2 = L*0.5; % in cm
+position3 = L*0.75; % in cm
+position4 = L; % in cm
 
 list_of_positions = [position1
-                     position7];
+                     position2
+                     position3
+                     position4];
 
 % Times to observe the voltage along the axon
-time1 = 1; % in ms
-time2 = 2; % in ms
-time3 = 4; % in ms
-time4 = 5; % in ms
-time5 = 7; % in ms
-time6 = 8; % in ms
-time7 = 10; % in ms
+time1 = T*0.25; % in ms
+time2 = T*0.5; % in ms
+time3 = T*0.75; % in ms
+time4 = T; % in ms
+
 
 list_of_times = [time1
                  time2
                  time3
                  time4
                  ];
-
 
 
 
