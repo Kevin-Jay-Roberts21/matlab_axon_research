@@ -10,16 +10,16 @@ clc
 
 % Defining all of the material and intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-C_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
-C_my = 0.001; % (ms / (ohm*cm^2))
-R_i = 30; % specific intracellular resistivity (or axoplasmic resistivity) (ohms * cm)
+C_m = 1; % membrane capacitance (micro-farads/cm^2)
+C_my = 1; % myelin capacitance (micro-farads/cm^2)
+R_i = 30*10^(-3); % specific intracellular resistivity (or axoplasmic resistivity) (kilo-ohms * cm)
 a = 0.00005; % (cm)
 a_my = 0.00005; % (cm)
-G_L = 0.0003; % (1/(ohm*cm^2))
-G_k_nodal = 0.036; % (1/(ohm*cm^2))
-G_k_internodal = 0; % (1/(ohm*cm^2))
-G_Na_nodal = 0.5; % (1/(ohm*cm^2))
-G_Na_internodal = 0; % (1/(ohm*cm^2))
+G_K_nodal = 36; % (mS/cm^2)
+G_K_internodal = 0; % (mS/cm^2)
+G_Na_nodal = 500; % (mS/cm^2)
+G_Na_internodal = 0; % (mS/cm^2)
+G_L = 0.3; % (mS/cm^2)
 E_K = -77; % (mV)
 E_Na = 50; % (mV)
 E_L = -54.4; % (mV)
@@ -47,7 +47,7 @@ beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 10; % (in 1/(ohm*cm^2))
+S_v = 1000; % (in mS/cm^2)
 S_T0 = 0.1; % start time of when stimulus is added (in ms)
 S_T1 = 0.2; % end time of when stimulus is added (in ms)
 S_P0 = 0.0120; % position of adding the stimulus (in cm)
@@ -85,7 +85,7 @@ end
 % region, the second element is if the x is in a myelinated region.
 a_fctn = @(x) a*a_fctn(x) + a_my*(a_fctn(x)==0); 
 C_m_fctn = @(x) C_m*C_m_fctn(x) + C_my*(C_m_fctn(x)==0);
-G_K_fctn = @(x) G_k_nodal*G_K_fctn(x) + G_k_internodal*(G_K_fctn(x)==0); 
+G_K_fctn = @(x) G_K_nodal*G_K_fctn(x) + G_K_internodal*(G_K_fctn(x)==0); 
 G_Na_fctn = @(x) G_Na_nodal*G_Na_fctn(x) + G_Na_internodal*(G_Na_fctn(x)==0); 
 
 % Initialize Vm, n, m, and h

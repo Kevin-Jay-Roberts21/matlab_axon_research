@@ -8,15 +8,16 @@ clc
 
 % Defining all of the material and intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-C_m = 0.001; % membrane capacitance (ms / (ohm*cm^2))
-R_i = 30; % specific intracellular resistivity (ohms * cm)
+C_m = 1; % membrane capacitance (micro-farads/cm^2)
+R_i = 30*10^(-3); % specific intracellular resistivity (kilo-ohms * cm)
 a = 0.025; % axon radius (cm)
-G_K = 0.036; % (1/(ohm*cm^2))
-G_Na = 0.12; % (1/(ohm*cm^2))
-G_L = 0.0003; % (1/(ohm*cm^2))
+G_K = 36; % (mS/cm^2)
+G_Na = 120; % (mS/cm^2)
+G_L = 0.3; % (mS/cm^2)
 E_K = -77; % Equilibrium Potential for Potassium Ions (mV)
 E_Na = 50; % Equilibrium Potential for Sodium Ions (mV)
 E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
+
 
 % Defining the mesh parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -38,7 +39,7 @@ beta_h = @(Vm) 1/(1 + exp(-(Vm + 35)/10));
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 0.05; % (in 1/(ohm*cm^2)) % stimulus value
+S_v = 50; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 1; % start position of adding the stimulus (in cm)
