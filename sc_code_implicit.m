@@ -11,20 +11,20 @@ clc
 
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-C_m = 0.001; % (ms/(ohms*cm^2)) specific membrane capacitance
-C_my = 0.000166; % (ms/(ohms*cm^2)) specific myelin capacitance
-R_i = 150; % (ohms*cm) intracellular resistivity
+C_m = 1.45; % (micro-farads/cm^2) specific membrane capacitance
+C_my = 0.166; % (micro-farads/cm^2) specific myelin capacitance
+R_i = 144*10^(-3); % (kilo-ohms*cm) intracellular resistivity
 a = 5.5*10^(-5); % (cm) axon radius in nodal region
 a_my = a/0.698; % (cm) axon radius in myelinated section 
-R_my = 2.4*10^5; % (ohms*cm^2) specific myelin resistance
-R_m = 2.5*10^4; % (ohms*cm^2) specific membrane resistance
-G_K = 0.036; % (S/cm^2) max specific potassium conductance
-G_Na = 0.12; % (S/cm^2) max specific sodium conductance 
-G_L = 0.0003; % (S/cm^2) specific leak conductance
+R_my = 842; % (kilo-ohms*cm^2) specific myelin resistance
+R_m = 22; % (kilo-ohms*cm^2) specific membrane resistance
+G_K = 36; % (mS/cm^2) max specific potassium conductance
+G_Na = 120; % (mS/cm^2) max specific sodium conductance 
+G_L = 0.3; % (mS/cm^2) specific leak conductance
 E_K = -82; % (mV) Nernst potential for potassium ions
 E_Na = 45; % (mV) Nernst potential for sodium ions
 E_L = -59.4; % (mV) Nernst potential for leak channels
-
+E_rest = -70 % (mV) effective resting nernst potential (MAY CHANGE LATER)
 % Defining the Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 dx = 0.0001; % (cm) space step
@@ -32,9 +32,9 @@ dt = 0.01; % (ms) time step
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 2; % (dimless) number of axon segments
+n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 20; % (ms) the total time of the experiment
+T = 100; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -43,7 +43,7 @@ n = T/dt + 1; % n is the number of time steps
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 0; % (in 1/(ohm*cm^2)) % stimulus value
+S_v = 0; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -82,7 +82,7 @@ c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*C_3(n, m, h, ii, tt); % End point        
        
 % defining the f_1(x_i) function
-F_1 = @(Vmy) (1/R_m - C_m/(C_my*R_my))*Vmy; % Internodal region
+F_1 = @(Vmy) (1/R_m - C_m/(C_my*R_my))*Vmy + E_rest/R_m; % Internodal region
 F_2 = @(n, m, h, ii, tt) G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L; % Nodal region
 F_3 = @(Vmy, n, m, h, ii, tt) (F_1(Vmy) + F_2(n, m, h, ii, tt))/2; % End point
 f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Internodal region
@@ -168,7 +168,7 @@ eta1 = dt*a^2/(2*C_my*a_my*R_i*dx^2);
 eta2 = -dt*a^2/(C_my*a_my*R_i*dx^2);
 eta3 = dt*a^2/(2*C_my*a_my*R_i*dx^2);
 eta4 = 1 - dt/(C_my*R_my); % correct derivation, but eta4 is approximately 1 here, causing instability
-% eta4 = C_m/dt - 1/R_my; % eta4 = 0.1 (somewhat reasonable results, but incorrect derivation, should also be C_my not C_m)
+eta4 = 0.1; % eta4 = 0.1 (somewhat reasonable results, but incorrect derivation, should also be C_my not C_m)
 
 % Running the time loop
 %%%%%%%%%%%%%%%%%%%%%%%
