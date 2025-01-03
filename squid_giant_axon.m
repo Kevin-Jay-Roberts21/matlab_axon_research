@@ -30,16 +30,20 @@ n = T/dt + 1; % total number of time steps
 
 % Defining alpha/beta functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-alpha_n = @(Vm) 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10));
-beta_n = @(Vm) 0.125*exp(-(Vm + 65)/80);
-alpha_m = @(Vm) 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10));
-beta_m = @(Vm) 4*exp(-(Vm + 65)/18);
-alpha_h = @(Vm) 0.07*exp(-(Vm + 65)/20);
-beta_h = @(Vm) 1/(1 + exp(-(Vm + 35)/10));
+T_base = 6.3; % (C) base temperature
+T_actual = 20; % (C) the temperature of the squid axon
+Q_10 = 3; % (dimless) temperature coefficient
+phi = Q_10^((T_actual - T_base)/10); % (dimless) temperature scaling factor
+alpha_n = @(Vm) phi * 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10)); % (1/ms)
+beta_n = @(Vm) phi * 0.125*exp(-(Vm + 65)/80); % (1/ms)
+alpha_m = @(Vm) phi * 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10)); % (1/ms)
+beta_m = @(Vm) phi * 4*exp(-(Vm + 65)/18); % (1/ms)
+alpha_h = @(Vm) phi * 0.07*exp(-(Vm + 65)/20); % (1/ms)
+beta_h = @(Vm) phi * 1/(1 + exp(-(Vm + 35)/10)); % (1/ms)
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 50; % (in mS/cm^2) % stimulus value
+S_v = 10; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 1; % start position of adding the stimulus (in cm)
