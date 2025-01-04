@@ -41,8 +41,6 @@ n = T/dt + 1; % Total number of time steps
 T_base = 6.3; % (C) base temperature
 T_actual = 20; % (C) the temperature of the squid axon
 Q_10 = 3; % (dimless) temperature coefficient
-% NOTE: alpha and beta functions are not technically defined with phi, we
-% multiply phi here for convenience.
 phi = Q_10^((T_actual - T_base)/10); % (dimless) temperature scaling factor
 alpha_n = @(Vm) phi * 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10)); % (1/ms)
 beta_n = @(Vm) phi * 0.125*exp(-(Vm + 65)/80); % (1/ms)
