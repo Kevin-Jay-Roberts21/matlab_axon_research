@@ -13,8 +13,8 @@ clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 C_m = 1.45; % (micro-farads/cm^2) specific membrane capacitance
 C_my = 0.166; % (micro-farads/cm^2) specific myelin capacitance
-R_i = 144*10^(-3); % (kilo-ohms*cm) intracellular resistivity
-a = 5.5*10^(-5); % (cm) axon radius in nodal region
+R_i = 0.144; % (kilo-ohms*cm) intracellular resistivity
+a = 0.55*10^(-4); % (cm) axon radius in nodal region
 a_my = a/0.698; % (cm) axon radius in myelinated section 
 R_my = 842; % (kilo-ohms*cm^2) specific myelin resistance
 R_m = 22; % (kilo-ohms*cm^2) specific membrane resistance
@@ -25,16 +25,17 @@ E_K = -82; % (mV) Nernst potential for potassium ions
 E_Na = 45; % (mV) Nernst potential for sodium ions
 E_L = -59.4; % (mV) Nernst potential for leak channels
 E_rest = -70 % (mV) effective resting nernst potential (MAY CHANGE LATER)
+
 % Defining the Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 dx = 0.0001; % (cm) space step
-dt = 0.01; % (ms) time step 
+dt = 0.0001; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 100; % (ms) the total time of the experiment
+T = 10; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -168,7 +169,7 @@ eta1 = dt*a^2/(2*C_my*a_my*R_i*dx^2);
 eta2 = -dt*a^2/(C_my*a_my*R_i*dx^2);
 eta3 = dt*a^2/(2*C_my*a_my*R_i*dx^2);
 eta4 = 1 - dt/(C_my*R_my); % correct derivation, but eta4 is approximately 1 here, causing instability
-eta4 = 0.1; % eta4 = 0.1 (somewhat reasonable results, but incorrect derivation, should also be C_my not C_m)
+% eta4 = 0.1; % eta4 = 0.1 (somewhat reasonable results, but incorrect derivation, should also be C_my not C_m)
 
 % Running the time loop
 %%%%%%%%%%%%%%%%%%%%%%%
