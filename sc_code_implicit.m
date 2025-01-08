@@ -59,12 +59,16 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % defining the alpha and beta functions
-alpha_n = @(Vm) 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10));
-beta_n = @(Vm) 0.125*exp(-(Vm + 65)/80);
-alpha_m = @(Vm) 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10));
-beta_m = @(Vm) 4*exp(-(Vm + 65)/18);
-alpha_h = @(Vm) 0.07*exp(-(Vm + 65)/20);
-beta_h = @(Vm) 1/(1 + exp(-(Vm + 35)/10));
+T_base = 6.3; % (C) base temperature
+T_actual = 6.3; % (C) the temperature of the squid axon
+Q_10 = 3; % (dimless) temperature coefficient
+phi = Q_10^((T_actual - T_base)/10); % (dimless) temperature scaling factor
+alpha_n = @(Vm) phi * 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10));
+beta_n = @(Vm) phi * 0.125*exp(-(Vm + 65)/80);
+alpha_m = @(Vm) phi * 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10));
+beta_m = @(Vm) phi * 4*exp(-(Vm + 65)/18);
+alpha_h = @(Vm) phi * 0.07*exp(-(Vm + 65)/20);
+beta_h = @(Vm) phi * 1/(1 + exp(-(Vm + 35)/10));
 
 % defining the b_1(x_i) function
 B_1 = (a/(2*R_i))*(1 + C_m*a/(C_my*a_my)); % Internodal region
