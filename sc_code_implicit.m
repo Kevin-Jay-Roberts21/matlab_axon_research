@@ -464,3 +464,5 @@ legendStrings3 = {
 legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
+
+save('sc_modified.mat');
