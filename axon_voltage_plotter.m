@@ -35,7 +35,7 @@ function plot_squid_animation_temporal(data)
 
     % % SPATIAL PROFILE %
     % % x axis is the axon length
-    t1 = linspace(0, L, m); 
+    t = linspace(0, L, m); 
 
     figure(1);
     hold on;
@@ -51,10 +51,10 @@ function plot_squid_animation_temporal(data)
 
     % Loop through each vector and plot them one by one
     for i = 1:n
-        x1 = data.Vm_all(i,:);
+        x = data.Vm_all(i,:);
         
         % Plot the vector
-        plot(t1, x1, 'b-');
+        plot(t, x, 'b-');
         
         text(xmin + 0.1 * (xmax - xmin), ymax - 0.1 * (ymax - ymin), sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
 
@@ -67,6 +67,46 @@ end
 
 % Animation that plots the voltage vs space
 function plot_squid_animation_spatial(data)
+    T = data.T;
+    m = data.m;
+    n = data.n;
+    dx = data.dx;
+
+    % TEMPORAL PROFILE %
+    % x axis is the axon time
+    t = linspace(0, T, n); 
+
+    figure(1);
+    hold on;
+
+    xmin = 0;
+    xmax = T;
+    ymin = -90;
+    ymax = 60;
+
+    axis([xmin xmax ymin ymax]);  % Set axis limits
+    xlabel('Time in milliseconds');
+    ylabel('$V_m$ in millivolts', 'Interpreter','latex');
+
+    % Loop through each vector and plot them one by one
+    for i = 1:m
+        x = data.Vm_all(:,i);  
+
+        % Plot the vector
+        plot(t, x, 'b-');
+        hold on
+
+        text(xmin + 0.1 * (xmax - xmin), ymax - 0.05 * (ymax - ymin), sprintf('Space: %.5f cm', round(i*dx, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
+
+        % Add a pause to create animation effect
+        pause(0.01);
+
+        cla;
+    end
+end
+
+% Animation that plots the probabilities vs time
+function plot_squid_animation_probabilities(data)
     T = data.T;
     m = data.m;
     n = data.n;
