@@ -9,7 +9,7 @@ clc
 % Defining all of the material and intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 C_m = 1; % membrane capacitance (micro-farads/cm^2)
-R_i = 30*10^(-3); % specific intracellular resistivity (kilo-ohms * cm)
+R_i = 0.03; % specific intracellular resistivity (kilo-ohms * cm)
 a = 0.025; % axon radius (cm)
 G_K = 36; % (mS/cm^2)
 G_Na = 120; % (mS/cm^2)
@@ -27,16 +27,20 @@ dt = 0.01; % time step (MAY CHANGE LATER)
 
 % Defining alpha/beta functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-alpha_n = @(V) 0.01*(V + 55)/(1 - exp(-(V + 55)/10));
-beta_n = @(V) 0.125*exp(-(V + 65)/80);
-alpha_m = @(V) 0.1*(V + 40)/(1 - exp(-(V + 40)/10));
-beta_m = @(V) 4*exp(-(V + 65)/18);
-alpha_h = @(V) 0.07*exp(-(V + 65)/20);
-beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
+T_base = 6.3; % (C) base temperature
+T_actual = 6.3; % (C) the temperature of the squid axon
+Q_10 = 3; % (dimless) temperature coefficient
+phi = Q_10^((T_actual - T_base)/10); % (dimless) temperature scaling factor
+alpha_n = @(Vm) phi * 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10)); % (1/ms)
+beta_n = @(Vm) phi * 0.125*exp(-(Vm + 65)/80); % (1/ms)
+alpha_m = @(Vm) phi * 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10)); % (1/ms)
+beta_m = @(Vm) phi * 4*exp(-(Vm + 65)/18); % (1/ms)
+alpha_h = @(Vm) phi * 0.07*exp(-(Vm + 65)/20); % (1/ms)
+beta_h = @(Vm) phi * 1/(1 + exp(-(Vm + 35)/10)); % (1/ms)
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 50; % (in mS/cm^2) % stimulus value
+S_v = 10; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 1; % start position of adding the stimulus (in cm)
@@ -253,4 +257,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Dimensionless Time $\tilde{T}$.", 'Interpreter','latex')
 
-% save('dimless_stim_0.003912.mat');
+% save('HH_data.mat');

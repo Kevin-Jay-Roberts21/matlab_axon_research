@@ -12,7 +12,7 @@ clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 C_m = 1; % membrane capacitance (micro-farads/cm^2)
 C_my = 1; % myelin capacitance (micro-farads/cm^2)
-R_i = 30*10^(-3); % specific intracellular resistivity (or axoplasmic resistivity) (kilo-ohms * cm)
+R_i = 0.03; % specific intracellular resistivity (or axoplasmic resistivity) (kilo-ohms * cm)
 a = 0.00005; % (cm)
 a_my = 0.00005; % (cm)
 G_K_nodal = 36; % (mS/cm^2)
@@ -38,16 +38,20 @@ n = T/dt + 1; % Total number of time steps
 
 % Defining the alpha/beta functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-alpha_n = @(V) 0.01*(V + 55)/(1 - exp(-(V + 55)/10));
-beta_n = @(V) 0.125*exp(-(V + 65)/80);
-alpha_m = @(V) 0.1*(V + 40)/(1 - exp(-(V + 40)/10));
-beta_m = @(V) 4*exp(-(V + 65)/18);
-alpha_h = @(V) 0.07*exp(-(V + 65)/20);
-beta_h = @(V) 1/(1 + exp(-(V + 35)/10));
+T_base = 6.3; % (C) base temperature
+T_actual = 6.3; % (C) the temperature of the squid axon
+Q_10 = 3; % (dimless) temperature coefficient
+phi = Q_10^((T_actual - T_base)/10); % (dimless) temperature scaling factor
+alpha_n = @(Vm) phi * 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10)); % (1/ms)
+beta_n = @(Vm) phi * 0.125*exp(-(Vm + 65)/80); % (1/ms)
+alpha_m = @(Vm) phi * 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10)); % (1/ms)
+beta_m = @(Vm) phi * 4*exp(-(Vm + 65)/18); % (1/ms)
+alpha_h = @(Vm) phi * 0.07*exp(-(Vm + 65)/20); % (1/ms)
+beta_h = @(Vm) phi * 1/(1 + exp(-(Vm + 35)/10)); % (1/ms)
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 1000; % (in mS/cm^2)
+S_v = 10; % (in mS/cm^2)
 S_T0 = 0.1; % start time of when stimulus is added (in ms)
 S_T1 = 0.2; % end time of when stimulus is added (in ms)
 S_P0 = 0.0120; % position of adding the stimulus (in cm)
@@ -273,4 +277,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('myelin_stim_0.5_radius_0.00005_starting_at_equil_15_node_h_.00001.mat');
+% save('HH_data.mat');

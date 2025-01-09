@@ -1,4 +1,4 @@
-% Solving the Hodgkin Huxley Equation Using Finite Difference Method
+% Solving the Hodgkin Huxley Equation Using Finite Difference Method (Scaled)
 % Kevin Roberts
 % November 2024
 
@@ -14,16 +14,16 @@ a = 0.025; % axon radius (cm)
 G_K = 36; % (mS/cm^2)
 G_Na = 120; % (mS/cm^2)
 G_L = 0.3; % (mS/cm^2)
-E_K = -77; % Equilibrium Potential for Potassium Ions (mV)
-E_Na = 50; % Equilibrium Potential for Sodium Ions (mV)
-E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
+E_K = -115; % Equilibrium Potential for Potassium Ions (mV)
+E_Na = 12; % Equilibrium Potential for Sodium Ions (mV)
+E_L = -10.613; % Equilibrium Potential for Leak Channels (mV)
 
 
 % Defining the mesh parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 L = 5; % axon length (cm)
 dx = 0.01; % space step (MAY CHANGE LATER)
-T = 20; % (ms) Total Time
+T = 30; % (ms) Total Time
 dt = 0.01; % time step (MAY CHANGE LATER)
 m = L/dx + 1; % total number of space steps
 n = T/dt + 1; % total number of time steps
@@ -34,16 +34,16 @@ T_base = 6.3; % (C) base temperature
 T_actual = 6.3; % (C) the temperature of the squid axon
 Q_10 = 3; % (dimless) temperature coefficient
 phi = Q_10^((T_actual - T_base)/10); % (dimless) temperature scaling factor
-alpha_n = @(Vm) phi * 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10)); % (1/ms)
-beta_n = @(Vm) phi * 0.125*exp(-(Vm + 65)/80); % (1/ms)
-alpha_m = @(Vm) phi * 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10)); % (1/ms)
-beta_m = @(Vm) phi * 4*exp(-(Vm + 65)/18); % (1/ms)
-alpha_h = @(Vm) phi * 0.07*exp(-(Vm + 65)/20); % (1/ms)
-beta_h = @(Vm) phi * 1/(1 + exp(-(Vm + 35)/10)); % (1/ms)
+alpha_n = @(Vm) phi * 0.01*(Vm + 10)/(exp((Vm + 10)/10) - 1); % (1/ms)
+beta_n = @(Vm) phi * 0.125*exp(Vm/80); % (1/ms)
+alpha_m = @(Vm) phi * 0.1*(Vm + 25)/(exp((Vm + 25)/10) - 1); % (1/ms)
+beta_m = @(Vm) phi * 4*exp(Vm/18); % (1/ms)
+alpha_h = @(Vm) phi * 0.07*exp(Vm/20); % (1/ms)
+beta_h = @(Vm) phi * 1/(exp((Vm + 30)/10) + 1); % (1/ms)
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 50; % (in mS/cm^2) % stimulus value
+S_v = 0; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 1; % start position of adding the stimulus (in cm)
@@ -54,7 +54,7 @@ S_P1 = 1.1; % end position of adding the stimulus (in cm)
 N_0 = 0.3177; % probability that potassium gate is open (eq: 0.3177)
 M_0 = 0.0529; % probability that Sodium activation gate is open (eq: 0.0529)
 H_0 = 0.5961; % probability that Sodium inactivation gate is open (eq: 0.5961)
-V_m0 = -64.9997; % (mV) Voltage (eq: -64.9997)
+V_m0 = 0; % (mV) Voltage (eq: -64.9997)
 Vm = V_m0 * ones(1, m);
 N = N_0 * ones(1, m);
 M = M_0 * ones(1, m);
@@ -222,4 +222,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('HH_data.mat');
+% save('salt_cond2023_params_stim.mat');

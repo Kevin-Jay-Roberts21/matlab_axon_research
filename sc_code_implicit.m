@@ -13,18 +13,19 @@ clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 C_m = 1.45; % (micro-farads/cm^2) specific membrane capacitance
 C_my = 0.166; % (micro-farads/cm^2) specific myelin capacitance
-R_i = 144*10^(-3); % (kilo-ohms*cm) intracellular resistivity
-a = 5.5*10^(-5); % (cm) axon radius in nodal region
+R_i = 0.144; % (kilo-ohms*cm) intracellular resistivity
+a = 0.55*10^(-4); % (cm) axon radius in nodal region
 a_my = a/0.698; % (cm) axon radius in myelinated section 
 R_my = 842; % (kilo-ohms*cm^2) specific myelin resistance
 R_m = 22; % (kilo-ohms*cm^2) specific membrane resistance
-G_K = 36; % (mS/cm^2) max specific potassium conductance
-G_Na = 120; % (mS/cm^2) max specific sodium conductance 
+G_K = 50; % (mS/cm^2) max specific potassium conductance
+G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 0.3; % (mS/cm^2) specific leak conductance
 E_K = -82; % (mV) Nernst potential for potassium ions
 E_Na = 45; % (mV) Nernst potential for sodium ions
 E_L = -59.4; % (mV) Nernst potential for leak channels
-E_rest = -70 % (mV) effective resting nernst potential (MAY CHANGE LATER)
+E_rest = -70; % (mV) effective resting nernst potential (MAY CHANGE LATER)
+
 % Defining the Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 dx = 0.0001; % (cm) space step
@@ -34,7 +35,7 @@ L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 100; % (ms) the total time of the experiment
+T = 300; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -58,12 +59,16 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % defining the alpha and beta functions
-alpha_n = @(Vm) 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10));
-beta_n = @(Vm) 0.125*exp(-(Vm + 65)/80);
-alpha_m = @(Vm) 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10));
-beta_m = @(Vm) 4*exp(-(Vm + 65)/18);
-alpha_h = @(Vm) 0.07*exp(-(Vm + 65)/20);
-beta_h = @(Vm) 1/(1 + exp(-(Vm + 35)/10));
+T_base = 6.3; % (C) base temperature
+T_actual = 6.3; % (C) the temperature of the squid axon
+Q_10 = 3; % (dimless) temperature coefficient
+phi = Q_10^((T_actual - T_base)/10); % (dimless) temperature scaling factor
+alpha_n = @(Vm) phi * 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10));
+beta_n = @(Vm) phi * 0.125*exp(-(Vm + 65)/80);
+alpha_m = @(Vm) phi * 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10));
+beta_m = @(Vm) phi * 4*exp(-(Vm + 65)/18);
+alpha_h = @(Vm) phi * 0.07*exp(-(Vm + 65)/20);
+beta_h = @(Vm) phi * 1/(1 + exp(-(Vm + 35)/10));
 
 % defining the b_1(x_i) function
 B_1 = (a/(2*R_i))*(1 + C_m*a/(C_my*a_my)); % Internodal region
@@ -168,7 +173,7 @@ eta1 = dt*a^2/(2*C_my*a_my*R_i*dx^2);
 eta2 = -dt*a^2/(C_my*a_my*R_i*dx^2);
 eta3 = dt*a^2/(2*C_my*a_my*R_i*dx^2);
 eta4 = 1 - dt/(C_my*R_my); % correct derivation, but eta4 is approximately 1 here, causing instability
-eta4 = 0.1; % eta4 = 0.1 (somewhat reasonable results, but incorrect derivation, should also be C_my not C_m)
+% eta4 = 0.1; % eta4 = 0.1 (somewhat reasonable results, but incorrect derivation)
 
 % Running the time loop
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -465,4 +470,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('sc_modified.mat');
+% save('sc_modified.mat');
