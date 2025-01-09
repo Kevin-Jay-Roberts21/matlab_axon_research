@@ -257,4 +257,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Dimensionless Time $\tilde{T}$.", 'Interpreter','latex')
 
-% save('dimless_stim_0.003912.mat');
+% save('HH_data.mat');

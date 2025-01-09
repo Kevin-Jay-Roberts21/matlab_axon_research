@@ -277,4 +277,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('myelin_stim_0.5_radius_0.00005_starting_at_equil_15_node_h_.00001.mat');
+% save('HH_data.mat');
