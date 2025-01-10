@@ -17,9 +17,9 @@ HH_data = load('HH_data.mat');
 SC_data = load('First_SC_Code.mat');
 % DC_data = load('dc_data.mat');
 
-% plot_squid_animation_temporal(HH_data);
+plot_squid_animation_temporal(HH_data);
 % plot_squid_animation_spatial(HH_data);
-plot_squid_time_and_space_shots(HH_data);
+% plot_squid_time_and_space_shots(HH_data);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
