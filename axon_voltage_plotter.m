@@ -4,9 +4,7 @@
 % Kevin Roberts
 % January 2025
 
-% Plotting will be done in 2 main categories: HH, and SC/DC (or rat). Each 
-% category will have the option to plot time and space shots, animation or
-% comparisons.
+% Plotting HH or SC or DC code can be
 
 clear all
 close all
@@ -18,12 +16,23 @@ HH_data1 = load('HH_data1.mat');
 SC_data = load('First_SC_Code.mat');
 % DC_data = load('dc_data.mat');
 
-% plot_squid_animation_temporal(HH_data);
-% plot_squid_animation_spatial(HH_data);
+plot_squid_animation_temporal(HH_data);
+plot_squid_animation_spatial(HH_data);
 plot_squid_animation_probabilities(HH_data);
-% plot_squid_time_and_space_shots(HH_data);
+plot_squid_time_and_space_shots(HH_data);
 plot_squid_voltage_vs_time_comparison(HH_data, HH_data1);
 plot_squid_voltage_vs_space_comparison(HH_data, HH_data1);
+
+% plot_rat_animation_temporal(SC_data);
+% plot_rat_animation_spatial(SC_data);
+% plot_rat_animation_probabilities(SC_data);
+% plot_rat_time_and_space_shots(SC_data);
+% plot_rat_voltage_vs_time_comparison(SC_data, SC_data1);
+% plot_rat_voltage_vs_space_comparison(SC_data, SC_data1);
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SQUID PLOTTER FUNCTIONS %
@@ -36,8 +45,8 @@ function plot_squid_animation_temporal(data)
     n = data.n;
     dt = data.dt;
 
-    % % SPATIAL PROFILE %
-    % % x axis is the axon length
+    % SPATIAL PROFILE %
+    % x axis is the axon length
     t = linspace(0, L, m); 
 
     figure(1);
@@ -46,7 +55,7 @@ function plot_squid_animation_temporal(data)
     xmin = 0;
     xmax = L;
     ymin = -90;
-    ymax = 60;
+    ymax = 90;
 
     axis([xmin xmax ymin ymax]);  % Set axis limits
     xlabel('Axon length in cm');
@@ -345,9 +354,22 @@ end
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SC/DC PLOTTER FUNCTIONS %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function plot_rat_animation(SC_data)
+
+    
+
 end
+
+
+
 function plot_rat_time_and_space_shots(SC_data)
 end
+
+
+
 function plot_rat_comparison(SC_data, SC_data1)
 end
