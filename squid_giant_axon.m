@@ -9,7 +9,7 @@ clc
 % Defining all of the material and intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 C_m = 1; % membrane capacitance (micro-farads/cm^2)
-R_i = 0.03; % specific intracellular resistivity (kilo-ohms * cm)
+R_i = 0.038; % specific intracellular resistivity (kilo-ohms * cm)
 a = 0.025; % axon radius (cm)
 G_K = 36; % (mS/cm^2)
 G_Na = 120; % (mS/cm^2)
@@ -222,4 +222,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('HH_data.mat');
+% save('HH_data1.mat');
