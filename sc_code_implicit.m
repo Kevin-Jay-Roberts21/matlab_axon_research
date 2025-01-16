@@ -24,7 +24,7 @@ G_L = 7; % (mS/cm^2) specific leak conductance
 E_K = -82; % (mV) Nernst potential for potassium ions
 E_Na = 45; % (mV) Nernst potential for sodium ions
 E_L = -59.4; % (mV) Nernst potential for leak channels
-E_rest = -59.4; % (mV) effective resting nernst potential (MAY CHANGE LATER)
+E_rest = -59.4; % (mV) effective resting nernst potential
 
 % Defining the Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -35,7 +35,7 @@ L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 100; % (ms) the total time of the experiment
+T = 300; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -98,9 +98,9 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 %%%%%%%%%%%%%%%%
 V_m0 = -64.39; %-40.80; % (mV) initial condition for membrane potential 
 V_my0 = -0.140041; % (mV) initial condition for axon potential in periaxonal space
-N_0 = 0.66928; % (dimless) initial condition for gating variable n
-M_0 = 0.478558; % (dimless) initial condition for gating variable m
-H_0 = 0.05551; % (dimless) initial condition for gating variable h
+N_0 = 0.4384; % (dimless) initial condition for gating variable n
+M_0 = 0.1247; % (dimless) initial condition for gating variable m
+H_0 = 0.3305; % (dimless) initial condition for gating variable h
 Vm = V_m0 * ones(1, m);
 Vmy = zeros(1, m);
 N = zeros(1, m);
@@ -280,11 +280,13 @@ position1 = L*0.25; % in cm
 position2 = L*0.5; % in cm
 position3 = L*0.75; % in cm
 position4 = L; % in cm
+position5 = 0.0002; 
 
 list_of_positions = [position1
                      position2
                      position3
-                     position4];
+                     position4
+                     position5];
 
 % Times to observe the voltage along the axon
 time1 = T*0.25; % in ms
@@ -457,15 +459,15 @@ xlabel("Time in milliseconds.");
 % PLOTTING n, m, and h TEMPROAL PROFILES %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 figure(4)
-plot(t2, N_all(:,round(position3/dx)))
+plot(t2, N_all(:,round(position5/dx)))
 hold on
-plot(t2, M_all(:,round(position3/dx)))
+plot(t2, M_all(:,round(position5/dx)))
 hold on
-plot(t2, H_all(:,round(position3/dx)))
+plot(t2, H_all(:,round(position5/dx)))
 legendStrings3 = {
-    sprintf('n at x = %g um', 10000*position3), ...
-    sprintf('m at x = %g um', 10000*position3), ...
-    sprintf('h at x = %g um', 10000*position3)};
+    sprintf('n at x = %g um', 10000*position5), ...
+    sprintf('m at x = %g um', 10000*position5), ...
+    sprintf('h at x = %g um', 10000*position5)};
 legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
