@@ -20,7 +20,7 @@ R_my = 842; % (kilo-ohms*cm^2) specific myelin resistance
 R_m = 22; % (kilo-ohms*cm^2) specific membrane resistance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
-G_L = 7; % (mS/cm^2) specific leak conductance
+G_L = 80; % (mS/cm^2) specific leak conductance
 E_K = -82; % (mV) Nernst potential for potassium ions
 E_Na = 45; % (mV) Nernst potential for sodium ions
 E_L = -59.4; % (mV) Nernst potential for leak channels
@@ -35,11 +35,11 @@ L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 300; % (ms) the total time of the experiment
+T = 10; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
-m = L/dx + 1; % total number of space steps
+m = N_s*n_s + 1; % total number of space steps
 n = T/dt + 1; % n is the number of time steps
 
 % Stimulus Information
@@ -55,10 +55,8 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
                     (abs(ii * dx - S_P0) <= 1e-10 | ii * dx > S_P0) & ...
                     (ii * dx < S_P1 | abs(ii * dx - S_P1) <= 1e-10));
 
-% Defining alpha/beta functions as well as the b_1 and f_1 functions and gamma_4
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% defining the alpha and beta functions
+% Defining alpha/beta functions as well as the b_1, c_1 and f_1 functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T_base = 6.3; % (C) base temperature
 T_actual = 6.3; % (C) the temperature of the squid axon
 Q_10 = 3; % (dimless) temperature coefficient
@@ -273,8 +271,6 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PICKING TIME AND POSITION SHOTS TO PLOT %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 
 position1 = L*0.25; % in cm
 position2 = L*0.5; % in cm
