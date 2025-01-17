@@ -20,7 +20,7 @@ R_my = 842; % (kilo-ohms*cm^2) specific myelin resistance
 R_m = 22; % (kilo-ohms*cm^2) specific membrane resistance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
-G_L = 80; % (mS/cm^2) specific leak conductance
+G_L = 7; % (mS/cm^2) specific leak conductance
 E_K = -82; % (mV) Nernst potential for potassium ions
 E_Na = 45; % (mV) Nernst potential for sodium ions
 E_L = -59.4; % (mV) Nernst potential for leak channels
@@ -35,12 +35,13 @@ L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 10; % (ms) the total time of the experiment
+T = 100; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
 m = N_s*n_s + 1; % total number of space steps
 n = T/dt + 1; % n is the number of time steps
+xx=0:dx:L;
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
@@ -94,11 +95,11 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 
 % Initialization
 %%%%%%%%%%%%%%%%
-V_m0 = -64.39; %-40.80; % (mV) initial condition for membrane potential 
-V_my0 = -0.140041; % (mV) initial condition for axon potential in periaxonal space
-N_0 = 0.4384; % (dimless) initial condition for gating variable n
-M_0 = 0.1247; % (dimless) initial condition for gating variable m
-H_0 = 0.3305; % (dimless) initial condition for gating variable h
+V_m0 = -64.999; %-40.80; % (mV) initial condition for membrane potential 
+V_my0 = -1; % (mV) initial condition for axon potential in periaxonal space
+N_0 = 0.3177; % (dimless) initial condition for gating variable n
+M_0 = 0.0529; % (dimless) initial condition for gating variable m
+H_0 = 0.5961; % (dimless) initial condition for gating variable h
 Vm = V_m0 * ones(1, m);
 Vmy = zeros(1, m);
 N = zeros(1, m);
@@ -156,9 +157,9 @@ for i = 2:(m-1)
     % putting 0's into the nodal regions of Vmy and 0's into the internodal
     % regions of N, M and H
     
-    gamma1 = -dt/(C_m*dx^2)*b_1(i+1/2);
-    gamma2 = 1 + dt/(C_m*dx^2)*(b_1(i+1/2) + b_1(i-1/2));
-    gamma3 = -dt/(C_m*dx^2)*b_1(i-1/2);
+    gamma1 = -dt/(C_m*dx^2)*b_1(xx(i)-dx/2);
+    gamma2 = 1 +  dt/(C_m*dx^2)*(b_1(xx(i)+dx/2) + b_1(xx(i)-dx/2));
+    gamma3 = -dt/(C_m*dx^2)*b_1(xx(i)+dx/2);
     
     A(i, i-1) = gamma3;
     A(i, i) = gamma2;
