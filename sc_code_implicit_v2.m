@@ -41,7 +41,6 @@ N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
 m = N_s*n_s + 1; % total number of space steps
 n = T/dt + 1; % n is the number of time steps
-xx=0:dx:L;
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
