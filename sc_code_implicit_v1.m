@@ -1,4 +1,6 @@
-% Solving the Single Cable Model Using Finite Difference Method
+% Solving the Single Cable Model Using Finite Difference Method Version 1
+% In this code, we represent the RHS of the first equation of the sc model 
+% as Vm_i^j and the RHS of the second equation of the sc model as Vmy_i^j 
 % Kevin Roberts
 % November 2024
 
@@ -30,12 +32,13 @@ E_rest = -59.4; % (mV) effective resting nernst potential
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 dx = 0.0001; % (cm) space step
 dt = 0.01; % (ms) time step 
+rho = dt/dx^2; % creating the courant number
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 100; % (ms) the total time of the experiment
+T = 10; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -70,24 +73,24 @@ alpha_h = @(Vm) phi * 0.07*exp(-(Vm + 65)/20);
 beta_h = @(Vm) phi * 1/(1 + exp(-(Vm + 35)/10));
 
 % defining the b_1(x_i) function
-B_1 = (a/(2*R_i))*(1 + C_m*a/(C_my*a_my)); % Internodal region
-B_2 = a/(2*R_i); % Nodal region
+B_1 = (a/(2*R_i*C_m))*(1 + C_m*a/(C_my*a_my)); % Internodal region
+B_2 = a/(2*R_i*C_m); % Nodal region
 B_3 = (B_1 + B_2)/2; % End point (may not be used)
 b_1 = @(ii) (mod(ii - 1, N_s) > N_n).*B_1 + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*B_2 + ... % Nodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*B_3; % End point      
 
 % defining the c_1(x_i) function
-C_1 = -1/R_m; % Internodal region
-C_2 = @(n, m, h, ii, tt) -G_K*n^4 - (G_Na*m^3*h + S(ii, tt)) - G_L; % Nodal region
+C_1 = -1/(R_m*C_m); % Internodal region
+C_2 = @(n, m, h, ii, tt) 1/C_m*(-G_K*n^4 - (G_Na*m^3*h + S(ii, tt)) - G_L); % Nodal region
 C_3 = @(n, m, h, ii, tt) (C_1 + C_2(n, m, h, ii, tt))/2; % End point
 c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*C_2(n, m, h, ii, tt) + ... % Nodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*C_3(n, m, h, ii, tt); % End point        
        
 % defining the f_1(x_i) function
-F_1 = @(Vmy) (1/R_m - C_m/(C_my*R_my))*Vmy + E_rest/R_m; % Internodal region
-F_2 = @(n, m, h, ii, tt) G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L; % Nodal region
+F_1 = @(Vmy) (1/(R_m*C_m) - 1/(C_my*R_my))*Vmy + E_rest/(R_m*C_m); % Internodal region
+F_2 = @(n, m, h, ii, tt) 1/C_m * (G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
 F_3 = @(Vmy, n, m, h, ii, tt) (F_1(Vmy) + F_2(n, m, h, ii, tt))/2; % End point
 f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(n, m, h, ii, tt) + ... % Nodal region
@@ -105,8 +108,8 @@ Vmy = zeros(1, m);
 N = zeros(1, m);
 M = zeros(1, m);
 H = zeros(1, m);
-for i = 2:m-1 % because we want to keep the end points for Vmy, n, m, h at 0
-    % regions of N, M and H
+for i = 2:m-1 % because we want to keep the end points (1 and M) for Vmy, n, m, h at 0
+    
     seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
     myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
     myelin_end = seg*(N_s); % End of internodal region in this segment
@@ -157,20 +160,20 @@ for i = 2:(m-1)
     % putting 0's into the nodal regions of Vmy and 0's into the internodal
     % regions of N, M and H
     
-    gamma1 = -dt/(C_m*dx^2)*b_1(xx(i)-dx/2);
-    gamma2 = 1 +  dt/(C_m*dx^2)*(b_1(xx(i)+dx/2) + b_1(xx(i)-dx/2));
-    gamma3 = -dt/(C_m*dx^2)*b_1(xx(i)+dx/2);
+    gamma1 = -rho*b_1(i - 1/2);
+    gamma2 = 1 + rho*(b_1(i + 1/2) + b_1(i - 1/2));
+    gamma3 = -rho*b_1(i + 1/2);
     
-    A(i, i-1) = gamma3;
+    A(i, i-1) = gamma1;
     A(i, i) = gamma2;
-    A(i, i+1) = gamma1;
+    A(i, i+1) = gamma3;
     
 end
 
 % defining each eta (all of which are constants)
-eta1 = dt*a^2/(2*C_my*a_my*R_i*dx^2);
-eta2 = -dt*a^2/(C_my*a_my*R_i*dx^2);
-eta3 = dt*a^2/(2*C_my*a_my*R_i*dx^2);
+eta1 = rho*(a^2/(2*a_my*R_i*C_my));
+eta2 = -rho*(a^2/(a_my*R_i*C_my));
+eta3 = rho*(a^2/(2*a_my*R_i*C_my));
 eta4 = 1 - dt/(C_my*R_my); % correct derivation, but eta4 is approximately 1 here, causing instability
 % eta4 = 0.1; % eta4 = 0.1 (somewhat reasonable results, but incorrect derivation)
 
@@ -188,11 +191,11 @@ for j = 1:(n-1)
         seg_start = (seg - 1)*(N_s); % index of the start of the segment
 
         if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
-            newVmy(i) = eta1*Vm(i+1) + eta2*Vm(i) + eta3*Vm(i-1) + eta4*Vmy(i);
+            newVmy(i) = eta1*Vm(i-1) + eta2*Vm(i) + eta3*Vm(i+1) + eta4*Vmy(i);
         elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
             newVmy(i) = 0;
         else % End point
-            newVmy(i) = eta1*Vm(i+1) + eta2*Vm(i) + eta3*Vm(i-1) + eta4*Vmy(i);
+            newVmy(i) = eta1*Vm(i-1) + eta2*Vm(i) + eta3*Vm(i+1) + eta4*Vmy(i);
         end
     end
     newVmy(m) = 0;
@@ -228,16 +231,15 @@ for j = 1:(n-1)
     
     % DEFINING b and f vectors
     %%%%%%%%%%%%%%%%%%%%%%%%%%
-    gamma5 = dt/C_m;
-    
     % updating the b function (end points are 0)
     b = zeros(m, 1);
     for i = 2:m-1
-        gamma4 = 1 + (dt/C_m)*c_1(newN(i), newM(i), newH(i), i, j);
+        gamma4 = 1 + dt*c_1(newN(i), newM(i), newH(i), i, j);
         b(i, 1) = gamma4*Vm(i); 
     end
     % updating the f function (end points are 0)
     f = zeros(m, 1);
+    gamma5 = dt;
     for i = 2:m-1
         f(i, 1) = gamma5 * f_1(newVmy(i), newN(i), newM(i), newH(i), i, j); 
     end
