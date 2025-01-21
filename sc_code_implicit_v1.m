@@ -107,6 +107,9 @@ Vmy = zeros(1, m);
 N = zeros(1, m);
 M = zeros(1, m);
 H = zeros(1, m);
+N(1) = N_0;
+M(1) = M_0;
+H(1) = H_0;
 for i = 2:m-1 % because we want to keep the end points (1 and M) for Vmy, n, m, h at 0
     
     seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
@@ -201,10 +204,7 @@ for j = 1:(n-1)
     
     % updating the probability gate functions n, m and h
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    newN(1) = 0;
-    newM(1) = 0;
-    newH(1) = 0;
-    for i = 2:m-1
+    for i = 1:m-1
         seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
         myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
         myelin_end = seg*(N_s); % End of internodal region in this segment
