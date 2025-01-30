@@ -1,10 +1,13 @@
 % Solving the Single Cable Model Using Finite Difference Method Version 1
 % In this code, we represent the RHS of the first equation of the sc model 
 % as Vm_i^(j+1) and the RHS of the second equation of the sc model as Vmy_i^(j+1) 
+% 
+% Additionally, we are setting Vmy = 0 at the end points in this code
+% 
 % Kevin Roberts
 % November 2024
 
-clear all 
+clear all  
 close all
 clc
 
@@ -128,7 +131,7 @@ for i = 2:m-1 % because we want to keep the end points (1 and M) for Vmy, n, m, 
         H(i) = H_0;
     % End points
     else
-        Vmy(i) = V_my0;
+        Vmy(i) = 0;
         N(i) = N_0;
         M(i) = M_0;
         H(i) = H_0;
@@ -168,7 +171,7 @@ for j = 1:(n-1)
         elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
             newVmy(i) = 0;
         else % End point
-            newVmy(i) = eta1*Vm(i-1) + eta2*Vm(i) + eta3*Vm(i+1) + eta4*Vmy(i);
+            newVmy(i) = 0;
         end
     end
     newVmy(m) = 0;
