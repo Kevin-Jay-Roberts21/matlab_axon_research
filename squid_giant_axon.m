@@ -23,7 +23,7 @@ E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 L = 5; % axon length (cm)
 dx = 0.01; % space step (MAY CHANGE LATER)
-T = 20; % (ms) Total Time
+T = 30; % (ms) Total Time
 dt = 0.01; % time step (MAY CHANGE LATER)
 m = L/dx + 1; % total number of space steps
 n = T/dt + 1; % total number of time steps
@@ -43,7 +43,7 @@ beta_h = @(Vm) phi * 1/(1 + exp(-(Vm + 35)/10)); % (1/ms)
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 50; % (in mS/cm^2) % stimulus value
+S_v = 0; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 1; % start position of adding the stimulus (in cm)
