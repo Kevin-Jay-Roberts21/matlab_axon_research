@@ -28,7 +28,7 @@ E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
 % SOLVING USING NEWTONS METHOD
 
 % initial V_m guess
-V_m0 = -100; % (mV)
+V_m0 = -60; % (mV)
 V_m = V_m0;
 
 % Preallocate array to store Vm values
@@ -53,6 +53,16 @@ end
 
 final_Vm = newVm
 
+n_infty = @(Vm) 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10))/(0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10)) + 0.125*exp(-(Vm + 65)/80));
+m_infty = @(Vm) 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10))/(0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10)) + 4*exp(-(Vm + 65)/18));
+h_infty = @(Vm) 0.07*exp(-(Vm + 65)/20)/(0.07*exp(-(Vm + 65)/20) + 1/(1 + exp(-(Vm + 35)/10)));
+
+n_infty(final_Vm)
+m_infty(final_Vm)
+h_infty(final_Vm)
+
+
+
 %%
 % SOLVING USING MATLAB's FSOLVE FUNCTION
 
@@ -69,11 +79,11 @@ options = optimset('Display', 'iter'); % Display iteration details
 [Vm_solution, fval] = fsolve(f, V_m0, options);
 
 % Display the solution
-disp('Final Vm solution:');
-disp(Vm_solution);
-disp('Function value at solution (should be close to 0):');
-disp(fval);
-
+% disp('Final Vm solution:');
+% disp(Vm_solution);
+% disp('Function value at solution (should be close to 0):');
+% disp(fval);
+Vm_solution
 
 % Now plugging in the numerically approximated Vm into the probability
 % equations:
