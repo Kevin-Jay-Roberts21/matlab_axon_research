@@ -97,11 +97,11 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 
 % Initialization
 %%%%%%%%%%%%%%%%
-V_m0 = -58.1132; % (mV) initial condition for membrane potential 
+V_m0 = -63.6679; % (mV) initial condition for membrane potential 
 V_my0 = 1.2438; % (mV) initial condition for axon potential in periaxonal space
-N_0 = 0.1; % (dimless) initial condition for gating variable n
-M_0 = 0.1; % (dimless) initial condition for gating variable m
-H_0 = 0.1; % (dimless) initial condition for gating variable h
+N_0 = 0.3383; % (dimless) initial condition for gating variable n
+M_0 = 0.0619; % (dimless) initial condition for gating variable m
+H_0 = 0.5489; % (dimless) initial condition for gating variable h
 Vm = V_m0 * ones(1, m);
 Vmy = zeros(1, m);
 N = zeros(1, m);
