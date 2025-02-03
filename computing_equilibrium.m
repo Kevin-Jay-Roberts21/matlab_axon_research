@@ -9,12 +9,24 @@ clc
 
 syms f1(Vm)
 
-G_K = 36; % (mS/cm^2)
-G_Na = 120; % (mS/cm^2)
-G_L = 0.3; % (mS/cm^2)
-E_K = -77; % Equilibrium Potential for Potassium Ions (mV)
-E_Na = 50; % Equilibrium Potential for Sodium Ions (mV)
-E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
+% % Used for HH Model
+% G_K = 36; % (mS/cm^2)
+% G_Na = 120; % (mS/cm^2)
+% G_L = 0.3; % (mS/cm^2)
+% E_K = -77; % Equilibrium Potential for Potassium Ions (mV)
+% E_Na = 50; % Equilibrium Potential for Sodium Ions (mV)
+% E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
+
+% Used for SC Model
+G_K = 80; % (mS/cm^2)
+G_Na = 3000; % (mS/cm^2)
+G_L = 7; % (mS/cm^2)
+E_K = -82; % Equilibrium Potential for Potassium Ions (mV)
+E_Na = 45; % Equilibrium Potential for Sodium Ions (mV)
+E_L = -59.4; % Equilibrium Potential for Leak Channels (mV)
+
+
+
 
 % % solving for the first derivative of f1 (these functions will only be used for viewing, not used otherwise in code)
 % f1(Vm) = G_K * (0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10))/(0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10)) + 0.125*exp(-(Vm + 65)/80)))^4 * (Vm - E_K) ...
