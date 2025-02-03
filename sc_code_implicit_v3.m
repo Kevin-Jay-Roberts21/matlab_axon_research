@@ -26,7 +26,7 @@ G_L = 7; % (mS/cm^2) specific leak conductance
 E_K = -82; % (mV) Nernst potential for potassium ions
 E_Na = 45; % (mV) Nernst potential for sodium ions
 E_L = -59.4; % (mV) Nernst potential for leak channels
-E_rest = -59.4; % (mV) effective resting nernst potential
+E_rest = -63.6679; % (mV) effective resting nernst potential
 
 % Defining the Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -98,7 +98,7 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 % Initialization
 %%%%%%%%%%%%%%%%
 V_m0 = -63.6679; % (mV) initial condition for membrane potential 
-V_my0 = 1.2438; % (mV) initial condition for axon potential in periaxonal space
+V_my0 = 0; % (mV) initial condition for axon potential in periaxonal space
 N_0 = 0.3383; % (dimless) initial condition for gating variable n
 M_0 = 0.0619; % (dimless) initial condition for gating variable m
 H_0 = 0.5489; % (dimless) initial condition for gating variable h
