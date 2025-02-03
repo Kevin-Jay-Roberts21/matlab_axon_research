@@ -38,7 +38,7 @@ L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 100; % (ms) the total time of the experiment
+T = 15; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -151,13 +151,12 @@ eta1 = 1/(1 + dt/(C_my*R_my)) * rho * (a^2/(2*a_my*R_i*C_my));
 eta2 = -1/(1 + dt/(C_my*R_my)) * rho * (a^2/(a_my*R_i*C_my));
 eta3 = 1/(1 + dt/(C_my*R_my)) * rho * (a^2/(2*a_my*R_i*C_my));
 eta4 = 1/(1 + dt/(C_my*R_my)); % correct derivation, but eta4 is approximately 1 here, causing instability
-% eta4 = 0.1; % eta4 = 0.1 (somewhat reasonable results, but incorrect derivation)
 
 % Running the time loop
 %%%%%%%%%%%%%%%%%%%%%%%
 for j = 1:(n-1)
     
-    % updating Vmy
+    % Updating Vmy
     %%%%%%%%%%%%%%
     newVmy(1) = 0;
     for i = 2:m-1
@@ -176,7 +175,7 @@ for j = 1:(n-1)
     end
     newVmy(m) = 0;
     
-    % updating the probability gate functions n, m and h
+    % Updating the probability gate functions n, m and h
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     for i = 1:m-1
         seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
@@ -202,9 +201,13 @@ for j = 1:(n-1)
     newM(m) = 0;
     newH(m) = 0;
     
-    % Defining the A matrix
-    %%%%%%%%%%%%%%%%%%%%%%%
+    % Updating Vm
+    %%%%%%%%%%%%%
+
+    % Defining the A matrix and e and f vectors
     A = zeros(m, m);
+    e = zeros(m, 1);
+    f = zeros(m, 1);
     % using the boundary conditions to define the top and bottom row of A
     A(1, 1) = 1;
     A(1, 2) = -1;
@@ -220,33 +223,22 @@ for j = 1:(n-1)
         gamma1 = -rho*b_1(i - 1/2);
         gamma2 = 1 + - dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
         gamma3 = -rho*b_1(i + 1/2);
+        gamma4 = 1;
+        gamma5 = dt * f_1(newVmy(i), newN(i), newM(i), newH(i), i, j);
 
         A(i, i-1) = gamma1;
         A(i, i) = gamma2;
         A(i, i+1) = gamma3;
-
-    end
-    
-    % DEFINING b and f vectors
-    %%%%%%%%%%%%%%%%%%%%%%%%%%
-    % updating the b function (end points are 0)
-    b = zeros(m, 1);
-    for i = 2:m-1
-        gamma4 = 1;
-        b(i, 1) = gamma4*Vm(i); 
-    end
-    % updating the f function (end points are 0)
-    f = zeros(m, 1);
-    gamma5 = dt;
-    for i = 2:m-1
-        f(i, 1) = gamma5 * f_1(newVmy(i), newN(i), newM(i), newH(i), i, j); 
+        e(i) = gamma4*Vm(i);
+        f(i) = gamma5;
+           
     end
     
     j % showing the j index, just for seeing how long simulation takes     
 
     % Solving for V_m^{j+1}
     %%%%%%%%%%%%%%%%%%%%%%%
-    newVm = transpose(A\(b+f));
+    newVm = transpose(A\(e+f));
 
     % updating Vmy and Vm and adding the data to the _all matrices
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
