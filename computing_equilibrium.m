@@ -20,7 +20,7 @@ syms f1(Vm)
 % Used for SC Model
 G_K = 80; % (mS/cm^2)
 G_Na = 3000; % (mS/cm^2)
-G_L = 80; % (mS/cm^2)
+G_L = 7; % (mS/cm^2)
 E_K = -82; % Equilibrium Potential for Potassium Ions (mV)
 E_Na = 45; % Equilibrium Potential for Sodium Ions (mV)
 E_L = -59.4; % Equilibrium Potential for Leak Channels (mV)
@@ -86,7 +86,7 @@ f = @(Vm) G_K * (0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10))/(0.01*(Vm + 55)/(1 - ex
     (0.07*exp(-(Vm + 65)/20)/(0.07*exp(-(Vm + 65)/20) + 1/(1 + exp(-(Vm + 35)/10)))) * (Vm - E_Na) + G_L * (Vm - E_L);
 
 % Set initial guess for Vm
-V_m0 = -60; % (mV)
+V_m0 = -30; % (mV)
 
 % Use fsolve to find the root of the function (solve for Vm)
 options = optimset('Display', 'iter'); % Display iteration details
@@ -107,9 +107,9 @@ n_infty = @(Vm) 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10))/(0.01*(Vm + 55)/(1 - exp
 m_infty = @(Vm) 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10))/(0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10)) + 4*exp(-(Vm + 65)/18));
 h_infty = @(Vm) 0.07*exp(-(Vm + 65)/20)/(0.07*exp(-(Vm + 65)/20) + 1/(1 + exp(-(Vm + 35)/10)));
 
-n_infty(Vm_solution)
-m_infty(Vm_solution)
-h_infty(Vm_solution)
+n_inf = n_infty(Vm_solution)
+m_inf = m_infty(Vm_solution)
+h_inf = h_infty(Vm_solution)
 
 
 
