@@ -11,6 +11,7 @@ clc
 % getting the saved data
 HH_data = load('HH_data.mat');
 HH_data1 = load('HH_data1.mat');
+HH_data2 = load('HH_data2.mat');
 SC_data = load('SC_data.mat');
 SC_data1 = load('SC_data1.mat');
 
@@ -23,11 +24,11 @@ SC_data1 = load('SC_data1.mat');
 % NOTE: Time and space choices will vary depending on HH, SC, and DC models
 
 % picking the times:
-t1 = 7; % (in ms)
-t2 = 7.1; % (in ms)
+t1 = 18; % (in ms)
+t2 = 20; % (in ms)
 
 % picking the dataset to compute cv
-data = HH_data1;
+data = HH_data2;
 
 % computing conduction velocity
 cv1 = calculate_cv(t1, t2, data) % (in cm/ms)
