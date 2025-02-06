@@ -9,7 +9,7 @@ clc
 % Defining all of the material and intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 C_m = 1; % membrane capacitance (micro-farads/cm^2)
-R_i = 0.038; % specific intracellular resistivity (kilo-ohms * cm)
+R_i = 0.030; % specific intracellular resistivity (kilo-ohms * cm)
 a = 0.025; % axon radius (cm)
 G_K = 36; % (mS/cm^2)
 G_Na = 120; % (mS/cm^2)
@@ -21,9 +21,9 @@ E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
 
 % Defining the mesh parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-L = 5; % axon length (cm)
+L = 30; % axon length (cm)
 dx = 0.01; % space step (MAY CHANGE LATER)
-T = 30; % (ms) Total Time
+T = 50; % (ms) Total Time
 dt = 0.01; % time step (MAY CHANGE LATER)
 m = L/dx + 1; % total number of space steps
 n = T/dt + 1; % total number of time steps
@@ -43,7 +43,7 @@ beta_h = @(Vm) phi * 1/(1 + exp(-(Vm + 35)/10)); % (1/ms)
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 11; % (in mS/cm^2) % stimulus value
+S_v = 50; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 1; % start position of adding the stimulus (in cm)
@@ -132,6 +132,8 @@ for j = 1:(n-1)
     N_all(j+1,:) = N;
     M_all(j+1,:) = M;
     H_all(j+1,:) = H;
+
+    j
 
 end
 
@@ -222,4 +224,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('HH_data1.mat');
+% save('HH_data2.mat');
