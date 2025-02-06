@@ -1,5 +1,5 @@
 % A MATLAB script to compute the conduction velocity of the voltage
-% simulations
+% simulations. More accurate results for longer simulations.
 % Kevin Roberts
 % February 2025
 
