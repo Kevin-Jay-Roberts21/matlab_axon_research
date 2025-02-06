@@ -24,8 +24,10 @@ clc
 % getting the saved data
 HH_data = load('HH_data.mat');
 HH_data1 = load('HH_data1.mat');
+HH_data2 = load('HH_data2.mat');
 SC_data = load('SC_data.mat');
 SC_data1 = load('SC_data1.mat');
+SC_data2 = load('SC_data2.mat');
 
 
 % picking time shots
@@ -70,9 +72,8 @@ list_of_positions = [position1
 % condsider getting rid of or adding them in certain cases.
 p = 0.001;
 
-
-% plot_animation_voltage_vs_time(SC_data, p);
-% plot_animation_voltage_vs_space(SC_data, p);
+% plot_animation_voltage_vs_time(SC_data2, p);
+plot_animation_voltage_vs_space(SC_data2, p);
 % plot_animation_probabilities(SC_data, p);
 % plot_time_and_space_shots(HH_data, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(SC_data, SC_data1, p);
@@ -142,7 +143,7 @@ function plot_animation_voltage_vs_time(data, p)
     xmin = 0;
     xmax = T;
     ymin = -90;
-    ymax = 60;
+    ymax = 90;
 
     axis([xmin xmax ymin ymax]);  % Set axis limits
     xlabel('Time in milliseconds');

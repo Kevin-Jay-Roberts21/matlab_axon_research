@@ -14,6 +14,7 @@ HH_data1 = load('HH_data1.mat');
 HH_data2 = load('HH_data2.mat');
 SC_data = load('SC_data.mat');
 SC_data1 = load('SC_data1.mat');
+SC_data2 = load('SC_data2.mat');
 
 % To get the conduction velocity, we pick a space vector vec_x1 at some time 
 % t1, and calculate the position at where the max of this vector is, call 
@@ -24,11 +25,11 @@ SC_data1 = load('SC_data1.mat');
 % NOTE: Time and space choices will vary depending on HH, SC, and DC models
 
 % picking the times:
-t1 = 18; % (in ms)
-t2 = 20; % (in ms)
+t1 = 12; % (in ms)
+t2 = 13; % (in ms)
 
 % picking the dataset to compute cv
-data = HH_data2;
+data = SC_data2;
 
 % computing conduction velocity
 cv1 = calculate_cv(t1, t2, data) % (in cm/ms)
