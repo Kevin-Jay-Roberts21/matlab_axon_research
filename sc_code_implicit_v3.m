@@ -18,11 +18,11 @@ C_my = 0.166; % (micro-farads/cm^2) specific myelin capacitance
 R_i = 0.144; % (kilo-ohms*cm) intracellular resistivity
 a = 0.55*10^(-4); % (cm) axon radius in nodal region
 a_my = a/0.698; % (cm) axon radius in myelinated section 
-R_my = 530; % (kilo-ohms*cm^2) specific myelin resistance
+R_my = 842; % (kilo-ohms*cm^2) specific myelin resistance
 R_m = 22; % (kilo-ohms*cm^2) specific membrane resistance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
-G_L = 80; % (mS/cm^2) specific leak conductance
+G_L = 50; % (mS/cm^2) specific leak conductance
 E_K = -82; % (mV) Nernst potential for potassium ions
 E_Na = 45; % (mV) Nernst potential for sodium ions
 E_L = -59.4; % (mV) Nernst potential for leak channels
@@ -36,9 +36,9 @@ rho = dt/dx^2; % creating the courant number
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 40; % (dimless) number of axon segments
+n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 50; % (ms) the total time of the experiment
+T = 30; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -47,7 +47,7 @@ n = T/dt + 1; % n is the number of time steps
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 158; % (in mS/cm^2) % stimulus value
+S_v = 0; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -97,11 +97,11 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 
 % Initialization
 %%%%%%%%%%%%%%%%
-V_m0 = -58.1124; %-29.7806; % (mV) initial condition for membrane potential 
-V_my0 = 1.2334; %-6.8577 %1.2; % (mV) initial condition for axon potential in periaxonal space
-N_0 = 0.4264; %0.7731;% (dimless) initial condition for gating variable n
-M_0 = 0.1148; %0.7385;% (dimless) initial condition for gating variable m
-H_0 = 0.3548; %0.0188;% (dimless) initial condition for gating variable h
+V_m0 = -41.8442; % (mV) initial condition for membrane potential 
+V_my0 = 1.8; % (mV) initial condition for axon potential in periaxonal space
+N_0 = 0.6577;% (dimless) initial condition for gating variable n
+M_0 = 0.4518;% (dimless) initial condition for gating variable m
+H_0 = 0.0616;% (dimless) initial condition for gating variable h
 Vm = V_m0 * ones(1, m);
 Vmy = zeros(1, m);
 N = zeros(1, m);
