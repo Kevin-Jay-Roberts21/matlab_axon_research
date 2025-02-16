@@ -9,12 +9,23 @@ clc
 
 % Collecting data
 % getting the saved data
-HH_data = load('HH_data.mat');
-HH_data1 = load('HH_data1.mat');
-HH_data2 = load('HH_data2.mat');
-SC_data = load('SC_data.mat');
-SC_data1 = load('SC_data1.mat');
-SC_data2 = load('SC_data2.mat');
+% HH_data = load('HH_data.mat');
+% HH_data1 = load('HH_data1.mat');
+% HH_data2 = load('HH_data2.mat');
+% SC_data = load('SC_data.mat');
+% SC_data1 = load('SC_data1.mat');
+% SC_data2 = load('SC_data2.mat');
+
+% Collecting temp data
+HH_data_Temp_default = load('axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
+HH_data_Temp_7 = load('axon_simulations/HH_temp_data/HH_data_Temp_7.mat');
+HH_data_Temp_8 = load('axon_simulations/HH_temp_data/HH_data_Temp_8.mat');
+HH_data_Temp_9 = load('axon_simulations/HH_temp_data/HH_data_Temp_9.mat');
+HH_data_Temp_10 = load('axon_simulations/HH_temp_data/HH_data_Temp_10.mat');
+HH_data_Temp_15 = load('axon_simulations/HH_temp_data/HH_data_Temp_15.mat');
+HH_data_Temp_20 = load('axon_simulations/HH_temp_data/HH_data_Temp_20.mat');
+HH_data_Temp_25 = load('axon_simulations/HH_temp_data/HH_data_Temp_25.mat');
+HH_data_Temp_30 = load('axon_simulations/HH_temp_data/HH_data_Temp_30.mat');
 
 % To get the conduction velocity, we pick a space vector vec_x1 at some time 
 % t1, and calculate the position at where the max of this vector is, call 
@@ -25,11 +36,11 @@ SC_data2 = load('SC_data2.mat');
 % NOTE: Time and space choices will vary depending on HH, SC, and DC models
 
 % picking the times:
-t1 = 12; % (in ms)
-t2 = 13; % (in ms)
+t1 = 6; % (in ms)
+t2 = 7; % (in ms)
 
 % picking the dataset to compute cv
-data = SC_data2;
+data = HH_data_Temp_30;
 
 % computing conduction velocity
 cv1 = calculate_cv(t1, t2, data) % (in cm/ms)

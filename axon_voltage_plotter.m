@@ -22,13 +22,23 @@ close all
 clc
 
 % getting the saved data
-HH_data = load('HH_data.mat');
-HH_data1 = load('HH_data1.mat');
-HH_data2 = load('HH_data2.mat');
-SC_data = load('SC_data.mat');
-SC_data1 = load('SC_data1.mat');
-SC_data2 = load('SC_data2.mat');
+% HH_data = load('HH_data.mat');
+% HH_data1 = load('HH_data1.mat');
+% HH_data2 = load('HH_data2.mat');
+% SC_data = load('SC_data.mat');
+% SC_data1 = load('SC_data1.mat');
+% SC_data2 = load('SC_data2.mat');
 
+HH_data_Temp_default = load('axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
+HH_data_Temp_7 = load('axon_simulations/HH_temp_data/HH_data_Temp_7.mat');
+HH_data_Temp_8 = load('axon_simulations/HH_temp_data/HH_data_Temp_8.mat');
+HH_data_Temp_9 = load('axon_simulations/HH_temp_data/HH_data_Temp_9.mat');
+HH_data_Temp_10 = load('axon_simulations/HH_temp_data/HH_data_Temp_10.mat');
+HH_data_Temp_15 = load('axon_simulations/HH_temp_data/HH_data_Temp_15.mat');
+HH_data_Temp_20 = load('axon_simulations/HH_temp_data/HH_data_Temp_20.mat');
+HH_data_Temp_25 = load('axon_simulations/HH_temp_data/HH_data_Temp_25.mat');
+HH_data_Temp_30 = load('axon_simulations/HH_temp_data/HH_data_Temp_30.mat');
+HH_data_Temp_35 = load('axon_simulations/HH_temp_data/HH_data_Temp_35.mat');
 
 % picking time shots
 time1 = 5; % in ms
@@ -72,13 +82,18 @@ list_of_positions = [position1
 % condsider getting rid of or adding them in certain cases.
 p = 0.001;
 
+% creating a set of data from multiple experiments used to plot animation
+% (the first element in the set_of_data is darkred, then the proceeding elements get
+% brighter and brighter until the last element which is the brightest red)
+set_of_data = [HH_data_Temp_default, HH_data_Temp_7, HH_data_Temp_8, HH_data_Temp_9, HH_data_Temp_10, HH_data_Temp_15, HH_data_Temp_20, HH_data_Temp_25, HH_data_Temp_30];
+
+
 % plot_animation_voltage_vs_time(SC_data2, p);
-plot_animation_voltage_vs_space(SC_data2, p);
+% plot_animation_voltage_vs_space(HH_data_Temp_30, p);
 % plot_animation_probabilities(SC_data, p);
 % plot_time_and_space_shots(HH_data, list_of_positions, list_of_times);
-% plot_voltage_vs_time_comparison(SC_data, SC_data1, p);
-% plot_voltage_vs_space_comparison(SC_data, SC_data1, p);
-
+% plot_voltage_vs_time_comparison(set_of_data, p);
+plot_voltage_vs_space_comparison(set_of_data, p);
 
 
 
@@ -276,17 +291,19 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
 end
 
 % Plots animation of axon voltage in two different experiments
-function plot_voltage_vs_time_comparison(data1, data2, p)
-
-    T = data1.T;
-    m = data1.m;
-    n = data1.n;
-    dx = data1.dx;
-
+function plot_voltage_vs_time_comparison(data_set, p)
+    
+    % defining spatial and time variables from one of the data sets
+    % (doesn't matter which since we assume they must be the same for all)
+    T = data_set(1).T;
+    m = data_set(1).m;
+    n = data_set(1).n;
+    dx = data_set(1).dx;
+    
     % TEMPORAL PROFILE %
     % x axis is the axon time
-    t = linspace(0, T, n); 
-
+    t = linspace(0, T, n);
+    
     figure(1);
     hold on;
 
@@ -301,17 +318,12 @@ function plot_voltage_vs_time_comparison(data1, data2, p)
 
     % Loop through each vector and plot them one by one
     for i = 1:m
-        x1 = data1.Vm_all(:,i);  
-        x2 = data2.Vm_all(:,i);
-
-        % Plot the vector
-        p1 = plot(t, x1, 'b-');
-        hold on
-        p2 = plot(t, x2, 'r-');
-        hold on
         
-        % Add the legend (NOTE: legends are what slows down animation)
-        % legend([p1, p2], 'data1 voltage', 'data2 voltage', 'Location', 'northeast');
+        for j = 1:length(data_set)
+            plot(t, data_set(j).Vm_all(:,i), 'Color', [1, 0, 0] * j/length(data_set));
+            hold on
+        end
+        
         text(xmin + 0.2, ymax + 0.1, sprintf('Space: %.5f cm', round(i*dx, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
 
         % Add a pause to create animation effect
@@ -321,12 +333,14 @@ function plot_voltage_vs_time_comparison(data1, data2, p)
     end
 end
 
-function plot_voltage_vs_space_comparison(data1, data2, p)
+function plot_voltage_vs_space_comparison(data_set, p)
     
-    L = data1.L;
-    m = data1.m;
-    n = data1.n;
-    dt = data1.dt;
+    % defining spatial and time variables from one of the data sets
+    % (doesn't matter which since we assume they must be the same for all)
+    L = data_set(1).L;
+    m = data_set(1).m;
+    n = data_set(1).n;
+    dt = data_set(1).dt;
 
     % TEMPORAL PROFILE %
     % x axis is the axon time
@@ -346,14 +360,10 @@ function plot_voltage_vs_space_comparison(data1, data2, p)
     
     % Loop through each vector and plot them one by one
     for i = 1:n
-        x1 = data1.Vm_all(i,:);  
-        x2 = data2.Vm_all(i,:);
-
-        % Plot the vector
-        p1 = plot(t, x1, 'b-');
-        hold on
-        p2 = plot(t, x2, 'r-');
-        hold on
+        for j = 1:length(data_set)
+            plot(t, data_set(j).Vm_all(i,:), 'Color', [1, 0, 0] * j/length(data_set));
+            hold on
+        end
         
         % Add the legend (NOTE: the legend is what is slowing down the animation)
         % legend([p1, p2], 'data1 voltage', 'data2 voltage', 'Location', 'northeast');
