@@ -20,9 +20,9 @@ a = 0.55*10^(-4); % (cm) axon radius in nodal region
 a_my = a/0.698; % (cm) axon radius in myelinated section 
 R_my = 842; % (kilo-ohms*cm^2) specific myelin resistance
 R_m = 22; % (kilo-ohms*cm^2) specific membrane resistance
-G_K = 80; % (mS/cm^2) max specific potassium conductance
+G_K = 900; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
-G_L = 50; % (mS/cm^2) specific leak conductance
+G_L = 7; % (mS/cm^2) specific leak conductance
 E_K = -82; % (mV) Nernst potential for potassium ions
 E_Na = 45; % (mV) Nernst potential for sodium ions
 E_L = -59.4; % (mV) Nernst potential for leak channels
@@ -47,7 +47,7 @@ n = T/dt + 1; % n is the number of time steps
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 0; % (in mS/cm^2) % stimulus value
+S_v = 150; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -97,11 +97,11 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 
 % Initialization
 %%%%%%%%%%%%%%%%
-V_m0 = -41.8442; % (mV) initial condition for membrane potential 
-V_my0 = 1.8; % (mV) initial condition for axon potential in periaxonal space
-N_0 = 0.6577;% (dimless) initial condition for gating variable n
-M_0 = 0.4518;% (dimless) initial condition for gating variable m
-H_0 = 0.0616;% (dimless) initial condition for gating variable h
+V_m0 = -67.9040; % (mV) initial condition for membrane potential 
+V_my0 = -8; % (mV) initial condition for axon potential in periaxonal space
+N_0 = 0.2743;% (dimless) initial condition for gating variable n
+M_0 = 0.0374;% (dimless) initial condition for gating variable m
+H_0 = 0.6927;% (dimless) initial condition for gating variable h
 Vm = V_m0 * ones(1, m);
 Vmy = zeros(1, m);
 N = zeros(1, m);
@@ -461,4 +461,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('SC_data2.mat');
+% save('SC_data3.mat');
