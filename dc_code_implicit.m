@@ -45,6 +45,10 @@ N_s = N_n + N_my; % number of space steps in an entire axon segement
 m = N_s*n_s + 1; % total number of space steps
 n = T/dt + 1; % n is the number of time steps
 
+% defining w1 and w2 constants
+w1 = d_pa*(2*a + d_pa)/(C_my*a_my*R_pa);
+w2 = a^2/(C_my*a_my*R_i);
+
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
 S_v = 0; % (in mS/cm^2) % stimulus value
@@ -88,7 +92,7 @@ c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*C_3(n, m, h, ii, tt); % End point        
        
 % defining the f_1(x_i) function
-F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1)  d_pa*(2*a + d_pa)/(2*C_my*a_my*R_pa)*Vmy_i_minus_1 + (d_pa*(2*a + d_pa)/(C_my*a_my*R_pa) + 1/(R_m*C_m) - 1/(C_my*R_my))*Vmy_i + d_pa*(2*a + d_pa)/(2*C_my*a_my*R_pa)*Vmy_i_plus_1 + E_rest/(R_m*C_m); % Internodal region
+F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1)  w1/2*Vmy_i_minus_1 + (w1 + 1/(R_m*C_m) - 1/(C_my*R_my))*Vmy_i + w1/2*Vmy_i_plus_1 + E_rest/(R_m*C_m); % Internodal region
 F_2 = @(n, m, h, ii, tt) 1/C_m * (G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
 F_5 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) + F_2(n, m, h, ii, tt))/2; % End point
 f_2_fctn = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) + ... % Internodal region
@@ -199,11 +203,11 @@ for j = 1:(n-1)
         seg_start = (seg - 1)*N_s; % index of the start of the segment
 
         if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
-            eta1 = -rho*(d_pa*(2*a + d_pa)/(2*C_my*a_my*R_pa));
-            eta2 = 1 + dt/(R_my*C_my) + rho*(d_pa*(2*a + d_pa)/(C_my*a_my*R_pa));
-            eta3 = -rho*(d_pa*(2*a + d_pa)/(2*C_my*a_my*R_pa)); 
+            eta1 = -rho*w1/2;
+            eta2 = 1 + dt/(R_my*C_my) + rho*w1;
+            eta3 = -rho*w1/2; 
             eta4 = 1; 
-            eta5 = rho*(a^2/(2*C_my*a_my*R_i))*Vm(i-1) - rho*(a^2/(C_my*a_my*R_i))*Vm(i) + rho*(a^2/(2*C_my*a_my*R_i))*Vm(i+1);
+            eta5 = rho*w2/2*Vm(i-1) - rho*w2*Vm(i) + rho*w2/2*Vm(i+1);
         elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
             eta1 = 0;
             eta2 = 1;

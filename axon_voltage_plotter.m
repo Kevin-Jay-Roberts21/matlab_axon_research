@@ -29,16 +29,16 @@ clc
 % SC_data1 = load('SC_data1.mat');
 % SC_data2 = load('SC_data2.mat');
 
-HH_data_Temp_default = load('axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
-HH_data_Temp_7 = load('axon_simulations/HH_temp_data/HH_data_Temp_7.mat');
-HH_data_Temp_8 = load('axon_simulations/HH_temp_data/HH_data_Temp_8.mat');
-HH_data_Temp_9 = load('axon_simulations/HH_temp_data/HH_data_Temp_9.mat');
-HH_data_Temp_10 = load('axon_simulations/HH_temp_data/HH_data_Temp_10.mat');
-HH_data_Temp_15 = load('axon_simulations/HH_temp_data/HH_data_Temp_15.mat');
-HH_data_Temp_20 = load('axon_simulations/HH_temp_data/HH_data_Temp_20.mat');
-HH_data_Temp_25 = load('axon_simulations/HH_temp_data/HH_data_Temp_25.mat');
-HH_data_Temp_30 = load('axon_simulations/HH_temp_data/HH_data_Temp_30.mat');
-HH_data_Temp_35 = load('axon_simulations/HH_temp_data/HH_data_Temp_35.mat');
+HH_data_Temp_default = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
+HH_data_Temp_7 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_7.mat');
+HH_data_Temp_8 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_8.mat');
+HH_data_Temp_9 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_9.mat');
+HH_data_Temp_10 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_10.mat');
+HH_data_Temp_15 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_15.mat');
+HH_data_Temp_20 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_20.mat');
+HH_data_Temp_25 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_25.mat');
+HH_data_Temp_30 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_30.mat');
+HH_data_Temp_35 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_35.mat');
 
 % picking time shots
 time1 = 5; % in ms
