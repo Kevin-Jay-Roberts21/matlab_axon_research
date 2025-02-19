@@ -48,6 +48,7 @@ n = T/dt + 1; % n is the number of time steps
 % defining w1 and w2 constants
 w1 = d_pa*(2*a + d_pa)/(C_my*a_my*R_pa);
 w2 = a^2/(C_my*a_my*R_i);
+w3 = R_pa*d_pn*(2*a + d_pn)/(R_pn*L_pn*d_pa*(2*a + d_pa));
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
@@ -189,7 +190,7 @@ for j = 1:(n-1)
     f_2 = zeros(m, 1);
 
     % using the boundary conditions to define the top and bottom row of A_2
-    A_2(1, 1) = -(1 - dx * R_pa*d_pn*(2*a + d_pn)/(R_pn*L_pn*d_pa*(2*a + d_pa)));
+    A_2(1, 1) = -(1 - dx*w3);
     A_2(1, 2) = 1;
     A_2(m, m-1) = 0; % NEED TO VERIFY THIS
     A_2(m, m) = 1; % NEED TO VERIFY THIS
@@ -216,13 +217,13 @@ for j = 1:(n-1)
             eta5 = 0;
         elseif (i == myelin_end + 1) % Right end point
             eta1 = 0;
-            eta2 = -(1 - dx * R_pa*d_pn*(2*a + d_pn)/(R_pn*L_pn*d_pa*(2*a + d_pa)));
+            eta2 = -(1 - dx*w3);
             eta3 = 1; 
             eta4 = 0; 
             eta5 = 0;
         elseif (i == myelin_start + 1) % Left end point
             eta1 = 0;
-            eta2 = -(1 + dx * R_pa*d_pn*(2*a + d_pn)/(R_pn*L_pn*d_pa*(2*a + d_pa)));
+            eta2 = -(1 + dx*w3);
             eta3 = 1; 
             eta4 = 0; 
             eta5 = 0;
