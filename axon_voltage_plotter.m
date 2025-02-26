@@ -26,8 +26,8 @@ clc
 % HH_data1 = load('HH_data1.mat');
 % HH_data2 = load('HH_data2.mat');
 % SC_data = load('SC_data.mat');
-% SC_data1 = load('SC_data1.mat');
-% SC_data2 = load('SC_data2.mat');
+SC_data1 = load('projects/SC_data1.mat');
+SC_data2 = load('projects/SC_data2.mat');
 SC_data3 = load('projects/SC_data3.mat');
 
 HH_data_Temp_default = load('/Users/kevinjayroberts/Documents/MATLAB/projects/axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
@@ -86,15 +86,15 @@ p = 0.001;
 % creating a set of data from multiple experiments used to plot animation
 % (the first element in the set_of_data is darkred, then the proceeding elements get
 % brighter and brighter until the last element which is the brightest red)
-% set_of_data = [HH_data_Temp_default, HH_data_Temp_7, HH_data_Temp_8, HH_data_Temp_9, HH_data_Temp_10, HH_data_Temp_15, HH_data_Temp_20, HH_data_Temp_25, HH_data_Temp_30];
-
+% set_of_data1 = [HH_data_Temp_default, HH_data_Temp_7, HH_data_Temp_8, HH_data_Temp_9, HH_data_Temp_10, HH_data_Temp_15, HH_data_Temp_20, HH_data_Temp_25, HH_data_Temp_30];
+set_of_data2 = [SC_data1, SC_data2];
 
 % plot_animation_voltage_vs_time(SC_data3, p);
 % plot_animation_voltage_vs_space(SC_data3, p);
 % plot_animation_probabilities(SC_data, p);
 % plot_time_and_space_shots(HH_data, list_of_positions, list_of_times);
-% plot_voltage_vs_time_comparison(set_of_data, p);
-% plot_voltage_vs_space_comparison(set_of_data, p);
+% plot_voltage_vs_time_comparison(set_of_data2, p);
+plot_voltage_vs_space_comparison(set_of_data2, p);
 
 
 
@@ -345,32 +345,52 @@ function plot_voltage_vs_time_comparison(data_set, p)
     % x axis is the axon time
     t = linspace(0, T, n);
     
+    % creating a list of voltage types to plot (either just Vm for HH model
+    % or Vm, Vmy and Vm-Vmy for SC or DC model)
+    voltages = {'Vm_all'};
+    
+    if isfield(data_set(1), 'Vmy_all') && isfield(data_set(1), 'Vm_minus_Vmy')
+        voltages{end+1} = 'Vmy_all';
+        voltages{end+1} = 'Vm_minus_Vmy';
+    end
+    
     figure(1);
     hold on;
 
     xmin = 0;
     xmax = T;
     ymin = -90;
-    ymax = 60;
-
-    axis([xmin xmax ymin ymax]);  % Set axis limits
-    xlabel('Time in milliseconds');
-    ylabel('$V_m$ in millivolts', 'Interpreter','latex');
-
-    % Loop through each vector and plot them one by one
-    for i = 1:m
+    ymax = 90;
+    
+    for k=1:length(voltages)
         
-        for j = 1:length(data_set)
-            plot(t, data_set(j).Vm_all(:,i), 'Color', [1, 0, 0] * j/length(data_set));
-            hold on
+        if strcmp(voltages{k}, 'Vm_all')
+            voltage_name = 'V_m';
+        elseif strcmp(voltages{k}, 'Vmy_all')
+            voltage_name = 'V_{my}';
+        else
+            voltage_name = 'V_m - V_{my}';
         end
+
+        axis([xmin xmax ymin ymax]);  % Set axis limits
+        xlabel('Time in milliseconds');
+        ylabel(['$', voltage_name, '$ in millivolts.'], 'Interpreter', 'latex')
         
-        text(xmin + 0.2, ymax + 0.1, sprintf('Space: %.5f cm', round(i*dx, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
+        % Loop through each vector and plot them one by one
+        for i = 1:m
 
-        % Add a pause to create animation effect
-        pause(p);
+            for j = 1:length(data_set)
+                plot(t, data_set(j).(voltages{k})(:,i), 'Color', [1, 0, 0] * j/length(data_set));
+                hold on
+            end
 
-        cla;
+            text(xmin + 0.2, ymax + 0.1, sprintf('Space: %.5f cm', round(i*dx, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
+
+            % Add a pause to create animation effect
+            pause(p);
+
+            cla;
+        end
     end
 end
 
@@ -386,34 +406,54 @@ function plot_voltage_vs_space_comparison(data_set, p)
     % TEMPORAL PROFILE %
     % x axis is the axon time
     t = linspace(0, L, m); 
-
+       
+    % creating a list of voltage types to plot (either just Vm for HH model
+    % or Vm, Vmy and Vm-Vmy for SC or DC model)
+    voltages = {'Vm_all'};
+    
+    if isfield(data_set(1), 'Vmy_all') && isfield(data_set(1), 'Vm_minus_Vmy')
+        voltages{end+1} = 'Vmy_all';
+        voltages{end+1} = 'Vm_minus_Vmy';
+    end
+    
     figure(1);
     hold on;
 
     xmin = 0;
     xmax = L;
     ymin = -90;
-    ymax = 60;
-
-    axis([xmin xmax ymin ymax]);  % Set axis limits
-    xlabel('Length of axon in cm');
-    ylabel('$V_m$ in millivolts', 'Interpreter','latex');
+    ymax = 90;
     
-    % Loop through each vector and plot them one by one
-    for i = 1:n
-        for j = 1:length(data_set)
-            plot(t, data_set(j).Vm_all(i,:), 'Color', [1, 0, 0] * j/length(data_set));
-            hold on
-        end
+    for k=1:length(voltages)
         
-        % Add the legend (NOTE: the legend is what is slowing down the animation)
-        % legend([p1, p2], 'data1 voltage', 'data2 voltage', 'Location', 'northeast');
-        text(xmin + 0.2, ymax + 0.1, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
+        if strcmp(voltages{k}, 'Vm_all')
+            voltage_name = 'V_m';
+        elseif strcmp(voltages{k}, 'Vmy_all')
+            voltage_name = 'V_{my}';
+        else
+            voltage_name = 'V_m - V_{my}';
+        end
+    
+        axis([xmin xmax ymin ymax]);  % Set axis limits
+        xlabel('Length of axon in cm');
+        ylabel(['$', voltage_name, '$ in millivolts.'], 'Interpreter', 'latex')
 
-        % Add a pause to create animation effect
-        pause(p);
+        % Loop through each vector and plot them one by one
+        for i = 1:n
+            for j = 1:length(data_set)
+                plot(t, data_set(j).(voltages{k})(i,:), 'Color', [1, 0, 0] * j/length(data_set));
+                hold on
+            end
 
-        cla;
+            % Add the legend (NOTE: the legend is what is slowing down the animation)
+            % legend([p1, p2], 'data1 voltage', 'data2 voltage', 'Location', 'northeast');
+            text(xmin + 0.2, ymax + 0.1, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
+
+            % Add a pause to create animation effect
+            pause(p);
+
+            cla;
+        end
     end
 end
 
