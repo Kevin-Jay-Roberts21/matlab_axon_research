@@ -28,17 +28,18 @@ clc
 % SC_data = load('SC_data.mat');
 % SC_data1 = load('SC_data1.mat');
 % SC_data2 = load('SC_data2.mat');
+SC_data3 = load('projects/SC_data3.mat');
 
-HH_data_Temp_default = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
-HH_data_Temp_7 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_7.mat');
-HH_data_Temp_8 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_8.mat');
-HH_data_Temp_9 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_9.mat');
-HH_data_Temp_10 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_10.mat');
-HH_data_Temp_15 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_15.mat');
-HH_data_Temp_20 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_20.mat');
-HH_data_Temp_25 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_25.mat');
-HH_data_Temp_30 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_30.mat');
-HH_data_Temp_35 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_35.mat');
+HH_data_Temp_default = load('/Users/kevinjayroberts/Documents/MATLAB/projects/axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
+% HH_data_Temp_7 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_7.mat');
+% HH_data_Temp_8 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_8.mat');
+% HH_data_Temp_9 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_9.mat');
+% HH_data_Temp_10 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_10.mat');
+% HH_data_Temp_15 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_15.mat');
+% HH_data_Temp_20 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_20.mat');
+% HH_data_Temp_25 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_25.mat');
+% HH_data_Temp_30 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_30.mat');
+% HH_data_Temp_35 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_35.mat');
 
 % picking time shots
 time1 = 5; % in ms
@@ -85,15 +86,15 @@ p = 0.001;
 % creating a set of data from multiple experiments used to plot animation
 % (the first element in the set_of_data is darkred, then the proceeding elements get
 % brighter and brighter until the last element which is the brightest red)
-set_of_data = [HH_data_Temp_default, HH_data_Temp_7, HH_data_Temp_8, HH_data_Temp_9, HH_data_Temp_10, HH_data_Temp_15, HH_data_Temp_20, HH_data_Temp_25, HH_data_Temp_30];
+% set_of_data = [HH_data_Temp_default, HH_data_Temp_7, HH_data_Temp_8, HH_data_Temp_9, HH_data_Temp_10, HH_data_Temp_15, HH_data_Temp_20, HH_data_Temp_25, HH_data_Temp_30];
 
 
-% plot_animation_voltage_vs_time(SC_data2, p);
-% plot_animation_voltage_vs_space(HH_data_Temp_30, p);
+% plot_animation_voltage_vs_time(SC_data3, p);
+plot_animation_voltage_vs_space(SC_data3, p);
 % plot_animation_probabilities(SC_data, p);
 % plot_time_and_space_shots(HH_data, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data, p);
-plot_voltage_vs_space_comparison(set_of_data, p);
+% plot_voltage_vs_space_comparison(set_of_data, p);
 
 
 
@@ -108,37 +109,59 @@ function plot_animation_voltage_vs_space(data, p)
     m = data.m;
     n = data.n;
     dt = data.dt;
-
+    
     % SPATIAL PROFILE %
     % x axis is the axon length
     t = linspace(0, L, m); 
-
-    figure(1);
-    hold on;
-
-    xmin = 0;
-    xmax = L;
-    ymin = -90;
-    ymax = 90;
-
-    axis([xmin xmax ymin ymax]);  % Set axis limits
-    xlabel('Axon length in cm');
-    ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex')
-
-    % Loop through each vector and plot them one by one
-    for i = 1:n
-        x = data.Vm_all(i,:);
-        
-        % Plot the vector
-        plot(t, x, 'b-');
-        
-        text(xmin + 0.05, ymax + 0.8, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
-
-        % Add a pause to create animation effect
-        pause(p);
-
-        cla;
+    
+    % creating a list of voltage types to plot (either just Vm for HH model
+    % or Vm, Vmy and Vm-Vmy for SC or DC model)
+    
+    voltages = {'Vm_all'};
+    
+    if isfield(data, 'Vmy_all') && isfield(data, 'Vm_minus_Vmy')
+        voltages{end+1} = 'Vmy_all';
+        voltages{end+1} = 'Vm_minus_Vmy';
     end
+    
+    % plotting animation of Vm (or if SC or DC, Vm, Vmy and Vm-Vmy)
+    for j=1:length(voltages)
+        figure(1);
+        hold on;
+
+        xmin = 0;
+        xmax = L;
+        ymin = -90;
+        ymax = 90;
+        
+        if strcmp(voltages{j}, 'Vm_all')
+            voltage_name = 'V_m';
+        elseif strcmp(voltages{j}, 'Vmy_all')
+            voltage_name = 'V_{my}';
+        else
+            voltage_name = 'V_m - V_{my}';
+        end
+            
+        axis([xmin xmax ymin ymax]);  % Set axis limits
+        xlabel('Axon length in cm');
+        ylabel(['$', voltage_name, '$ in millivolts.'], 'Interpreter', 'latex')
+
+        % Loop through each vector and plot them one by one
+        for i = 1:n
+            x = data.(voltages{j})(i,:);
+            
+            % Plot the vector
+            plot(t, x, 'b-');
+
+            text(xmin + 0.05, ymax + 0.8, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
+
+            % Add a pause to create animation effect
+            pause(p);
+
+            cla;
+        end
+    end
+    
 end
 
 % Animation that plots the voltage vs time
