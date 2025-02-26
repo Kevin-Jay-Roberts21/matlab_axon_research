@@ -20,9 +20,9 @@ a = 0.55*10^(-4); % (cm) axon radius in nodal region
 a_my = a/0.698; % (cm) axon radius in myelinated section 
 R_my = 842; % (kilo-ohms*cm^2) specific myelin resistance
 R_m = 22; % (kilo-ohms*cm^2) specific membrane resistance
-G_K = 36; % (mS/cm^2) max specific potassium conductance
-G_Na = 120; % (mS/cm^2) max specific sodium conductance 
-G_L = 0.3; % (mS/cm^2) specific leak conductance
+G_K = 80; % (mS/cm^2) max specific potassium conductance
+G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
+G_L = 80; % (mS/cm^2) specific leak conductance
 E_K = -82; % (mV) Nernst potential for potassium ions
 E_Na = 45; % (mV) Nernst potential for sodium ions
 E_L = -59.4; % (mV) Nernst potential for leak channels
@@ -36,7 +36,7 @@ rho = dt/dx^2; % creating the courant number
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 30; % (dimless) number of axon segments
+n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
 T = 30; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
@@ -49,7 +49,7 @@ n = T/dt + 1; % n is the number of time steps
 %%%%%%%%%%%%%%%%%%%%%%
 S_v = 155; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
-S_T1 = 5.5; % end time of when stimulus is added (in ms)
+S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
 S_P1 = 0.0004; % end position of adding the stimulus (in cm)
 % in the S function ii, is the space index and tt is the time index
@@ -97,11 +97,11 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 
 % Initialization
 %%%%%%%%%%%%%%%%
-V_m0 = -67.7292; % (mV) initial condition for membrane potential 
-V_my0 = -6.8577; % (mV) initial condition for axon potential in periaxonal space
-N_0 = 0.2768;% (dimless) initial condition for gating variable n
-M_0 = 0.0382;% (dimless) initial condition for gating variable m
-H_0 = 0.6873;% (dimless) initial condition for gating variable h
+V_m0 = -58.1124; % (mV) initial condition for membrane potential 
+V_my0 = 1.2334; % (mV) initial condition for axon potential in periaxonal space
+N_0 = 0.4264;% (dimless) initial condition for gating variable n
+M_0 = 0.1148;% (dimless) initial condition for gating variable m
+H_0 = 0.3548;% (dimless) initial condition for gating variable h
 Vm = V_m0 * ones(1, m);
 Vmy = zeros(1, m);
 N = zeros(1, m);
@@ -461,4 +461,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('SC_data3.mat');
+% save('SC_data1.mat');
