@@ -221,7 +221,7 @@ for j = 1:(n-1)
         % regions of N, M and H
 
         gamma1 = -rho*b_1(i - 1/2);
-        gamma2 = 1 + - dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
+        gamma2 = 1 - dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
         gamma3 = -rho*b_1(i + 1/2);
         gamma4 = 1;
         gamma5 = dt * f_1(newVmy(i), newN(i), newM(i), newH(i), i, j);

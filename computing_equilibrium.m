@@ -20,7 +20,7 @@ syms f1(Vm)
 % Used for SC Model
 G_K = 80; % (mS/cm^2)
 G_Na = 3000; % (mS/cm^2)
-G_L = 0.2; % (mS/cm^2)
+G_L = 80; % (mS/cm^2)
 E_K = -82; % Equilibrium Potential for Potassium Ions (mV)
 E_Na = 45; % Equilibrium Potential for Sodium Ions (mV)
 E_L = -59.4; % Equilibrium Potential for Leak Channels (mV)
