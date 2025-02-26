@@ -36,7 +36,7 @@ rho = dt/dx^2; % creating the courant number
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 10; % (dimless) number of axon segments
+n_s = 30; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
 T = 30; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
@@ -47,9 +47,9 @@ n = T/dt + 1; % n is the number of time steps
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 150; % (in mS/cm^2) % stimulus value
+S_v = 155; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
-S_T1 = 7; % end time of when stimulus is added (in ms)
+S_T1 = 5.5; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
 S_P1 = 0.0004; % end position of adding the stimulus (in cm)
 % in the S function ii, is the space index and tt is the time index
