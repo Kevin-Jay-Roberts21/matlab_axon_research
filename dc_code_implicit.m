@@ -258,7 +258,7 @@ for j = 1:(n-1)
         gamma2 = 1 + dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
         gamma3 = -rho*b_1(i + 1/2);
         gamma4 = 1;
-        gamma5 = dt * f_2_fctn(newVmy(i-1), newVmy(i), newVmy(i+1), newN(i), newM(i), newH(i), i, j);
+        gamma5 = dt * f_2_fctn(1, 1, 1, newN(i), newM(i), newH(i), i, j);
 
         A_1(i, i-1) = gamma1;
         A_1(i, i) = gamma2;
