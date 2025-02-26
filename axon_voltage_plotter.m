@@ -90,7 +90,7 @@ p = 0.001;
 
 
 % plot_animation_voltage_vs_time(SC_data3, p);
-plot_animation_voltage_vs_space(SC_data3, p);
+% plot_animation_voltage_vs_space(SC_data3, p);
 % plot_animation_probabilities(SC_data, p);
 % plot_time_and_space_shots(HH_data, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data, p);
@@ -116,7 +116,6 @@ function plot_animation_voltage_vs_space(data, p)
     
     % creating a list of voltage types to plot (either just Vm for HH model
     % or Vm, Vmy and Vm-Vmy for SC or DC model)
-    
     voltages = {'Vm_all'};
     
     if isfield(data, 'Vmy_all') && isfield(data, 'Vm_minus_Vmy')
@@ -174,33 +173,52 @@ function plot_animation_voltage_vs_time(data, p)
     % TEMPORAL PROFILE %
     % x axis is the axon time
     t = linspace(0, T, n); 
+    
+    % creating a list of voltage types to plot (either just Vm for HH model
+    % or Vm, Vmy and Vm-Vmy for SC or DC model)
+    voltages = {'Vm_all'};
+    
+    if isfield(data, 'Vmy_all') && isfield(data, 'Vm_minus_Vmy')
+        voltages{end+1} = 'Vmy_all';
+        voltages{end+1} = 'Vm_minus_Vmy';
+    end
+    
+    for j=1:length(voltages)
+        figure(1);
+        hold on;
 
-    figure(1);
-    hold on;
+        xmin = 0;
+        xmax = T;
+        ymin = -90;
+        ymax = 90;
 
-    xmin = 0;
-    xmax = T;
-    ymin = -90;
-    ymax = 90;
+        if strcmp(voltages{j}, 'Vm_all')
+            voltage_name = 'V_m';
+        elseif strcmp(voltages{j}, 'Vmy_all')
+            voltage_name = 'V_{my}';
+        else
+            voltage_name = 'V_m - V_{my}';
+        end
 
-    axis([xmin xmax ymin ymax]);  % Set axis limits
-    xlabel('Time in milliseconds');
-    ylabel('$V_m$ in millivolts', 'Interpreter','latex');
+        axis([xmin xmax ymin ymax]);  % Set axis limits
+        xlabel('Time in milliseconds');
+        ylabel(['$', voltage_name, '$ in millivolts.'], 'Interpreter', 'latex')
 
-    % Loop through each vector and plot them one by one
-    for i = 1:m
-        x = data.Vm_all(:,i);  
+        % Loop through each vector and plot them one by one
+        for i = 1:m
+            x = data.(voltages{j})(:,i); 
 
-        % Plot the vector
-        plot(t, x, 'b-');
-        hold on
+            % Plot the vector
+            plot(t, x, 'b-');
+            hold on
 
-        text(xmin + 0.2, ymax + 0.1, sprintf('Space: %.5f cm', round(i*dx, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
+            text(xmin + 0.2, ymax + 0.1, sprintf('Space: %.5f cm', round(i*dx, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
 
-        % Add a pause to create animation effect
-        pause(p);
+            % Add a pause to create animation effect
+            pause(p);
 
-        cla;
+            cla;
+        end
     end
 end
 
