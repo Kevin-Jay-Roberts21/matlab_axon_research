@@ -38,7 +38,7 @@ d_pn = 7.4*10^(-7); % (cm) paranodal thickness
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 30; % (ms) the total time of the experiment
+T = 150; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -102,11 +102,11 @@ f_2_fctn = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N
 
 % Initialization
 %%%%%%%%%%%%%%%%
-V_m0 = -63.6679; % (mV) initial condition for membrane potential 
+V_m0 = -58.1124; % (mV) initial condition for membrane potential 
 V_my0 = 1.3; % (mV) initial condition for axon potential in periaxonal space
-N_0 = 0.3383; % (dimless) initial condition for gating variable n
-M_0 = 0.0619; % (dimless) initial condition for gating variable m
-H_0 = 0.5489; % (dimless) initial condition for gating variable h
+N_0 = 0.4264; % (dimless) initial condition for gating variable n
+M_0 = 0.1148; % (dimless) initial condition for gating variable m
+H_0 = 0.3548; % (dimless) initial condition for gating variable h
 Vm = V_m0 * ones(1, m);
 Vmy = zeros(1, m);
 N = zeros(1, m);
@@ -215,13 +215,13 @@ for j = 1:(n-1)
             eta3 = 0; 
             eta4 = 0; 
             eta5 = 0;
-        elseif (i == myelin_end + 1) % Right end point
+        elseif (i == myelin_end + 1) % Right end point (x_R)
             eta1 = 0;
             eta2 = -(1 - dx*w3);
             eta3 = 1; 
             eta4 = 0; 
             eta5 = 0;
-        elseif (i == myelin_start + 1) % Left end point
+        elseif (i == myelin_start + 1) % Left end point (x_L)
             eta1 = 0;
             eta2 = -(1 + dx*w3);
             eta3 = 1; 
@@ -255,10 +255,10 @@ for j = 1:(n-1)
     for i = 2:(m-1)
 
         gamma1 = -rho*b_1(i - 1/2);
-        gamma2 = 1 + dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
+        gamma2 = 1 - dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
         gamma3 = -rho*b_1(i + 1/2);
         gamma4 = 1;
-        gamma5 = dt * f_2_fctn(1, 1, 1, newN(i), newM(i), newH(i), i, j);
+        gamma5 = dt * f_2_fctn(newVmy(i-1), newVmy(i), newVmy(i+1), newN(i), newM(i), newH(i), i, j);
 
         A_1(i, i-1) = gamma1;
         A_1(i, i) = gamma2;
