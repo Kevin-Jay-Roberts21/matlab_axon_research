@@ -38,7 +38,7 @@ d_pn = 7.4*10^(-7); % (cm) paranodal thickness
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 150; % (ms) the total time of the experiment
+T = 30; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -52,12 +52,12 @@ w3 = R_pa*d_pn*(2*a + d_pn)/(R_pn*L_pn*d_pa*(2*a + d_pa));
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 0; % (in mS/cm^2) % stimulus value
+S_v = 170; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
 S_P1 = 0.0004; % end position of adding the stimulus (in cm)
-% in the S function ii, is the space index and tt is the time index
+% in the S functi on ii, is the space index and tt is the time index
 S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
                     (tt * dt < S_T1 | abs(tt * dt - S_T1) <= 1e-10) & ...
                     (abs(ii * dx - S_P0) <= 1e-10 | ii * dx > S_P0) & ...
@@ -135,8 +135,13 @@ for i = 2:m-1 % because we want to keep the end points (1 and M) for Vmy, n, m, 
         M(i) = M_0;
         H(i) = H_0;
     % End points
-    else % (MAYBE NEED TO ADD LEFT END AND RIGHT END SPECIFICITY TO intial Vmy)
-        Vmy(i) = 0;
+    elseif (i == myelin_end + 1) % Right end point (x_R)
+        Vmy(i) = 0; %(1 - w3*dx)*Vmy(i);
+        N(i) = N_0;
+        M(i) = M_0;
+        H(i) = H_0;
+    elseif (i == myelin_start + 1) % Left end point (x_L)
+        Vmy(i) = 0; %(1 + w3*dx)*Vmy(i);
         N(i) = N_0;
         M(i) = M_0;
         H(i) = H_0;
@@ -190,10 +195,10 @@ for j = 1:(n-1)
     f_2 = zeros(m, 1);
 
     % using the boundary conditions to define the top and bottom row of A_2
-    A_2(1, 1) = -(1 - dx*w3);
-    A_2(1, 2) = 1;
-    A_2(m, m-1) = 0; % NEED TO VERIFY THIS
-    A_2(m, m) = 1; % NEED TO VERIFY THIS
+    A_2(1, 1) = 1;
+    A_2(1, 2) = 0;
+    A_2(m, m-1) = -(1 - w3*dx);
+    A_2(m, m) = 1;
 
     for i = 2:(m-1)
         % updating the A_2 matrix each row is determined based on
@@ -216,9 +221,9 @@ for j = 1:(n-1)
             eta4 = 0; 
             eta5 = 0;
         elseif (i == myelin_end + 1) % Right end point (x_R)
-            eta1 = 0;
-            eta2 = -(1 - dx*w3);
-            eta3 = 1; 
+            eta1 = -(1 - dx*w3);
+            eta2 = 1;
+            eta3 = 0; 
             eta4 = 0; 
             eta5 = 0;
         elseif (i == myelin_start + 1) % Left end point (x_L)
