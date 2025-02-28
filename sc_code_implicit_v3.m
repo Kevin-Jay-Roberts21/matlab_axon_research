@@ -47,7 +47,7 @@ n = T/dt + 1; % n is the number of time steps
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 155; % (in mS/cm^2) % stimulus value
+S_v = 0; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
