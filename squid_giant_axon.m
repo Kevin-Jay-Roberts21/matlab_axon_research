@@ -224,4 +224,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('HH_data_Temp_34.mat');
+save('HH_1.mat');

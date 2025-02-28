@@ -23,7 +23,7 @@ clc
 
 % getting the saved data
 % HH_data = load('HH_data.mat');
-% HH_data1 = load('HH_data1.mat');
+HH_data1 = load('HH_1.mat');
 % HH_data2 = load('HH_data2.mat');
 % SC_data = load('SC_data.mat');
 SC_data1 = load('projects/SC_data1.mat');
@@ -42,13 +42,13 @@ HH_data_Temp_default = load('/Users/kevinjayroberts/Documents/MATLAB/projects/ax
 % HH_data_Temp_35 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_35.mat');
 
 % picking time shots
-time1 = 5; % in ms
-time2 = 6; % in ms
-time3 = 8; % in ms
-time4 = 10; % in ms
-time5 = 11; % in ms
-time6 = 12; % in ms
-time7 = 13; % in ms
+time1 = 5.1; % in ms
+time2 = 8; % in ms
+time3 = 8.5; % in ms
+time4 = 9; % in ms
+time5 = 9.5; % in ms
+time6 = 10; % in ms
+time7 = 10.5; % in ms
 
 list_of_times = [time1
                  time2
@@ -90,11 +90,11 @@ p = 0.001;
 set_of_data2 = [SC_data1, SC_data2];
 
 % plot_animation_voltage_vs_time(SC_data3, p);
-% plot_animation_voltage_vs_space(SC_data3, p);
+plot_animation_voltage_vs_space(HH_data1, p);
 % plot_animation_probabilities(SC_data, p);
-% plot_time_and_space_shots(HH_data, list_of_positions, list_of_times);
+% plot_time_and_space_shots(HH_data1, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data2, p);
-plot_voltage_vs_space_comparison(set_of_data2, p);
+% plot_voltage_vs_space_comparison(set_of_data2, p);
 
 
 
