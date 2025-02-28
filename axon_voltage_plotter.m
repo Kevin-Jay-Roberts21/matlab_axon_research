@@ -26,11 +26,11 @@ clc
 HH_data1 = load('HH_1.mat');
 % HH_data2 = load('HH_data2.mat');
 % SC_data = load('SC_data.mat');
-SC_data1 = load('projects/SC_data1.mat');
-SC_data2 = load('projects/SC_data2.mat');
-SC_data3 = load('projects/SC_data3.mat');
+% SC_data1 = load('projects/SC_data1.mat');
+% SC_data2 = load('projects/SC_data2.mat');
+% SC_data3 = load('projects/SC_data3.mat');
 
-HH_data_Temp_default = load('/Users/kevinjayroberts/Documents/MATLAB/projects/axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
+% HH_data_Temp_default = load('/Users/kevinjayroberts/Documents/MATLAB/projects/axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
 % HH_data_Temp_7 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_7.mat');
 % HH_data_Temp_8 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_8.mat');
 % HH_data_Temp_9 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_9.mat');
@@ -81,13 +81,13 @@ list_of_positions = [position1
 % is in seconds. It is how many seconds each time (or space) shot will be
 % paused at). NOTE: the legends are what slows down the animations, may
 % condsider getting rid of or adding them in certain cases.
-p = 0.001;
+p = 0.01;
 
 % creating a set of data from multiple experiments used to plot animation
 % (the first element in the set_of_data is darkred, then the proceeding elements get
 % brighter and brighter until the last element which is the brightest red)
 % set_of_data1 = [HH_data_Temp_default, HH_data_Temp_7, HH_data_Temp_8, HH_data_Temp_9, HH_data_Temp_10, HH_data_Temp_15, HH_data_Temp_20, HH_data_Temp_25, HH_data_Temp_30];
-set_of_data2 = [SC_data1, SC_data2];
+% set_of_data2 = [SC_data1, SC_data2];
 
 % plot_animation_voltage_vs_time(SC_data3, p);
 plot_animation_voltage_vs_space(HH_data1, p);
