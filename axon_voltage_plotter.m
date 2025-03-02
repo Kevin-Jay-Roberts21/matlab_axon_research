@@ -24,7 +24,7 @@ clc
 % getting the saved data
 % HH_data = load('HH_data.mat');
 HH_data1 = load('HH_1.mat');
-% HH_data2 = load('HH_data2.mat');
+HH_data2 = load('HH_2.mat');
 % SC_data = load('SC_data.mat');
 % SC_data1 = load('projects/SC_data1.mat');
 % SC_data2 = load('projects/SC_data2.mat');
@@ -90,9 +90,9 @@ p = 0.01;
 % set_of_data2 = [SC_data1, SC_data2];
 
 % plot_animation_voltage_vs_time(SC_data3, p);
-plot_animation_voltage_vs_space(HH_data1, p);
+% plot_animation_voltage_vs_space(HH_data2, p);
 % plot_animation_probabilities(SC_data, p);
-% plot_time_and_space_shots(HH_data1, list_of_positions, list_of_times);
+plot_time_and_space_shots(HH_data2, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data2, p);
 % plot_voltage_vs_space_comparison(set_of_data2, p);
 
@@ -281,6 +281,8 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
     dt = data.dt;
     dx = data.dx;
     
+    
+    
     % plotting Voltage vs Axon length
     figure(1)
     t1 = linspace(0, L, m);
@@ -312,6 +314,13 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
         legendStrings2{end+1} = sprintf('$V_m$ at x = %g cm', list_of_positions(i));
     end
     legend(legendStrings2, 'Interpreter', 'latex')
+    
+    xmin = 0;
+    xmax = T;
+    ymin = -70;
+    ymax = 50;
+    axis([xmin xmax ymin ymax]);  % Set axis limits
+    
     ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex')
     xlabel("Time in milliseconds.")
     
