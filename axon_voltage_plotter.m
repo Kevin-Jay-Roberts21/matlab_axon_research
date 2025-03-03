@@ -24,8 +24,10 @@ clc
 % getting the saved data
 % HH_data = load('HH_data.mat');
 HH_data1 = load('HH_1.mat');
-HH_data2 = load('HH_2.mat');
-% SC_data = load('SC_data.mat');
+HH_data2 = load('HH_data2.mat');
+SC_data = load('SC_data.mat');
+DC_data = load('DC_data.mat');
+
 % SC_data1 = load('projects/SC_data1.mat');
 % SC_data2 = load('projects/SC_data2.mat');
 % SC_data3 = load('projects/SC_data3.mat');
@@ -81,18 +83,18 @@ list_of_positions = [position1
 % is in seconds. It is how many seconds each time (or space) shot will be
 % paused at). NOTE: the legends are what slows down the animations, may
 % condsider getting rid of or adding them in certain cases.
-p = 0.01;
+p = 0.001;
 
 % creating a set of data from multiple experiments used to plot animation
 % (the first element in the set_of_data is darkred, then the proceeding elements get
 % brighter and brighter until the last element which is the brightest red)
 % set_of_data1 = [HH_data_Temp_default, HH_data_Temp_7, HH_data_Temp_8, HH_data_Temp_9, HH_data_Temp_10, HH_data_Temp_15, HH_data_Temp_20, HH_data_Temp_25, HH_data_Temp_30];
-% set_of_data2 = [SC_data1, SC_data2];
+set_of_data2 = {SC_data, DC_data};
 
-% plot_animation_voltage_vs_time(SC_data3, p);
-% plot_animation_voltage_vs_space(HH_data2, p);
+% plot_animation_voltage_vs_time(DC_data, p);
+plot_animation_voltage_vs_space(DC_data, p);
 % plot_animation_probabilities(SC_data, p);
-plot_time_and_space_shots(HH_data2, list_of_positions, list_of_times);
+% plot_time_and_space_shots(HH_data2, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data2, p);
 % plot_voltage_vs_space_comparison(set_of_data2, p);
 
@@ -345,10 +347,10 @@ function plot_voltage_vs_time_comparison(data_set, p)
     
     % defining spatial and time variables from one of the data sets
     % (doesn't matter which since we assume they must be the same for all)
-    T = data_set(1).T;
-    m = data_set(1).m;
-    n = data_set(1).n;
-    dx = data_set(1).dx;
+    T = data_set{1}.T;
+    m = data_set{1}.m;
+    n = data_set{1}.n;
+    dx = data_set{1}.dx;
     
     % TEMPORAL PROFILE %
     % x axis is the axon time
@@ -358,7 +360,7 @@ function plot_voltage_vs_time_comparison(data_set, p)
     % or Vm, Vmy and Vm-Vmy for SC or DC model)
     voltages = {'Vm_all'};
     
-    if isfield(data_set(1), 'Vmy_all') && isfield(data_set(1), 'Vm_minus_Vmy')
+    if isfield(data_set{1}, 'Vmy_all') && isfield(data_set{1}, 'Vm_minus_Vmy')
         voltages{end+1} = 'Vmy_all';
         voltages{end+1} = 'Vm_minus_Vmy';
     end
@@ -389,7 +391,7 @@ function plot_voltage_vs_time_comparison(data_set, p)
         for i = 1:m
 
             for j = 1:length(data_set)
-                plot(t, data_set(j).(voltages{k})(:,i), 'Color', [1, 0, 0] * j/length(data_set));
+                plot(t, data_set{j}.(voltages{k})(:,i), 'Color', [1, 0, 0] * j/length(data_set));
                 hold on
             end
 
@@ -407,10 +409,10 @@ function plot_voltage_vs_space_comparison(data_set, p)
     
     % defining spatial and time variables from one of the data sets
     % (doesn't matter which since we assume they must be the same for all)
-    L = data_set(1).L;
-    m = data_set(1).m;
-    n = data_set(1).n;
-    dt = data_set(1).dt;
+    L = data_set{1}.L;
+    m = data_set{1}.m;
+    n = data_set{1}.n;
+    dt = data_set{1}.dt;
 
     % TEMPORAL PROFILE %
     % x axis is the axon time
@@ -420,7 +422,7 @@ function plot_voltage_vs_space_comparison(data_set, p)
     % or Vm, Vmy and Vm-Vmy for SC or DC model)
     voltages = {'Vm_all'};
     
-    if isfield(data_set(1), 'Vmy_all') && isfield(data_set(1), 'Vm_minus_Vmy')
+    if isfield(data_set{1}, 'Vmy_all') && isfield(data_set{1}, 'Vm_minus_Vmy')
         voltages{end+1} = 'Vmy_all';
         voltages{end+1} = 'Vm_minus_Vmy';
     end
@@ -450,13 +452,13 @@ function plot_voltage_vs_space_comparison(data_set, p)
         % Loop through each vector and plot them one by one
         for i = 1:n
             for j = 1:length(data_set)
-                plot(t, data_set(j).(voltages{k})(i,:), 'Color', [1, 0, 0] * j/length(data_set));
+                plot(t, data_set{j}.(voltages{k})(i,:), 'Color', [1, 0, 0] * j/length(data_set));
                 hold on
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
             % legend([p1, p2], 'data1 voltage', 'data2 voltage', 'Location', 'northeast');
-            text(xmin + 0.2, ymax + 0.1, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
+            text(xmin, ymax + 0.1, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
             pause(p);

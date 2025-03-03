@@ -52,7 +52,7 @@ w3 = R_pa*d_pn*(2*a + d_pn)/(R_pn*L_pn*d_pa*(2*a + d_pa));
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 170; % (in mS/cm^2) % stimulus value
+S_v = 165; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -103,15 +103,16 @@ f_2_fctn = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N
 % Initialization
 %%%%%%%%%%%%%%%%
 V_m0 = -58.1124; % (mV) initial condition for membrane potential 
-V_my0 = 1.3; % (mV) initial condition for axon potential in periaxonal space
+V_my0 = 1.2334; % (mV) initial condition for axon potential in periaxonal space
 N_0 = 0.4264; % (dimless) initial condition for gating variable n
 M_0 = 0.1148; % (dimless) initial condition for gating variable m
 H_0 = 0.3548; % (dimless) initial condition for gating variable h
 Vm = V_m0 * ones(1, m);
-Vmy = zeros(1, m);
+Vmy = V_my0 * ones(1, m);
 N = zeros(1, m);
 M = zeros(1, m);
 H = zeros(1, m);
+Vmy(1) = 0;
 N(1) = N_0;
 M(1) = M_0;
 H(1) = H_0;
@@ -121,6 +122,10 @@ for i = 2:m-1 % because we want to keep the end points (1 and M) for Vmy, n, m, 
     myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
     myelin_end = seg*(N_s); % End of internodal region in this segment
     seg_start = (seg - 1)*(N_s); % index of the start of the segment
+    
+    if i == 80
+        disp("Got here")
+    end
 
     % Internodal region
     if (i > myelin_start + 1) && (i < myelin_end + 1)
@@ -135,18 +140,19 @@ for i = 2:m-1 % because we want to keep the end points (1 and M) for Vmy, n, m, 
         M(i) = M_0;
         H(i) = H_0;
     % End points
-    elseif (i == myelin_end + 1) % Right end point (x_R)
-        Vmy(i) = 0; %(1 - w3*dx)*Vmy(i);
+    elseif (i == seg_start + 1) % Right end point (x_R)
+        Vmy(i) = (1 - w3*dx)*Vmy(i-1);
         N(i) = N_0;
         M(i) = M_0;
         H(i) = H_0;
     elseif (i == myelin_start + 1) % Left end point (x_L)
-        Vmy(i) = 0; %(1 + w3*dx)*Vmy(i);
+        Vmy(i) = Vmy(i+1)/(1 + w3*dx);
         N(i) = N_0;
         M(i) = M_0;
         H(i) = H_0;
     end 
 end
+Vmy(m) = (1 - w3*dx)*Vmy(m-1);
 
 % defining the matrices to collect data at every time step
 Vm_all(1,:) = Vm;
@@ -220,7 +226,7 @@ for j = 1:(n-1)
             eta3 = 0; 
             eta4 = 0; 
             eta5 = 0;
-        elseif (i == myelin_end + 1) % Right end point (x_R)
+        elseif (i == seg_start + 1) % Right end point (x_R)
             eta1 = -(1 - dx*w3);
             eta2 = 1;
             eta3 = 0; 
@@ -499,3 +505,5 @@ legendStrings3 = {
 legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
+
+% save('DC_data.mat');
