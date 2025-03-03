@@ -83,7 +83,7 @@ list_of_positions = [position1
 % is in seconds. It is how many seconds each time (or space) shot will be
 % paused at). NOTE: the legends are what slows down the animations, may
 % condsider getting rid of or adding them in certain cases.
-p = 0.001;
+p = 0.01;
 
 % creating a set of data from multiple experiments used to plot animation
 % (the first element in the set_of_data is darkred, then the proceeding elements get
