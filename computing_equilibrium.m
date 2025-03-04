@@ -18,75 +18,42 @@ syms f1(Vm)
 % E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
 
 % Used for SC Model
-G_K = 900; % (mS/cm^2)
-G_Na = 3000; % (mS/cm^2)
-G_L = 7; % (mS/cm^2)
-E_K = -82; % Equilibrium Potential for Potassium Ions (mV)
-E_Na = 45; % Equilibrium Potential for Sodium Ions (mV)
-E_L = -59.4; % Equilibrium Potential for Leak Channels (mV)
+G_K = 35; % (mS/cm^2)
+G_Na = 40; % (mS/cm^2)
+G_L = 0.3; % (mS/cm^2)
+E_K = -77; % Equilibrium Potential for Potassium Ions (mV)
+E_Na = 55; % Equilibrium Potential for Sodium Ions (mV)
+E_L = -65; % Equilibrium Potential for Leak Channels (mV)
 
+% alpha_n = @(Vm) 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10)); % (1/ms)
+% beta_n = @(Vm) 0.125*exp(-(Vm + 65)/80); % (1/ms)
+% alpha_m = @(Vm) 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10)); % (1/ms)
+% beta_m = @(Vm) 4*exp(-(Vm + 65)/18); % (1/ms)
+% alpha_h = @(Vm) 0.07*exp(-(Vm + 65)/20); % (1/ms)
+% beta_h = @(Vm) 1/(1 + exp(-(Vm + 35)/10)); % (1/ms)
 
-
-
-% % solving for the first derivative of f1 (these functions will only be used for viewing, not used otherwise in code)
-% f1(Vm) = G_K * (0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10))/(0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10)) + 0.125*exp(-(Vm + 65)/80)))^4 * (Vm - E_K) ...
-%     + G_Na * (0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10))/(0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10)) + 4*exp(-(Vm + 65)/18)))^3 * ...
-%     (0.07*exp(-(Vm + 65)/20)/(0.07*exp(-(Vm + 65)/20) + 1/(1 + exp(-(Vm + 35)/10)))) * (Vm - E_Na) + G_L * (Vm - E_L);
-% 
-% df1(Vm) = diff(f1, Vm, 1); % the first derivative of f1(Vm) w.r.t. Vm
-
-
-% %%
-% % SOLVING USING NEWTONS METHOD
-% 
-% % initial V_m guess
-% V_m0 = -60; % (mV)
-% V_m = V_m0;
-% 
-% % Preallocate array to store Vm values
-% Vm_values = zeros(1, 100);
-% 
-% Vm_values(1) = V_m0;
-% 
-% for i = 2:100
-% 
-%     newVm = V_m - f2(V_m, G_K, G_Na, G_L, E_K, E_Na, E_L)/df2(V_m, G_K, G_Na, G_L, E_K, E_Na, E_L);
-% 
-%     % Store the new Vm value
-%     Vm_values(i) = newVm;
-% 
-%     % update
-%     V_m = newVm;
-% 
-%      % Plot every 100th Vm value to avoid overloading the plot
-%     plot(1:i, Vm_values(1:i));
-%     xlabel('Iteration');
-%     ylabel('V_m (mV)');
-% 
-% end
-% 
-% final_Vm = newVm
-% 
-% n_infty = @(Vm) 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10))/(0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10)) + 0.125*exp(-(Vm + 65)/80));
-% m_infty = @(Vm) 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10))/(0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10)) + 4*exp(-(Vm + 65)/18));
-% h_infty = @(Vm) 0.07*exp(-(Vm + 65)/20)/(0.07*exp(-(Vm + 65)/20) + 1/(1 + exp(-(Vm + 35)/10)));
-% 
-% n_infty(final_Vm)
-% m_infty(final_Vm)
-% h_infty(final_Vm)
-
+alpha_n = @(Vm) 0.02*(Vm - 25)/(1 - exp(-(Vm - 25)/9)); % (1/ms)
+alpha_m = @(Vm) 0.182*(Vm + 35)/(1 - exp(-(Vm + 35)/9)); % (1/ms)
+alpha_h = @(Vm) 0.25*exp(-(Vm + 90)/12); % (1/ms)
+beta_n = @(Vm) -0.002*(Vm - 25)/(1 - exp((Vm - 25)/9)); % (1/ms)
+beta_m = @(Vm) -0.124*(Vm + 35)/(1 - exp((Vm + 35)/9)); % (1/ms)
+beta_h = @(Vm) 0.25*exp((Vm + 62)/6)/exp((Vm + 90)/12); % (1/ms)
 
 
 %%
 % SOLVING USING MATLAB's FSOLVE FUNCTION
 
+% defining the probability gate function equilibriums
+n_infty = @(Vm) alpha_n(Vm)/(alpha_n(Vm) + beta_n(Vm));
+m_infty = @(Vm) alpha_m(Vm)/(alpha_m(Vm) + beta_m(Vm));
+h_infty = @(Vm) alpha_h(Vm)/(alpha_h(Vm) + beta_h(Vm));
+
+
 % Define the function f(Vm)
-f = @(Vm) G_K * (0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10))/(0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10)) + 0.125*exp(-(Vm + 65)/80)))^4 * (Vm - E_K) ...
-    + G_Na * (0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10))/(0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10)) + 4*exp(-(Vm + 65)/18)))^3 * ...
-    (0.07*exp(-(Vm + 65)/20)/(0.07*exp(-(Vm + 65)/20) + 1/(1 + exp(-(Vm + 35)/10)))) * (Vm - E_Na) + G_L * (Vm - E_L);
+f = @(Vm) G_K*n_infty(Vm)^4*(Vm - E_K) + G_Na*m_infty(Vm)^3*h_infty(Vm)*(Vm - E_Na) + G_L*(Vm - E_L);
 
 % Set initial guess for Vm
-V_m0 = -30; % (mV)
+V_m0 = -64; % (mV)
 
 % Use fsolve to find the root of the function (solve for Vm)
 options = optimset('Display', 'iter'); % Display iteration details
@@ -101,11 +68,6 @@ Vm_solution
 
 % Now plugging in the numerically approximated Vm into the probability
 % equations:
-
-
-n_infty = @(Vm) 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10))/(0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10)) + 0.125*exp(-(Vm + 65)/80));
-m_infty = @(Vm) 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10))/(0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10)) + 4*exp(-(Vm + 65)/18));
-h_infty = @(Vm) 0.07*exp(-(Vm + 65)/20)/(0.07*exp(-(Vm + 65)/20) + 1/(1 + exp(-(Vm + 35)/10)));
 
 n_inf = n_infty(Vm_solution)
 m_inf = m_infty(Vm_solution)
