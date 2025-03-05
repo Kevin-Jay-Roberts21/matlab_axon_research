@@ -137,22 +137,22 @@ for i = 2:m-1 % because we want to keep the end points (1 and M) for Vmy, n, m, 
     elseif (i > seg_start + 1) && (i < myelin_start + 1)
         Vmy(i) = 0;
         N(i) = N_0;
-        M(i) = M_0;
+        M(i) = M_0; 
         H(i) = H_0;
     % End points
     elseif (i == seg_start + 1) % Right end point (x_R)
-        Vmy(i) = (1 - w3*dx)*Vmy(i-1);
+        Vmy(i) = V_my0/(1 + w3*dx);
         N(i) = N_0;
         M(i) = M_0;
         H(i) = H_0;
     elseif (i == myelin_start + 1) % Left end point (x_L)
-        Vmy(i) = Vmy(i+1)/(1 + w3*dx);
+        Vmy(i) = V_my0/(1 + w3*dx);
         N(i) = N_0;
         M(i) = M_0;
         H(i) = H_0;
     end 
 end
-Vmy(m) = (1 - w3*dx)*Vmy(m-1);
+Vmy(m) = V_my0/(1 + w3*dx);
 
 % defining the matrices to collect data at every time step
 Vm_all(1,:) = Vm;
@@ -203,7 +203,7 @@ for j = 1:(n-1)
     % using the boundary conditions to define the top and bottom row of A_2
     A_2(1, 1) = 1;
     A_2(1, 2) = 0;
-    A_2(m, m-1) = -(1 - w3*dx);
+    A_2(m, m-1) = -1/(1 + w3*dx);
     A_2(m, m) = 1;
 
     for i = 2:(m-1)
@@ -227,7 +227,7 @@ for j = 1:(n-1)
             eta4 = 0; 
             eta5 = 0;
         elseif (i == seg_start + 1) % Right end point (x_R)
-            eta1 = -(1 - dx*w3);
+            eta1 = -1/(1 + dx*w3);
             eta2 = 1;
             eta3 = 0; 
             eta4 = 0; 
