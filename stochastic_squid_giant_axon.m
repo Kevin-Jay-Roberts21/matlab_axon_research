@@ -25,7 +25,7 @@ E_L = -65; % Equilibrium Potential for Leak Channels (mV)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % L = 5; % axon length (cm)
 % dx = 0.01; % space step (MAY CHANGE LATER)
-T = 100; % (ms) Total Time
+T = 1000; % (ms) Total Time
 dt = 0.01; % time step (MAY CHANGE LATER)
 % m = L/dx + 1; % total number of space steps
 n = T/dt + 1; % total number of time steps
@@ -81,12 +81,15 @@ for i = 1:(n-1)
     M(i+1) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
     H(i+1) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
     
-    Vm(i+1) = Vm(i) + dt/C_m*sqrt(dt)*xi + dt/C_m*G_Na*(M(i+1))^3*H(i+1)*E_Na + dt/C_m*G_K*(N(i+1))^4*E_K + dt/C_m*G_L*E_L/(1 + dt/C_m*G_Na*(M(i+1))^3*H(i+1) + dt/C_m*G_K*(N(i+1))^4 + dt/C_m*G_L);
+    Vm(i+1) = (Vm(i) + dt/C_m*sqrt(dt)*xi + dt/C_m*G_Na*(M(i+1))^3*H(i+1)*E_Na + dt/C_m*G_K*(N(i+1))^4*E_K + dt/C_m*G_L*E_L)/(1 + dt/C_m*G_Na*(M(i+1))^3*H(i+1) + dt/C_m*G_K*(N(i+1))^4 + dt/C_m*G_L);
 
 end
 
 t = linspace(0, T, n);
 plot(t, Vm);
+
+ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex')
+xlabel("Time in milliseconds.")
 
 
 
