@@ -479,32 +479,34 @@ function plot_Vm_and_Vm_minus_Vmy_vs_space(data, p)
 
     % x axis is the axon time
     t = linspace(0, L, m); 
-
+    
+    figure(1);
+    
     xmin = 0;
     xmax = L;
     ymin = -90;
     ymax = 90;
-
-    axis([xmin xmax ymin ymax]);  % Set axis limits
-    xlabel('Length of axon in cm');
-    ylabel('Voltage in millivolts.', 'Interpreter', 'latex')
     
     % Loop through each vector and plot them one by one
     for i = 1:n
+        cla;
         
         plot(t, data.Vm_all(i,:), 'b-');
         hold on
         plot(t, data.Vm_minus_Vmy(i,:), 'r-');
-        hold on
-
+        hold off
+        
+        axis([xmin xmax ymin ymax]);  % Set axis limits
+        xlabel('Length of axon in cm');
+        ylabel('Voltage in millivolts.', 'Interpreter', 'latex')
+        
         % Add the legend (NOTE: the legend is what is slowing down the animation)
         % legend([p1, p2], 'data1 voltage', 'data2 voltage', 'Location', 'northeast');
-        text(xmin, ymax + 0.1, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
-
+        text(xmin+0.05*(xmax-xmin), ymax-5, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
+    
         % Add a pause to create animation effect
         pause(p);
 
-        cla;
     end
 end
 
