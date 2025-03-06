@@ -23,12 +23,12 @@ clc
 
 % getting the saved data
 % HH_data = load('HH_data.mat');
-HH_data1 = load('HH_1.mat');
-HH_data2 = load('HH_data2.mat');
-SC_data = load('SC_data.mat');
-DC_data = load('DC_data.mat');
+% HH_data1 = load('HH_1.mat');
+% HH_data2 = load('HH_data2.mat');
+% SC_data = load('SC_data.mat');
+% DC_data = load('DC_data.mat');
 
-% SC_data1 = load('projects/SC_data1.mat');
+SC_data1 = load('projects/SC_data1.mat');
 % SC_data2 = load('projects/SC_data2.mat');
 % SC_data3 = load('projects/SC_data3.mat');
 
@@ -89,15 +89,15 @@ p = 0.01;
 % (the first element in the set_of_data is darkred, then the proceeding elements get
 % brighter and brighter until the last element which is the brightest red)
 % set_of_data1 = [HH_data_Temp_default, HH_data_Temp_7, HH_data_Temp_8, HH_data_Temp_9, HH_data_Temp_10, HH_data_Temp_15, HH_data_Temp_20, HH_data_Temp_25, HH_data_Temp_30];
-set_of_data2 = {SC_data, DC_data};
+% set_of_data2 = {SC_data, DC_data};
 
 % plot_animation_voltage_vs_time(DC_data, p);
-plot_animation_voltage_vs_space(DC_data, p);
+% plot_animation_voltage_vs_space(DC_data, p);
 % plot_animation_probabilities(SC_data, p);
 % plot_time_and_space_shots(HH_data2, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data2, p);
 % plot_voltage_vs_space_comparison(set_of_data2, p);
-
+plot_Vm_and_Vm_minus_Vmy_vs_space(SC_data1, p)
 
 
 
@@ -468,5 +468,43 @@ function plot_voltage_vs_space_comparison(data_set, p)
     end
 end
 
+% plotting Vm vs Space and Vm-Vmy vs Space in the same plot (only for SC and DC)
+function plot_Vm_and_Vm_minus_Vmy_vs_space(data, p)
+    
+    % defining spatial and time variables from one of the data sets
+    L = data.L;
+    m = data.m;
+    n = data.n;
+    dt = data.dt;
 
+    % x axis is the axon time
+    t = linspace(0, L, m); 
+
+    xmin = 0;
+    xmax = L;
+    ymin = -90;
+    ymax = 90;
+
+    axis([xmin xmax ymin ymax]);  % Set axis limits
+    xlabel('Length of axon in cm');
+    ylabel('Voltage in millivolts.', 'Interpreter', 'latex')
+    
+    % Loop through each vector and plot them one by one
+    for i = 1:n
+        
+        plot(t, data.Vm_all(i,:), 'b-');
+        hold on
+        plot(t, data.Vm_minus_Vmy(i,:), 'r-');
+        hold on
+
+        % Add the legend (NOTE: the legend is what is slowing down the animation)
+        % legend([p1, p2], 'data1 voltage', 'data2 voltage', 'Location', 'northeast');
+        text(xmin, ymax + 0.1, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
+
+        % Add a pause to create animation effect
+        pause(p);
+
+        cla;
+    end
+end
 
