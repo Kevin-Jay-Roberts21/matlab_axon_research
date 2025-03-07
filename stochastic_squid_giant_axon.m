@@ -105,8 +105,7 @@ plot(t, Vm_1, 'b-');
 hold on;
 plot(t, Vm_2, 'r-');
 
-legend('$\sigma = 30 \mu $A/cm$^2$', '$\sigma = 80 \mu $A/cm$^2$', 'Interpreter', 'latex');
-
+legend('$\sigma = 30 \ \mu $A/cm$^2$', '$\sigma = 80 \ \mu $A/cm$^2$', 'Interpreter', 'latex');
 
 ylabel('Voltage in millivolts.', 'Interpreter', 'latex')
 xlabel("Time in milliseconds.")
