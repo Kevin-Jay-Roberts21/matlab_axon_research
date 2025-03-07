@@ -29,6 +29,8 @@ T = 1000; % (ms) Total Time
 dt = 0.01; % time step (MAY CHANGE LATER)
 % m = L/dx + 1; % total number of space steps
 n = T/dt + 1; % total number of time steps
+sigma_1 = 30; % the standard deviation of noise (uA/cm^2, microampere per square centimeter) 
+sigma_2 = 80;
 
 % Defining alpha/beta functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -61,34 +63,52 @@ V_m0 = -60; % (mV) Voltage
 % due to the patch clamp, the voltage is the same throughout the axon, i.e.
 % at a given time, the voltage is the same at every spatial position.
 
-Vm = zeros(1, n);
-N = zeros(1, n);
-M = zeros(1, n);
-H = zeros(1, n);
+Vm_1 = zeros(1, n);
+Vm_2 = zeros(1, n);
+N_1 = zeros(1, n);
+M_1 = zeros(1, n);
+H_1 = zeros(1, n);
+N_2 = zeros(1, n);
+M_2 = zeros(1, n);
+H_2 = zeros(1, n);
 
-Vm(1) = V_m0;
-N(1) = N_0;
-M(1) = M_0;
-H(1) = H_0;
+Vm_1(1) = V_m0;
+Vm_2(1) = V_m0;
+N_1(1) = N_0;
+M_1(1) = M_0;
+H_1(1) = H_0;
+N_2(1) = N_0;
+M_2(1) = M_0;
+H_2(1) = H_0;
 
 % Starting the time loop
 %%%%%%%%%%%%%%%%%%%%%%%%
 for i = 1:(n-1)
     
-    xi = randn;
+    xi_1 = sigma_1 * sqrt(dt) * randn;
+    xi_2 = sigma_2 * sqrt(dt) * randn;
 
-    N(i+1) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
-    M(i+1) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
-    H(i+1) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
-    
-    Vm(i+1) = (Vm(i) + dt/C_m*sqrt(dt)*xi + dt/C_m*G_Na*(M(i+1))^3*H(i+1)*E_Na + dt/C_m*G_K*(N(i+1))^4*E_K + dt/C_m*G_L*E_L)/(1 + dt/C_m*G_Na*(M(i+1))^3*H(i+1) + dt/C_m*G_K*(N(i+1))^4 + dt/C_m*G_L);
+    N_1(i+1) = 1/(1 + dt*alpha_n(Vm_1(i)) + dt*beta_n(Vm_1(i))) * (N_1(i) + dt*alpha_n(Vm_1(i)));
+    M_1(i+1) = 1/(1 + dt*alpha_m(Vm_1(i)) + dt*beta_m(Vm_1(i))) * (M_1(i) + dt*alpha_m(Vm_1(i)));
+    H_1(i+1) = 1/(1 + dt*alpha_h(Vm_1(i)) + dt*beta_h(Vm_1(i))) * (H_1(i) + dt*alpha_h(Vm_1(i)));
+    N_2(i+1) = 1/(1 + dt*alpha_n(Vm_2(i)) + dt*beta_n(Vm_2(i))) * (N_2(i) + dt*alpha_n(Vm_2(i)));
+    M_2(i+1) = 1/(1 + dt*alpha_m(Vm_2(i)) + dt*beta_m(Vm_2(i))) * (M_2(i) + dt*alpha_m(Vm_2(i)));
+    H_2(i+1) = 1/(1 + dt*alpha_h(Vm_2(i)) + dt*beta_h(Vm_2(i))) * (H_2(i) + dt*alpha_h(Vm_2(i)));
+
+    Vm_1(i+1) = (Vm_1(i) + dt/C_m*xi_1 + dt/C_m*G_Na*(M_1(i+1))^3*H_1(i+1)*E_Na + dt/C_m*G_K*(N_1(i+1))^4*E_K + dt/C_m*G_L*E_L)/(1 + dt/C_m*G_Na*(M_1(i+1))^3*H_1(i+1) + dt/C_m*G_K*(N_1(i+1))^4 + dt/C_m*G_L);
+    Vm_2(i+1) = (Vm_2(i) + dt/C_m*xi_2 + dt/C_m*G_Na*(M_2(i+1))^3*H_2(i+1)*E_Na + dt/C_m*G_K*(N_2(i+1))^4*E_K + dt/C_m*G_L*E_L)/(1 + dt/C_m*G_Na*(M_2(i+1))^3*H_2(i+1) + dt/C_m*G_K*(N_2(i+1))^4 + dt/C_m*G_L);
 
 end
 
 t = linspace(0, T, n);
-plot(t, Vm);
+plot(t, Vm_1, 'b-');
+hold on;
+plot(t, Vm_2, 'r-');
 
-ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex')
+legend('$\sigma = 30 \mu $A/cm$^2$', '$\sigma = 80 \mu $A/cm$^2$', 'Interpreter', 'latex');
+
+
+ylabel('Voltage in millivolts.', 'Interpreter', 'latex')
 xlabel("Time in milliseconds.")
 
 
