@@ -29,7 +29,6 @@ E_rest = -59.4; % (mV) effective resting nernst potential
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 dx = 0.0001; % (cm) space step
 dt = 0.01; % (ms) time step 
-rho = dt/dx^2; % creating the courant number
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_pn = 2.3*10^(-4); % (cm) paranodal length
@@ -45,9 +44,10 @@ N_s = N_n + N_my; % number of space steps in an entire axon segement
 m = N_s*n_s + 1; % total number of space steps
 n = T/dt + 1; % n is the number of time steps
 
-% defining w1 and w2 constants
-w1 = d_pa*(2*a + d_pa)/(C_my*a_my*R_pa);
-w2 = a^2/(C_my*a_my*R_i);
+% defining rho, w1, w2 and w3 constants
+rho = dt/dx^2; % creating the courant number
+w1 = a^2/(C_my*a_my*R_i);
+w2 = d_pa*(2*a + d_pa)/(C_my*a_my*R_pa);
 w3 = R_pa*d_pn*(2*a + d_pn)/(R_pn*L_pn*d_pa*(2*a + d_pa));
 
 % Stimulus Information
@@ -93,10 +93,10 @@ c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*C_3(n, m, h, ii, tt); % End point        
        
 % defining the f_1(x_i) function
-F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1)  w1/2*Vmy_i_minus_1 + (w1 + 1/(R_m*C_m) - 1/(C_my*R_my))*Vmy_i + w1/2*Vmy_i_plus_1 + E_rest/(R_m*C_m); % Internodal region
+F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1)  w2/2*Vmy_i_minus_1 + (w2 + 1/(R_m*C_m) - 1/(C_my*R_my))*Vmy_i + w2/2*Vmy_i_plus_1 + E_rest/(R_m*C_m); % Internodal region
 F_2 = @(n, m, h, ii, tt) 1/C_m * (G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
 F_5 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) + F_2(n, m, h, ii, tt))/2; % End point
-f_2_fctn = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) + ... % Internodal region
+f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(n, m, h, ii, tt) + ... % Nodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*F_5(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt); % End point
 
@@ -122,10 +122,6 @@ for i = 2:m-1 % because we want to keep the end points (1 and M) for Vmy, n, m, 
     myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
     myelin_end = seg*(N_s); % End of internodal region in this segment
     seg_start = (seg - 1)*(N_s); % index of the start of the segment
-    
-    if i == 80
-        disp("Got here")
-    end
 
     % Internodal region
     if (i > myelin_start + 1) && (i < myelin_end + 1)
@@ -197,8 +193,8 @@ for j = 1:(n-1)
     
     % Defining the A_2 matrix as well as e_2 and f_2
     A_2 = zeros(m, m);
+    e_1 = zeros(m, 1);
     e_2 = zeros(m, 1);
-    f_2 = zeros(m, 1);
 
     % using the boundary conditions to define the top and bottom row of A_2
     A_2(1, 1) = 1;
@@ -215,11 +211,11 @@ for j = 1:(n-1)
         seg_start = (seg - 1)*N_s; % index of the start of the segment
 
         if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
-            eta1 = -rho*w1/2;
-            eta2 = 1 + dt/(R_my*C_my) + rho*w1;
-            eta3 = -rho*w1/2; 
+            eta1 = -rho*w2/2;
+            eta2 = 1 + dt/(R_my*C_my) + rho*w2;
+            eta3 = -rho*w2/2; 
             eta4 = 1; 
-            eta5 = rho*w2/2*Vm(i-1) - rho*w2*Vm(i) + rho*w2/2*Vm(i+1);
+            eta5 = rho*w1/2*Vm(i-1) - rho*w1*Vm(i) + rho*w1/2*Vm(i+1);
         elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
             eta1 = 0;
             eta2 = 1;
@@ -243,19 +239,19 @@ for j = 1:(n-1)
         A_2(i, i-1) = eta1;
         A_2(i, i) = eta2;
         A_2(i, i+1) = eta3;
-        e_2(i) = eta4*Vmy(i);
-        f_2(i) = eta5;
+        e_1(i) = eta4*Vmy(i);
+        e_2(i) = eta5;
 
     end
-    newVmy = transpose(A_2\(e_2+f_2));
+    newVmy = transpose(A_2\(e_1+e_2));
     
     % Updating Vm 
     %%%%%%%%%%%%%
 
     % Defining the A_1 matrix
     A_1 = zeros(m, m);
-    e_1 = zeros(m, 1);
-    f_1 = zeros(m, 1);
+    g_1 = zeros(m, 1);
+    g_2 = zeros(m, 1);
 
     % using the boundary conditions to define the top and bottom row of A
     A_1(1, 1) = 1;
@@ -269,13 +265,13 @@ for j = 1:(n-1)
         gamma2 = 1 - dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
         gamma3 = -rho*b_1(i + 1/2);
         gamma4 = 1;
-        gamma5 = dt * f_2_fctn(newVmy(i-1), newVmy(i), newVmy(i+1), newN(i), newM(i), newH(i), i, j);
+        gamma5 = dt * f_2(newVmy(i-1), newVmy(i), newVmy(i+1), newN(i), newM(i), newH(i), i, j);
 
         A_1(i, i-1) = gamma1;
         A_1(i, i) = gamma2;
         A_1(i, i+1) = gamma3;
-        e_1(i) = gamma4*Vm(i);
-        f_1(i) = gamma5;
+        g_1(i) = gamma4*Vm(i);
+        g_2(i) = gamma5;
         
     end
     
@@ -283,7 +279,7 @@ for j = 1:(n-1)
 
     % Solving for V_m^{j+1}
     %%%%%%%%%%%%%%%%%%%%%%%
-    newVm = transpose(A_1\(e_1+f_1));
+    newVm = transpose(A_1\(g_1+g_2));
 
     % updating Vmy and Vm and adding the data to the _all matrices
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
