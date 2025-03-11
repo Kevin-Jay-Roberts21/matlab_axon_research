@@ -32,7 +32,6 @@ E_rest = -59.4; % (mV) effective resting nernst potential
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 dx = 0.0001; % (cm) space step
 dt = 0.01; % (ms) time step 
-rho = dt/dx^2; % creating the courant number
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
@@ -44,6 +43,10 @@ N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
 m = N_s*n_s + 1; % total number of space steps
 n = T/dt + 1; % n is the number of time steps
+
+% defining rho and w_1 constants
+rho = dt/dx^2; % creating the courant number
+w_1 = a^2/(C_my*a_my*R_i);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
@@ -110,7 +113,7 @@ H = zeros(1, m);
 N(1) = N_0;
 M(1) = M_0;
 H(1) = H_0;
-for i = 2:m-1 % because we want to keep the end points (1 and M) for Vmy, n, m, h at 0
+for i = 2:m-1
     
     seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
     myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
@@ -146,12 +149,6 @@ N_all(1,:) = N;
 M_all(1,:) = M; 
 H_all(1,:) = H;
 
-% defining each eta (all of which are constants)
-eta1 = 1/(1 + dt/(C_my*R_my)) * rho * (a^2/(2*a_my*R_i*C_my));
-eta2 = -1/(1 + dt/(C_my*R_my)) * rho * (a^2/(a_my*R_i*C_my));
-eta3 = 1/(1 + dt/(C_my*R_my)) * rho * (a^2/(2*a_my*R_i*C_my));
-eta4 = 1/(1 + dt/(C_my*R_my)); % correct derivation, but eta4 is approximately 1 here, causing instability
-
 % Running the time loop
 %%%%%%%%%%%%%%%%%%%%%%%
 for j = 1:(n-1)
@@ -166,12 +163,24 @@ for j = 1:(n-1)
         seg_start = (seg - 1)*(N_s); % index of the start of the segment
 
         if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
-            newVmy(i) = eta1*Vm(i-1) + eta2*Vm(i) + eta3*Vm(i+1) + eta4*Vmy(i);
+            
+            eta1 = 1/(1 + dt/(C_my*R_my));
+            eta2 = rho * w_1/2 * 1/(1 + dt/(C_my*R_my));
+            eta3 = -rho * w_1 * 1/(1 + dt/(C_my*R_my));
+            eta4 = rho * w_1/2 * 1/(1 + dt/(C_my*R_my));
+            
         elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
-            newVmy(i) = 0;
+            eta1 = 0;
+            eta2 = 0;
+            eta3 = 0;
+            eta4 = 0;
         else % End point
-            newVmy(i) = 0;
+            eta1 = 0;
+            eta2 = 0;
+            eta3 = 0;
+            eta4 = 0;
         end
+        newVmy(i) = eta1*Vmy(i) + eta2*Vm(i-1) + eta3*Vm(i) + eta4*Vm(i+1);
     end
     newVmy(m) = 0;
     
@@ -206,8 +215,8 @@ for j = 1:(n-1)
 
     % Defining the A matrix and e and f vectors
     A = zeros(m, m);
-    e = zeros(m, 1);
-    f = zeros(m, 1);
+    g_1 = zeros(m, 1);
+    g_2 = zeros(m, 1);
     % using the boundary conditions to define the top and bottom row of A
     A(1, 1) = 1;
     A(1, 2) = -1;
@@ -229,8 +238,8 @@ for j = 1:(n-1)
         A(i, i-1) = gamma1;
         A(i, i) = gamma2;
         A(i, i+1) = gamma3;
-        e(i) = gamma4*Vm(i);
-        f(i) = gamma5;
+        g_1(i) = gamma4*Vm(i);
+        g_2(i) = gamma5;
            
     end
     
@@ -238,7 +247,7 @@ for j = 1:(n-1)
 
     % Solving for V_m^{j+1}
     %%%%%%%%%%%%%%%%%%%%%%%
-    newVm = transpose(A\(e+f));
+    newVm = transpose(A\(g_1+g_2));
 
     % updating Vmy and Vm and adding the data to the _all matrices
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
