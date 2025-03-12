@@ -28,20 +28,27 @@ clc
 % SC_data = load('SC_data.mat');
 % DC_data = load('DC_data.mat');
 
-SC_data1 = load('projects/SC_data1.mat');
+% SC_data1 = load('projects/SC_data1.mat');
 % SC_data2 = load('projects/SC_data2.mat');
 % SC_data3 = load('projects/SC_data3.mat');
+SC_data_Sv_200 = load('SC_data_Sv_200.mat');
+DC_data_Sv_200 = load('DC_data_Sv_200.mat');
 
-% HH_data_Temp_default = load('/Users/kevinjayroberts/Documents/MATLAB/projects/axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
-% HH_data_Temp_7 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_7.mat');
-% HH_data_Temp_8 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_8.mat');
-% HH_data_Temp_9 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_9.mat');
-% HH_data_Temp_10 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_10.mat');
-% HH_data_Temp_15 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_15.mat');
-% HH_data_Temp_20 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_20.mat');
-% HH_data_Temp_25 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_25.mat');
-% HH_data_Temp_30 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_30.mat');
-% HH_data_Temp_35 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_35.mat');
+
+HH_data_Temp_default = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
+HH_data_Temp_7 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_7.mat');
+HH_data_Temp_8 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_8.mat');
+HH_data_Temp_9 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_9.mat');
+HH_data_Temp_10 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_10.mat');
+HH_data_Temp_15 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_15.mat');
+HH_data_Temp_20 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_20.mat');
+HH_data_Temp_25 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_25.mat');
+HH_data_Temp_30 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_30.mat');
+HH_data_Temp_31 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_31.mat');
+HH_data_Temp_32 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_32.mat');
+HH_data_Temp_33 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_33.mat');
+HH_data_Temp_34 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_34.mat');
+HH_data_Temp_35 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_35.mat');
 
 % picking time shots
 time1 = 5.1; % in ms
@@ -88,16 +95,18 @@ p = 0.01;
 % creating a set of data from multiple experiments used to plot animation
 % (the first element in the set_of_data is darkred, then the proceeding elements get
 % brighter and brighter until the last element which is the brightest red)
-% set_of_data1 = [HH_data_Temp_default, HH_data_Temp_7, HH_data_Temp_8, HH_data_Temp_9, HH_data_Temp_10, HH_data_Temp_15, HH_data_Temp_20, HH_data_Temp_25, HH_data_Temp_30];
-% set_of_data2 = {SC_data, DC_data};
+set_of_data1 = {HH_data_Temp_default, HH_data_Temp_7, HH_data_Temp_8, HH_data_Temp_9, HH_data_Temp_10, HH_data_Temp_15, HH_data_Temp_20, HH_data_Temp_25, HH_data_Temp_30, HH_data_Temp_35};
+set_of_data2 = {HH_data_Temp_30, HH_data_Temp_31, HH_data_Temp_32, HH_data_Temp_33, HH_data_Temp_34, HH_data_Temp_35};
+set_of_data3 = {SC_data_Sv_200, DC_data_Sv_200};
 
 % plot_animation_voltage_vs_time(DC_data, p);
 % plot_animation_voltage_vs_space(DC_data, p);
-% plot_animation_probabilities(SC_data, p);
+% plot_animation_probabilities_vs_time(HH_data_Temp_33, p);
+% plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(HH_data2, list_of_positions, list_of_times);
-% plot_voltage_vs_time_comparison(set_of_data2, p);
-% plot_voltage_vs_space_comparison(set_of_data2, p);
-plot_Vm_and_Vm_minus_Vmy_vs_space(SC_data1, p)
+% plot_voltage_vs_time_comparison(set_of_data3, p);
+plot_voltage_vs_space_comparison(set_of_data3, p);
+% plot_Vm_and_Vm_minus_Vmy_vs_space(SC_data1, p)
 
 
 
@@ -225,7 +234,56 @@ function plot_animation_voltage_vs_time(data, p)
 end
 
 % Animation that plots the probabilities vs time
-function plot_animation_probabilities(data, p)
+function plot_animation_probabilities_vs_space(data, p)
+    L = data.L;
+    m = data.m;
+    n = data.n;
+    dt = data.dt;
+
+    % TEMPORAL PROFILE %
+    % x axis is the axon time
+    t = linspace(0, L, m); 
+
+    figure(1);
+    hold on;
+
+    xmin = 0;
+    xmax = L;
+    ymin = 0;
+    ymax = 1;
+
+    axis([xmin xmax ymin ymax]);  % Set axis limits
+    xlabel('Axon length in cm.');
+    ylabel('Probabilities of gates begin open.');
+    
+    % Loop through each vector and plot them one by one
+    for i = 1:m
+        x1 = data.N_all(i,:);  
+        x2 = data.M_all(i,:);  
+        x3 = data.H_all(i,:);  
+
+        % Plot the vector
+        p1 = plot(t, x1, 'b-');
+        hold on
+        p2 = plot(t, x2, 'r-');
+        hold on
+        p3 = plot(t, x3, 'g-');
+        hold on
+        
+        % Add the legend (NOTE: legends are what slows down animation)
+        legend([p1, p2, p3], 'K activation gate', 'Na activation gate', 'Na inactivation date', 'Location', 'northeast');
+
+        text(xmin, ymax, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
+        
+        % Add a pause to create animation effect
+        pause(p);
+
+        cla;
+    end
+end
+
+% Animation that plots the probabilities vs time
+function plot_animation_probabilities_vs_time(data, p)
     T = data.T;
     m = data.m;
     n = data.n;
@@ -272,6 +330,8 @@ function plot_animation_probabilities(data, p)
         cla;
     end
 end
+
+
 
 % plotting multiple time and space shots of voltage for squid
 function plot_time_and_space_shots(data, list_of_positions, list_of_times)
@@ -394,7 +454,8 @@ function plot_voltage_vs_time_comparison(data_set, p)
                 plot(t, data_set{j}.(voltages{k})(:,i), 'Color', [1, 0, 0] * j/length(data_set));
                 hold on
             end
-
+            
+            legend('SC model', 'DC model','Location', 'northeast');
             text(xmin + 0.2, ymax + 0.1, sprintf('Space: %.5f cm', round(i*dx, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
@@ -457,7 +518,7 @@ function plot_voltage_vs_space_comparison(data_set, p)
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
-            % legend([p1, p2], 'data1 voltage', 'data2 voltage', 'Location', 'northeast');
+            legend('SC model', 'DC model','Location', 'northeast');
             text(xmin, ymax + 0.1, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
