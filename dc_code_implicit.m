@@ -27,7 +27,7 @@ E_rest = -59.4; % (mV) effective resting nernst potential
 
 % Defining the Thickness, Length and other Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dx = 0.0001; % (cm) space step
+dx = 0.00005; % (cm) space step
 dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
@@ -35,7 +35,7 @@ L_pn = 2.3*10^(-4); % (cm) paranodal length
 d_pa = 12.3*10^(-7); % (cm) periaxonal thickness
 d_pn = 7.4*10^(-7); % (cm) paranodal thickness
 L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 10; % (dimless) number of axon segments
+n_s = 20; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
 T = 30; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
@@ -66,8 +66,8 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
 % Defining alpha/beta functions as well as the b_1, c_1 and f_1 functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T_base = 20; % (C) base temperature
-T_actual = 20; % (C) the temperature of the squid axon
-Q_10 = 2.5; % (dimless) temperature coefficient
+T_actual = 42; % (C) the temperature of the squid axon
+Q_10 = 2.5;% (dimless) temperature coefficient
 phi = Q_10^((T_actual - T_base)/10); % (dimless) temperature scaling factor
 alpha_n = @(Vm) phi * 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10));
 beta_n = @(Vm) phi * 0.125*exp(-(Vm + 65)/80);
@@ -502,4 +502,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('DC_data_Sv_200.mat');
+save('DC_data_Temp_42.mat');

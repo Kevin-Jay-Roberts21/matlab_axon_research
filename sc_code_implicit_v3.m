@@ -30,12 +30,12 @@ E_rest = -59.4; % (mV) effective resting nernst potential
 
 % Defining the Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dx = 0.0001; % (cm) space step
+dx = 0.00005; % (cm) space step
 dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 10; % (dimless) number of axon segments
+n_s = 20; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
 T = 30; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
