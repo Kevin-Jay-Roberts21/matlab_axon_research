@@ -66,7 +66,7 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
 % Defining alpha/beta functions as well as the b_1, c_1 and f_1 functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T_base = 20; % (C) base temperature
-T_actual = 52; % (C) the temperature of the squid axon
+T_actual = 20; % (C) the temperature of the squid axon
 Q_10 = 2.5;% (dimless) temperature coefficient
 phi = Q_10^((T_actual - T_base)/10); % (dimless) temperature scaling factor
 alpha_n = @(Vm) phi * 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10));
@@ -502,4 +502,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('DC_data_Temp_52.mat');
+% save('DC_data.mat');

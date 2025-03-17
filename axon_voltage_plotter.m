@@ -50,6 +50,42 @@ HH_data_Temp_33 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_33.m
 HH_data_Temp_34 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_34.mat');
 HH_data_Temp_35 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_35.mat');
 
+SC_data_Temp_20 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_20.mat');
+SC_data_Temp_22 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_22.mat');
+SC_data_Temp_24 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_24.mat');
+SC_data_Temp_26 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_26.mat');
+SC_data_Temp_28 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_28.mat');
+SC_data_Temp_30 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_30.mat');
+SC_data_Temp_32 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_32.mat');
+SC_data_Temp_34 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_34.mat');
+SC_data_Temp_36 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_36.mat');
+SC_data_Temp_38 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_38.mat');
+SC_data_Temp_40 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_40.mat');
+SC_data_Temp_42 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_42.mat');
+SC_data_Temp_44 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_44.mat');
+SC_data_Temp_46 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_46.mat');
+SC_data_Temp_48 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_48.mat');
+SC_data_Temp_50 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_50.mat');
+SC_data_Temp_52 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_52.mat');
+
+DC_data_Temp_20 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_20.mat');
+DC_data_Temp_22 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_22.mat');
+DC_data_Temp_24 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_24.mat');
+DC_data_Temp_26 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_26.mat');
+DC_data_Temp_28 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_28.mat');
+DC_data_Temp_30 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_30.mat');
+DC_data_Temp_32 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_32.mat');
+DC_data_Temp_34 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_34.mat');
+DC_data_Temp_36 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_36.mat');
+DC_data_Temp_38 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_38.mat');
+DC_data_Temp_40 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_40.mat');
+DC_data_Temp_42 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_42.mat');
+DC_data_Temp_44 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_44.mat');
+DC_data_Temp_46 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_46.mat');
+DC_data_Temp_48 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_48.mat');
+DC_data_Temp_50 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_50.mat');
+DC_data_Temp_52 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_52.mat');
+
 % picking time shots
 time1 = 5.1; % in ms
 time2 = 8; % in ms
@@ -98,6 +134,10 @@ p = 0.01;
 set_of_data1 = {HH_data_Temp_default, HH_data_Temp_7, HH_data_Temp_8, HH_data_Temp_9, HH_data_Temp_10, HH_data_Temp_15, HH_data_Temp_20, HH_data_Temp_25, HH_data_Temp_30, HH_data_Temp_35};
 set_of_data2 = {HH_data_Temp_30, HH_data_Temp_31, HH_data_Temp_32, HH_data_Temp_33, HH_data_Temp_34, HH_data_Temp_35};
 set_of_data3 = {SC_data_Sv_200, DC_data_Sv_200};
+set_of_data4 = {SC_data_Temp_20, SC_data_Temp_22, SC_data_Temp_24, SC_data_Temp_26, SC_data_Temp_28, SC_data_Temp_30, SC_data_Temp_32, SC_data_Temp_34, SC_data_Temp_36, SC_data_Temp_38, SC_data_Temp_40, SC_data_Temp_42, SC_data_Temp_44, SC_data_Temp_46, SC_data_Temp_48, SC_data_Temp_50, SC_data_Temp_52}
+set_of_data5 = {DC_data_Temp_20, DC_data_Temp_22, DC_data_Temp_24, DC_data_Temp_26, DC_data_Temp_28, DC_data_Temp_30, DC_data_Temp_32, DC_data_Temp_34, DC_data_Temp_36, DC_data_Temp_38, DC_data_Temp_40, DC_data_Temp_42, DC_data_Temp_44, DC_data_Temp_46, DC_data_Temp_48, DC_data_Temp_50, DC_data_Temp_52}
+
+
 
 % plot_animation_voltage_vs_time(DC_data, p);
 % plot_animation_voltage_vs_space(DC_data, p);
@@ -455,7 +495,7 @@ function plot_voltage_vs_time_comparison(data_set, p)
                 hold on
             end
             
-            legend('SC model', 'DC model','Location', 'northeast');
+            legend('T=20C', 'T=22C', 'T=24C', 'T=26C', 'T=28C', 'T=30C', 'T=32C', 'T=34C', 'T=36C', 'T=38C', 'T=40C', 'T=42C', 'T=44C', 'T=46C', 'T=48C', 'T=50C', 'T=52C', 'Location', 'northeast');
             text(xmin + 0.2, ymax + 0.1, sprintf('Space: %.5f cm', round(i*dx, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
@@ -518,7 +558,7 @@ function plot_voltage_vs_space_comparison(data_set, p)
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
-            legend('SC model', 'DC model','Location', 'northeast');
+            legend('T=20C', 'T=22C', 'T=24C', 'T=26C', 'T=28C', 'T=30C', 'T=32C', 'T=34C', 'T=36C', 'T=38C', 'T=40C', 'T=42C', 'T=44C', 'T=46C', 'T=48C', 'T=50C', 'T=52C', 'Location', 'northeast');
             text(xmin, ymax + 0.1, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
