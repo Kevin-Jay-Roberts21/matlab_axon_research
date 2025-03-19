@@ -13,13 +13,34 @@ clc
 
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-C_m = 1.45; % (micro-farads/cm^2) specific membrane capacitance
+
+% Parameters to change to test Dr. Huang's Paper
+% a_my = 0.00015; %0.0003 (cm) radius in myelinated region
+% a = 0.698*a_my; % (cm) radius in nodal region
+% R_my = 3.6945*10^7; % (kilo-ohms*cm^2) for the Tube with a_my = 0.00015 
+% C_my = 0.1305; % (micro-fards/cm^2) for the Tube with a_my = 0.00015
+
+% R_my = 5.6549*10^10; % (kilo-ohms*cm^2) for the Tube+Paralyne with a_my = 0.00015
+% C_my = 0.0162; % (micro-farads/cm^2) for the Tube+Paralyne with a_my = 0.00015
+
+% R_my = 7.389*10^7; % (kilo-ohms*cm^2) for the Tube with a_my = 0.0003
+% C_my = 0.0653; % (micro-farads/cm^2) for the Tube with a_my = 0.0003
+
+% R_my = 1.131*10^11; % (kilo-ohms*cm^2) for the Tube+Paralyne with a_my = 0.0003
+% C_my = 0.0081; % (micro-farads/cm^2) for the Tube+Paralyne with a_my = 0.0003
+
+% original a, a_my, R_my and C_my
 C_my = 0.166; % (micro-farads/cm^2) specific myelin capacitance
-R_i = 0.144; % (kilo-ohms*cm) intracellular resistivity
 a = 0.55*10^(-4); % (cm) axon radius in nodal region
 a_my = a/0.698; % (cm) axon radius in myelinated section 
 R_my = 842; % (kilo-ohms*cm^2) specific myelin resistance
+
+% other params
+C_m = 1.45; % (micro-farads/cm^2) specific membrane capacitance
+R_i = 0.144; % (kilo-ohms*cm) intracellular resistivity
 R_m = 22; % (kilo-ohms*cm^2) specific membrane resistance
+R_pa = 0.0537; % (kilo-ohms*cm) resistivity of the periaxonal space
+R_pn = 0.55; % (kilo-ohms*cm) resistivity of the paranodal space
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -65,14 +86,16 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T_base = 20; % (C) base temperature
 T_actual = 20; % (C) the temperature of the squid axon
-Q_10 = 2.5; % (dimless) temperature coefficient
-phi = Q_10^((T_actual - T_base)/10); % (dimless) temperature scaling factor
-alpha_n = @(Vm) phi * 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10));
-beta_n = @(Vm) phi * 0.125*exp(-(Vm + 65)/80);
-alpha_m = @(Vm) phi * 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10));
-beta_m = @(Vm) phi * 4*exp(-(Vm + 65)/18);
-alpha_h = @(Vm) phi * 0.07*exp(-(Vm + 65)/20);
-beta_h = @(Vm) phi * 1/(1 + exp(-(Vm + 35)/10));
+Q_10_Na = 2.2; % (dimless) temperature coefficient for Na current
+Q_10_K = 3; % (dimless) temperature coefficient for K current
+phi_Na = Q_10_Na^((T_actual - T_base)/10); % (dimless) temperature scaling factor for Na current
+phi_K = Q_10_K^((T_actual - T_base)/10); % (dimless) temperature scaling factor for K current
+alpha_n = @(Vm) phi_K * 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10));
+beta_n = @(Vm) phi_K * 0.125*exp(-(Vm + 65)/80);
+alpha_m = @(Vm) phi_Na * 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10));
+beta_m = @(Vm) phi_Na * 4*exp(-(Vm + 65)/18);
+alpha_h = @(Vm) phi_Na * 0.07*exp(-(Vm + 65)/20);
+beta_h = @(Vm) phi_Na * 1/(1 + exp(-(Vm + 35)/10));
 
 % defining the b_1(x_i) function
 B_1 = (a/(2*R_i*C_m))*(1 + C_m*a/(C_my*a_my)); % Internodal region
