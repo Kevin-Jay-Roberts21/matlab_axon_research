@@ -30,7 +30,8 @@ clc
 % C_my = 0.0081; % (micro-farads/cm^2) for the Tube+Paralyne with a_my = 0.0003
 
 % original a, a_my, R_my and C_my
-C_my = 0.166; % (micro-farads/cm^2) specific myelin capacitance
+% C_my = 0.166; % (micro-farads/cm^2) specific myelin capacitance
+C_my = 0.113; % (micro-farads/cm^2) specific myelin capacitance (taken from salt. cond. 2023 code)
 a = 0.55*10^(-4); % (cm) axon radius in nodal region
 a_my = a/0.698; % (cm) axon radius in myelinated section 
 R_my = 842; % (kilo-ohms*cm^2) specific myelin resistance
@@ -71,7 +72,7 @@ w_1 = a^2/(C_my*a_my*R_i);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 155; % (in mS/cm^2) % stimulus value
+S_v = 200; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -493,4 +494,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('SC_data.mat');
+% save('SC_data_from_saltcond2023_code.mat');

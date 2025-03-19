@@ -57,23 +57,26 @@ clc
 % SC_data_Temp_50 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_50.mat');
 % SC_data_Temp_52 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_52.mat');
 % 
-DC_data_Temp_20 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_20.mat');
-DC_data_Temp_22 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_22.mat');
-DC_data_Temp_24 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_24.mat');
-DC_data_Temp_26 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_26.mat');
-DC_data_Temp_28 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_28.mat');
-DC_data_Temp_30 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_30.mat');
-DC_data_Temp_32 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_32.mat');
-DC_data_Temp_34 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_34.mat');
-DC_data_Temp_36 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_36.mat');
-DC_data_Temp_38 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_38.mat');
-DC_data_Temp_40 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_40.mat');
-DC_data_Temp_42 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_42.mat');
-DC_data_Temp_44 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_44.mat');
-DC_data_Temp_46 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_46.mat');
-DC_data_Temp_48 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_48.mat');
-DC_data_Temp_50 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_50.mat');
+% DC_data_Temp_20 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_20.mat');
+% DC_data_Temp_22 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_22.mat');
+% DC_data_Temp_24 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_24.mat');
+% DC_data_Temp_26 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_26.mat');
+% DC_data_Temp_28 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_28.mat');
+% DC_data_Temp_30 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_30.mat');
+% DC_data_Temp_32 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_32.mat');
+% DC_data_Temp_34 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_34.mat');
+% DC_data_Temp_36 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_36.mat');
+% DC_data_Temp_38 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_38.mat');
+% DC_data_Temp_40 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_40.mat');
+% DC_data_Temp_42 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_42.mat');
+% DC_data_Temp_44 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_44.mat');
+% DC_data_Temp_46 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_46.mat');
+% DC_data_Temp_48 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_48.mat');
+% DC_data_Temp_50 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_50.mat');
 % DC_data_Temp_52 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_52.mat');
+
+SC_data_from_saltcond2023_code = load('SC_data_from_saltcond2023_code.mat');
+DC_data_from_saltcond2023_code = load('DC_data_from_saltcond2023_code.mat');
 
 % NOTE: Time and space choices will vary depending on HH, SC, and DC models
 
@@ -81,18 +84,19 @@ DC_data_Temp_50 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_50.m
 % take an average of these different spaces to get a more accurate cv
 % NOTE: these may differ for different length axons
 HH_space_vec = [4 5; 5 6; 6 7; 7 8;]; % all in (cm)
-SC_space_vec = [0.06 0.08; 0.08 0.1; 0.1 0.12; 0.12 0.14;]; % all in (cm)
+SC_and_DC_space_vec = [0.06 0.08; 0.08 0.1; 0.1 0.12; 0.12 0.14;]; % all in (cm)
 
 % defining multiple datasets
 % HH_data_set = {HH_data_Temp_base, HH_data_Temp_7, HH_data_Temp_8, HH_data_Temp_9, HH_data_Temp_10, HH_data_Temp_11, HH_data_Temp_12, HH_data_Temp_13, HH_data_Temp_14, HH_data_Temp_15, HH_data_Temp_16, HH_data_Temp_17, HH_data_Temp_18, HH_data_Temp_19, HH_data_Temp_20, HH_data_Temp_21, HH_data_Temp_22, HH_data_Temp_23, HH_data_Temp_24, HH_data_Temp_25, HH_data_Temp_26, HH_data_Temp_27, HH_data_Temp_28, HH_data_Temp_29, HH_data_Temp_30, HH_data_Temp_31, HH_data_Temp_32};
 % SC_data_set = {SC_data_Temp_20, SC_data_Temp_22, SC_data_Temp_24, SC_data_Temp_26, SC_data_Temp_28, SC_data_Temp_30, SC_data_Temp_32, SC_data_Temp_34, SC_data_Temp_36, SC_data_Temp_38, SC_data_Temp_40, SC_data_Temp_42, SC_data_Temp_44, SC_data_Temp_46, SC_data_Temp_48, SC_data_Temp_50};
-DC_data_set = {DC_data_Temp_20, DC_data_Temp_22, DC_data_Temp_24, DC_data_Temp_26, DC_data_Temp_28, DC_data_Temp_30, DC_data_Temp_32, DC_data_Temp_34, DC_data_Temp_36, DC_data_Temp_38, DC_data_Temp_40, DC_data_Temp_42, DC_data_Temp_44, DC_data_Temp_46, DC_data_Temp_48, DC_data_Temp_50};
+% DC_data_set = {DC_data_Temp_20, DC_data_Temp_22, DC_data_Temp_24, DC_data_Temp_26, DC_data_Temp_28, DC_data_Temp_30, DC_data_Temp_32, DC_data_Temp_34, DC_data_Temp_36, DC_data_Temp_38, DC_data_Temp_40, DC_data_Temp_42, DC_data_Temp_44, DC_data_Temp_46, DC_data_Temp_48, DC_data_Temp_50};
+data_set = {SC_data_from_saltcond2023_code, DC_data_from_saltcond2023_code};
 
 % picking the dataset to compute cv
-data = DC_data_set;
+data = data_set;
 
 % computing conduction velocity
-cv = calculate_cv(SC_space_vec, data) % computed cv's (in m/s)
+cv = calculate_cv(SC_and_DC_space_vec, data) % computed cv's (in m/s)
 
 
 % conduction velocity function
