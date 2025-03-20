@@ -10,10 +10,10 @@ clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Parameters to change to test Dr. Huang's Paper
-% a_my = 0.00015; %0.0003 (cm) radius in myelinated region
-% a = 0.698*a_my; % (cm) radius in nodal region
-% R_my = 3.6945*10^7; % (kilo-ohms*cm^2) for the Tube with a_my = 0.00015 
-% C_my = 0.1305; % (micro-fards/cm^2) for the Tube with a_my = 0.00015
+a_my = 0.00015; %0.0003 (cm) radius in myelinated region
+a = 0.698*a_my; % (cm) radius in nodal region
+R_my = 3.6945*10^7; % (kilo-ohms*cm^2) for the Tube with a_my = 0.00015 
+C_my = 0.1305; % (micro-fards/cm^2) for the Tube with a_my = 0.00015
 
 % R_my = 5.6549*10^10; % (kilo-ohms*cm^2) for the Tube+Paralyne with a_my = 0.00015
 % C_my = 0.0162; % (micro-farads/cm^2) for the Tube+Paralyne with a_my = 0.00015
@@ -25,15 +25,15 @@ clc
 % C_my = 0.0081; % (micro-farads/cm^2) for the Tube+Paralyne with a_my = 0.0003
 
 % original a, a_my, R_my and C_my
-% C_my = 0.166; % (micro-farads/cm^2) specific myelin capacitance
-C_my = 0.113; % (micro-farads/cm^2) specific myelin capacitance (taken from salt. cond. 2023 code)
+C_my = 0.166; % (micro-farads/cm^2) specific myelin capacitance
+% C_my = 0.113; % (micro-farads/cm^2) specific myelin capacitance (taken from salt. cond. 2023 code)
 a = 0.55*10^(-4); % (cm) axon radius in nodal region
 a_my = a/0.698; % (cm) axon radius in myelinated section 
 R_my = 842; % (kilo-ohms*cm^2) specific myelin resistance
 
 % other params
-% C_m = 1.45; % (micro-farads/cm^2) specific membrane capacitance
-C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance (taken from salt. cond. 2023 code)
+C_m = 1.45; % (micro-farads/cm^2) specific membrane capacitance
+% C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance (taken from salt. cond. 2023 code)
 R_i = 0.144; % (kilo-ohms*cm) intracellular resistivity
 R_m = 22; % (kilo-ohms*cm^2) specific membrane resistance
 R_pa = 0.0537; % (kilo-ohms*cm) resistivity of the periaxonal space

@@ -1,3 +1,8 @@
+% This script is used to plot the conduction velocities of the HH, SC, and
+% DC models given temperature data.
+% Kevin Roberts
+% March 2025
+
 clear all
 close all
 clc
