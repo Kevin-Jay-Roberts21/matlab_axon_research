@@ -35,7 +35,8 @@ clc
 % DC_data_Sv_200 = load('DC_data_Sv_200.mat');
 SC_data_from_saltcond2023_code = load('SC_data_from_saltcond2023_code.mat');
 DC_data_from_saltcond2023_code = load('DC_data_from_saltcond2023_code.mat');
-
+DC_Huang_Tube_params = load('DC_Huang_Tube_params.mat');
+DC_Huang_TubeParalyne_params = load('DC_Huang_TubeParalyne_params.mat');
 
 % HH_data_Temp_base = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
 % HH_data_Temp_7 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_7.mat');
@@ -154,6 +155,7 @@ p = 0.01;
 set_of_data3 = {SC_data_from_saltcond2023_code, DC_data_from_saltcond2023_code};
 % set_of_data4 = {SC_data_Temp_20, SC_data_Temp_40, SC_data_Temp_52};
 % set_of_data5 = {DC_data_Temp_20, SC_data_Temp_40, DC_data_Temp_52};
+set_of_data6 = {DC_Huang_Tube_params, DC_Huang_TubeParalyne_params};
 
 % data = SC_data_Temp_20;
 
@@ -162,8 +164,8 @@ set_of_data3 = {SC_data_from_saltcond2023_code, DC_data_from_saltcond2023_code};
 % plot_animation_probabilities_vs_time(HH_data_Temp_33, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(HH_data2, list_of_positions, list_of_times);
-% plot_voltage_vs_time_comparison(set_of_data3, p);
-plot_voltage_vs_space_comparison(set_of_data3, p);
+plot_voltage_vs_time_comparison(set_of_data6, p);
+% plot_voltage_vs_space_comparison(set_of_data6, p);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(SC_data1, p)
 
 
@@ -513,7 +515,7 @@ function plot_voltage_vs_time_comparison(data_set, p)
                 hold on
             end
 
-            legend('SC model', 'DC model', 'Location', 'northeast');
+            legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
             text(xmin + 0.2, ymax + 0.1, sprintf('Space: %.5f cm', round(i*dx, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
@@ -576,7 +578,7 @@ function plot_voltage_vs_space_comparison(data_set, p)
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
-            legend('SC model', 'DC model', 'Location', 'northeast');
+            legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
             text(xmin, ymax + 0.1, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
