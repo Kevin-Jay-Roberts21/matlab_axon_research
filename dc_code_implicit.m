@@ -10,26 +10,17 @@ clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Parameters to change to test Dr. Huang's Paper
-a_my = 0.00015; %0.0003 (cm) radius in myelinated region
-a = 0.698*a_my; % (cm) radius in nodal region
-R_my = 3.6945*10^7; % (kilo-ohms*cm^2) for the Tube with a_my = 0.00015 
-C_my = 0.1305; % (micro-fards/cm^2) for the Tube with a_my = 0.00015
-
-% R_my = 5.6549*10^10; % (kilo-ohms*cm^2) for the Tube+Paralyne with a_my = 0.00015
-% C_my = 0.0162; % (micro-farads/cm^2) for the Tube+Paralyne with a_my = 0.00015
-
-% R_my = 7.389*10^7; % (kilo-ohms*cm^2) for the Tube with a_my = 0.0003
-% C_my = 0.0653; % (micro-farads/cm^2) for the Tube with a_my = 0.0003
-
-% R_my = 1.131*10^11; % (kilo-ohms*cm^2) for the Tube+Paralyne with a_my = 0.0003
-% C_my = 0.0081; % (micro-farads/cm^2) for the Tube+Paralyne with a_my = 0.0003
+a_my = 0.00015; % (cm) radius in myelinated region
+a = 0.00016; % (cm) radius in nodal region
+R_my = 3.9408*10^7; % (kilo-ohms*cm^2) specfic myelin resistance
+C_my = 0.1224; % (micro-fards/cm^2) specific myelin capacitance
 
 % original a, a_my, R_my and C_my
-C_my = 0.166; % (micro-farads/cm^2) specific myelin capacitance
-% C_my = 0.113; % (micro-farads/cm^2) specific myelin capacitance (taken from salt. cond. 2023 code)
-a = 0.55*10^(-4); % (cm) axon radius in nodal region
-a_my = a/0.698; % (cm) axon radius in myelinated section 
-R_my = 842; % (kilo-ohms*cm^2) specific myelin resistance
+% C_my = 0.166; % (micro-farads/cm^2) specific myelin capacitance
+% % C_my = 0.113; % (micro-farads/cm^2) specific myelin capacitance (taken from salt. cond. 2023 code)
+% a = 0.55*10^(-4); % (cm) axon radius in nodal region
+% a_my = a/0.698; % (cm) axon radius in myelinated section 
+% R_my = 842; % (kilo-ohms*cm^2) specific myelin resistance
 
 % other params
 C_m = 1.45; % (micro-farads/cm^2) specific membrane capacitance
@@ -73,7 +64,7 @@ w3 = R_pa*d_pn*(2*a + d_pn)/(R_pn*L_pn*d_pa*(2*a + d_pa));
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 200; % (in mS/cm^2) % stimulus value
+S_v = 300; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -525,4 +516,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('DC_data_from_saltcond2023_code.mat');
+% save('DC_Huang_Tube_params.mat');
