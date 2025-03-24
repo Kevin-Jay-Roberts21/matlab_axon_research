@@ -10,25 +10,25 @@ clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Parameters to change to test Dr. Huang's Paper
-a_my = 0.00015; % (cm) radius in myelinated region
-a = 0.00016; % (cm) radius in nodal region
-R_my = 3.9408*10^7; % (kilo-ohms*cm^2) specfic myelin resistance
-C_my = 0.1224; % (micro-fards/cm^2) specific myelin capacitance
+% a_my = 0.00015; % (cm) radius in myelinated region
+% a = 0.00016; % (cm) radius in nodal region
+% R_my = 3.9408*10^7; % (kilo-ohms*cm^2) specfic myelin resistance
+% C_my = 0.1224; % (micro-fards/cm^2) specific myelin capacitance
 
 % original a, a_my, R_my and C_my
-% C_my = 0.166; % (micro-farads/cm^2) specific myelin capacitance
-% % C_my = 0.113; % (micro-farads/cm^2) specific myelin capacitance (taken from salt. cond. 2023 code)
-% a = 0.55*10^(-4); % (cm) axon radius in nodal region
-% a_my = a/0.698; % (cm) axon radius in myelinated section 
-% R_my = 842; % (kilo-ohms*cm^2) specific myelin resistance
+C_my = 0.113; % (micro-farads/cm^2) specific myelin capacitance
+a = 0.55*10^(-4); % (cm) axon radius in nodal region
+a_my = a/0.698; % (cm) axon radius in myelinated section 
+R_my = 63.7; % (kilo-ohms*cm^2) specific myelin resistance
 
 % other params
-C_m = 1.45; % (micro-farads/cm^2) specific membrane capacitance
-% C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance (taken from salt. cond. 2023 code)
-R_i = 0.144; % (kilo-ohms*cm) intracellular resistivity
-R_m = 22; % (kilo-ohms*cm^2) specific membrane resistance
-R_pa = 0.0537; % (kilo-ohms*cm) resistivity of the periaxonal space
-R_pn = 0.55; % (kilo-ohms*cm) resistivity of the paranodal space
+C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
+R_i = 0.712; % (kilo-ohms*cm) intracellular resistivity
+R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
+R_pa = 0.0414; % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
+% R_pa = 0.0537; % (kilo-ohms*cm) resistivity of the periaxonal space
+R_pn = 0.0826; % (kilo-ohms*cm) resistivity of the paranodal space (computed)
+% R_pn = 0.55; % (kilo-ohms*cm) resistivity of the paranodal space
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -64,7 +64,7 @@ w3 = R_pa*d_pn*(2*a + d_pn)/(R_pn*L_pn*d_pa*(2*a + d_pa));
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 300; % (in mS/cm^2) % stimulus value
+S_v = 200; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -516,4 +516,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('DC_Huang_Tube_params.mat');
+% save('DC_model_with_DC_Cohen_params.mat');

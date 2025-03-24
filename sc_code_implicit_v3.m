@@ -13,15 +13,13 @@ clc
 
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-% other params
-C_m = 1.45; % (micro-farads/cm^2) specific membrane capacitance
-R_i = 0.144; % (kilo-ohms*cm) intracellular resistivity
-R_m = 22; % (kilo-ohms*cm^2) specific membrane resistance
-R_pa = 0.0537; % (kilo-ohms*cm) resistivity of the periaxonal space
-R_pn = 0.55; % (kilo-ohms*cm) resistivity of the paranodal space
+a = 0.55*10^(-4); % (cm) radius in nodal region
+a_my = a/0.698; % (cm) radius in myelinated region
+C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
+C_my = 0.113; % (micro-fards/cm^2) specific myelin capacitance
+R_i = 0.712; % (kilo-ohms*cm) intracellular resistivity
+R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
+R_my = 63.7; % (kilo-ohms*cm^2) specfic myelin resistance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -474,4 +472,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('SC_data_from_saltcond2023_code.mat');
+% save('SC_model_with_DC_Cohen_params.mat');

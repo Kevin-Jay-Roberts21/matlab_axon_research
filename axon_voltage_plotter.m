@@ -35,8 +35,15 @@ clc
 % DC_data_Sv_200 = load('DC_data_Sv_200.mat');
 SC_data_from_saltcond2023_code = load('SC_data_from_saltcond2023_code.mat');
 DC_data_from_saltcond2023_code = load('DC_data_from_saltcond2023_code.mat');
+
 DC_Huang_Tube_params = load('DC_Huang_Tube_params.mat');
 DC_Huang_TubeParalyne_params = load('DC_Huang_TubeParalyne_params.mat');
+
+SC_Ri_144 = load('SC_Ri_0.144.mat');
+DC_Ri_712 = load('DC_Ri_0.712.mat');
+
+SC_Cohen_DC_params = load('SC_model_with_DC_Cohen_params.mat');
+DC_Cohen_DC_params = load('DC_model_with_DC_Cohen_params.mat');
 
 % HH_data_Temp_base = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
 % HH_data_Temp_7 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_7.mat');
@@ -156,6 +163,7 @@ set_of_data3 = {SC_data_from_saltcond2023_code, DC_data_from_saltcond2023_code};
 % set_of_data4 = {SC_data_Temp_20, SC_data_Temp_40, SC_data_Temp_52};
 % set_of_data5 = {DC_data_Temp_20, SC_data_Temp_40, DC_data_Temp_52};
 set_of_data6 = {DC_Huang_Tube_params, DC_Huang_TubeParalyne_params};
+set_of_data7 = {SC_Cohen_DC_params, DC_Cohen_DC_params};
 
 % data = SC_data_Temp_20;
 
@@ -164,8 +172,8 @@ set_of_data6 = {DC_Huang_Tube_params, DC_Huang_TubeParalyne_params};
 % plot_animation_probabilities_vs_time(HH_data_Temp_33, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(HH_data2, list_of_positions, list_of_times);
-plot_voltage_vs_time_comparison(set_of_data6, p);
-% plot_voltage_vs_space_comparison(set_of_data6, p);
+% plot_voltage_vs_time_comparison(set_of_data7, p);
+plot_voltage_vs_space_comparison(set_of_data7, p);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(SC_data1, p)
 
 
@@ -578,7 +586,8 @@ function plot_voltage_vs_space_comparison(data_set, p)
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
-            legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
+            % legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
+            legend('SC model: Cohen DC Params', 'DC model: Cohen DC Params', 'Location', 'northeast', 'Interpreter', 'latex');
             text(xmin, ymax + 0.1, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
