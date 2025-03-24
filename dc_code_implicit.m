@@ -25,7 +25,7 @@ R_my = 63.7; % (kilo-ohms*cm^2) specific myelin resistance
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
 R_i = 0.712; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
-R_pa = 0.0414; % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
+R_pa = 4.14; % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
 % R_pa = 0.0537; % (kilo-ohms*cm) resistivity of the periaxonal space
 R_pn = 0.0826; % (kilo-ohms*cm) resistivity of the paranodal space (computed)
 % R_pn = 0.55; % (kilo-ohms*cm) resistivity of the paranodal space
@@ -39,7 +39,7 @@ E_rest = -59.4; % (mV) effective resting nernst potential
 
 % Defining the Thickness, Length and other Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dx = 0.00005; % (cm) space step
+dx = 0.0001; % (cm) space step
 dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
@@ -49,7 +49,7 @@ d_pn = 7.4*10^(-7); % (cm) paranodal thickness
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 20; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 30; % (ms) the total time of the experiment
+T = 20; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -57,7 +57,7 @@ m = N_s*n_s + 1; % total number of space steps
 n = T/dt + 1; % n is the number of time steps
 
 % defining rho, w1, w2 and w3 constants
-rho = dt/dx^2; % creating the courant number
+rho = dt/dx^2; % 0creating the courant number
 w1 = a^2/(C_my*a_my*R_i);
 w2 = d_pa*(2*a + d_pa)/(C_my*a_my*R_pa);
 w3 = R_pa*d_pn*(2*a + d_pn)/(R_pn*L_pn*d_pa*(2*a + d_pa));
