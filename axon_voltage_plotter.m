@@ -41,9 +41,31 @@ DC_Huang_TubeParalyne_params = load('DC_Huang_TubeParalyne_params.mat');
 
 SC_Ri_144 = load('SC_Ri_0.144.mat');
 DC_Ri_712 = load('DC_Ri_0.712.mat');
+DC_model_SC_params_w_Ri_144 = load('DC_model_SC_params_w_Ri_0.144.mat');
 
 SC_Cohen_DC_params = load('SC_model_with_DC_Cohen_params.mat');
 DC_Cohen_DC_params = load('DC_model_with_DC_Cohen_params.mat');
+DC_Cohen_DC_computed_params = load('DC_model_with_DC_Cohen__computed_params.mat');
+
+% DC_data_Rpa_01 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.01.mat');
+% DC_data_Rpa_02 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.02.mat');
+% DC_data_Rpa_03 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.03.mat');
+% DC_data_Rpa_04 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.04.mat');
+% DC_data_Rpa_05 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.05.mat');
+% DC_data_Rpa_06 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.06.mat');
+% DC_data_Rpa_07 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.07.mat');
+% DC_data_Rpa_08 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.08.mat');
+% DC_data_Rpa_09 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.09.mat');
+% DC_data_Rpa_10 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.1.mat');
+% DC_data_Rpa_15 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.15.mat');
+% DC_data_Rpa_20 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.2.mat');
+% DC_data_Rpa_25 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.25.mat');
+% DC_data_Rpa_30 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.3.mat');
+% DC_data_Rpa_35 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.35.mat');
+% DC_data_Rpa_40 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.4.mat');
+% DC_data_Rpa_45 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.45.mat');
+% DC_data_Rpa_50 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.5.mat');
+
 
 % HH_data_Temp_base = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
 % HH_data_Temp_7 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_7.mat');
@@ -159,21 +181,23 @@ p = 0.01;
 % brighter and brighter until the last element which is the brightest red)
 % set_of_data1 = {HH_data_Temp_base, HH_data_Temp_30, HH_data_Temp_35};
 % set_of_data2 = {HH_data_Temp_26, HH_data_Temp_27, HH_data_Temp_28, HH_data_Temp_29, HH_data_Temp_30, HH_data_Temp_31, HH_data_Temp_32};
-set_of_data3 = {SC_data_from_saltcond2023_code, DC_data_from_saltcond2023_code};
+% set_of_data3 = {SC_data_from_saltcond2023_code, DC_data_from_saltcond2023_code};
 % set_of_data4 = {SC_data_Temp_20, SC_data_Temp_40, SC_data_Temp_52};
 % set_of_data5 = {DC_data_Temp_20, SC_data_Temp_40, DC_data_Temp_52};
-set_of_data6 = {DC_Huang_Tube_params, DC_Huang_TubeParalyne_params};
-set_of_data7 = {SC_Cohen_DC_params, DC_Cohen_DC_params};
+% set_of_data6 = {DC_Huang_Tube_params, DC_Huang_TubeParalyne_params};
+% set_of_data7 = {SC_Cohen_DC_params, DC_Cohen_DC_params, DC_Cohen_DC_computed_params};
+set_of_data8 = {SC_Ri_144, DC_model_SC_params_w_Ri_144};
+% set_of_data9 = {DC_data_Rpa_01, DC_data_Rpa_05, DC_data_Rpa_10, DC_data_Rpa_20, DC_data_Rpa_30, DC_data_Rpa_40, DC_data_Rpa_50};
 
-% data = SC_data_Temp_20;
+data = DC_Ri_712;
 
 % plot_animation_voltage_vs_time(DC_data, p);
 % plot_animation_voltage_vs_space(data, p);
 % plot_animation_probabilities_vs_time(HH_data_Temp_33, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(HH_data2, list_of_positions, list_of_times);
-% plot_voltage_vs_time_comparison(set_of_data7, p);
-plot_voltage_vs_space_comparison(set_of_data7, p);
+% plot_voltage_vs_time_comparison(set_of_data8, p);
+plot_voltage_vs_space_comparison(set_of_data8, p);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(SC_data1, p)
 
 
@@ -230,7 +254,8 @@ function plot_animation_voltage_vs_space(data, p)
             
             % Plot the vector
             plot(t, x, 'b-');
-
+            
+            % legend('SC model: $R_i = 0.144 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
             text(xmin + 0.05, ymax + 0.8, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
@@ -523,7 +548,8 @@ function plot_voltage_vs_time_comparison(data_set, p)
                 hold on
             end
 
-            legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
+            % legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
+            legend('SC model: $R_i = 0.144 k\Omega cm$', 'DC model: $R_i = 0.712 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
             text(xmin + 0.2, ymax + 0.1, sprintf('Space: %.5f cm', round(i*dx, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
@@ -587,7 +613,10 @@ function plot_voltage_vs_space_comparison(data_set, p)
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
             % legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
-            legend('SC model: Cohen DC Params', 'DC model: Cohen DC Params', 'Location', 'northeast', 'Interpreter', 'latex');
+            % legend('SC model: Cohen DC Params', 'DC model: $R_{pa}, R_{pn}$ given', 'DC model: $R_{pa}, R_{pn}$ computed', 'Location', 'northeast', 'Interpreter', 'latex');
+            % legend('SC model: $R_i = 0.144 k\Omega cm$', 'DC model: $R_i = 0.712 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
+            % legend('DC model: $R_{pa} = 0.01 k\Omega cm$', 'DC model: $R_{pa} = 0.10 k\Omega cm$', 'DC model: $R_{pa} = 0.20 k\Omega cm$', 'DC model: $R_{pa} = 0.30 k\Omega cm$', 'DC model: $R_{pa} = 0.40 k\Omega cm$', 'DC model: $R_{pa} = 0.50 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
+            legend('SC model', 'DC model w/ SC params', 'Location', 'northeast', 'Interpreter', 'latex');
             text(xmin, ymax + 0.1, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect

@@ -30,14 +30,14 @@ E_rest = -59.4; % (mV) effective resting nernst potential
 
 % Defining the Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dx = 0.00005; % (cm) space step
+dx = 0.0001; % (cm) space step
 dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 20; % (dimless) number of axon segments
+n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 30; % (ms) the total time of the experiment
+T = 20; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -155,6 +155,32 @@ H_all(1,:) = H;
 %%%%%%%%%%%%%%%%%%%%%%%
 for j = 1:(n-1)
     
+    % Updating the probability gate functions n, m and h
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    for i = 1:m-1
+        seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
+        myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
+        myelin_end = seg*(N_s); % End of internodal region in this segment
+        seg_start = (seg - 1)*(N_s); % index of the start of the segment
+
+        if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
+            newN(i) = 0;
+            newM(i) = 0;
+            newH(i) = 0;
+        elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
+            newN(i) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
+            newM(i) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
+            newH(i) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
+        else % End point
+            newN(i) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
+            newM(i) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
+            newH(i) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
+        end
+    end
+    newN(m) = 0;
+    newM(m) = 0;
+    newH(m) = 0;
+    
     % Updating Vmy
     %%%%%%%%%%%%%%
     newVmy(1) = 0;
@@ -185,32 +211,6 @@ for j = 1:(n-1)
         newVmy(i) = eta1*Vmy(i) + eta2*Vm(i-1) + eta3*Vm(i) + eta4*Vm(i+1);
     end
     newVmy(m) = 0;
-    
-    % Updating the probability gate functions n, m and h
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    for i = 1:m-1
-        seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
-        myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
-        myelin_end = seg*(N_s); % End of internodal region in this segment
-        seg_start = (seg - 1)*(N_s); % index of the start of the segment
-
-        if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
-            newN(i) = 0;
-            newM(i) = 0;
-            newH(i) = 0;
-        elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
-            newN(i) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
-            newM(i) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
-            newH(i) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
-        else % End point
-            newN(i) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
-            newM(i) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
-            newH(i) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
-        end
-    end
-    newN(m) = 0;
-    newM(m) = 0;
-    newH(m) = 0;
     
     % Updating Vm
     %%%%%%%%%%%%%
