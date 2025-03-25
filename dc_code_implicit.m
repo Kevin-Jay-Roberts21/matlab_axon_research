@@ -25,10 +25,10 @@ R_my = 63.7; % (kilo-ohms*cm^2) specific myelin resistance
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
 R_i = 0.712; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
-R_pa = 4.14; % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
-% R_pa = 0.0537; % (kilo-ohms*cm) resistivity of the periaxonal space
-R_pn = 0.0826; % (kilo-ohms*cm) resistivity of the paranodal space (computed)
-% R_pn = 0.55; % (kilo-ohms*cm) resistivity of the paranodal space
+% R_pa = 0.0414; % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
+R_pa = 0.0537; % (kilo-ohms*cm) resistivity of the periaxonal space
+% R_pn = 0.0826; % (kilo-ohms*cm) resistivity of the paranodal space (computed)
+R_pn = 0.55; % (kilo-ohms*cm) resistivity of the paranodal space
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -64,7 +64,7 @@ w3 = R_pa*d_pn*(2*a + d_pn)/(R_pn*L_pn*d_pa*(2*a + d_pa));
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 200; % (in mS/cm^2) % stimulus value
+S_v = 700; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -107,7 +107,7 @@ c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*C_3(n, m, h, ii, tt); % End point        
        
 % defining the f_1(x_i) function
-F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1)  w2/2*Vmy_i_minus_1 + (w2 + 1/(R_m*C_m) - 1/(C_my*R_my))*Vmy_i + w2/2*Vmy_i_plus_1 + E_rest/(R_m*C_m); % Internodal region
+F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1)  w2/(2*dx^2)*Vmy_i_minus_1 + (-w2/dx^2 + 1/(R_m*C_m) - 1/(C_my*R_my))*Vmy_i + w2/(2*dx^2)*Vmy_i_plus_1 + E_rest/(R_m*C_m); % Internodal region
 F_2 = @(n, m, h, ii, tt) 1/C_m * (G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
 F_5 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) + F_2(n, m, h, ii, tt))/2; % End point
 f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) + ... % Internodal region
