@@ -77,6 +77,9 @@ clc
 
 SC_data_from_saltcond2023_code = load('SC_data_from_saltcond2023_code.mat');
 DC_data_from_saltcond2023_code = load('DC_data_from_saltcond2023_code.mat');
+
+
+DC_Huang_Myelinated = load('DC_Huang_Myelinated.mat');
 DC_Huang_Tube_params = load('DC_Huang_Tube_params.mat');
 DC_Huang_TubeParalyne_params = load('DC_Huang_TubeParalyne_params.mat');
 
@@ -93,7 +96,7 @@ SC_and_DC_space_vec = [0.06 0.08; 0.08 0.1; 0.1 0.12; 0.12 0.14;]; % all in (cm)
 % SC_data_set = {SC_data_Temp_20, SC_data_Temp_22, SC_data_Temp_24, SC_data_Temp_26, SC_data_Temp_28, SC_data_Temp_30, SC_data_Temp_32, SC_data_Temp_34, SC_data_Temp_36, SC_data_Temp_38, SC_data_Temp_40, SC_data_Temp_42, SC_data_Temp_44, SC_data_Temp_46, SC_data_Temp_48, SC_data_Temp_50};
 % DC_data_set = {DC_data_Temp_20, DC_data_Temp_22, DC_data_Temp_24, DC_data_Temp_26, DC_data_Temp_28, DC_data_Temp_30, DC_data_Temp_32, DC_data_Temp_34, DC_data_Temp_36, DC_data_Temp_38, DC_data_Temp_40, DC_data_Temp_42, DC_data_Temp_44, DC_data_Temp_46, DC_data_Temp_48, DC_data_Temp_50};
 data_set1 = {SC_data_from_saltcond2023_code, DC_data_from_saltcond2023_code};
-data_set2 = {DC_Huang_Tube_params, DC_Huang_TubeParalyne_params};
+data_set2 = {DC_Huang_Myelinated, DC_Huang_Tube_params, DC_Huang_TubeParalyne_params};
 
 % picking the dataset to compute cv
 data = data_set2;

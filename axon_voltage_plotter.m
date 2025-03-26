@@ -36,16 +36,18 @@ clc
 SC_data_from_saltcond2023_code = load('SC_data_from_saltcond2023_code.mat');
 DC_data_from_saltcond2023_code = load('DC_data_from_saltcond2023_code.mat');
 
+DC_Huang_Myelinated = load('DC_Huang_Myelinated.mat');
 DC_Huang_Tube_params = load('DC_Huang_Tube_params.mat');
 DC_Huang_TubeParalyne_params = load('DC_Huang_TubeParalyne_params.mat');
 
 SC_Ri_144 = load('SC_Ri_0.144.mat');
-DC_Ri_712 = load('DC_Ri_0.712.mat');
-DC_model_SC_params_w_Ri_144 = load('DC_model_SC_params_w_Ri_0.144.mat');
 
 SC_Cohen_DC_params = load('SC_model_with_DC_Cohen_params.mat');
-DC_Cohen_DC_params = load('DC_model_with_DC_Cohen_params.mat');
-DC_Cohen_DC_computed_params = load('DC_model_with_DC_Cohen__computed_params.mat');
+DC_Cohen_DC_params_Rpa_05 = load('DC_model_with_DC_Cohen_params_Rpa_0.5.mat');
+DC_Cohen_DC_params_Rpa_5 = load('DC_model_with_DC_Cohen_params_Rpa_5.mat');
+DC_Cohen_DC_params_Rpa_200 = load('DC_model_with_DC_Cohen_params_Rpa_200.mat');
+DC_Cohen_DC_params_Rpa_1000 = load('DC_model_with_DC_Cohen_params_Rpa_1000.mat');
+DC_Cohen_DC_params_Rpa_2000 = load('DC_model_with_DC_Cohen_params_Rpa_2000.mat');
 
 % DC_data_Rpa_01 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.01.mat');
 % DC_data_Rpa_02 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.02.mat');
@@ -184,12 +186,12 @@ p = 0.01;
 % set_of_data3 = {SC_data_from_saltcond2023_code, DC_data_from_saltcond2023_code};
 % set_of_data4 = {SC_data_Temp_20, SC_data_Temp_40, SC_data_Temp_52};
 % set_of_data5 = {DC_data_Temp_20, SC_data_Temp_40, DC_data_Temp_52};
-% set_of_data6 = {DC_Huang_Tube_params, DC_Huang_TubeParalyne_params};
-% set_of_data7 = {SC_Cohen_DC_params, DC_Cohen_DC_params, DC_Cohen_DC_computed_params};
-set_of_data8 = {SC_Ri_144, DC_model_SC_params_w_Ri_144};
+set_of_data6 = {DC_Huang_Myelinated, DC_Huang_Tube_params, DC_Huang_TubeParalyne_params};
+% set_of_data7 = {SC_Cohen_DC_params, DC_Cohen_DC_params_Rpa_05, DC_Cohen_DC_params_Rpa_5, DC_Cohen_DC_params_Rpa_200, DC_Cohen_DC_params_Rpa_1000};
+% set_of_data8 = {SC_Ri_144, DC_model_SC_params_w_Ri_144};
 % set_of_data9 = {DC_data_Rpa_01, DC_data_Rpa_05, DC_data_Rpa_10, DC_data_Rpa_20, DC_data_Rpa_30, DC_data_Rpa_40, DC_data_Rpa_50};
 
-data = DC_Ri_712;
+data = DC_Cohen_DC_params_Rpa_1000;
 
 % plot_animation_voltage_vs_time(DC_data, p);
 % plot_animation_voltage_vs_space(data, p);
@@ -197,7 +199,7 @@ data = DC_Ri_712;
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(HH_data2, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data8, p);
-plot_voltage_vs_space_comparison(set_of_data8, p);
+plot_voltage_vs_space_comparison(set_of_data6, p);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(SC_data1, p)
 
 
@@ -205,67 +207,6 @@ plot_voltage_vs_space_comparison(set_of_data8, p);
 %%%%%%%%%%%%%%%%%%%%%
 % PLOTTER FUNCTIONS %
 %%%%%%%%%%%%%%%%%%%%%
-
-% Animation that plots the voltage vs space
-function plot_animation_voltage_vs_space(data, p)
-    L = data.L;
-    m = data.m;
-    n = data.n;
-    dt = data.dt;
-    
-    % SPATIAL PROFILE %
-    % x axis is the axon length
-    t = linspace(0, L, m); 
-    
-    % creating a list of voltage types to plot (either just Vm for HH model
-    % or Vm, Vmy and Vm-Vmy for SC or DC model)
-    voltages = {'Vm_all'};
-    
-    if isfield(data, 'Vmy_all') && isfield(data, 'Vm_minus_Vmy')
-        voltages{end+1} = 'Vmy_all';
-        voltages{end+1} = 'Vm_minus_Vmy';
-    end
-    
-    % plotting animation of Vm (or if SC or DC, Vm, Vmy and Vm-Vmy)
-    for j=1:length(voltages)
-        figure(1);
-        hold on;
-
-        xmin = 0;
-        xmax = L;
-        ymin = -90;
-        ymax = 90;
-        
-        if strcmp(voltages{j}, 'Vm_all')
-            voltage_name = 'V_m';
-        elseif strcmp(voltages{j}, 'Vmy_all')
-            voltage_name = 'V_{my}';
-        else
-            voltage_name = 'V_m - V_{my}';
-        end
-            
-        axis([xmin xmax ymin ymax]);  % Set axis limits
-        xlabel('Axon length in cm');
-        ylabel(['$', voltage_name, '$ in millivolts.'], 'Interpreter', 'latex')
-
-        % Loop through each vector and plot them one by one
-        for i = 1:n
-            x = data.(voltages{j})(i,:);
-            
-            % Plot the vector
-            plot(t, x, 'b-');
-            
-            % legend('SC model: $R_i = 0.144 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
-            text(xmin + 0.05, ymax + 0.8, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
-
-            % Add a pause to create animation effect
-            pause(p);
-
-            cla;
-        end
-    end
-    
-end
 
 % Animation that plots the voltage vs time
 function plot_animation_voltage_vs_time(data, p)
@@ -324,6 +265,67 @@ function plot_animation_voltage_vs_time(data, p)
             cla;
         end
     end
+end
+
+% Animation that plots the voltage vs space
+function plot_animation_voltage_vs_space(data, p)
+    L = data.L;
+    m = data.m;
+    n = data.n;
+    dt = data.dt;
+    
+    % SPATIAL PROFILE %
+    % x axis is the axon length
+    t = linspace(0, L, m); 
+    
+    % creating a list of voltage types to plot (either just Vm for HH model
+    % or Vm, Vmy and Vm-Vmy for SC or DC model)
+    voltages = {'Vm_all'};
+    
+    if isfield(data, 'Vmy_all') && isfield(data, 'Vm_minus_Vmy')
+        voltages{end+1} = 'Vmy_all';
+        voltages{end+1} = 'Vm_minus_Vmy';
+    end
+    
+    % plotting animation of Vm (or if SC or DC, Vm, Vmy and Vm-Vmy)
+    for j=1:length(voltages)
+        figure(1);
+        hold on;
+
+        xmin = 0;
+        xmax = L;
+        ymin = -90;
+        ymax = 90;
+        
+        if strcmp(voltages{j}, 'Vm_all')
+            voltage_name = 'V_m';
+        elseif strcmp(voltages{j}, 'Vmy_all')
+            voltage_name = 'V_{my}';
+        else
+            voltage_name = 'V_m - V_{my}';
+        end
+            
+        axis([xmin xmax ymin ymax]);  % Set axis limits
+        xlabel('Axon length in cm');
+        ylabel(['$', voltage_name, '$ in millivolts.'], 'Interpreter', 'latex')
+
+        % Loop through each vector and plot them one by one
+        for i = 1:n
+            x = data.(voltages{j})(i,:);
+            
+            % Plot the vector
+            plot(t, x, 'b-');
+            
+            legend('DC model: $R_{pa} = 1000 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
+            text(xmin + 0.05, ymax + 0.8, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
+
+            % Add a pause to create animation effect
+            pause(p);
+
+            cla;
+        end
+    end
+    
 end
 
 % Animation that plots the probabilities vs time
@@ -612,11 +614,11 @@ function plot_voltage_vs_space_comparison(data_set, p)
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
-            % legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
+            legend('DC: Myelinated', 'DC: SiGe Tube params', 'DC: Tube+Paralyne params', 'Location', 'northeast');
             % legend('SC model: Cohen DC Params', 'DC model: $R_{pa}, R_{pn}$ given', 'DC model: $R_{pa}, R_{pn}$ computed', 'Location', 'northeast', 'Interpreter', 'latex');
             % legend('SC model: $R_i = 0.144 k\Omega cm$', 'DC model: $R_i = 0.712 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
             % legend('DC model: $R_{pa} = 0.01 k\Omega cm$', 'DC model: $R_{pa} = 0.10 k\Omega cm$', 'DC model: $R_{pa} = 0.20 k\Omega cm$', 'DC model: $R_{pa} = 0.30 k\Omega cm$', 'DC model: $R_{pa} = 0.40 k\Omega cm$', 'DC model: $R_{pa} = 0.50 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
-            legend('SC model', 'DC model w/ SC params', 'Location', 'northeast', 'Interpreter', 'latex');
+            % legend('SC model w/ DC params', 'DC model: $R_{pa} = 0.5 k\Omega cm$', 'DC model: $R_{pa} = 5 k\Omega cm$', 'DC model: $R_{pa} = 200 k\Omega cm$', 'DC model: $R_{pa} = 1000 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex');
             text(xmin, ymax + 0.1, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect

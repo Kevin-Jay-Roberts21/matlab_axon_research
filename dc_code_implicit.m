@@ -10,10 +10,10 @@ clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Parameters to change to test Dr. Huang's Paper
-% a_my = 0.00015; % (cm) radius in myelinated region
-% a = 0.00016; % (cm) radius in nodal region
-% R_my = 3.9408*10^7; % (kilo-ohms*cm^2) specfic myelin resistance
-% C_my = 0.1224; % (micro-fards/cm^2) specific myelin capacitance
+% a_my = 0.0003; % (cm) radius in myelinated region
+% a = 0.00035; % (cm) radius in nodal region
+% R_my = 1.3195*10^11; % (kilo-ohms*cm^2) specfic myelin resistance
+% C_my = 0.007; % (micro-fards/cm^2) specific myelin capacitance
 
 % original a, a_my, R_my and C_my
 C_my = 0.113; % (micro-farads/cm^2) specific myelin capacitance
@@ -26,7 +26,7 @@ C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
 R_i = 0.712; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 % R_pa = 0.0414; % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
-R_pa = 0.0537; % (kilo-ohms*cm) resistivity of the periaxonal space
+R_pa = 1000; % (kilo-ohms*cm) resistivity of the periaxonal space
 % R_pn = 0.0826; % (kilo-ohms*cm) resistivity of the paranodal space (computed)
 R_pn = 0.55; % (kilo-ohms*cm) resistivity of the paranodal space
 G_K = 80; % (mS/cm^2) max specific potassium conductance
@@ -39,7 +39,7 @@ E_rest = -59.4; % (mV) effective resting nernst potential
 
 % Defining the Thickness, Length and other Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dx = 0.0001; % (cm) space step
+dx = 0.00005; % (cm) space step
 dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
@@ -49,7 +49,7 @@ d_pn = 7.4*10^(-7); % (cm) paranodal thickness
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 20; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 20; % (ms) the total time of the experiment
+T = 30; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -64,7 +64,7 @@ w3 = R_pa*d_pn*(2*a + d_pn)/(R_pn*L_pn*d_pa*(2*a + d_pa));
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 700; % (in mS/cm^2) % stimulus value
+S_v = 300; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -100,7 +100,7 @@ b_1 = @(ii) (mod(ii - 1, N_s) > N_n).*B_1 + ... % Internodal region
 
 % defining the c_1(x_i) function
 C_1 = -1/(R_m*C_m); % Internodal region
-C_2 = @(n, m, h, ii, tt) 1/C_m*(-G_K*n^4 - (G_Na*m^3*h + S(ii, tt)) - G_L); % Nodal region
+C_2 = @(n, m, h, ii, tt) -1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L); % Nodal region
 C_3 = @(n, m, h, ii, tt) (C_1 + C_2(n, m, h, ii, tt))/2; % End point
 c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*C_2(n, m, h, ii, tt) + ... % Nodal region
@@ -516,4 +516,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('DC_model_with_DC_Cohen_params.mat');
+% save('DC_Huang_Myelinated.mat');
