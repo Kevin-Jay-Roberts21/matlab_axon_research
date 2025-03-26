@@ -33,21 +33,27 @@ clc
 % SC_data3 = load('projects/SC_data3.mat');
 % SC_data_Sv_200 = load('SC_data_Sv_200.mat');
 % DC_data_Sv_200 = load('DC_data_Sv_200.mat');
-SC_data_from_saltcond2023_code = load('SC_data_from_saltcond2023_code.mat');
-DC_data_from_saltcond2023_code = load('DC_data_from_saltcond2023_code.mat');
+% SC_data_from_saltcond2023_code = load('SC_data_from_saltcond2023_code.mat');
+% DC_data_from_saltcond2023_code = load('DC_data_from_saltcond2023_code.mat');
 
 DC_Huang_Myelinated = load('DC_Huang_Myelinated.mat');
 DC_Huang_Tube_params = load('DC_Huang_Tube_params.mat');
 DC_Huang_TubeParalyne_params = load('DC_Huang_TubeParalyne_params.mat');
 
-SC_Ri_144 = load('SC_Ri_0.144.mat');
+% SC_Ri_144 = load('SC_Ri_0.144.mat');
 
-SC_Cohen_DC_params = load('SC_model_with_DC_Cohen_params.mat');
-DC_Cohen_DC_params_Rpa_05 = load('DC_model_with_DC_Cohen_params_Rpa_0.5.mat');
-DC_Cohen_DC_params_Rpa_5 = load('DC_model_with_DC_Cohen_params_Rpa_5.mat');
-DC_Cohen_DC_params_Rpa_200 = load('DC_model_with_DC_Cohen_params_Rpa_200.mat');
-DC_Cohen_DC_params_Rpa_1000 = load('DC_model_with_DC_Cohen_params_Rpa_1000.mat');
-DC_Cohen_DC_params_Rpa_2000 = load('DC_model_with_DC_Cohen_params_Rpa_2000.mat');
+% SC_Cohen_DC_params = load('SC_model_with_DC_Cohen_params.mat');
+% DC_Cohen_DC_params_Rpa_05 = load('DC_model_with_DC_Cohen_params_Rpa_0.5.mat');
+% DC_Cohen_DC_params_Rpa_5 = load('DC_model_with_DC_Cohen_params_Rpa_5.mat');
+% DC_Cohen_DC_params_Rpa_200 = load('DC_model_with_DC_Cohen_params_Rpa_200.mat');
+% DC_Cohen_DC_params_Rpa_1000 = load('DC_model_with_DC_Cohen_params_Rpa_1000.mat');
+% DC_Cohen_DC_params_Rpa_2000 = load('DC_model_with_DC_Cohen_params_Rpa_2000.mat');
+
+SC_Cohen_Optimized_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_Optimized_params.mat');
+SC_Cohen_Avg_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_Avg_params.mat');
+SC_Cohen_DC_Optimized_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_Optimized_params.mat');
+DC_Cohen_Optimized_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_Optimized_params.mat');
+DC_Cohen_Avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_Avg_params.mat');
 
 % DC_data_Rpa_01 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.01.mat');
 % DC_data_Rpa_02 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.02.mat');
@@ -190,8 +196,9 @@ set_of_data6 = {DC_Huang_Myelinated, DC_Huang_Tube_params, DC_Huang_TubeParalyne
 % set_of_data7 = {SC_Cohen_DC_params, DC_Cohen_DC_params_Rpa_05, DC_Cohen_DC_params_Rpa_5, DC_Cohen_DC_params_Rpa_200, DC_Cohen_DC_params_Rpa_1000};
 % set_of_data8 = {SC_Ri_144, DC_model_SC_params_w_Ri_144};
 % set_of_data9 = {DC_data_Rpa_01, DC_data_Rpa_05, DC_data_Rpa_10, DC_data_Rpa_20, DC_data_Rpa_30, DC_data_Rpa_40, DC_data_Rpa_50};
+% set_of_data10 = {SC_Cohen_Optimized_params, SC_Cohen_Avg_params, SC_Cohen_DC_Optimized_params, DC_Cohen_Optimized_params, DC_Cohen_Avg_params};
 
-data = DC_Cohen_DC_params_Rpa_1000;
+% data = DC_Cohen_DC_params_Rpa_1000;
 
 % plot_animation_voltage_vs_time(DC_data, p);
 % plot_animation_voltage_vs_space(data, p);
@@ -608,6 +615,10 @@ function plot_voltage_vs_space_comparison(data_set, p)
 
         % Loop through each vector and plot them one by one
         for i = 1:n
+            % for j = 1:length(data_set)
+            %     plot(t, data_set{j}.(voltages{k})(i,:));
+            %     hold on
+            % end
             for j = 1:length(data_set)
                 plot(t, data_set{j}.(voltages{k})(i,:), 'Color', [1, 0, 0] * j/length(data_set));
                 hold on
@@ -619,6 +630,7 @@ function plot_voltage_vs_space_comparison(data_set, p)
             % legend('SC model: $R_i = 0.144 k\Omega cm$', 'DC model: $R_i = 0.712 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
             % legend('DC model: $R_{pa} = 0.01 k\Omega cm$', 'DC model: $R_{pa} = 0.10 k\Omega cm$', 'DC model: $R_{pa} = 0.20 k\Omega cm$', 'DC model: $R_{pa} = 0.30 k\Omega cm$', 'DC model: $R_{pa} = 0.40 k\Omega cm$', 'DC model: $R_{pa} = 0.50 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
             % legend('SC model w/ DC params', 'DC model: $R_{pa} = 0.5 k\Omega cm$', 'DC model: $R_{pa} = 5 k\Omega cm$', 'DC model: $R_{pa} = 200 k\Omega cm$', 'DC model: $R_{pa} = 1000 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex');
+            % legend('SC: cell 6 params', 'SC: avg. params', 'SC: DC cell 6 params', 'DC: cell 6 params', 'DC: avg. params', 'Location', 'northeast', 'Interpreter', 'latex');
             text(xmin, ymax + 0.1, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect

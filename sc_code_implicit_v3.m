@@ -17,7 +17,7 @@ a = 0.55*10^(-4); % (cm) radius in nodal region
 a_my = a/0.698; % (cm) radius in myelinated region
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
 C_my = 0.113; % (micro-fards/cm^2) specific myelin capacitance
-R_i = 0.712; % (kilo-ohms*cm) intracellular resistivity
+R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 R_my = 63.7; % (kilo-ohms*cm^2) specfic myelin resistance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
@@ -30,14 +30,14 @@ E_rest = -59.4; % (mV) effective resting nernst potential
 
 % Defining the Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dx = 0.0001; % (cm) space step
+dx = 0.00005; % (cm) space step
 dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 10; % (dimless) number of axon segments
+n_s = 20; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 20; % (ms) the total time of the experiment
+T = 30; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -50,7 +50,7 @@ w_1 = a^2/(C_my*a_my*R_i);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 200; % (in mS/cm^2) % stimulus value
+S_v = 300; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -472,4 +472,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('SC_model_with_DC_Cohen_params.mat');
+% save(['SC_Cohen_DC_Optimized_params.mat']);
