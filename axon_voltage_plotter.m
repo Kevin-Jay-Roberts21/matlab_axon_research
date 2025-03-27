@@ -36,9 +36,9 @@ clc
 % SC_data_from_saltcond2023_code = load('SC_data_from_saltcond2023_code.mat');
 % DC_data_from_saltcond2023_code = load('DC_data_from_saltcond2023_code.mat');
 
-DC_Huang_Myelinated = load('DC_Huang_Myelinated.mat');
-DC_Huang_Tube_params = load('DC_Huang_Tube_params.mat');
-DC_Huang_TubeParalyne_params = load('DC_Huang_TubeParalyne_params.mat');
+DC_Huang_Myelinated = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated.mat');
+DC_Huang_Tube_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_Tube_params.mat');
+DC_Huang_TubeParalyne_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyne_params.mat');
 
 % SC_Ri_144 = load('SC_Ri_0.144.mat');
 
@@ -198,7 +198,8 @@ set_of_data6 = {DC_Huang_Myelinated, DC_Huang_Tube_params, DC_Huang_TubeParalyne
 % set_of_data9 = {DC_data_Rpa_01, DC_data_Rpa_05, DC_data_Rpa_10, DC_data_Rpa_20, DC_data_Rpa_30, DC_data_Rpa_40, DC_data_Rpa_50};
 % set_of_data10 = {SC_Cohen_Optimized_params, SC_Cohen_Avg_params, SC_Cohen_DC_Optimized_params, DC_Cohen_Optimized_params, DC_Cohen_Avg_params};
 
-% data = DC_Cohen_DC_params_Rpa_1000;
+% data = SC_Cohen_Optimized_params;
+data = DC_Cohen_Optimized_params;
 
 % plot_animation_voltage_vs_time(DC_data, p);
 % plot_animation_voltage_vs_space(data, p);
@@ -206,8 +207,8 @@ set_of_data6 = {DC_Huang_Myelinated, DC_Huang_Tube_params, DC_Huang_TubeParalyne
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(HH_data2, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data8, p);
-plot_voltage_vs_space_comparison(set_of_data6, p);
-% plot_Vm_and_Vm_minus_Vmy_vs_space(SC_data1, p)
+% plot_voltage_vs_space_comparison(set_of_data6, p);
+plot_Vm_and_Vm_minus_Vmy_vs_space(data, p)
 
 
 
@@ -655,6 +656,8 @@ function plot_Vm_and_Vm_minus_Vmy_vs_space(data, p)
     
     figure(1);
     
+    title('1) SC: cell 6 params Spatial Profile', 'Interpreter', 'latex')
+
     xmin = 0;
     xmax = L;
     ymin = -90;
@@ -672,10 +675,11 @@ function plot_Vm_and_Vm_minus_Vmy_vs_space(data, p)
         axis([xmin xmax ymin ymax]);  % Set axis limits
         xlabel('Length of axon in cm');
         ylabel('Voltage in millivolts.', 'Interpreter', 'latex')
-        
+        title('4) DC: cell 6 params Spatial Profile', 'Interpreter', 'latex');
+
         % Add the legend (NOTE: the legend is what is slowing down the animation)
-        % legend([p1, p2], 'data1 voltage', 'data2 voltage', 'Location', 'northeast');
-        text(xmin+0.05*(xmax-xmin), ymax-5, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
+        legend('$V_m$', '$V_m - V_{my}$', 'Location', 'northeast', 'Interpreter', 'latex');
+        text(xmin+0.01, ymax-10, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
     
         % Add a pause to create animation effect
         pause(p);

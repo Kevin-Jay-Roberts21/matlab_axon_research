@@ -10,16 +10,16 @@ clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Parameters to change to test Dr. Huang's Paper
-a_my = 0.0003; % (cm) radius in myelinated region
-a = 0.00035; % (cm) radius in nodal region
-R_my = 1.3195*10^11; % (kilo-ohms*cm^2) specfic myelin resistance
-C_my = 0.007; % (micro-fards/cm^2) specific myelin capacitance
+% a_my = 0.0003; % (cm) radius in myelinated region
+% a = 0.00035; % (cm) radius in nodal region
+% R_my = 1.3195*10^11; % (kilo-ohms*cm^2) specfic myelin resistance
+% C_my = 0.007; % (micro-fards/cm^2) specific myelin capacitance
 
 % original a, a_my, R_my and C_my
-% C_my = 0.113; % (micro-farads/cm^2) specific myelin capacitance
-% a = 0.55*10^(-4); % (cm) axon radius in nodal region
-% a_my = a/0.698; % (cm) axon radius in myelinated section 
-% R_my = 63.7; % (kilo-ohms*cm^2) specific myelin resistance
+C_my = 0.113; % (micro-farads/cm^2) specific myelin capacitance
+a = 0.55*10^(-4); % (cm) axon radius in nodal region
+a_my = a/0.698; % (cm) axon radius in myelinated section 
+R_my = 63.7; % (kilo-ohms*cm^2) specific myelin resistance
 
 % other params
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
@@ -27,7 +27,7 @@ R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 % R_pa = 0.0414; % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
 % R_pa = 0.0537; % (kilo-ohms*cm) resistivity of the periaxonal space
-R_pa = 1000; % (kilo-ohms*cm) resistivity of the periaxonal space (suggested to match salt. cond. 2023 results)
+R_pa = 10000; % (kilo-ohms*cm) resistivity of the periaxonal space (suggested to match salt. cond. 2023 results)
 % R_pn = 0.0826; % (kilo-ohms*cm) resistivity of the paranodal space (computed)
 R_pn = 0.55; % (kilo-ohms*cm) resistivity of the paranodal space
 G_K = 80; % (mS/cm^2) max specific potassium conductance
@@ -65,7 +65,7 @@ w3 = R_pa*d_pn*(2*a + d_pn)/(R_pn*L_pn*d_pa*(2*a + d_pa));
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 800; % (in mS/cm^2) % stimulus value
+S_v = 300; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -517,4 +517,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save(['DC_Huang_TubeParalyne_params.mat']);
+% save('DC_Rpa_10000.mat');

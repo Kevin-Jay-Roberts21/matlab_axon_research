@@ -88,39 +88,31 @@ for j = 1:(n-1)
     M = newM;
     H = newH;
     
+    A(1, 1) = 1;
+    A(1, 2) = -1;
+    A(m, m-1) = -1;
+    A(m, m) = 1;
     % i is the space step
-    for i = 1:m
+    for i = 2:m-1
 
-        gamma_1 = -dt*a/(2*R_i*C_m*dx^2);
-        gamma_2 = 1 + dt*a/(R_i*C_m*dx^2) + dt*G_K*(N(i)^4)/C_m + dt*G_Na*(M(i)^3)*H(i)/C_m + dt*G_L/C_m;
-        gamma_3 = -dt*a/(2*R_i*C_m*dx^2); 
-        gamma_4 = 1; 
-        gamma_5 = dt*G_K*N(i)^4*E_K/C_m + dt*G_Na*(M(i)^3)*H(i)*E_Na/C_m + dt*G_L*E_L/C_m;
+        gamma1 = -dt*a/(2*R_i*C_m*dx^2);
+        gamma2 = 1 + dt*a/(R_i*C_m*dx^2) + dt*G_K*(N(i)^4)/C_m + dt*G_Na*(M(i)^3)*H(i)/C_m + dt*G_L/C_m;
+        gamma3 = -dt*a/(2*R_i*C_m*dx^2); 
+        gamma4 = 1; 
+        gamma5 = dt*G_K*N(i)^4*E_K/C_m + dt*G_Na*(M(i)^3)*H(i)*E_Na/C_m + dt*G_L*E_L/C_m;
 
         % adding stimulus temporally and spatially:
         if (j*dt >= S_T0 && j*dt <= S_T1) && (i*dx >= S_P0 && i*dx <= S_P1)
-            gamma_2 = 1 + dt*a/(R_i*C_m*dx^2) + dt*G_K*(N(i)^4)/C_m + dt*(G_Na*(M(i)^3)*H(i) + S_v)/C_m + dt*G_L/C_m;
-            gamma_5 = dt*G_K*(N(i)^4)*E_K/C_m + dt*(G_Na*(M(i)^3)*H(i) + S_v)*E_Na/C_m + dt*G_L*E_L/C_m;
+            gamma2 = 1 + dt*a/(R_i*C_m*dx^2) + dt*G_K*(N(i)^4)/C_m + dt*(G_Na*(M(i)^3)*H(i) + S_v)/C_m + dt*G_L/C_m;
+            gamma5 = dt*G_K*(N(i)^4)*E_K/C_m + dt*(G_Na*(M(i)^3)*H(i) + S_v)*E_Na/C_m + dt*G_L*E_L/C_m;
         end
         
-        % constructing the A matrix and b and f vectors
-        if i == 1
-            A(1, 1) = 1;
-            A(1, 2) = -1;
-            g_1(1) = 0;
-            g_2(1) = 0;
-        elseif i == m
-            A(m, m-1) = -1;
-            A(m, m) = 1;
-            g_1(m) = 0;
-            g_2(m) = 0;
-        else
-            A(i, i-1) = gamma_3;
-            A(i, i) = gamma_2;
-            A(i, i+1) = gamma_1;
-            g_1(i) = gamma_4*Vm(i); 
-            g_2(i) = gamma_5;
-        end
+        A(i, i-1) = gamma3;
+        A(i, i) = gamma2;
+        A(i, i+1) = gamma1;
+        g_1(i) = gamma4*Vm(i); 
+        g_2(i) = gamma5;
+        
     end
     
     % setting newVm
