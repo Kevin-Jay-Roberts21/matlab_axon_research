@@ -78,9 +78,9 @@ clc
 % SC_data_from_saltcond2023_code = load('SC_data_from_saltcond2023_code.mat');
 % DC_data_from_saltcond2023_code = load('DC_data_from_saltcond2023_code.mat');
 
-DC_Huang_Myelinated = load('DC_Huang_Myelinated.mat');
-DC_Huang_Tube_params = load('DC_Huang_Tube_params.mat');
-DC_Huang_TubeParalyne_params = load('DC_Huang_TubeParalyne_params.mat');
+DC_Huang_Myelinated = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated.mat');
+DC_Huang_Tube_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_Tube_params.mat');
+DC_Huang_TubeParalyne_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyne_params.mat');
 
 SC_Cohen_Optimized_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_Optimized_params.mat');
 SC_Cohen_Avg_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_Avg_params.mat');
@@ -88,6 +88,7 @@ SC_Cohen_DC_Optimized_params = load('projects/axon_simulations/Cohen_param_simul
 DC_Cohen_Optimized_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_Optimized_params.mat');
 DC_Cohen_Avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_Avg_params.mat');
 
+HH_1 = load('HH_1.mat');
 
 % NOTE: Time and space choices will vary depending on HH, SC, and DC models
 
@@ -95,6 +96,7 @@ DC_Cohen_Avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC
 % take an average of these different spaces to get a more accurate cv
 % NOTE: these may differ for different length axons
 HH_space_vec = [4 5; 5 6; 6 7; 7 8;]; % all in (cm)
+HH_space_vec1 = [2 2.5; 2.5 3; 3 3.5; 3.5 4];
 SC_and_DC_space_vec = [0.06 0.08; 0.08 0.1; 0.1 0.12; 0.12 0.14;]; % all in (cm)
 
 % defining multiple datasets
@@ -104,6 +106,7 @@ SC_and_DC_space_vec = [0.06 0.08; 0.08 0.1; 0.1 0.12; 0.12 0.14;]; % all in (cm)
 % data_set1 = {SC_data_from_saltcond2023_code, DC_data_from_saltcond2023_code};
 data_set2 = {DC_Huang_Myelinated, DC_Huang_Tube_params, DC_Huang_TubeParalyne_params};
 % data_set3 = {SC_Cohen_Optimized_params, SC_Cohen_Avg_params, SC_Cohen_DC_Optimized_params, DC_Cohen_Optimized_params, DC_Cohen_Avg_params};
+% data_set4 = {HH_1};
 
 % picking the dataset to compute cv
 data = data_set2;

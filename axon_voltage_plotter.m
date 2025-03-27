@@ -121,7 +121,7 @@ DC_Cohen_Avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC
 % SC_data_Temp_44 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_44.mat');
 % SC_data_Temp_46 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_46.mat');
 % SC_data_Temp_48 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_48.mat');
-% SC_data_Temp_50 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_50.mat');
+SC_data_Temp_50 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_50.mat');
 % SC_data_Temp_52 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_52.mat');
 % 
 % DC_data_Temp_20 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_20.mat');
@@ -199,16 +199,16 @@ set_of_data6 = {DC_Huang_Myelinated, DC_Huang_Tube_params, DC_Huang_TubeParalyne
 % set_of_data10 = {SC_Cohen_Optimized_params, SC_Cohen_Avg_params, SC_Cohen_DC_Optimized_params, DC_Cohen_Optimized_params, DC_Cohen_Avg_params};
 
 % data = SC_Cohen_Optimized_params;
-data = DC_Cohen_Optimized_params;
+data = SC_data_Temp_50;
 
 % plot_animation_voltage_vs_time(DC_data, p);
-% plot_animation_voltage_vs_space(data, p);
+plot_animation_voltage_vs_space(data, p);
 % plot_animation_probabilities_vs_time(HH_data_Temp_33, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(HH_data2, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data8, p);
 % plot_voltage_vs_space_comparison(set_of_data6, p);
-plot_Vm_and_Vm_minus_Vmy_vs_space(data, p)
+% plot_Vm_and_Vm_minus_Vmy_vs_space(data, p)
 
 
 
@@ -324,7 +324,7 @@ function plot_animation_voltage_vs_space(data, p)
             % Plot the vector
             plot(t, x, 'b-');
             
-            legend('DC model: $R_{pa} = 1000 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
+            % legend('DC model: $R_{pa} = 1000 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
             text(xmin + 0.05, ymax + 0.8, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
