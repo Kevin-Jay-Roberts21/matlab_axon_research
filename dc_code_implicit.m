@@ -25,11 +25,10 @@ R_my = 240; % (kilo-ohms*cm^2) specific myelin resistance
 C_m = 1.15; % (micro-farads/cm^2) specific membrane capacitance
 R_i = 0.155; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.6; % (kilo-ohms*cm^2) specific membrane resistance
-% R_pa = 0.0414; % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
+R_pa = 0.0414; % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
 % R_pa = 0.0537; % (kilo-ohms*cm) resistivity of the periaxonal space
-R_pa = 1000; % (kilo-ohms*cm) resistivity of the periaxonal space (suggested to match salt. cond. 2023 results)
-% R_pn = 0.0826; % (kilo-ohms*cm) resistivity of the paranodal space (computed)
-R_pn = 0.55; % (kilo-ohms*cm) resistivity of the paranodal space
+% R_pa = 1000; % (kilo-ohms*cm) resistivity of the periaxonal space (suggested to match salt. cond. 2023 results)
+r_pn = 2450*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -40,7 +39,7 @@ E_rest = -59.4; % (mV) effective resting nernst potential
 
 % Defining the Thickness, Length and other Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dx = 0.00005; % (cm) space step
+dx = 0.0001; % (cm) space step
 dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
@@ -48,9 +47,9 @@ L_pn = 2.3*10^(-4); % (cm) paranodal length
 d_pa = 12.3*10^(-7); % (cm) periaxonal thickness
 d_pn = 7.4*10^(-7); % (cm) paranodal thickness
 L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 20; % (dimless) number of axon segments
+n_s = 10; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 30; % (ms) the total time of the experiment
+T = 10; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -58,16 +57,16 @@ m = N_s*n_s + 1; % total number of space steps
 n = T/dt + 1; % n is the number of time steps
 
 % defining rho, w1, w2 and w3 constants
-rho = dt/dx^2; % 0creating the courant number
+rho = dt/dx^2; % creating the courant number
 w1 = a^2/(C_my*a_my*R_i);
 w2 = d_pa*(2*a + d_pa)/(C_my*a_my*R_pa);
-w3 = R_pa*d_pn*(2*a + d_pn)/(R_pn*L_pn*d_pa*(2*a + d_pa));
+w3 = R_pa/(r_pn*L_pn*pi*d_pa*(2*a + d_pa));
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 300; % (in mS/cm^2) % stimulus value
-S_T0 = 5; % start time of when stimulus is added (in ms)
-S_T1 = 5.1; % end time of when stimulus is added (in ms)
+S_v = 200; % (in mS/cm^2) % stimulus value
+S_T0 = 1; % start time of when stimulus is added (in ms)
+S_T1 = 1.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
 S_P1 = 0.0004; % end position of adding the stimulus (in cm)
 % in the S functi on ii, is the space index and tt is the time index
@@ -109,7 +108,7 @@ c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
        
 % defining the f_1(x_i) function
 F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1)  w2/(2*dx^2)*Vmy_i_minus_1 + (-w2/dx^2 + 1/(R_m*C_m) - 1/(C_my*R_my))*Vmy_i + w2/(2*dx^2)*Vmy_i_plus_1 + E_rest/(R_m*C_m); % Internodal region
-F_2 = @(n, m, h, ii, tt) 1/C_m * (G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
+F_2 = @(n, m, h, ii, tt) 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
 F_5 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) + F_2(n, m, h, ii, tt))/2; % End point
 f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(n, m, h, ii, tt) + ... % Nodal region
@@ -163,7 +162,7 @@ for i = 2:m-1 % because we want to keep the end points (1 and M) for Vmy, n, m, 
         H(i) = H_0;
     end 
 end
-Vmy(m) = V_my0/(1 + w3*dx);
+Vmy(m) = V_my0/(1 + w3*dx); % setting the right end point of the last myelinated section of the axon
 
 % defining the matrices to collect data at every time step
 Vm_all(1,:) = Vm;

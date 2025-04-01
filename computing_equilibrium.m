@@ -10,20 +10,20 @@ clc
 syms f1(Vm)
 
 % % Used for HH Model
-G_K = 36; % (mS/cm^2)
-G_Na = 500; % (mS/cm^2)
-G_L = 0.3; % (mS/cm^2)
-E_K = -77; % Equilibrium Potential for Potassium Ions (mV)
-E_Na = 50; % Equilibrium Potential for Sodium Ions (mV)
-E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
-
-% Used for SC Model
-% G_K = 35; % (mS/cm^2)
-% G_Na = 40; % (mS/cm^2)
+% G_K = 36; % (mS/cm^2)
+% G_Na = 500; % (mS/cm^2)
 % G_L = 0.3; % (mS/cm^2)
 % E_K = -77; % Equilibrium Potential for Potassium Ions (mV)
-% E_Na = 55; % Equilibrium Potential for Sodium Ions (mV)
-% E_L = -65; % Equilibrium Potential for Leak Channels (mV)
+% E_Na = 50; % Equilibrium Potential for Sodium Ions (mV)
+% E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
+
+% Used for SC Model
+G_K = 80; % (mS/cm^2)
+G_Na = 3000; % (mS/cm^2)
+G_L = 80; % (mS/cm^2)
+E_K = -82; % Equilibrium Potential for Potassium Ions (mV)
+E_Na = 45; % Equilibrium Potential for Sodium Ions (mV)
+E_L = -59.4; % Equilibrium Potential for Leak Channels (mV)
 
 alpha_n = @(Vm) 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10)); % (1/ms)
 beta_n = @(Vm) 0.125*exp(-(Vm + 65)/80); % (1/ms)
