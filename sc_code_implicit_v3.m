@@ -15,11 +15,11 @@ clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 a = 0.55*10^(-4); % (cm) radius in nodal region
 a_my = a/0.698; % (cm) radius in myelinated region
-C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
-C_my = 0.113; % (micro-fards/cm^2) specific myelin capacitance
-R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
-R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
-R_my = 63.7; % (kilo-ohms*cm^2) specfic myelin resistance
+C_m = 1.28; % (micro-farads/cm^2) specific membrane capacitance
+C_my = 0.174; % (micro-fards/cm^2) specific myelin capacitance
+R_i = 0.2; % (kilo-ohms*cm) intracellular resistivity
+R_m = 23.1; % (kilo-ohms*cm^2) specific membrane resistance
+R_my = 530; % (kilo-ohms*cm^2) specfic myelin resistance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -30,7 +30,7 @@ E_rest = -59.4; % (mV) effective resting nernst potential
 
 % Defining the Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dx = 0.00005; % (cm) space step
+dx = 0.0001; % (cm) space step
 dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
@@ -50,9 +50,9 @@ w_1 = a^2/(C_my*a_my*R_i);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 300; % (in mS/cm^2) % stimulus value
-S_T0 = 5; % start time of when stimulus is added (in ms)
-S_T1 = 5.1; % end time of when stimulus is added (in ms)
+S_v = 200; % (in mS/cm^2) % stimulus value
+S_T0 = 1; % start time of when stimulus is added (in ms)
+S_T1 = 1.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
 S_P1 = 0.0004; % end position of adding the stimulus (in cm)
 % in the S function ii, is the space index and tt is the time index
@@ -86,7 +86,7 @@ b_1 = @(ii) (mod(ii - 1, N_s) > N_n).*B_1 + ... % Internodal region
 
 % defining the c_1(x_i) function
 C_1 = -1/(R_m*C_m); % Internodal region
-C_2 = @(n, m, h, ii, tt) 1/C_m*(-G_K*n^4 - (G_Na*m^3*h + S(ii, tt)) - G_L); % Nodal region
+C_2 = @(n, m, h, ii, tt) -1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L); % Nodal region
 C_3 = @(n, m, h, ii, tt) (C_1 + C_2(n, m, h, ii, tt))/2; % End point
 c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*C_2(n, m, h, ii, tt) + ... % Nodal region
@@ -94,7 +94,7 @@ c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
        
 % defining the f_1(x_i) function
 F_1 = @(Vmy) (1/(R_m*C_m) - 1/(C_my*R_my))*Vmy + E_rest/(R_m*C_m); % Internodal region
-F_2 = @(n, m, h, ii, tt) 1/C_m * (G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
+F_2 = @(n, m, h, ii, tt) 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
 F_3 = @(Vmy, n, m, h, ii, tt) (F_1(Vmy) + F_2(n, m, h, ii, tt))/2; % End point
 f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(n, m, h, ii, tt) + ... % Nodal region
@@ -142,6 +142,7 @@ for i = 2:m-1
         H(i) = H_0;
     end 
 end
+Vmy(m) = 0; % since we are setting the end points equal to 0
 
 % defining the matrices to collect data at every time step
 Vm_all(1,:) = Vm;
@@ -196,12 +197,7 @@ for j = 1:(n-1)
             eta2 = rho * w_1/2 * 1/(1 + dt/(C_my*R_my));
             eta3 = -rho * w_1 * 1/(1 + dt/(C_my*R_my));
             eta4 = rho * w_1/2 * 1/(1 + dt/(C_my*R_my));
-            
-        elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
-            eta1 = 0;
-            eta2 = 0;
-            eta3 = 0;
-            eta4 = 0;
+        
         else % End point
             eta1 = 0;
             eta2 = 0;
