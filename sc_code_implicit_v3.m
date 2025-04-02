@@ -63,8 +63,8 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
 
 % Defining alpha/beta functions as well as the b_1, c_1 and f_1 functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-T_base = 20; % (C) base temperature
-T_actual = 20; % (C) the temperature of the squid axon
+T_base = 35; % (C) base temperature
+T_actual = 35; % (C) the temperature of the squid axon
 Q_10_Na = 2.2; % (dimless) temperature coefficient for Na current
 Q_10_K = 3; % (dimless) temperature coefficient for K current
 phi_Na = Q_10_Na^((T_actual - T_base)/10); % (dimless) temperature scaling factor for Na current
