@@ -138,7 +138,7 @@ position3 = 1.5; % in cm
 position4 = 2; % in cm
 position5 = 2.5; % in cm
 position6 = 3; % in cm
-position7 = 48; % in cm
+position7 = 3.5; % in cm
 
 list_of_positions = [position1
                      position2
