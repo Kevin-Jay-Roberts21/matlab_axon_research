@@ -23,7 +23,9 @@ clc
 
 % getting the saved data
 % HH_data = load('HH_data.mat');
-% HH_data1 = load('HH_1.mat');
+HH_1 = load('HH_1.mat');
+HH_2 = load('HH_2.mat');
+HH_3 = load('HH_3.mat');
 % HH_data2 = load('HH_data2.mat');
 % SC_data = load('SC_data.mat');
 % DC_data = load('DC_data.mat');
@@ -35,8 +37,6 @@ clc
 % DC_data_Sv_200 = load('DC_data_Sv_200.mat');
 % SC_data_from_saltcond2023_code = load('SC_data_from_saltcond2023_code.mat');
 % DC_data_from_saltcond2023_code = load('DC_data_from_saltcond2023_code.mat');
-
-Vmy_equilibrium = load('Vmy_all_test.mat');
 
 % DC_Huang_Myelinated = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated.mat');
 % DC_Huang_Tube_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_Tube_params.mat');
@@ -76,37 +76,55 @@ Vmy_equilibrium = load('Vmy_all_test.mat');
 % DC_data_Rpa_45 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.45.mat');
 % DC_data_Rpa_50 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.5.mat');
 
+HH_temp_base = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_6.3.mat");
+HH_temp_8 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_8.mat");
+HH_temp_10 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_10.mat");
+HH_temp_12 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_12.mat");
+HH_temp_14 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_14.mat");
+HH_temp_16 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_16.mat");
+HH_temp_18 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_18.mat");
+HH_temp_20 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_20.mat");
+HH_temp_22 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_22.mat");
+HH_temp_24 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_24.mat");
+HH_temp_26 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_26.mat");
+HH_temp_28 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_28.mat");
+HH_temp_30 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_30.mat");
+HH_temp_31 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_31.mat");
+HH_temp_32 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_32.mat");
+HH_temp_33 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_33.mat");
+HH_temp_34 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_34.mat");
+HH_temp_35 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_35.mat");
 
-% HH_data_Temp_base = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_6.3.mat');
-% HH_data_Temp_7 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_7.mat');
-% HH_data_Temp_8 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_8.mat');
-% HH_data_Temp_9 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_9.mat');
-% HH_data_Temp_10 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_10.mat');
-% HH_data_Temp_11 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_11.mat');
-% HH_data_Temp_12 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_12.mat');
-% HH_data_Temp_13 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_13.mat');
-% HH_data_Temp_14 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_14.mat');
-% HH_data_Temp_15 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_15.mat');
-% HH_data_Temp_16 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_16.mat');
-% HH_data_Temp_17 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_17.mat');
-% HH_data_Temp_18 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_18.mat');
-% HH_data_Temp_19 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_19.mat');
-% HH_data_Temp_20 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_20.mat');
-% HH_data_Temp_21 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_21.mat');
-% HH_data_Temp_22 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_22.mat');
-% HH_data_Temp_23 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_23.mat');
-% HH_data_Temp_24 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_24.mat');
-% HH_data_Temp_25 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_25.mat');
-% HH_data_Temp_26 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_26.mat');
-% HH_data_Temp_27 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_27.mat');
-% HH_data_Temp_28 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_28.mat');
-% HH_data_Temp_29 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_29.mat');
-% HH_data_Temp_30 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_30.mat');
-% HH_data_Temp_31 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_31.mat');
-% HH_data_Temp_32 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_32.mat');
-% HH_data_Temp_33 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_33.mat');
-% HH_data_Temp_34 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_34.mat');
-% HH_data_Temp_35 = load('projects/axon_simulations/HH_temp_data/HH_data_Temp_35.mat');
+% HH_data_Temp_base = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_6.3.mat');
+% HH_data_Temp_7 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_7.mat');
+% HH_data_Temp_8 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_8.mat');
+% HH_data_Temp_9 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_9.mat');
+% HH_data_Temp_10 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_10.mat');
+% HH_data_Temp_11 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_11.mat');
+% HH_data_Temp_12 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_12.mat');
+% HH_data_Temp_13 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_13.mat');
+% HH_data_Temp_14 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_14.mat');
+% HH_data_Temp_15 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_15.mat');
+% HH_data_Temp_16 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_16.mat');
+% HH_data_Temp_17 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_17.mat');
+% HH_data_Temp_18 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_18.mat');
+% HH_data_Temp_19 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_19.mat');
+% HH_data_Temp_20 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_20.mat');
+% HH_data_Temp_21 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_21.mat');
+% HH_data_Temp_22 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_22.mat');
+% HH_data_Temp_23 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_23.mat');
+% HH_data_Temp_24 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_24.mat');
+% HH_data_Temp_25 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_25.mat');
+% HH_data_Temp_26 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_26.mat');
+% HH_data_Temp_27 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_27.mat');
+% HH_data_Temp_28 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_28.mat');
+% HH_data_Temp_29 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_29.mat');
+% HH_data_Temp_30 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_30.mat');
+% HH_data_Temp_31 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_31.mat');
+% HH_data_Temp_32 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_32.mat');
+% HH_data_Temp_33 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_33.mat');
+% HH_data_Temp_34 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_34.mat');
+% HH_data_Temp_35 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_35.mat');
 % 
 % SC_data_Temp_20 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_20.mat');
 % SC_data_Temp_22 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_22.mat');
@@ -123,7 +141,7 @@ Vmy_equilibrium = load('Vmy_all_test.mat');
 % SC_data_Temp_44 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_44.mat');
 % SC_data_Temp_46 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_46.mat');
 % SC_data_Temp_48 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_48.mat');
-SC_data_Temp_50 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_50.mat');
+% SC_data_Temp_50 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_50.mat');
 % SC_data_Temp_52 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_52.mat');
 % 
 % DC_data_Temp_20 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_20.mat');
@@ -145,42 +163,42 @@ SC_data_Temp_50 = load('projects/axon_simulations/SC_temp_data/SC_data_Temp_50.m
 % DC_data_Temp_52 = load('projects/axon_simulations/DC_temp_data/DC_data_Temp_52.mat');
 
 % picking time shots
-% time1 = 5.1; % in ms
-% time2 = 8; % in ms
-% time3 = 8.5; % in ms
-% time4 = 9; % in ms
-% time5 = 9.5; % in ms
-% time6 = 10; % in ms
-% time7 = 10.5; % in ms
+time1 = 5.1; % in ms
+time2 = 8; % in ms
+time3 = 8.5; % in ms
+time4 = 9; % in ms
+time5 = 9.5; % in ms
+time6 = 10; % in ms
+time7 = 10.5; % in ms
 
-time1 = 1; % in ms
-time2 = 2; % in ms
-time3 = 2.5; % in ms
-time4 = 3; % in ms
-time5 = 3.5; % in ms
-time6 = 4; % in ms
-time7 = 5; % in ms
+% time1 = 1; % in ms
+% time2 = 2; % in ms
+% time3 = 2.5; % in ms
+% time4 = 3; % in ms
+% time5 = 3.5; % in ms
+% time6 = 4; % in ms
+% time7 = 5; % in ms
 
-list_of_times = {time1, time2, time3, time4, time5, time6, time7};
+list_of_times = {time1, time5, time6};
 
 % picking space shots
-% position1 = 0.5; % in cm
-% position2 = 1; % in cm
-% position3 = 1.5; % in cm
-% position4 = 2; % in cm
-% position5 = 2.5; % in cm
-% position6 = 3; % in cm
-% position7 = 3.5; % in cm
+position1 = 0.5; % in cm
+position2 = 1; % in cm
+position3 = 1.5; % in cm
+position4 = 2; % in cm
+position5 = 2.5; % in cm
+position6 = 3; % in cm
+position7 = 5; % in cm
 
-position1 = 0.015; % in cm
-position2 = 0.02; % in cm
-position3 = 0.025; % in cm
-position4 = 0.03; % in cm
-position5 = 0.035; % in cm
-position6 = 0.038; % in cm
-position7 = 0.04; % in cm
+% position1 = 0.015; % in cm
+% position2 = 0.02; % in cm
+% position3 = 0.025; % in cm
+% position4 = 0.03; % in cm
+% position5 = 0.035; % in cm
+% position6 = 0.038; % in cm
+% position7 = 0.04; % in cm
 
-list_of_positions = {position1,position2,position3,position4,position5,position6,position7};
+list_of_positions = {position2, position6, position7};
 
 
 % picking pause (this controls the speed of the animation, the pause variable 
@@ -202,17 +220,18 @@ p = 0.01;
 % set_of_data8 = {SC_Ri_144, DC_model_SC_params_w_Ri_144};
 % set_of_data9 = {DC_data_Rpa_01, DC_data_Rpa_05, DC_data_Rpa_10, DC_data_Rpa_20, DC_data_Rpa_30, DC_data_Rpa_40, DC_data_Rpa_50};
 % set_of_data10 = {SC_Cohen_Optimized_params, SC_Cohen_Avg_params, SC_Cohen_DC_Optimized_params, DC_Cohen_Optimized_params, DC_Cohen_Avg_params};
+set_of_data11 = {HH_temp_base, HH_temp_8, HH_temp_10, HH_temp_12, HH_temp_14, HH_temp_16, HH_temp_18, HH_temp_20, HH_temp_22, HH_temp_24, HH_temp_26, HH_temp_28, HH_temp_30, HH_temp_31, HH_temp_32, HH_temp_33, HH_temp_34, HH_temp_35};
 
 % data = SC_Cohen_Optimized_params;
-data = Vmy_equilibrium;
+data = HH_3;
 
 % plot_animation_voltage_vs_time(DC_data, p);
 % plot_animation_voltage_vs_space(data, p);
 % plot_animation_probabilities_vs_time(HH_data_Temp_33, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
-plot_time_and_space_shots(data, list_of_positions, list_of_times);
+% plot_time_and_space_shots(data, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data8, p);
-% plot_voltage_vs_space_comparison(set_of_data6, p);
+plot_voltage_vs_space_comparison(set_of_data11, p);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(data, p)
 
 
@@ -451,13 +470,16 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
     dt = data.dt;
     dx = data.dx;
     
-    
+    xmin = 0;
+    xmax = T;
+    ymin = -70;
+    ymax = 50;
     
     % plotting Voltage vs Axon length
     figure(1)
     t1 = linspace(0, L, m);
     for i = 1:length(list_of_times)
-        plot(t1, data.Vmy_all(round(list_of_times{i}/dt),:))
+        plot(t1, data.Vm_all(round(list_of_times{i}/dt),:))
         hold on
     end
     
@@ -474,7 +496,7 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
     figure(2)
     t2 = linspace(0, T, n); % FULL MATRIX
     for i = 1:length(list_of_positions)
-        plot(t2, data.Vmy_all(:,round(list_of_positions{i}/dx)))
+        plot(t2, data.Vm_all(:,round(list_of_positions{i}/dx)))
         hold on
     end
     
@@ -487,7 +509,7 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
     
     xmin = 0;
     xmax = T;
-    ymin = -70;
+    ymin = -80;
     ymax = 50;
     axis([xmin xmax ymin ymax]);  % Set axis limits
     

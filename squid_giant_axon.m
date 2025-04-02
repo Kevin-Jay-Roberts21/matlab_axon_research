@@ -21,7 +21,7 @@ E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
 
 % Defining the mesh parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-L = 5; % axon length (cm)
+L = 10; % axon length (cm)
 dx = 0.01; % space step (MAY CHANGE LATER)
 T = 30; % (ms) Total Time
 dt = 0.01; % time step (MAY CHANGE LATER)
@@ -31,7 +31,7 @@ n = T/dt + 1; % total number of time steps
 % Defining alpha/beta functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T_base = 6.3; % (C) base temperature
-T_actual = 6.3; % (C) the temperature of the squid axon
+T_actual = 35; % (C) the temperature of the squid axon
 Q_10 = 3; % (dimless) temperature coefficient
 phi = Q_10^((T_actual - T_base)/10); % (dimless) temperature scaling factor
 alpha_n = @(Vm) phi * 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10)); % (1/ms)
@@ -43,7 +43,7 @@ beta_h = @(Vm) phi * 1/(1 + exp(-(Vm + 35)/10)); % (1/ms)
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 12; % (in mS/cm^2) % stimulus value
+S_v = 20; % (in mS/cm^2) % stimulus value
 S_T0 = 5; % start time of when stimulus is added (in ms)
 S_T1 = 5.1; % end time of when stimulus is added (in ms)
 S_P0 = 1; % start position of adding the stimulus (in cm)
@@ -216,4 +216,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('HH_S_11.41.mat');
+% save('HH_Temp_35.mat');

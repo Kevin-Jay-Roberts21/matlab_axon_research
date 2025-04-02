@@ -40,7 +40,7 @@ a_my = a/0.698; % (cm) axon radius in myelinated section
 R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
-r_pa = 100000*10^6; % 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
+r_pa = 96.3*10^6; % 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
 r_pn = 321*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
 R_my = 63.7; % (kilo-ohms*cm^2) specific myelin resistance
@@ -108,7 +108,7 @@ F_1 = @(Vmy_i) (1/(R_m*C_m) - 1/(C_my*R_my))*Vmy_i + E_rest/(R_m*C_m);
 F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) w2/(2*dx^2)*Vmy_i_minus_1 - w2/dx^2*Vmy_i + w2/(2*dx^2)*Vmy_i_plus_1; % Internodal region
 F_2 = @(n, m, h, ii, tt) 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
 F_5 = @(Vmy_i, n, m, h, ii, tt) (F_1(Vmy_i) + F_2(n, m, h, ii, tt))/2; % End point
-
+ 
 f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*(F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1)+F_1(Vmy_i)) + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(n, m, h, ii, tt) + ... % Nodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*F_5(Vmy_i, n, m, h, ii, tt); % End point
