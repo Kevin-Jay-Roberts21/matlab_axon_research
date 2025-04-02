@@ -8,7 +8,7 @@ clc
 
 % Defining the Thickness, Length and other Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dx = 0.0001; % (cm) space step
+dx = 0.00005; % (cm) space step
 dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
@@ -37,14 +37,14 @@ n = T/dt + 1; % n is the number of time steps
 % original a, a_my, R_my and C_my
 a = 0.55*10^(-4); % (cm) axon radius in nodal region
 a_my = a/0.698; % (cm) axon radius in myelinated section 
-R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
-R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
-C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
+R_i = 0.155; % (kilo-ohms*cm) intracellular resistivity
+R_m = 24.6; % (kilo-ohms*cm^2) specific membrane resistance
+C_m = 1.15; % (micro-farads/cm^2) specific membrane capacitance
 r_pa = 96.3*10^6; % 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
-r_pn = 321*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
-R_my = 63.7; % (kilo-ohms*cm^2) specific myelin resistance
-C_my = 0.113; % (micro-farads/cm^2) specific myelin capacitance
+r_pn = 2450*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
+R_my = 240; % (kilo-ohms*cm^2) specific myelin resistance
+C_my = 0.0379; % (micro-farads/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -61,7 +61,7 @@ w3 = r_pa/(r_pn*L_pn);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 1000; % (in mS/cm^2) % stimulus value
+S_v = 100000; % (in mS/cm^2) % stimulus value
 S_T0 = 1; % start time of when stimulus is added (in ms)
 S_T1 = 1.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -74,8 +74,8 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
 
 % Defining alpha/beta functions as well as the b_1, c_1 and f_1 functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-T_base = 20; % (C) base temperature
-T_actual = 20; % (C) the temperature of the squid axon
+T_base = 35; % (C) base temperature
+T_actual = 35; % (C) the temperature of the squid axon
 Q_10_Na = 2.2; % (dimless) temperature coefficient for Na current
 Q_10_K = 3; % (dimless) temperature coefficient for K current
 phi_Na = Q_10_Na^((T_actual - T_base)/10); % (dimless) temperature scaling factor for Na current
@@ -105,11 +105,14 @@ c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
        
 % defining the f_1(x_i) function
 F_1 = @(Vmy_i) (1/(R_m*C_m) - 1/(C_my*R_my))*Vmy_i + E_rest/(R_m*C_m);
+
 F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) w2/(2*dx^2)*Vmy_i_minus_1 - w2/dx^2*Vmy_i + w2/(2*dx^2)*Vmy_i_plus_1; % Internodal region
+
 F_2 = @(n, m, h, ii, tt) 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
+
 F_5 = @(Vmy_i, n, m, h, ii, tt) (F_1(Vmy_i) + F_2(n, m, h, ii, tt))/2; % End point
  
-f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*(F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1)+F_1(Vmy_i)) + ... % Internodal region
+f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*(F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) + F_1(Vmy_i)) + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(n, m, h, ii, tt) + ... % Nodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*F_5(Vmy_i, n, m, h, ii, tt); % End point
 
@@ -213,7 +216,7 @@ for j = 1:(n-1)
     A_2(1, 1) = 1;
     A_2(1, 2) = 0;
     A_2(m, m-1) = -1;
-    A_2(m, m) = 1 + w3*dx;
+    A_2(m, m) = (1 + w3*dx);
 
     for i = 2:(m-1)
         % updating the A_2 matrix each row is determined based on
@@ -237,13 +240,13 @@ for j = 1:(n-1)
             eta5 = 0;
         elseif (i == seg_start + 1) % Right end point (x_R)
             eta1 = -1;
-            eta2 = 1 + dx*w3;
+            eta2 = (1 + dx*w3);
             eta3 = 0; 
             eta4 = 0; 
             eta5 = 0;
         elseif (i == myelin_start + 1) % Left end point (x_L)
             eta1 = 0;
-            eta2 = 1 + dx*w3;
+            eta2 = (1 + dx*w3);
             eta3 = -1;
             eta4 = 0; 
             eta5 = 0;
