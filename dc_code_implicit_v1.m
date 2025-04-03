@@ -8,8 +8,8 @@ clc
 
 % Defining the Thickness, Length and other Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dx = 0.00005; % (cm) space step
-dt = 0.01; % (ms) time step 
+dx = 0.0001; % (cm) space step
+dt = 0.0001; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_pn = 2.3*10^(-4); % (cm) paranodal length
@@ -223,7 +223,7 @@ for j = 1:(n-1)
             newVmy(i) = rho*w1/2*Vm(i-1) - rho*w1*Vm(i) + rho*w1/2*Vm(i+1) + rho*w2/2*Vmy(i-1) + (1 - rho*w2 - 1/(R_my*C_my))*Vmy(i) + rho*w2/2*(1 + w3*dx)*Vmy(i);
         end
     end
-    newVmy(m) = rho*w1/2*Vm(i-1) - rho*w1*Vm(i) + rho*w1/2*Vm(i+1) + rho*w2/2*Vmy(i-1) + (1 - rho*w2 - 1/(R_my*C_my))*Vmy(i) + rho*w2/2*(1 + w3*dx)*Vmy(i); 
+    newVmy(m) = 1/(1 + w3*dx)*Vmy(m-1); 
     
     % Updating Vm 
     %%%%%%%%%%%%%
