@@ -1,4 +1,4 @@
-% DC code to model axon voltage, first version
+% Double Cable Model Finite Difference implicit discretization
 % Kevin Roberts
 % April 2025
 
@@ -8,8 +8,8 @@ clc
 
 % Defining the Thickness, Length and other Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dx = 0.0001; % (cm) space step
-dt = 0.001; % (ms) time step 
+dx = 0.00005; % (cm) space step
+dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_pn = 2.3*10^(-4); % (cm) paranodal length
@@ -61,7 +61,7 @@ w3 = r_pa/(r_pn*L_pn);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 150; % (in mS/cm^2) % stimulus value
+S_v = 151; % (in mS/cm^2) % stimulus value
 S_T0 = 1; % start time of when stimulus is added (in ms)
 S_T1 = 1.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -204,7 +204,17 @@ for j = 1:(n-1)
     % Updating Vmy
     %%%%%%%%%%%%%%
     
-    newVmy(1) = 0;
+    % Defining the A_2 matrix as well as e_2 and f_2
+    A_2 = zeros(m, m);
+    e_1 = zeros(m, 1);
+    e_2 = zeros(m, 1);
+
+    % using the boundary conditions to define the top and bottom row of A_2
+    A_2(1, 1) = 1;
+    A_2(1, 2) = 0;
+    A_2(m, m-1) = -1;
+    A_2(m, m) = (1 + w3*dx);
+
     for i = 2:(m-1)
         % updating the A_2 matrix each row is determined based on
         % internodal, nodal, and end points (left or right end points)
@@ -214,16 +224,39 @@ for j = 1:(n-1)
         seg_start = (seg - 1)*N_s; % index of the start of the segment
 
         if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
-            newVmy(i) = rho*w1/2*Vm(i-1) - rho*w1*Vm(i) + rho*w1/2*Vm(i+1) + rho*w2/2*Vmy(i-1) + (1 - rho*w2 - dt/(R_my*C_my))*Vmy(i) + rho*w2/2*Vmy(i+1); 
+            eta1 = -rho*w2/2;
+            eta2 = 1 + rho*w2;
+            eta3 = -rho*w2/2; 
+            eta4 = 1 - dt/(R_my*C_my); 
+            eta5 = rho*w1/2*Vm(i-1) - rho*w1*Vm(i) + rho*w1/2*Vm(i+1);
         elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
-            newVmy(i) = 0;
+            eta1 = 0;
+            eta2 = 1;
+            eta3 = 0; 
+            eta4 = 0; 
+            eta5 = 0;
         elseif (i == seg_start + 1) % Right end point (x_R)
-            newVmy(i) = rho*w1/2*Vm(i-1) - rho*w1*Vm(i) + rho*w1/2*Vm(i+1) + rho*w2/2*(1 + w3*dx)*Vmy(i) + (1 - rho*w2 - dt/(R_my*C_my))*Vmy(i) + rho*w2/2*Vmy(i+1); 
+            eta1 = -1;
+            eta2 = (1 + dx*w3);
+            eta3 = 0; 
+            eta4 = 0; 
+            eta5 = 0;
         elseif (i == myelin_start + 1) % Left end point (x_L)
-            newVmy(i) = rho*w1/2*Vm(i-1) - rho*w1*Vm(i) + rho*w1/2*Vm(i+1) + rho*w2/2*Vmy(i-1) + (1 - rho*w2 - dt/(R_my*C_my))*Vmy(i) + rho*w2/2*(1 + w3*dx)*Vmy(i);
+            eta1 = 0;
+            eta2 = (1 + dx*w3);
+            eta3 = -1;
+            eta4 = 0; 
+            eta5 = 0;
         end
+
+        A_2(i, i-1) = eta1;
+        A_2(i, i) = eta2;
+        A_2(i, i+1) = eta3;
+        e_1(i) = eta4*Vmy(i);
+        e_2(i) = eta5;
+
     end
-    newVmy(m) = 1/(1 + w3*dx)*Vmy(m-1); 
+    newVmy = transpose(A_2\(e_1+e_2));
     
     % Updating Vm 
     %%%%%%%%%%%%%
