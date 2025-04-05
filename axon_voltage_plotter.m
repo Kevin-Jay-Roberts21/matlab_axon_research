@@ -23,9 +23,9 @@ clc
 
 % getting the saved data
 % HH_data = load('HH_data.mat');
-HH_1 = load('HH_1.mat');
-HH_2 = load('HH_2.mat');
-HH_3 = load('HH_3.mat');
+% HH_1 = load('HH_1.mat');
+% HH_2 = load('HH_2.mat');
+% HH_3 = load('HH_3.mat');
 % HH_data2 = load('HH_data2.mat');
 % SC_data = load('SC_data.mat');
 % DC_data = load('DC_data.mat');
@@ -51,11 +51,11 @@ HH_3 = load('HH_3.mat');
 % DC_Cohen_DC_params_Rpa_1000 = load('DC_model_with_DC_Cohen_params_Rpa_1000.mat');
 % DC_Cohen_DC_params_Rpa_2000 = load('DC_model_with_DC_Cohen_params_Rpa_2000.mat');
 
-% SC_Cohen_Optimized_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_Optimized_params.mat');
-% SC_Cohen_Avg_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_Avg_params.mat');
-% SC_Cohen_DC_Optimized_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_Optimized_params.mat');
-% DC_Cohen_Optimized_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_Optimized_params.mat');
-% DC_Cohen_Avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_Avg_params.mat');
+SC_Cohen_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_cell6_params.mat');
+SC_Cohen_Avg_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_Avg_params.mat');
+SC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_params.mat');
+DC_Cohen_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_cell6_params.mat');
+DC_Cohen_Avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_Avg_params.mat');
 
 % DC_data_Rpa_01 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.01.mat');
 % DC_data_Rpa_02 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.02.mat');
@@ -126,55 +126,32 @@ HH_3 = load('HH_3.mat');
 % HH_data_Temp_34 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_34.mat');
 % HH_data_Temp_35 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_35.mat');
 % 
-% SC_temp_35 = load('projects/axon_simulations/SC_temp_data/SC_temp_base.mat');
-% SC_temp_37 = load('projects/axon_simulations/SC_temp_data/SC_temp_37.mat');
-% SC_temp_39 = load('projects/axon_simulations/SC_temp_data/SC_temp_39.mat');
-% SC_temp_41 = load('projects/axon_simulations/SC_temp_data/SC_temp_41.mat');
-% SC_temp_43 = load('projects/axon_simulations/SC_temp_data/SC_temp_43.mat');
-% SC_temp_45 = load('projects/axon_simulations/SC_temp_data/SC_temp_45.mat');
-% SC_temp_47 = load('projects/axon_simulations/SC_temp_data/SC_temp_47.mat');
-% SC_temp_49 = load('projects/axon_simulations/SC_temp_data/SC_temp_49.mat');
-% SC_temp_51 = load('projects/axon_simulations/SC_temp_data/SC_temp_51.mat');
-% SC_temp_53 = load('projects/axon_simulations/SC_temp_data/SC_temp_53.mat');
-% SC_temp_55 = load('projects/axon_simulations/SC_temp_data/SC_temp_55.mat');
-% SC_temp_57 = load('projects/axon_simulations/SC_temp_data/SC_temp_57.mat');
-% SC_temp_59 = load('projects/axon_simulations/SC_temp_data/SC_temp_59.mat');
-% SC_temp_61 = load('projects/axon_simulations/SC_temp_data/SC_temp_61.mat');
-% SC_temp_62 = load('projects/axon_simulations/SC_temp_data/SC_temp_62.mat');
-% SC_temp_63 = load('projects/axon_simulations/SC_temp_data/SC_temp_63.mat');
-% SC_temp_64 = load('projects/axon_simulations/SC_temp_data/SC_temp_64.mat');
-% SC_temp_65 = load('projects/axon_simulations/SC_temp_data/SC_temp_65.mat');
-% SC_temp_66 = load('projects/axon_simulations/SC_temp_data/SC_temp_66.mat');
-% SC_temp_67 = load('projects/axon_simulations/SC_temp_data/SC_temp_67.mat');
-% SC_temp_68 = load('projects/axon_simulations/SC_temp_data/SC_temp_68.mat');
-% SC_temp_69 = load('projects/axon_simulations/SC_temp_data/SC_temp_69.mat');
-% SC_temp_70 = load('projects/axon_simulations/SC_temp_data/SC_temp_70.mat');
-% SC_temp_71 = load('projects/axon_simulations/SC_temp_data/SC_temp_71.mat');
-
+% SC_temp_20 = load('projects/axon_simulations/SC_temp_data/SC_temp_base.mat');
+% SC_temp_22 = load('projects/axon_simulations/SC_temp_data/SC_temp_22.mat');
+% SC_temp_24 = load('projects/axon_simulations/SC_temp_data/SC_temp_24.mat');
+% SC_temp_26 = load('projects/axon_simulations/SC_temp_data/SC_temp_26.mat');
+% SC_temp_28 = load('projects/axon_simulations/SC_temp_data/SC_temp_28.mat');
+% SC_temp_30 = load('projects/axon_simulations/SC_temp_data/SC_temp_30.mat');
+% SC_temp_32 = load('projects/axon_simulations/SC_temp_data/SC_temp_32.mat');
+% SC_temp_34 = load('projects/axon_simulations/SC_temp_data/SC_temp_34.mat');
+% SC_temp_36 = load('projects/axon_simulations/SC_temp_data/SC_temp_36.mat');
+% SC_temp_38 = load('projects/axon_simulations/SC_temp_data/SC_temp_38.mat');
+% SC_temp_40 = load('projects/axon_simulations/SC_temp_data/SC_temp_40.mat');
+% SC_temp_42 = load('projects/axon_simulations/SC_temp_data/SC_temp_42.mat');
+% SC_temp_44 = load('projects/axon_simulations/SC_temp_data/SC_temp_44.mat');
+% SC_temp_46 = load('projects/axon_simulations/SC_temp_data/SC_temp_46.mat');
+% SC_temp_48 = load('projects/axon_simulations/SC_temp_data/SC_temp_48.mat');
+% SC_temp_50 = load('projects/axon_simulations/SC_temp_data/SC_temp_50.mat');
 % 
-% DC_temp_35 = load('projects/axon_simulations/DC_temp_data/DC_temp_35.mat');
-% DC_temp_37 = load('projects/axon_simulations/DC_temp_data/DC_temp_37.mat');
-% DC_temp_39 = load('projects/axon_simulations/DC_temp_data/DC_temp_39.mat');
-% DC_temp_41 = load('projects/axon_simulations/DC_temp_data/DC_temp_41.mat');
-% DC_temp_43 = load('projects/axon_simulations/DC_temp_data/DC_temp_43.mat');
-% DC_temp_45 = load('projects/axon_simulations/DC_temp_data/DC_temp_45.mat');
-% DC_temp_47 = load('projects/axon_simulations/DC_temp_data/DC_temp_47.mat');
-% DC_temp_49 = load('projects/axon_simulations/DC_temp_data/DC_temp_49.mat');
-% DC_temp_51 = load('projects/axon_simulations/DC_temp_data/DC_temp_51.mat');
-% DC_temp_53 = load('projects/axon_simulations/DC_temp_data/DC_temp_53.mat');
-% DC_temp_55 = load('projects/axon_simulations/DC_temp_data/DC_temp_55.mat');
-% DC_temp_57 = load('projects/axon_simulations/DC_temp_data/DC_temp_57.mat');
-% DC_temp_59 = load('projects/axon_simulations/DC_temp_data/DC_temp_59.mat');
-% DC_temp_61 = load('projects/axon_simulations/DC_temp_data/DC_temp_61.mat');
-% DC_temp_63 = load('projects/axon_simulations/DC_temp_data/DC_temp_63.mat');
-% DC_temp_64 = load('projects/axon_simulations/DC_temp_data/DC_temp_64.mat');
-% DC_temp_65 = load('projects/axon_simulations/DC_temp_data/DC_temp_65.mat');
-% DC_temp_66 = load('projects/axon_simulations/DC_temp_data/DC_temp_66.mat');
-% DC_temp_67 = load('projects/axon_simulations/DC_temp_data/DC_temp_67.mat');
-% DC_temp_68 = load('projects/axon_simulations/DC_temp_data/DC_temp_68.mat');
-% DC_temp_69 = load('projects/axon_simulations/DC_temp_data/DC_temp_69.mat');
-% DC_temp_70 = load('projects/axon_simulations/DC_temp_data/DC_temp_70.mat');
-% DC_temp_71 = load('projects/axon_simulations/DC_temp_data/DC_temp_71.mat');
+% DC_temp_20 = load('projects/axon_simulations/DC_temp_data/DC_temp_base.mat');
+% DC_temp_22 = load('projects/axon_simulations/DC_temp_data/DC_temp_22.mat');
+% DC_temp_24 = load('projects/axon_simulations/DC_temp_data/DC_temp_24.mat');
+% DC_temp_26 = load('projects/axon_simulations/DC_temp_data/DC_temp_26.mat');
+% DC_temp_28 = load('projects/axon_simulations/DC_temp_data/DC_temp_28.mat');
+% DC_temp_30 = load('projects/axon_simulations/DC_temp_data/DC_temp_30.mat');
+% DC_temp_32 = load('projects/axon_simulations/DC_temp_data/DC_temp_32.mat');
+% DC_temp_34 = load('projects/axon_simulations/DC_temp_data/DC_temp_34.mat');
+% DC_temp_36 = load('projects/axon_simulations/DC_temp_data/DC_temp_36.mat');
 
 % picking time shots
 time1 = 5.1; % in ms
@@ -233,21 +210,21 @@ p = 0.01;
 % set_of_data7 = {SC_Cohen_DC_params, DC_Cohen_DC_params_Rpa_05, DC_Cohen_DC_params_Rpa_5, DC_Cohen_DC_params_Rpa_200, DC_Cohen_DC_params_Rpa_1000};
 % set_of_data8 = {SC_Ri_144, DC_model_SC_params_w_Ri_144};
 % set_of_data9 = {DC_data_Rpa_01, DC_data_Rpa_05, DC_data_Rpa_10, DC_data_Rpa_20, DC_data_Rpa_30, DC_data_Rpa_40, DC_data_Rpa_50};
-% set_of_data10 = {SC_Cohen_Optimized_params, SC_Cohen_Avg_params, SC_Cohen_DC_Optimized_params, DC_Cohen_Optimized_params, DC_Cohen_Avg_params};
+% set_of_data10 = {SC_Cohen_cell6_params, SC_Cohen_Avg_params, SC_Cohen_DC_cell6_params, DC_Cohen_cell6_params, DC_Cohen_Avg_params};
 % set_of_data11 = {HH_temp_base, HH_temp_8, HH_temp_10, HH_temp_12, HH_temp_14, HH_temp_16, HH_temp_18, HH_temp_20, HH_temp_22, HH_temp_24, HH_temp_26, HH_temp_28, HH_temp_30, HH_temp_31, HH_temp_32, HH_temp_33, HH_temp_34, HH_temp_35};
-% set_of_data12 = {SC_temp_35, SC_temp_37, SC_temp_39, SC_temp_41, SC_temp_43, SC_temp_45, SC_temp_47, SC_temp_49, SC_temp_51, SC_temp_53, SC_temp_55, SC_temp_57, SC_temp_59, SC_temp_61, SC_temp_63, SC_temp_65, SC_temp_66, SC_temp_67, SC_temp_68, SC_temp_69, SC_temp_70, SC_temp_71};
-% set_of_data13 = {DC_temp_35, DC_temp_37, DC_temp_39, DC_temp_41, DC_temp_43, DC_temp_45, DC_temp_47, DC_temp_49, DC_temp_51, DC_temp_53, DC_temp_55, DC_temp_57, DC_temp_59, DC_temp_61, DC_temp_63, DC_temp_64, DC_temp_65, DC_temp_66, DC_temp_67, DC_temp_68, DC_temp_69, DC_temp_70, DC_temp_71};
+% set_of_data12 = {SC_temp_20, SC_temp_22, SC_temp_24, SC_temp_26, SC_temp_28, SC_temp_30, SC_temp_32, SC_temp_34, SC_temp_36, SC_temp_38, SC_temp_40, SC_temp_42, SC_temp_44, SC_temp_46, SC_temp_48, SC_temp_50};
+% set_of_data13 = {DC_temp_20, DC_temp_22, DC_temp_26, DC_temp_28, DC_temp_30, DC_temp_32, DC_temp_34, DC_temp_36};
 
 % data = SC_Cohen_Optimized_params;
-data = HH_1;
+% data = HH_1;
 
-plot_animation_voltage_vs_time(data, p);
+% plot_animation_voltage_vs_time(data, p);
 % plot_animation_voltage_vs_space(data, p);
 % plot_animation_probabilities_vs_time(HH_data_Temp_33, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(data, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data8, p);
-% plot_voltage_vs_space_comparison(set_of_data12, p);
+% plot_voltage_vs_space_comparison(set_of_data10, p);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(data, p)
 
 

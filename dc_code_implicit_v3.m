@@ -29,22 +29,22 @@ n = T/dt + 1; % n is the number of time steps
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Parameters to change to test Dr. Huang's Paper
-% a_my = 0.00015; % (cm) radius in myelinated region
-% a = 0.00016; % (cm) radius in nodal region
-% R_my = 3.9408*10^7; % (kilo-ohms*cm^2) specfic myelin resistance
-% C_my = 0.1224; % (micro-fards/cm^2) specific myelin capacitance
+a_my = 0.0001; % (cm) radius in myelinated region
+a = 0.0001238; % (cm) radius in nodal region
+R_my = 123.6795; % (kilo-ohms*cm^2) specfic myelin resistance
+C_my = 0.0081; % (micro-fards/cm^2) specific myelin capacitance
 
 % original a, a_my, R_my and C_my
-a = 0.55*10^(-4); % (cm) axon radius in nodal region
-a_my = a/0.698; % (cm) axon radius in myelinated section 
-R_i = 0.2; % (kilo-ohms*cm) intracellular resistivity
-R_m = 23.1; % (kilo-ohms*cm^2) specific membrane resistance
-C_m = 1.28; % (micro-farads/cm^2) specific membrane capacitance
-r_pa = 321*10^6; % 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
+% a = 0.55*10^(-4); % (cm) axon radius in nodal region
+% a_my = a/0.698; % (cm) axon radius in myelinated section 
+R_i = 0.155; % (kilo-ohms*cm) intracellular resistivity
+R_m = 24.6; % (kilo-ohms*cm^2) specific membrane resistance
+C_m = 1.15; % (micro-farads/cm^2) specific membrane capacitance
+r_pa = 125*10^6; % 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
 r_pn = 2450*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
-R_my = 530; % (kilo-ohms*cm^2) specific myelin resistance
-C_my = 0.174; % (micro-farads/cm^2) specific myelin capacitance
+% R_my = 63.7; % (kilo-ohms*cm^2) specific myelin resistance
+% C_my = 0.113; % (micro-farads/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -61,7 +61,7 @@ w3 = r_pa/(r_pn*L_pn);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 150; % (in mS/cm^2) % stimulus value
+S_v = 20000; % (in mS/cm^2) % stimulus value
 S_T0 = 1; % start time of when stimulus is added (in ms)
 S_T1 = 1.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -74,8 +74,8 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
 
 % Defining alpha/beta functions as well as the b_1, c_1 and f_1 functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-T_base = 35; % (C) base temperature
-T_actual = 35; % (C) the temperature of the squid axon
+T_base = 20; % (C) base temperature
+T_actual = 20; % (C) the temperature of the squid axon
 Q_10_Na = 2.2; % (dimless) temperature coefficient for Na current
 Q_10_K = 3; % (dimless) temperature coefficient for K current
 phi_Na = Q_10_Na^((T_actual - T_base)/10); % (dimless) temperature scaling factor for Na current
@@ -116,7 +116,7 @@ f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) >
 % Initialization
 %%%%%%%%%%%%%%%%
 V_m0 = -58.1124; % (mV) initial condition for membrane potential 
-V_my0 = 0.0368; % (mV) initial condition for axon potential in periaxonal space
+V_my0 = 0.0285; % (mV) initial condition for axon potential in periaxonal space
 N_0 = 0.4264; % (dimless) initial condition for gating variable n
 M_0 = 0.1148; % (dimless) initial condition for gating variable m
 H_0 = 0.3548; % (dimless) initial condition for gating variable h
@@ -516,4 +516,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('DC_Huang_Tube_params.mat');
+% save('DC_Cohen_cell6_params.mat');
