@@ -57,6 +57,7 @@ clc
 % DC_Cohen_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_cell6_params.mat');
 % DC_Cohen_avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_params.mat');
 % DC_Cohen_avg_r_pa1000fold = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_r_pa1000fold.mat');
+DC_Cohen_avg_stim_increase = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_stim_increase.mat');
 
 % DC_data_Rpa_01 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.01.mat');
 % DC_data_Rpa_02 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.02.mat');
@@ -166,7 +167,7 @@ DC_temp_24 = load('projects/axon_simulations/DC_temp_data/DC_temp_24.mat');
 % time6 = 10; % in ms
 % time7 = 10.5; % in ms
 
-time0 = 7.5; % in ms
+time0 = 4; % in ms
 time1 = 30*0.25; % in ms
 time2 = 30*0.5; % in ms
 time3 = 30*0.75; % in ms
@@ -216,16 +217,16 @@ p = 0.01;
 set_of_data13 = {DC_temp_20, DC_temp_21, DC_temp_22, DC_temp_23, DC_temp_24};
 
 % data = SC_Cohen_Optimized_params;
-% data = DC_Cohen_avg_params;
+data = DC_Cohen_avg_stim_increase;
 
 % plot_Vm_minus_Vmy_picture(data, time0);
 % plot_animation_voltage_vs_time(data, p);
 % plot_animation_voltage_vs_space(data, p);
 % plot_animation_probabilities_vs_time(HH_data_Temp_33, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
-% plot_time_and_space_shots(data, list_of_positions, list_of_times);
+plot_time_and_space_shots(data, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data8, p);
-plot_voltage_vs_space_comparison(set_of_data13, p);
+% plot_voltage_vs_space_comparison(set_of_data13, p);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(data, p)
 
 
@@ -541,12 +542,12 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
     xmin = 0;
     xmax = T;
     ymin = -70;
-    ymax = 30;
+    ymax = 40;
     axis([xmin xmax ymin ymax]);  % Set axis limits
     legend(legendStrings2, 'Interpreter', 'latex')
     ylabel('$V_m$ (mV)', 'Interpreter', 'latex')
     xlabel("Time (ms)")
-    title('Temporal Profile of $V_m$ for 5) DC: DC avg.', 'Interpreter', 'latex');
+    title('Temporal Profile of $V_m$ for increased $S_v$ and time interval', 'Interpreter', 'latex');
     
     % plotting N, M, H probability vs time (at the first position list_of_positions(1))
     figure(3)
