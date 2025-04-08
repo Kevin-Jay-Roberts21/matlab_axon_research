@@ -18,7 +18,7 @@ d_pn = 7.4*10^(-7); % (cm) paranodal thickness
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 20; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 8; % (ms) the total time of the experiment
+T = 30; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -40,7 +40,7 @@ a_my = a/0.698; % (cm) axon radius in myelinated section
 R_i = 0.155; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.6; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.15; % (micro-farads/cm^2) specific membrane capacitance
-r_pa = 0.0002*10^6; % 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
+r_pa = 125*10^6; % 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
 r_pn = 2450*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
 R_my = 240; % (kilo-ohms*cm^2) specific myelin resistance
@@ -61,7 +61,7 @@ w3 = r_pa/(r_pn*L_pn);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 900; % (in mS/cm^2) % stimulus value
+S_v = 1000000; % (in mS/cm^2) % stimulus value
 S_T0 = 1; % start time of when stimulus is added (in ms)
 S_T1 = 1.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -516,4 +516,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('DC_Cohen_avg_r_pa_low.mat');
+% save('DC_Cohen_avg_r_pa_low.mat');
