@@ -88,15 +88,14 @@ clc
 % SC_data_from_saltcond2023_code = load('SC_data_from_saltcond2023_code.mat');
 % DC_data_from_saltcond2023_code = load('DC_data_from_saltcond2023_code.mat');
 
-SC_Huang_Myelinated = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated.mat');
-SC_Huang_Tube_params = load('projects/axon_simulations/Huang_simulations/SC_Huang_Tube_params.mat');
-SC_Huang_TubeParalyne_params = load('projects/axon_simulations/Huang_simulations/SC_Huang_TubeParalyne_params.mat');
+% SC_Huang_Myelinated = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated.mat');
+% SC_Huang_Tube_params = load('projects/axon_simulations/Huang_simulations/SC_Huang_Tube_params.mat');
+% SC_Huang_TubeParalyne_params = load('projects/axon_simulations/Huang_simulations/SC_Huang_TubeParalyne_params.mat');
 % 
-% SC_Cohen_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_cell6_params.mat');
-% SC_Cohen_avg_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_avg_params.mat');
-% SC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_avg_params.mat');
-% DC_Cohen_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_cell6_params.mat');
-% DC_Cohen_avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_params.mat');
+SC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_params.mat');
+SC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_avg_params.mat');
+DC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params.mat');
+DC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_avg_params.mat');
 
 % HH_1 = load('HH_1.mat');
 
@@ -110,19 +109,14 @@ HH_space_vec1 = [2 2.5; 2.5 3; 3 3.5; 3.5 4];
 SC_and_DC_space_vec = [0.06 0.08; 0.08 0.1; 0.1 0.12; 0.12 0.14;]; % all in (cm)
 
 % defining multiple datasets
-% HH_data_set = {HH_data_Temp_base, HH_data_Temp_7, HH_data_Temp_8, HH_data_Temp_9, HH_data_Temp_10, HH_data_Temp_11, HH_data_Temp_12, HH_data_Temp_13, HH_data_Temp_14, HH_data_Temp_15, HH_data_Temp_16, HH_data_Temp_17, HH_data_Temp_18, HH_data_Temp_19, HH_data_Temp_20, HH_data_Temp_21, HH_data_Temp_22, HH_data_Temp_23, HH_data_Temp_24, HH_data_Temp_25, HH_data_Temp_26, HH_data_Temp_27, HH_data_Temp_28, HH_data_Temp_29, HH_data_Temp_30, HH_data_Temp_31, HH_data_Temp_32};
-% SC_data_set = {SC_data_Temp_20, SC_data_Temp_22, SC_data_Temp_24, SC_data_Temp_26, SC_data_Temp_28, SC_data_Temp_30, SC_data_Temp_32, SC_data_Temp_34, SC_data_Temp_36, SC_data_Temp_38, SC_data_Temp_40, SC_data_Temp_42, SC_data_Temp_44, SC_data_Temp_46, SC_data_Temp_48, SC_data_Temp_50};
-% DC_data_set = {DC_data_Temp_20, DC_data_Temp_22, DC_data_Temp_24, DC_data_Temp_26, DC_data_Temp_28, DC_data_Temp_30, DC_data_Temp_32, DC_data_Temp_34, DC_data_Temp_36, DC_data_Temp_38, DC_data_Temp_40, DC_data_Temp_42, DC_data_Temp_44, DC_data_Temp_46, DC_data_Temp_48, DC_data_Temp_50};
-% data_set1 = {SC_data_from_saltcond2023_code, DC_data_from_saltcond2023_code};
-data_set2 = {SC_Huang_Myelinated, SC_Huang_Tube_params, SC_Huang_TubeParalyne_params};
-% data_set3 = {SC_Cohen_cell6_params, SC_Cohen_avg_params, SC_Cohen_DC_avg_params, DC_Cohen_cell6_params, DC_Cohen_avg_params};
-% data_set4 = {};
-% data_set5 = {HH_temp_base, HH_temp_8, HH_temp_10, HH_temp_12, HH_temp_14, HH_temp_16, HH_temp_18, HH_temp_20, HH_temp_22, HH_temp_24, HH_temp_26, HH_temp_28, HH_temp_30, HH_temp_31, HH_temp_32};
-% data_set12 = {SC_temp_20, SC_temp_22, SC_temp_24, SC_temp_26, SC_temp_28, SC_temp_30, SC_temp_32, SC_temp_34, SC_temp_36, SC_temp_38, SC_temp_40, SC_temp_42, SC_temp_44, SC_temp_46, SC_temp_48, SC_temp_50, SC_temp_52, SC_temp_54, SC_temp_55};
-% data_set7 = {DC_temp_20, DC_temp_21, DC_temp_22, DC_temp_23};
+% set_of_data1 = {HH_temp_base, HH_temp_8, HH_temp_10, HH_temp_12, HH_temp_14, HH_temp_16, HH_temp_18, HH_temp_20, HH_temp_22, HH_temp_24, HH_temp_26, HH_temp_28, HH_temp_30, HH_temp_31, HH_temp_32};
+% set_of_data2 = {SC_temp_20, SC_temp_22, SC_temp_24, SC_temp_26, SC_temp_28, SC_temp_30, SC_temp_32, SC_temp_34, SC_temp_36, SC_temp_38, SC_temp_40, SC_temp_42, SC_temp_44, SC_temp_46, SC_temp_48, SC_temp_50, SC_temp_52, SC_temp_54, SC_temp_55};
+% set_of_data3 = {DC_temp_20, DC_temp_21, DC_temp_22, DC_temp_23};
+% set_of_data4 = {SC_Huang_Myelinated, SC_Huang_Tube_params, SC_Huang_TubeParalyne_params};
+set_of_data5 = {SC_Cohen_DC_cell6_params, SC_Cohen_DC_avg_params, DC_Cohen_DC_cell6_params, DC_Cohen_DC_avg_params};
 
 % picking the dataset to compute cv
-data = data_set2;
+data = set_of_data5;
 
 % computing conduction velocity
 cv = calculate_cv(SC_and_DC_space_vec, data) % computed cv's (in m/s)

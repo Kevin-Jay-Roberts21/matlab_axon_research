@@ -38,11 +38,11 @@ n = T/dt + 1; % n is the number of time steps
 
 a = 0.55*10^(-4); % (cm) radius in nodal region
 a_my = a/0.698; % (cm) radius in myelinated region
-R_i = 0.2; % (kilo-ohms*cm) intracellular resistivity
-R_m = 23.1; % (kilo-ohms*cm^2) specific membrane resistance
-C_m = 1.28; % (micro-farads/cm^2) specific membrane capacitance
-R_my = 530; % (kilo-ohms*cm^2) specfic myelin resistance
-C_my = 0.174; % (micro-fards/cm^2) specific myelin capacitance
+R_i = 0.155; % (kilo-ohms*cm) intracellular resistivity
+R_m = 24.6; % (kilo-ohms*cm^2) specific membrane resistance
+C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
+R_my = 63.7; % (kilo-ohms*cm^2) specfic myelin resistance
+C_my = 0.113; % (micro-fards/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -57,7 +57,7 @@ w_1 = a^2/(C_my*a_my*R_i);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 600; % (in mS/cm^2) % stimulus value
+S_v = 373; % (in mS/cm^2) % stimulus value
 S_T0 = 1; % start time of when stimulus is added (in ms)
 S_T1 = 1.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -110,7 +110,7 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 % Initialization
 %%%%%%%%%%%%%%%%
 V_m0 = -58.1124; % (mV) initial condition for membrane potential 
-V_my0 = 1.2804; % (mV) initial condition for axon potential in periaxonal space
+V_my0 = 1.0914; % (mV) initial condition for axon potential in periaxonal space
 N_0 = 0.4264;% (dimless) initial condition for gating variable n
 M_0 = 0.1148;% (dimless) initial condition for gating variable m
 H_0 = 0.3548;% (dimless) initial condition for gating variable h
@@ -475,4 +475,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('SC_Huang_TubeParalyne_params.mat');
+% save('SC_Cohen_DC_avg_params.mat');

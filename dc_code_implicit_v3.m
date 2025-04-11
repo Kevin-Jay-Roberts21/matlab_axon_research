@@ -9,7 +9,7 @@ clc
 % Defining the Thickness, Length and other Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 dx = 0.00005; % (cm) space step
-dt = 0.001; % (ms) time step 
+dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_pn = 2.3*10^(-4); % (cm) paranodal length
@@ -61,7 +61,7 @@ w3 = r_pa/(r_pn*L_pn);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 1000000; % (in mS/cm^2) % stimulus value
+S_v = 970; % (in mS/cm^2) % stimulus value
 S_T0 = 1; % start time of when stimulus is added (in ms)
 S_T1 = 1.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -516,4 +516,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('DC_Cohen_avg_r_pa_low.mat');
+% save('DC_Cohen_DC_avg_params.mat');
