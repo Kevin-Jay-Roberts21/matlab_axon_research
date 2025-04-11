@@ -5,7 +5,6 @@
 % March 2025
 
 %%
-% Reproducing Fig 3 in the resource paper
 
 clear all
 close all
