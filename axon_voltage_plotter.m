@@ -130,7 +130,8 @@ clc
 % HH_data_Temp_33 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_33.mat');
 % HH_data_Temp_34 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_34.mat');
 % HH_data_Temp_35 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_35.mat');
-% 
+
+% SC temp data for SC avg params
 % SC_temp_20 = load('projects/axon_simulations/SC_temp_data/SC_temp_base.mat');
 % SC_temp_22 = load('projects/axon_simulations/SC_temp_data/SC_temp_22.mat');
 % SC_temp_24 = load('projects/axon_simulations/SC_temp_data/SC_temp_24.mat');
@@ -154,18 +155,44 @@ clc
 % SC_temp_57 = load('projects/axon_simulations/SC_temp_data/SC_temp_57.mat');
 % SC_temp_58 = load('projects/axon_simulations/SC_temp_data/SC_temp_58.mat');
 
-% 
-% DC_temp_20 = load('projects/axon_simulations/DC_temp_data/DC_temp_base.mat');
-% DC_temp_21 = load('projects/axon_simulations/DC_temp_data/DC_temp_21.mat');
-% DC_temp_22 = load('projects/axon_simulations/DC_temp_data/DC_temp_22.mat');
-% DC_temp_23 = load('projects/axon_simulations/DC_temp_data/DC_temp_23.mat');
-% DC_temp_24 = load('projects/axon_simulations/DC_temp_data/DC_temp_24.mat');
+% SC temp simulations on DC cell6 params 
+% SC_temp_20 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_base.mat');
+% SC_temp_22 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_22.mat');
+% SC_temp_24 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_24.mat');
+% SC_temp_26 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_26.mat');
+% SC_temp_28 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_28.mat');
+% SC_temp_30 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_30.mat');
+% SC_temp_32 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_32.mat');
+% SC_temp_34 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_34.mat');
+% SC_temp_36 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_36.mat');
+% SC_temp_38 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_38.mat');
+% SC_temp_40 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_40.mat');
+% SC_temp_42 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_42.mat');
+% SC_temp_44 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_44.mat');
+% SC_temp_46 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_46.mat');
+% SC_temp_48 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_48.mat');
+% SC_temp_50 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_50.mat');
+% SC_temp_51 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_51.mat');
+% SC_temp_52 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_52.mat');
+% SC_temp_53 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_53.mat');
+% SC_temp_54 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_54.mat');
+% SC_temp_55 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_55.mat');
+% SC_temp_56 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_56.mat');
+% SC_temp_57 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_57.mat');
+% SC_temp_58 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_58.mat');
 
-SC_test = load('SC_test.mat');
+% DC temp simulations on DC cell6 params 
+% DC_temp_20 = load('projects/axon_simulations/DC_temp_data_on_DCcell6_params/DC_temp_base.mat');
+% DC_temp_21 = load('projects/axon_simulations/DC_temp_data_on_DCcell6_params/DC_temp_21.mat');
+% DC_temp_22 = load('projects/axon_simulations/DC_temp_data_on_DCcell6_params/DC_temp_22.mat');
+% DC_temp_23 = load('projects/axon_simulations/DC_temp_data_on_DCcell6_params/DC_temp_23.mat');
+% DC_temp_24 = load('projects/axon_simulations/DC_temp_data_on_DCcell6_params/DC_temp_24.mat');
+% DC_temp_25 = load('projects/axon_simulations/DC_temp_data_on_DCcell6_params/DC_temp_25.mat');
+% DC_temp_26 = load('projects/axon_simulations/DC_temp_data_on_DCcell6_params/DC_temp_26.mat');
 
 % picking interval
-interval = [0.08 0.1045]; % interval is in cm
-time_shot = 4; % in ms
+interval = [0.08 0.0885]; % interval is in cm
+time_shot = 3; % in ms
 
 % picking time shots
 % time1 = 5.1; % in ms
@@ -176,11 +203,12 @@ time_shot = 4; % in ms
 % time6 = 10; % in ms
 % time7 = 10.5; % in ms
 
-time0 = 1.2; % in ms
-time1 = 1.9; % in ms
-time2 = 2.3; % in ms
-time3 = 2.7; % in ms
-time4 = 20; % in ms
+time0 = 3; % in ms
+time1 = 1.2; % in ms
+time2 = 1.9; % in ms
+time3 = 2.3; % in ms
+time4 = 2.7; % in ms
+time5 = 20; % in ms
 
 list_of_times = {time0, time1, time2, time3};
 
@@ -194,12 +222,12 @@ list_of_times = {time0, time1, time2, time3};
 % position7 = 5; % in cm
 
 position1 = 0.0005; % in cm
-position2 = 0.16*0.5; % in cm
-position3 = 0.16*0.75; % in cm
+position2 = 0.06; % in cm
+position3 = 0.10; % in cm
 position4 = 0.16; % in cm
 position5 = 0.0002; 
 
-list_of_positions = {position1, position2, position3, position5};
+list_of_positions = {position1, position2, position3};
 
 
 % picking pause (this controls the speed of the animation, the pause variable 
@@ -222,21 +250,22 @@ p = 0.01;
 % set_of_data9 = {DC_data_Rpa_01, DC_data_Rpa_05, DC_data_Rpa_10, DC_data_Rpa_20, DC_data_Rpa_30, DC_data_Rpa_40, DC_data_Rpa_50};
 % set_of_data10 = {SC_Cohen_cell6_params, SC_Cohen_Avg_params, SC_Cohen_DC_cell6_params, DC_Cohen_cell6_params, DC_Cohen_Avg_params};
 % set_of_data11 = {HH_temp_base, HH_temp_8, HH_temp_10, HH_temp_12, HH_temp_14, HH_temp_16, HH_temp_18, HH_temp_20, HH_temp_22, HH_temp_24, HH_temp_26, HH_temp_28, HH_temp_30, HH_temp_31, HH_temp_32, HH_temp_33, HH_temp_34, HH_temp_35};
-% set_of_data12 = {SC_temp_20, SC_temp_22, SC_temp_24, SC_temp_26, SC_temp_28, SC_temp_30, SC_temp_32, SC_temp_34, SC_temp_36, SC_temp_38, SC_temp_40, SC_temp_42, SC_temp_44, SC_temp_46, SC_temp_48, SC_temp_50, SC_temp_52, SC_temp_54, SC_temp_55, SC_temp_56, SC_temp_57, SC_temp_58};
-% set_of_data13 = {DC_temp_20, DC_temp_21, DC_temp_22, DC_temp_23, DC_temp_24};
+% set_of_data12 = {SC_temp_20, SC_temp_22, SC_temp_24, SC_temp_26, SC_temp_28, SC_temp_30, SC_temp_32, SC_temp_34, SC_temp_36, SC_temp_38, SC_temp_40, SC_temp_42, SC_temp_44, SC_temp_46, SC_temp_48, SC_temp_50, SC_temp_51, SC_temp_52, SC_temp_53, SC_temp_54, SC_temp_55, SC_temp_56, SC_temp_57, SC_temp_58};
+% set_of_data12 = {SC_temp_55, SC_temp_56, SC_temp_57, SC_temp_58};
+% set_of_data13 = {DC_temp_20, DC_temp_21, DC_temp_22, DC_temp_23, DC_temp_24, DC_temp_25, DC_temp_26};
 
-data = SC_test;
+% data = SC_Cohen_DC_cell6_params;
 % data = HH_temp_28;
 
-plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval);
-% plot_Vm_minus_Vmy_picture(data, time0);
+% plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval);
+% plot_Vm_minus_Vmy_picture(data, time_shot);
 % plot_animation_voltage_vs_time(data, p);
 % plot_animation_voltage_vs_space(data, p);
 % plot_animation_probabilities_vs_time(HH_data_Temp_33, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(data, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data8, p);
-% plot_voltage_vs_space_comparison(set_of_data13, p);
+plot_voltage_vs_space_comparison(set_of_data13, p);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(data, p)
 
 
@@ -268,56 +297,41 @@ function plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval)
     xlabel('Length of the axon in cm.')
     title('$V_m$ and $V_m - V_{my}$ for Set (2) on the DC model', 'Interpreter', 'latex');
 
-    % --- Figure 2: Vm vs time at 4 spatial positions within internodal regions ---
+    % --- Figure 2: Vm vs time at 4 evenly spaced positions within the interval ---
     figure(2)
     hold on
-
+    
     % Time vector
     total_timesteps = size(data.Vm_all, 1);
     t_vec = (0:total_timesteps-1) * dt;
 
-    % Internodal length (cm)
-    internodal_length = 0.0075;
-    nodal_length = 0.0005;
+    % Define 4 evenly spaced spatial positions in the interval
+    x_positions = linspace(interval(1), interval(2), 4);
 
-    % Define the internodal regions based on the interval
-    x_start = interval(1);  % Start of the interval
-    x_end = interval(2);    % End of the interval
-
-    % Number of axon segments (each with one internodal region and one nodal region)
-    num_segments = round((x_end - x_start) / (internodal_length + nodal_length));
-
-    % Generate spatial indices for internodal regions
-    spatial_indices = [];
-    for seg = 1:num_segments
-        % Find the start and end of each internodal region
-        internodal_start = x_start + (seg - 1) * (internodal_length + nodal_length) + nodal_length;  % Start of internodal region
-        internodal_end = internodal_start + internodal_length;  % End of internodal region
-
-        % Convert these spatial positions to indices
-        idx_start = max(1, round(internodal_start / dx) + 1);
-        idx_end = min(m, round(internodal_end / dx) + 1);
-        
-        % Get 4 evenly spaced spatial indices within the internodal region
-        spatial_indices = [spatial_indices, round(linspace(idx_start, idx_end, 4))];
-    end
+    % Convert spatial positions to indices
+    spatial_indices = round(x_positions / dx) + 1;
 
     % Plot Vm over time at those spatial positions
-    spatial_positions = (spatial_indices - 1) * dx;
     for i = 1:length(spatial_indices)
         xi = spatial_indices(i);
         Vm_trace = data.Vm_all(:, xi);
-        plot(t_vec, Vm_trace, 'DisplayName', sprintf('x = %.3f cm', spatial_positions(i)));
+        plot(t_vec, Vm_trace, 'DisplayName', sprintf('x = %.4f cm', x_positions(i)));
     end
+
+    
 
     hold off
     xlabel('Time (ms)')
     ylabel('$V_m$ in millivolts', 'Interpreter', 'latex')
-    title(sprintf('$V_m(t)$ at 4 spatial positions in [%.3f, %.3f] cm', interval(1), interval(2)), 'Interpreter', 'latex')
+    title(sprintf('Axon segment of $V_m$ vs Time for Set (1) on DC'), 'Interpreter', 'latex')
     legend('show', 'Location', 'northeast')
-    axis tight
-    
-end
+    T = data.T;
+    xmin = 0;
+    xmax = T;
+    ymin = -70;
+    ymax = 30;
+    axis([xmin xmax ymin ymax]);  % Set axis limits
+end 
 
 function plot_Vm_minus_Vmy_picture(data, time_shot)
 
@@ -350,7 +364,25 @@ function plot_Vm_minus_Vmy_picture(data, time_shot)
     legend('$V_m$', '$V_m - V_{my}$', 'Location', 'northeast', 'Interpreter', 'latex');
     ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex')
     xlabel("Length of the axon in cm.")
-    title('$V_m$ and $V_m - V_{my}$ for Set (2) on the DC model', 'Interpreter', 'latex');
+    title('$V_m$ and $V_m - V_{my}$ for Set (2) on DC model', 'Interpreter', 'latex');
+
+    
+    % Plotting just Vmy space
+    figure(2)
+    t = linspace(0, L, m);
+    plot(t, data.Vmy_all(round(time_shot/dt),:), 'Color', [0 0.5 0], 'LineStyle', '-');
+    
+    xmin = 0;
+    xmax = L;
+    ymin = -70;
+    ymax = 30;
+    axis([xmin xmax ymin ymax]);  % Set axis limits
+
+    text(xmin+0.125, ymax, sprintf('Time: %.3f ms', time_shot), 'FontSize', 9, 'BackgroundColor', 'w');
+    legend('$V_{my}$', 'Location', 'northeast', 'Interpreter', 'latex');
+    ylabel('$V_{my}$ in millivolts.', 'Interpreter', 'latex')
+    xlabel("Length of the axon in cm.")
+    title('$V_{my}$ for Set (1) on SC model', 'Interpreter', 'latex');
 
 end
 
