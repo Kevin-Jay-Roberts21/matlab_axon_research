@@ -56,8 +56,11 @@ clc
 
 % SC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_params.mat');
 % SC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_avg_params.mat');
+SC_Cohen_DC_cell6_temp_23 = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_temp_23.mat');
 % DC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params.mat');
 % DC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_avg_params.mat');
+DC_Cohen_DC_cell6_temp_23 = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_temp_23.mat');
+
 
 % DC_Cohen_avg_r_pa1000fold = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_r_pa1000fold.mat');
 % DC_Cohen_avg_stim_increase = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_stim_increase.mat');
@@ -203,14 +206,13 @@ time_shot = 3; % in ms
 % time6 = 10; % in ms
 % time7 = 10.5; % in ms
 
-time0 = 3; % in ms
-time1 = 1.2; % in ms
-time2 = 1.9; % in ms
-time3 = 2.3; % in ms
-time4 = 2.7; % in ms
-time5 = 20; % in ms
+time1 = 4; % in ms
+time2 = 6; % in ms
+time3 = 8; % in ms
+time4 = 10; % in ms
+time5 = 12; % in ms
 
-list_of_times = {time0, time1, time2, time3};
+list_of_times = {time1, time2, time3, time4, time5};
 
 % picking space shots
 % position1 = 0.5; % in cm
@@ -254,10 +256,10 @@ p = 0.01;
 % set_of_data12 = {SC_temp_55, SC_temp_56, SC_temp_57, SC_temp_58};
 % set_of_data13 = {DC_temp_20, DC_temp_21, DC_temp_22, DC_temp_23, DC_temp_24, DC_temp_25, DC_temp_26};
 
-% data = SC_Cohen_DC_cell6_params;
-% data = HH_temp_28;
+data = SC_Cohen_DC_cell6_temp_23;
+% data = DC_temp_24;
 
-% plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval);
+plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval);
 % plot_Vm_minus_Vmy_picture(data, time_shot);
 % plot_animation_voltage_vs_time(data, p);
 % plot_animation_voltage_vs_space(data, p);
@@ -265,7 +267,7 @@ p = 0.01;
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(data, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data8, p);
-plot_voltage_vs_space_comparison(set_of_data13, p);
+% plot_voltage_vs_space_comparison(set_of_data13, p);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(data, p)
 
 
