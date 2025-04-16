@@ -38,11 +38,11 @@ n = T/dt + 1; % n is the number of time steps
 
 a = 0.55*10^(-4); % (cm) radius in nodal region
 a_my = a/0.698; % (cm) radius in myelinated region
-R_i = 0.155; % (kilo-ohms*cm) intracellular resistivity
-R_m = 24.6; % (kilo-ohms*cm^2) specific membrane resistance
-C_m = 1.15; % (micro-farads/cm^2) specific membrane capacitance
-R_my = 240; % (kilo-ohms*cm^2) specfic myelin resistance
-C_my = 0.0379; % (micro-fards/cm^2) specific myelin capacitance
+R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
+R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
+C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
+R_my = 63.7; % (kilo-ohms*cm^2) specfic myelin resistance
+C_my = 0.113; % (micro-fards/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -71,7 +71,7 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
 % Defining alpha/beta functions as well as the b_1, c_1 and f_1 functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T_base = 20; % (C) base temperature
-T_actual = 23; % (C) the temperature of the squid axon
+T_actual = 20; % (C) the temperature of the squid axon
 Q_10_Na = 2.2; % (dimless) temperature coefficient for Na current
 Q_10_K = 3; % (dimless) temperature coefficient for K current
 phi_Na = Q_10_Na^((T_actual - T_base)/10); % (dimless) temperature scaling factor for Na current
@@ -475,4 +475,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('SC_Cohen_DC_cell6_temp_23.mat');
+% save('SC_Cohen_DC_cell6_temp56_long.mat'); 

@@ -77,21 +77,28 @@ figure;
 plot(stim_values, ap_times, '-o', ...
     'MarkerSize', 8, 'MarkerFaceColor', 'r', 'MarkerEdgeColor', 'k');
 
-% Flip x-axis
-set(gca, 'XDir','reverse');
+% Ensure x-axis increases left to right (12 on the right)
+set(gca, 'XDir','normal');
 
 % Label axes
 xlabel('Stimulus value (k$\Omega$ cm$^2$)', 'Interpreter','latex');
 ylabel('Time to AP peak (ms)', 'Interpreter','latex');
 
-% Custom x-ticks and labels (with full precision)
-% Sorted version for xticks
-xticks_sorted = sort(stim_values);  % = [11.4054556, 11.7, 12]
-xticks(xticks_sorted);
-xticklabels({'11.4054556', '11.406', '12'});  % Keep your custom display labels
+% Define the new 'stim. threshold' tick further left
+x_tick_stim_thresh = 11.25;  % Moved further left
+xticks_all = sort([x_tick_stim_thresh, stim_values]);
 
-% Adjust limits to give space
-xlim([11.3, 12.1]);
+% Define custom labels (must match number of ticks)
+xticklabels_all = {'stim. threshold', '11.4054556', '11.406', '12'};
+
+% Apply ticks and labels
+xticks(xticks_all);
+xticklabels(xticklabels_all);
+
+% Slant x-axis labels to avoid overlap
+xtickangle(45);  % You can adjust the angle as needed
+
+% Adjust limits and grid
+xlim([11.2, 12.1]);  % Leave room for the new label
 ylim([0, max(ap_times)*1.1]);
-
 grid on;
