@@ -18,7 +18,7 @@ d_pn = 7.4*10^(-7); % (cm) paranodal thickness
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 20; % (dimless) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 30; % (ms) the total time of the experiment
+T = 10; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % number of space steps in a nodal region
 N_my = round(L_my/dx); % number of space steps in an internodal region
 N_s = N_n + N_my; % number of space steps in an entire axon segement
@@ -30,9 +30,9 @@ n = T/dt + 1; % n is the number of time steps
 
 % Parameters to change to test Dr. Huang's Paper
 % a_my = 0.0001; % (cm) radius in myelinated region
-% a = 0.0001238; % (cm) radius in nodal region
-% R_my = 123.6795; % (kilo-ohms*cm^2) specfic myelin resistance
-% C_my = 0.0081; % (micro-fards/cm^2) specific myelin capacitance
+% a = 0.00011; % (cm) radius in nodal region
+% R_my = 5.2779*10^10; % (kilo-ohms*cm^2) specfic myelin resistance
+% C_my = 0.0174; % (micro-fards/cm^2) specific myelin capacitance
 
 % original a, a_my, R_my and C_my
 a = 0.55*10^(-4); % (cm) axon radius in nodal region
@@ -42,7 +42,7 @@ R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
 r_pa = 96.3*10^6; % 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
-r_pn = 321*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
+r_pn = 321000*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
 R_my = 63.7; % (kilo-ohms*cm^2) specific myelin resistance
 C_my = 0.113; % (micro-farads/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
@@ -61,7 +61,7 @@ w3 = r_pa/(r_pn*L_pn);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 1000; % (in mS/cm^2) % stimulus value
+S_v = 100000; % (in mS/cm^2) % stimulus value
 S_T0 = 1; % start time of when stimulus is added (in ms)
 S_T1 = 1.1; % end time of when stimulus is added (in ms)
 S_P0 = 0.0001; % start position of adding the stimulus (in cm)
@@ -326,6 +326,13 @@ position3 = L*0.75; % in cm
 position4 = L; % in cm
 position5 = 0.0002; 
 
+% position1 = 0.0003; % in cm
+% position2 = 0.0005; % in cm
+% position3 = 0.0007; % in cm
+% position4 = 0.0009; % in cm
+% position5 = 0.0002; 
+
+
 list_of_positions = [position1
                      position2
                      position3
@@ -516,4 +523,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('DC_Cohen_DC_cell6_temp33_long.mat');
+% save('DC_Cohen_DC_cell6_params_long.mat');

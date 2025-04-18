@@ -54,13 +54,17 @@ clc
 % SC_Cohen_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_SC_cell6_params.mat');
 % SC_Cohen_avg_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_SC_avg_params.mat');
 
-SC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_params.mat');
-SC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_avg_params.mat');
-SC_Cohen_DC_cell6_temp_25 = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_temp_25.mat');
-DC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params.mat');
-DC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_avg_params.mat');
-DC_Cohen_DC_cell6_temp_25 = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_temp_25.mat');
-
+% SC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_params.mat');
+% SC_Cohen_DC_cell6_params_long = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_params_long.mat');
+% SC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_avg_params.mat');
+% SC_Cohen_DC_cell6_temp_25 = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_temp_25.mat');
+SC_Cohen_DC_cell6_temp_33_long = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_temp33_long.mat');
+% SC_Cohen_DC_cell6_temp_56_long = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_temp56_long.mat');
+% DC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params.mat');
+% DC_Cohen_DC_cell6_params_long = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_long.mat');
+% DC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_avg_params.mat');
+% DC_Cohen_DC_cell6_temp_25 = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_temp_25.mat');
+% DC_Cohen_DC_cell6_temp_33_long = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_temp33_long.mat');
 
 % DC_Cohen_avg_r_pa1000fold = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_r_pa1000fold.mat');
 % DC_Cohen_avg_stim_increase = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_stim_increase.mat');
@@ -217,6 +221,7 @@ DC_Cohen_DC_cell6_temp_25 = load('projects/axon_simulations/Cohen_param_simulati
 % picking interval
 interval1 = [0.0400 0.0485]; % interval is in cm
 interval2 = [0.0800 0.0885]; % interval is in cm
+interval3 = [0.1200 0.1285];
 time_shot = 3; % in ms
 
 % picking time shots
@@ -278,10 +283,10 @@ p = 0.01;
 % set_of_data13 = {DC_temp_30, DC_temp_31, DC_temp_32, DC_temp_33, DC_temp_34, DC_temp_35};
 
 
-data = SC_Cohen_DC_cell6_params;
+data = SC_Cohen_DC_cell6_temp_33_long;
 % data = SC_temp_58;
 
-plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2);
+plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
 % plot_Vm_minus_Vmy_picture(data, time_shot);
 % plot_animation_voltage_vs_time(data, p);
 % plot_animation_voltage_vs_space(data, p);
@@ -297,7 +302,7 @@ plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2);
 %%%%%%%%%%%%%%%%%%%%%
 % PLOTTER FUNCTIONS %
 %%%%%%%%%%%%%%%%%%%%%
-function plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2)
+function plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3)
     % Unpack values
     L = data.L;         % Total axon length (cm)
     m = data.m;         % Number of spatial points
@@ -329,38 +334,61 @@ function plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interv
     total_timesteps = size(data.Vm_all, 1);
     t_vec = (0:total_timesteps-1) * dt;
 
-    % --- Interval 1 ---
+    % --- Interval 1: Axon Segment 5 ---
     x_positions1 = linspace(interval1(1), interval1(2), 4);
     spatial_indices1 = round(x_positions1 / dx) + 1;
+
+    % Interval range for legend
+    interval1_range = sprintf('%.2f-%.4f cm', interval1(1), interval1(2));
 
     for i = 1:length(spatial_indices1)
         xi = spatial_indices1(i);
         Vm_trace = data.Vm_all(:, xi);
         if i == 1
-            plot(t_vec, Vm_trace, 'b-', 'DisplayName', 'Interval 1');
+            plot(t_vec, Vm_trace, 'b-', 'DisplayName', ['Axon Segment 5: ', interval1_range]);
         else
             plot(t_vec, Vm_trace, 'b-', 'HandleVisibility', 'off');
         end
     end
 
-    % --- Interval 2 ---
+    % --- Interval 2: Axon Segment 10 ---
     x_positions2 = linspace(interval2(1), interval2(2), 4);
     spatial_indices2 = round(x_positions2 / dx) + 1;
+
+    % Interval range for legend
+    interval2_range = sprintf('%.2f-%.4f cm', interval2(1), interval2(2));
 
     for i = 1:length(spatial_indices2)
         xi = spatial_indices2(i);
         Vm_trace = data.Vm_all(:, xi);
         if i == 1
-            plot(t_vec, Vm_trace, 'm-', 'DisplayName', 'Interval 2');
+            plot(t_vec, Vm_trace, 'r-', 'DisplayName', ['Axon Segment 10: ', interval2_range]);
         else
-            plot(t_vec, Vm_trace, 'm-', 'HandleVisibility', 'off');
+            plot(t_vec, Vm_trace, 'r-', 'HandleVisibility', 'off');
+        end
+    end
+
+    % --- Interval 3: Axon Segment 15 ---
+    x_positions3 = linspace(interval3(1), interval3(2), 4);
+    spatial_indices3 = round(x_positions3 / dx) + 1;
+
+    % Interval range for legend
+    interval3_range = sprintf('%.3f-%.4f cm', interval3(1), interval3(2));
+
+    for i = 1:length(spatial_indices3)
+        xi = spatial_indices3(i);
+        Vm_trace = data.Vm_all(:, xi);
+        if i == 1
+            plot(t_vec, Vm_trace, 'k-', 'DisplayName', ['Axon Segment 15: ', interval3_range]);
+        else
+            plot(t_vec, Vm_trace, 'k-', 'HandleVisibility', 'off');
         end
     end
 
     hold off
     xlabel('Time (ms)')
     ylabel('$V_m$ in millivolts', 'Interpreter', 'latex')
-    title(sprintf('Axon segment of $V_m$ vs Time for Set (1) on DC'), 'Interpreter', 'latex')
+    title('Axon segment of $V_m$ vs Time for Set (1) on DC', 'Interpreter', 'latex')
     legend('show', 'Location', 'northeast')
 
     T = data.T;

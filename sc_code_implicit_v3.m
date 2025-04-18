@@ -32,9 +32,9 @@ n = T/dt + 1; % n is the number of time steps
 
 % Parameters to change to test Dr. Huang's Paper
 % a_my = 0.0001; % (cm) radius in myelinated region
-% a = 0.00014; % (cm) radius in nodal region
-% R_my = 5.2779*10^10; % (kilo-ohms*cm^2) specfic myelin resistance
-% C_my = 0.0174; % (micro-fards/cm^2) specific myelin capacitance
+% a = 0.0001238; % (cm) radius in nodal region
+% R_my = 123.6795; % (kilo-ohms*cm^2) specfic myelin resistance
+% C_my = 0.0081; % (micro-fards/cm^2) specific myelin capacitance
 
 a = 0.55*10^(-4); % (cm) radius in nodal region
 a_my = a/0.698; % (cm) radius in myelinated region
@@ -110,7 +110,7 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 % Initialization
 %%%%%%%%%%%%%%%%
 V_m0 = -58.1124; % (mV) initial condition for membrane potential 
-V_my0 = 1.0914; % (mV) initial condition for axon potential in periaxonal space
+V_my0 = 0.8049; % (mV) initial condition for axon potential in periaxonal space
 N_0 = 0.4264;% (dimless) initial condition for gating variable n
 M_0 = 0.1148;% (dimless) initial condition for gating variable m
 H_0 = 0.3548;% (dimless) initial condition for gating variable h
@@ -475,4 +475,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('SC_Cohen_DC_cell6_temp56_long.mat'); 
+% save('SC_Cohen_DC_cell6_params_long.mat'); 
