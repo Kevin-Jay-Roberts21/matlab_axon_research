@@ -21,29 +21,18 @@ clear all
 close all
 clc
 
-% getting the saved data
-% HH_data = load('HH_data.mat');
-% HH_1 = load('HH_1.mat');
-% HH_2 = load('HH_2.mat');
-% HH_3 = load('HH_3.mat');
-% HH_data2 = load('HH_data2.mat');
-% SC_data = load('SC_data.mat');
-% DC_data = load('DC_data.mat');
+% Huang parameters
+% SC_Huang_Myelinated_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1.mat');
+% SC_Huang_Tube_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_Tube_set1.mat');
+% SC_Huang_TubeParalyene_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_TubeParalyene_set1.mat');
+% SC_Huang_Myelinated_set1_long = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1_long.mat');
+% SC_Huang_Tube_set1_long = load('projects/axon_simulations/Huang_simulations/SC_Huang_Tube_set1_long.mat');
+% SC_Huang_TubeParalyene_set1_long = load('projects/axon_simulations/Huang_simulations/SC_Huang_TubeParalyene_set1_long.mat');
+% DC_Huang_Myelinated_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1.mat');
+% DC_Huang_Tube_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Tube_set1.mat');
+% DC_Huang_TubeParalyne_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyne_set1.mat');
 
-% SC_data1 = load('projects/SC_data1.mat');
-% SC_data2 = load('projects/SC_data2.mat');
-% SC_data3 = load('projects/SC_data3.mat');
-% SC_data_Sv_200 = load('SC_data_Sv_200.mat');
-% DC_data_Sv_200 = load('DC_data_Sv_200.mat');
-% SC_data_from_saltcond2023_code = load('SC_data_from_saltcond2023_code.mat');
-% DC_data_from_saltcond2023_code = load('DC_data_from_saltcond2023_code.mat');
-
-% DC_Huang_Myelinated = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated.mat');
-% DC_Huang_Tube_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_Tube_params.mat');
-% DC_Huang_TubeParalyne_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyne_params.mat');
-
-% SC_Ri_144 = load('SC_Ri_0.144.mat');
-
+% Increasing R_pa
 % SC_Cohen_DC_params = load('SC_model_with_DC_Cohen_params.mat');
 % DC_Cohen_DC_params_Rpa_05 = load('DC_model_with_DC_Cohen_params_Rpa_0.5.mat');
 % DC_Cohen_DC_params_Rpa_5 = load('DC_model_with_DC_Cohen_params_Rpa_5.mat');
@@ -51,24 +40,27 @@ clc
 % DC_Cohen_DC_params_Rpa_1000 = load('DC_model_with_DC_Cohen_params_Rpa_1000.mat');
 % DC_Cohen_DC_params_Rpa_2000 = load('DC_model_with_DC_Cohen_params_Rpa_2000.mat');
 
+% Cohen data
 % SC_Cohen_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_SC_cell6_params.mat');
 % SC_Cohen_avg_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_SC_avg_params.mat');
-
 % SC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_params.mat');
 % SC_Cohen_DC_cell6_params_long = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_params_long.mat');
 % SC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_avg_params.mat');
 % SC_Cohen_DC_cell6_temp_25 = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_temp_25.mat');
-SC_Cohen_DC_cell6_temp_33_long = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_temp33_long.mat');
+% SC_Cohen_DC_cell6_temp_33_long = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_temp33_long.mat');
 % SC_Cohen_DC_cell6_temp_56_long = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_temp56_long.mat');
-% DC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params.mat');
+DC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params.mat');
 % DC_Cohen_DC_cell6_params_long = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_long.mat');
+DC_Cohen_DC_cell6_params_shifted_stimulus = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_shifted_stimulus.mat');
+DC_Cohen_DC_cell6_params_shifted_stimulus_2 = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_shifted_stimulus_2.mat');
+DC_Cohen_DC_cell6_params_shifted_stimulus_3 = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_shifted_stimulus_3.mat');
 % DC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_avg_params.mat');
 % DC_Cohen_DC_cell6_temp_25 = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_temp_25.mat');
 % DC_Cohen_DC_cell6_temp_33_long = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_temp33_long.mat');
-
 % DC_Cohen_avg_r_pa1000fold = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_r_pa1000fold.mat');
 % DC_Cohen_avg_stim_increase = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_stim_increase.mat');
 
+% increaing R_pa
 % DC_data_Rpa_01 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.01.mat');
 % DC_data_Rpa_02 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.02.mat');
 % DC_data_Rpa_03 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.03.mat');
@@ -88,6 +80,7 @@ SC_Cohen_DC_cell6_temp_33_long = load('projects/axon_simulations/Cohen_param_sim
 % DC_data_Rpa_45 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.45.mat');
 % DC_data_Rpa_50 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.5.mat');
 
+% Temp Analysis data 1
 % HH_temp_base = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_6.3.mat");
 % HH_temp_8 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_8.mat");
 % HH_temp_10 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_10.mat");
@@ -107,6 +100,7 @@ SC_Cohen_DC_cell6_temp_33_long = load('projects/axon_simulations/Cohen_param_sim
 % HH_temp_34 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_34.mat");
 % HH_temp_35 = load("projects/axon_simulations/HH_temp_data_stim_20/HH_Temp_35.mat");
 
+% Temp Analysis data 2
 % HH_data_Temp_base = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_6.3.mat');
 % HH_data_Temp_7 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_7.mat');
 % HH_data_Temp_8 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_8.mat');
@@ -137,7 +131,6 @@ SC_Cohen_DC_cell6_temp_33_long = load('projects/axon_simulations/Cohen_param_sim
 % HH_data_Temp_33 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_33.mat');
 % HH_data_Temp_34 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_34.mat');
 % HH_data_Temp_35 = load('projects/axon_simulations/HH_temp_data_stim_12/HH_data_Temp_35.mat');
-
 
 % SC temp simulations on DC cell6 params 
 % SC_temp_20 = load('projects/axon_simulations/SC_temp_data_on_DCcell6_params/SC_temp_base.mat');
@@ -222,7 +215,7 @@ SC_Cohen_DC_cell6_temp_33_long = load('projects/axon_simulations/Cohen_param_sim
 interval1 = [0.0400 0.0485]; % interval is in cm
 interval2 = [0.0800 0.0885]; % interval is in cm
 interval3 = [0.1200 0.1285];
-time_shot = 3; % in ms
+time_shot = 1.1; % in ms
 
 % picking time shots
 % time1 = 5.1; % in ms
@@ -233,13 +226,16 @@ time_shot = 3; % in ms
 % time6 = 10; % in ms
 % time7 = 10.5; % in ms
 
-time1 = 1.2; % in ms
-time2 = 1.5; % in ms
-time3 = 1.8; % in ms
-time4 = 2; % in ms
-time5 = 12; % in ms
+time1 = 2.7; % in ms
+time2 = 3.3; % in ms
+time3 = 4; % in ms
+time4 = 2.7; % in ms
+time5 = 2.9; % in ms
+time6 = 3.3; % in ms
+time7 = 3.3; % in ms
+time8 = 4; % in ms
 
-list_of_times = {time1, time2, time3, time4};
+list_of_times = {time1, time2, time3};
 
 % picking space shots
 % position1 = 0.5; % in cm
@@ -251,8 +247,8 @@ list_of_times = {time1, time2, time3, time4};
 % position7 = 5; % in cm
 
 position1 = 0.0005; % in cm
-position2 = 0.06; % in cm
-position3 = 0.10; % in cm
+position2 = 0.1; % in cm
+position3 = 0.2; % in cm
 position4 = 0.16; % in cm
 position5 = 0.0002; 
 
@@ -283,11 +279,11 @@ p = 0.01;
 % set_of_data13 = {DC_temp_30, DC_temp_31, DC_temp_32, DC_temp_33, DC_temp_34, DC_temp_35};
 
 
-data = SC_Cohen_DC_cell6_temp_33_long;
+data = DC_Cohen_DC_cell6_params_shifted_stimulus_2;
 % data = SC_temp_58;
 
-plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
-% plot_Vm_minus_Vmy_picture(data, time_shot);
+% plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
+plot_Vm_minus_Vmy_picture(data, time_shot);
 % plot_animation_voltage_vs_time(data, p);
 % plot_animation_voltage_vs_space(data, p);
 % plot_animation_probabilities_vs_time(HH_data_Temp_33, p);
@@ -449,6 +445,42 @@ function plot_Vm_minus_Vmy_picture(data, time_shot)
     ylabel('$V_{my}$ in millivolts.', 'Interpreter', 'latex')
     xlabel("Length of the axon in cm.")
     title('$V_{my}$ for Set (1) on SC model', 'Interpreter', 'latex');
+    
+    
+    % Plotting V_m, V_m-V_my, and V_my all together
+    figure(3)
+    L = data.L;
+    T = data.T;
+    m = data.m;
+    dt = data.dt;
+    
+    xmin = 0;
+    xmax = T;
+    ymin = -70;
+    ymax = 30;
+    axis([xmin xmax ymin ymax]);  % Set axis limits
+
+    % plotting Voltage vs Axon length
+    figure(1)
+    t = linspace(0, L, m);
+    plot(t, data.Vm_all(round(time_shot/dt),:), 'k-');
+    hold on
+    plot(t, data.Vm_minus_Vmy(round(time_shot/dt),:), 'r-');
+    hold on
+    plot(t, data.Vmy_all(round(time_shot/dt),:), 'b-');
+    hold off
+
+    xmin = 0;
+    xmax = L;
+    ymin = -70;
+    ymax = 50;
+    axis([xmin xmax ymin ymax]);  % Set axis limits
+
+    text(xmin+0.125, ymax-18, sprintf('Time: %.3f ms', time_shot), 'FontSize', 9, 'BackgroundColor', 'w');
+    legend('$V_m$', '$V_m - V_{my}$', '$V_{my}$', 'Location', 'northeast', 'Interpreter', 'latex');
+    ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex')
+    xlabel("Length of the axon in cm.")
+    title('$V_m$ and $V_m - V_{my}$ for Set (2) on DC model', 'Interpreter', 'latex');
 
 end
 
@@ -704,7 +736,13 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
     legend(legendStrings1, 'Interpreter','latex')
     ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex')
     xlabel("Length of the axon in cm.")
-    title('HH: $V_m$ vs Space for $T_{actual} = 28^\circ$C', 'Interpreter', 'latex');
+    title('SC Myelianted: $V_m$ vs Space', 'Interpreter', 'latex');
+    
+    xmin = 0;
+    xmax = L;
+    ymin = -60;
+    ymax = 30;
+    axis([xmin xmax ymin ymax]);  % Set axis limits
 
     % plotting Voltage vs Time
     figure(2)

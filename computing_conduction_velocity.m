@@ -126,7 +126,6 @@ clc
 % DC_temp_32 = load('projects/axon_simulations/DC_temp_data_on_DCcell6_params/DC_temp_32.mat');
 % DC_temp_33 = load('projects/axon_simulations/DC_temp_data_on_DCcell6_params/DC_temp_33.mat');
 
-
 % SC temp simulations on DC avg params 
 % SC_temp_20 = load('projects/axon_simulations/SC_temp_data_on_DCavg_params/SC_temp_base.mat');
 % SC_temp_22 = load('projects/axon_simulations/SC_temp_data_on_DCavg_params/SC_temp_22.mat');
@@ -158,7 +157,7 @@ clc
 % DC_temp_22 = load('projects/axon_simulations/DC_temp_data_on_DCavg_params/DC_temp_22.mat');
 % DC_temp_23 = load('projects/axon_simulations/DC_temp_data_on_DCavg_params/DC_temp_23.mat');
 
-
+% Testing different stimulus values for SC
 % SC_Cohen_DC_cell6_stim206 = load('projects/axon_simulations/Stimulus Increase/SC_Cohen_DC_cell6_stim206.mat');
 % SC_Cohen_DC_cell6_stim306 = load('projects/axon_simulations/Stimulus Increase/SC_Cohen_DC_cell6_stim306.mat');
 % SC_Cohen_DC_cell6_stim406 = load('projects/axon_simulations/Stimulus Increase/SC_Cohen_DC_cell6_stim406.mat');
@@ -180,6 +179,7 @@ clc
 % SC_Cohen_DC_cell6_stim2006 = load('projects/axon_simulations/Stimulus Increase/SC_Cohen_DC_cell6_stim2006.mat');
 % SC_Cohen_DC_cell6_stim3006 = load('projects/axon_simulations/Stimulus Increase/SC_Cohen_DC_cell6_stim3006.mat');
 
+% Testing different stimulus values for DC
 % DC_Cohen_DC_cell6_stim846 = load('projects/axon_simulations/Stimulus Increase/DC_Cohen_DC_cell6_stim846.mat');
 % DC_Cohen_DC_cell6_stim946 = load('projects/axon_simulations/Stimulus Increase/DC_Cohen_DC_cell6_stim946.mat');
 % DC_Cohen_DC_cell6_stim1046 = load('projects/axon_simulations/Stimulus Increase/DC_Cohen_DC_cell6_stim1046.mat');
@@ -195,19 +195,20 @@ clc
 % DC_Cohen_DC_cell6_stim2046 = load('projects/axon_simulations/Stimulus Increase/DC_Cohen_DC_cell6_stim2046.mat');
 % DC_Cohen_DC_cell6_stim3046 = load('projects/axon_simulations/Stimulus Increase/DC_Cohen_DC_cell6_stim3046.mat');
 
-% SC_data_from_saltcond2023_code = load('SC_data_from_saltcond2023_code.mat');
-% DC_data_from_saltcond2023_code = load('DC_data_from_saltcond2023_code.mat');
+% Huang Parameters
+SC_Huang_Myelinated_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1.mat');
+SC_Huang_Tube_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_Tube_set1.mat');
+SC_Huang_TubeParalyne_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_TubeParalyne_set1.mat');
+% DC_Huang_Myelinated_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1.mat');
+% DC_Huang_Tube_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Tube_set1.mat');
+% DC_Huang_TubeParalyne_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyne_set1.mat');
 
-% SC_Huang_Myelinated = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated.mat');
-% SC_Huang_Tube_params = load('projects/axon_simulations/Huang_simulations/SC_Huang_Tube_params.mat');
-% SC_Huang_TubeParalyne_params = load('projects/axon_simulations/Huang_simulations/SC_Huang_TubeParalyne_params.mat');
-% 
+
+% Cohen parameters
 % SC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_params.mat');
 % SC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_avg_params.mat');
 % DC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params.mat');
 % DC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_avg_params.mat');
-
-% HH_1 = load('HH_1.mat');
 
 % NOTE: Time and space choices will vary depending on HH, SC, and DC models
 
@@ -222,12 +223,12 @@ SC_and_DC_space_vec = [0.06 0.08; 0.08 0.1; 0.1 0.12; 0.12 0.14;]; % all in (cm)
 % set_of_data1 = {HH_temp_base, HH_temp_8, HH_temp_10, HH_temp_12, HH_temp_14, HH_temp_16, HH_temp_18, HH_temp_20, HH_temp_22, HH_temp_24, HH_temp_26, HH_temp_28, HH_temp_30, HH_temp_31, HH_temp_32};
 % set_of_data2 = {SC_temp_20, SC_temp_22, SC_temp_24, SC_temp_26, SC_temp_28, SC_temp_30, SC_temp_32, SC_temp_34, SC_temp_36, SC_temp_38, SC_temp_40, SC_temp_42, SC_temp_44, SC_temp_46, SC_temp_48, SC_temp_50, SC_temp_52, SC_temp_54, SC_temp_55};
 % set_of_data3 = {DC_temp_20, DC_temp_21, DC_temp_22, DC_temp_23};
-% set_of_data4 = {SC_Huang_Myelinated, SC_Huang_Tube_params, SC_Huang_TubeParalyne_params};
+set_of_data4 = {SC_Huang_Myelinated_set1, SC_Huang_Tube_set1, SC_Huang_TubeParalyne_set1};
 % set_of_data5 = {SC_Cohen_DC_cell6_params, SC_Cohen_DC_avg_params, DC_Cohen_DC_cell6_params, DC_Cohen_DC_avg_params};
 % set_of_data6 = {SC_temp_20, SC_temp_22, SC_temp_24, SC_temp_26, SC_temp_28, SC_temp_30, SC_temp_32, SC_temp_34, SC_temp_36, SC_temp_38, SC_temp_40, SC_temp_42, SC_temp_44, SC_temp_46, SC_temp_48, SC_temp_50, SC_temp_51, SC_temp_52, SC_temp_53, SC_temp_54, SC_temp_55, SC_temp_56, SC_temp_57};
-set_of_data7 = {DC_temp_20, DC_temp_21, DC_temp_22, DC_temp_23, DC_temp_24, DC_temp_25, DC_temp_26, DC_temp_27, DC_temp_28, DC_temp_29, DC_temp_30, DC_temp_31, DC_temp_32, DC_temp_33};
+% set_of_data7 = {DC_temp_20, DC_temp_21, DC_temp_22, DC_temp_23, DC_temp_24, DC_temp_25, DC_temp_26, DC_temp_27, DC_temp_28, DC_temp_29, DC_temp_30, DC_temp_31, DC_temp_32, DC_temp_33};
 % picking the dataset to compute cv
-data = set_of_data7;
+data = set_of_data4;
 
 % computing conduction velocity
 cv = calculate_cv(SC_and_DC_space_vec, data) % computed cv's (in m/s)
