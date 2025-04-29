@@ -529,4 +529,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('DC_Cohen_DC_cell5_params_shifted_stimulus.mat');
+% save('DC_Cohen_DC_cell5_params_shifted_stimulus.mat');
