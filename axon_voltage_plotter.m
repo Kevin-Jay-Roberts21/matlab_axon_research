@@ -21,6 +21,11 @@ clear all
 close all
 clc
 
+% HH_1 = load('projects/axon_simulations/HH_basic/HH_1.mat');
+% HH_2 = load('projects/axon_simulations/HH_basic/HH_2.mat');
+% HH_3 = load('projects/axon_simulations/HH_basic/HH_3.mat');
+
+
 % Huang parameters
 % SC_Huang_Myelinated_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1.mat');
 % SC_Huang_Tube_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_Tube_set1.mat');
@@ -49,11 +54,12 @@ clc
 % SC_Cohen_DC_cell6_temp_25 = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_temp_25.mat');
 % SC_Cohen_DC_cell6_temp_33_long = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_temp33_long.mat');
 % SC_Cohen_DC_cell6_temp_56_long = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_temp56_long.mat');
-DC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params.mat');
+% DC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params.mat');
 % DC_Cohen_DC_cell6_params_long = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_long.mat');
-DC_Cohen_DC_cell6_params_shifted_stimulus = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_shifted_stimulus.mat');
-DC_Cohen_DC_cell6_params_shifted_stimulus_2 = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_shifted_stimulus_2.mat');
-DC_Cohen_DC_cell6_params_shifted_stimulus_3 = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_shifted_stimulus_3.mat');
+DC_Cohen_DC_cell65_params_shifted_stimulus = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell5_params_shifted_stimulus.mat');
+% DC_Cohen_DC_cell6_params_shifted_stimulus = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_shifted_stimulus.mat');
+% DC_Cohen_DC_cell6_params_shifted_stimulus_2 = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_shifted_stimulus_2.mat');
+% DC_Cohen_DC_cell6_params_shifted_stimulus_3 = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_shifted_stimulus_3.mat');
 % DC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_avg_params.mat');
 % DC_Cohen_DC_cell6_temp_25 = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_temp_25.mat');
 % DC_Cohen_DC_cell6_temp_33_long = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_temp33_long.mat');
@@ -219,14 +225,10 @@ time_shot = 1.1; % in ms
 
 % picking time shots
 % time1 = 5.1; % in ms
-% time2 = 6; % in ms
-% time3 = 6.5; % in ms
-% time4 = 7; % in ms
-% time5 = 8; % in ms
-% time6 = 10; % in ms
-% time7 = 10.5; % in ms
+% time2 = 9.5; % in ms
+% time3 = 10; % in ms
 
-time1 = 2.7; % in ms
+time1 = 2; % in ms
 time2 = 3.3; % in ms
 time3 = 4; % in ms
 time4 = 2.7; % in ms
@@ -238,21 +240,22 @@ time8 = 4; % in ms
 list_of_times = {time1, time2, time3};
 
 % picking space shots
-% position1 = 0.5; % in cm
-% position2 = 1; % in cm
-% position3 = 1.5; % in cm
-% position4 = 2; % in cm
-% position5 = 2.5; % in cm
-% position6 = 3; % in cm
-% position7 = 5; % in cm
+% position1 = 1; % in cm
+% position2 = 3; % in cm
+% position3 = 5; % in cm
 
-position1 = 0.0005; % in cm
-position2 = 0.1; % in cm
-position3 = 0.2; % in cm
-position4 = 0.16; % in cm
-position5 = 0.0002; 
+position1 = 0.0800; % in cm
+position2 = 0.0828; % in cm
+position3 = 0.0857; % in cm
+position4 = 0.0885; % in cm
 
-list_of_positions = {position1, position2, position3};
+% position1 = 0.0005; % in cm
+% position2 = 0.06; % in cm
+% position3 = 0.1; % in cm
+% position4 = 0.16; % in cm
+% position5 = 0.0002; 
+
+list_of_positions = {position1, position2, position4};
 
 
 % picking pause (this controls the speed of the animation, the pause variable 
@@ -279,7 +282,7 @@ p = 0.01;
 % set_of_data13 = {DC_temp_30, DC_temp_31, DC_temp_32, DC_temp_33, DC_temp_34, DC_temp_35};
 
 
-data = DC_Cohen_DC_cell6_params_shifted_stimulus_2;
+data = DC_Cohen_DC_cell65_params_shifted_stimulus;
 % data = SC_temp_58;
 
 % plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
@@ -398,15 +401,8 @@ end
 function plot_Vm_minus_Vmy_picture(data, time_shot)
 
     L = data.L;
-    T = data.T;
     m = data.m;
     dt = data.dt;
-    
-    xmin = 0;
-    xmax = T;
-    ymin = -70;
-    ymax = 30;
-    axis([xmin xmax ymin ymax]);  % Set axis limits
 
     % plotting Voltage vs Axon length
     figure(1)
@@ -422,29 +418,30 @@ function plot_Vm_minus_Vmy_picture(data, time_shot)
     ymax = 30;
     axis([xmin xmax ymin ymax]);  % Set axis limits
 
-    text(xmin+0.125, ymax-18, sprintf('Time: %.3f ms', time_shot), 'FontSize', 9, 'BackgroundColor', 'w');
-    legend('$V_m$', '$V_m - V_{my}$', 'Location', 'northeast', 'Interpreter', 'latex');
-    ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex')
-    xlabel("Length of the axon in cm.")
-    title('$V_m$ and $V_m - V_{my}$ for Set (2) on DC model', 'Interpreter', 'latex');
+    text(xmin+0.10, ymax-30, sprintf('Time: %.3f ms', time_shot), 'FontSize', 11, 'BackgroundColor', 'w');
+    legend('$V_m$', '$V_m - V_{my}$', 'Location', 'northeast', 'Interpreter', 'latex', 'FontSize', 12);
+    ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex', 'FontSize', 13)
+    xlabel("Length of the axon in cm.", 'FontSize', 13)
+    title('$V_m$ and $V_m - V_{my}$ for Set (2) on DC model', 'Interpreter', 'latex', 'FontSize', 13);
 
     
     % Plotting just Vmy space
     figure(2)
     t = linspace(0, L, m);
     plot(t, data.Vmy_all(round(time_shot/dt),:), 'Color', [0 0.5 0], 'LineStyle', '-');
-    
+    hold off
+
     xmin = 0;
     xmax = L;
-    ymin = -70;
-    ymax = 30;
+    ymin = -20;
+    ymax = 80;
     axis([xmin xmax ymin ymax]);  % Set axis limits
 
-    text(xmin+0.125, ymax, sprintf('Time: %.3f ms', time_shot), 'FontSize', 9, 'BackgroundColor', 'w');
-    legend('$V_{my}$', 'Location', 'northeast', 'Interpreter', 'latex');
-    ylabel('$V_{my}$ in millivolts.', 'Interpreter', 'latex')
-    xlabel("Length of the axon in cm.")
-    title('$V_{my}$ for Set (1) on SC model', 'Interpreter', 'latex');
+    text(xmin+0.12, ymax-30, sprintf('Time: %.3f ms', time_shot), 'FontSize', 11, 'BackgroundColor', 'w');
+    legend('$V_{my}$', 'Location', 'northeast', 'Interpreter', 'latex', 'FontSize', 12);
+    ylabel('$V_{my}$ in millivolts.', 'Interpreter', 'latex', 'FontSize', 13)
+    xlabel("Length of the axon in cm.", 'FontSize', 13)
+    title('$V_{my}$ for Set (1) on SC model', 'Interpreter', 'latex', 'FontSize', 13);
     
     
     % Plotting V_m, V_m-V_my, and V_my all together
@@ -461,7 +458,7 @@ function plot_Vm_minus_Vmy_picture(data, time_shot)
     axis([xmin xmax ymin ymax]);  % Set axis limits
 
     % plotting Voltage vs Axon length
-    figure(1)
+    figure(3)
     t = linspace(0, L, m);
     plot(t, data.Vm_all(round(time_shot/dt),:), 'k-');
     hold on
@@ -476,11 +473,11 @@ function plot_Vm_minus_Vmy_picture(data, time_shot)
     ymax = 50;
     axis([xmin xmax ymin ymax]);  % Set axis limits
 
-    text(xmin+0.125, ymax-18, sprintf('Time: %.3f ms', time_shot), 'FontSize', 9, 'BackgroundColor', 'w');
-    legend('$V_m$', '$V_m - V_{my}$', '$V_{my}$', 'Location', 'northeast', 'Interpreter', 'latex');
-    ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex')
-    xlabel("Length of the axon in cm.")
-    title('$V_m$ and $V_m - V_{my}$ for Set (2) on DC model', 'Interpreter', 'latex');
+    text(xmin+0.11, ymax-30, sprintf('Time: %.3f ms', time_shot), 'FontSize', 11, 'BackgroundColor', 'w');
+    legend('$V_m$', '$V_m - V_{my}$', '$V_{my}$', 'Location', 'northeast', 'Interpreter', 'latex', 'FontSize', 12);
+    ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex', 'FontSize', 13)
+    xlabel("Length of the axon in cm.", 'FontSize', 13)
+    title('$V_m$ and $V_m - V_{my}$ for Set (2) on DC model', 'Interpreter', 'latex', 'FontSize', 13);
 
 end
 
@@ -714,12 +711,6 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
     dt = data.dt;
     dx = data.dx;
     
-    xmin = 0;
-    xmax = T;
-    ymin = -70;
-    ymax = 30;
-    axis([xmin xmax ymin ymax]);  % Set axis limits
-
     % plotting Voltage vs Axon length
     figure(1)
     t1 = linspace(0, L, m);
@@ -731,16 +722,16 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
     % describing plots using legends
     legendStrings1 = {};
     for i  = 1:length(list_of_times)
-        legendStrings1{end+1} = sprintf('$V_m$ at t = %g ms', list_of_times{i});
+        legendStrings1{end+1} = sprintf('$V_m$ at t = %.2f ms', list_of_times{i});
     end
-    legend(legendStrings1, 'Interpreter','latex')
-    ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex')
-    xlabel("Length of the axon in cm.")
-    title('SC Myelianted: $V_m$ vs Space', 'Interpreter', 'latex');
+    legend(legendStrings1, 'Interpreter','latex', 'FontSize', 12)
+    ylabel('$V_m$ in millivolts.', 'Interpreter', 'latex', 'FontSize', 13)
+    xlabel("Length of the axon in cm.", 'FontSize', 13)
+    title('SC Myelianted: $V_m$ vs Space', 'Interpreter', 'latex', 'FontSize', 13);
     
     xmin = 0;
     xmax = L;
-    ymin = -60;
+    ymin = -70;
     ymax = 30;
     axis([xmin xmax ymin ymax]);  % Set axis limits
 
@@ -757,18 +748,18 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
     % describing plots using legends
     legendStrings2 = {};
     for i = 1:length(list_of_positions)
-        legendStrings2{end+1} = sprintf('$V_m$ at x = %g cm', list_of_positions{i});
+        legendStrings2{end+1} = sprintf('$V_m$ at x = %.4f cm', list_of_positions{i});
     end
 
     xmin = 0;
     xmax = T;
     ymin = -70;
-    ymax = 40;
+    ymax = 30;
     axis([xmin xmax ymin ymax]);  % Set axis limits
-    legend(legendStrings2, 'Interpreter', 'latex')
-    ylabel('$V_m$ (mV)', 'Interpreter', 'latex')
-    xlabel("Time (ms)")
-    title('Temporal Profile of $V_m$ for Set (2) on DC model', 'Interpreter', 'latex');
+    legend(legendStrings2, 'Interpreter', 'latex', 'FontSize', 12)
+    ylabel('$V_m$ (mV)', 'Interpreter', 'latex', 'FontSize', 13)
+    xlabel("Time (ms)", 'FontSize', 13)
+    title('Temporal Profile of $V_m$ for Set (2) on DC model', 'Interpreter', 'latex', 'FontSize', 13);
     
     % plotting N, M, H probability vs time (at the first position list_of_positions(1))
     figure(3)
@@ -781,9 +772,9 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
         sprintf('n at x = %g cm', list_of_positions{1}), ...
         sprintf('m at x = %g cm', list_of_positions{1}), ...
         sprintf('h at x = %g cm', list_of_positions{1})};
-    legend(legendStrings3, 'Interpreter','latex')
-    ylabel("Probabilities of ion channels opening/closing.")
-    xlabel("Time in milliseconds.")
+    legend(legendStrings3, 'Interpreter','latex', 'FontSize', 12)
+    ylabel("Probabilities of ion channels opening/closing.", 'FontSize', 13)
+    xlabel("Time in milliseconds.", 'FontSize', 13)
 end
 
 % Plots animation of axon voltage in two different experiments
