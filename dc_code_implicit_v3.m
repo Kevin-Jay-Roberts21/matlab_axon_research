@@ -103,7 +103,7 @@ c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*C_2(n, m, h, ii, tt) + ... % Nodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*C_3(n, m, h, ii, tt); % End point        
        
-% defining the f_1(x_i) function
+% defining the f_2(x_i) function
 F_1 = @(Vmy_i) (1/(R_m*C_m) - 1/(C_my*R_my))*Vmy_i + E_rest/(R_m*C_m);
 F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) w2/(2*dx^2)*Vmy_i_minus_1 - w2/dx^2*Vmy_i + w2/(2*dx^2)*Vmy_i_plus_1; % Internodal region
 F_2 = @(n, m, h, ii, tt) 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
@@ -117,9 +117,9 @@ f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) >
 %%%%%%%%%%%%%%%%
 V_m0 = -58.1124; % (mV) initial condition for membrane potential 
 V_my0 = 0.005; % (mV) initial condition for axon potential in periaxonal space
-N_0 = 0.4264; % (dimless) initial condition for gating variable n
-M_0 = 0.1148; % (dimless) initial condition for gating variable m
-H_0 = 0.3548; % (dimless) initial condition for gating variable h
+N_0 = 0.4264; % (#) initial condition for gating variable n
+M_0 = 0.1148; % (#) initial condition for gating variable m
+H_0 = 0.3548; % (#) initial condition for gating variable h
 Vm = V_m0 * ones(1, m);
 Vmy = V_my0 * ones(1, m);
 N = zeros(1, m);
