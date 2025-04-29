@@ -26,7 +26,7 @@ clc
 % HH_3 = load('projects/axon_simulations/HH_basic/HH_3.mat');
 
 hh_simulation = load('hh_simulation.mat');
-dc_simulation = load('dc_simulation.mat');
+sc_simulation_v2 = load('sc_simulation_v2.mat');
 
 
 
@@ -286,7 +286,7 @@ p = 0.01;
 % set_of_data13 = {DC_temp_30, DC_temp_31, DC_temp_32, DC_temp_33, DC_temp_34, DC_temp_35};
 
 
-data = dc_simulation;
+data = sc_simulation_v2;
 % data = SC_temp_58;
 
 % plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);

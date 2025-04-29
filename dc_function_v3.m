@@ -311,6 +311,6 @@ function dc_solution_data = dc_function_v3(mesh_params, material_params)
     dc_solution_data.material_params = material_params;
     
     % Saving all the data defined in this function (automatically saved)
-    save('dc_simulation.mat');
+    save('dc_simulation_v3.mat');
 
 end
