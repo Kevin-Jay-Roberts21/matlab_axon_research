@@ -66,7 +66,7 @@ N_all(1,:) = N;
 M_all(1,:) = M; 
 H_all(1,:) = H;
 
-% Initialize matrix A and vectors b and f
+% Initialize matrix A and vectors g_1 and g_2
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 A = zeros(m);
 g_1 = zeros(m, 1);
@@ -76,7 +76,7 @@ g_2 = zeros(m, 1);
 %%%%%%%%%%%%%%%%%%%%%%%%
 for j = 1:(n-1)
     
-    % setting newN, newM, newH vectors (this is a new i, different from the above for loop)
+    % setting newN, newM, newH vectors
     for i = 1:m
         newN(i) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
         newM(i) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
