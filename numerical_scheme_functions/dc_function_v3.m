@@ -1,15 +1,13 @@
-% DC model v2 scheme
+% DC model v3 scheme
 % Kevin Roberts
 % April 2025
 
 % This function will solve for Vm, n, m and h for the DC model given mesh
 % and material parameters
 
-function dc_solution_data = dc_function_v2(mesh_params, material_params)
+function dc_solution_data = dc_function_v3(mesh_params, material_params)
     
     % Grabing and defining all the inputed mesh and material parameters
-    a = mesh_params.a; 
-    a_my = mesh_params.a_my;
     dx = mesh_params.dx;
     dt = mesh_params.dt; 
     L_my = mesh_params.L_my;
@@ -26,6 +24,8 @@ function dc_solution_data = dc_function_v2(mesh_params, material_params)
     N_s = mesh_params.N_s;
     m = mesh_params.m;
     n = mesh_params.n;
+    a = material_params.a; 
+    a_my = material_params.a_my;
     R_i = material_params.R_i;
     R_m = material_params.R_m;
     C_m = material_params.C_m; 
@@ -33,6 +33,8 @@ function dc_solution_data = dc_function_v2(mesh_params, material_params)
     r_pn = material_params.r_pn; 
     R_my = material_params.R_my; 
     C_my = material_params.C_my; 
+    R_pa = material_params.R_pa; 
+    R_pn = material_params.R_pn; 
     G_K = material_params.G_K; 
     G_Na = material_params.G_Na; 
     G_L = material_params.G_L; 
@@ -54,12 +56,6 @@ function dc_solution_data = dc_function_v2(mesh_params, material_params)
     N_0 = material_params.N_0; 
     M_0 = material_params.M_0; 
     H_0 = material_params.H_0; 
-
-    % Defining R_pa (not included in material params because it depends on mesh parameter a)
-    R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
-    
-    % Defining R_pn (not necessarily used, but important to include)
-    R_pn = r_pn*pi*d_pn*(2*a + d_pn); % (kilo-ohms*cm) resistivity of the paranodal space (computed)
 
     % Defining rho, w1, w2 and w3 constants
     rho = dt/dx^2; % creating the courant number
@@ -217,9 +213,9 @@ function dc_solution_data = dc_function_v2(mesh_params, material_params)
     
             if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
                 eta1 = -rho*w2/2;
-                eta2 = 1 + rho*w2;
+                eta2 = 1 + dt/(R_my*C_my) + rho*w2;
                 eta3 = -rho*w2/2; 
-                eta4 = 1 - dt/(R_my*C_my); 
+                eta4 = 1; 
                 eta5 = rho*w1/2*Vm(i-1) - rho*w1*Vm(i) + rho*w1/2*Vm(i+1);
             elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
                 eta1 = 0;
@@ -314,6 +310,6 @@ function dc_solution_data = dc_function_v2(mesh_params, material_params)
     dc_solution_data.material_params = material_params;
     
     % Saving all the data defined in this function (automatically saved)
-    save('dc_simulation_v2.mat');
+    save('dc_simulation_v3.mat');
 
 end

@@ -5,7 +5,6 @@
 
 function hh_mesh_params = hh_mesh_parameters()
     % Defining the mesh parameters
-    hh_mesh_params.a = 0.025; % (cm) axon radius 
     hh_mesh_params.L = 5; % (cm) axon length 
     hh_mesh_params.dx = 0.01; % (cm) space step 
     hh_mesh_params.T = 30; % (ms) total time 

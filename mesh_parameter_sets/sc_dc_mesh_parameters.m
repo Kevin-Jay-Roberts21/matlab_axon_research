@@ -5,8 +5,6 @@
 function sc_dc_mesh_params = sc_dc_mesh_parameters()
 
     % Defining the mesh parameters
-    sc_dc_mesh_params.a = 0.55*10^(-4); % (cm) radius in nodal region
-    sc_dc_mesh_params.a_my = sc_dc_mesh_params.a/0.698; % (cm) radius in myelinated region
     sc_dc_mesh_params.dx = 0.00005; % (cm) space step
     sc_dc_mesh_params.dt = 0.01; % (ms) time step 
     sc_dc_mesh_params.L_my = 0.0075; % (cm) internodal length

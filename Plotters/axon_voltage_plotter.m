@@ -25,10 +25,6 @@ clc
 % HH_2 = load('projects/axon_simulations/HH_basic/HH_2.mat');
 % HH_3 = load('projects/axon_simulations/HH_basic/HH_3.mat');
 
-hh_simulation = load('hh_simulation.mat');
-sc_simulation_v2 = load('sc_simulation_v2.mat');
-
-
 
 % Huang parameters
 % SC_Huang_Myelinated_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1.mat');

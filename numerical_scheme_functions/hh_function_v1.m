@@ -10,7 +10,6 @@ function hh_solution_data = hh_function_v1(mesh_params, material_params)
     % Grabing and defining all the inputed mesh and material parameters
     
     % mesh params
-    a = mesh_params.a;
     L = mesh_params.L;
     dx = mesh_params.dx;
     T = mesh_params.T;
@@ -19,6 +18,7 @@ function hh_solution_data = hh_function_v1(mesh_params, material_params)
     n = mesh_params.n;
     
     % material params
+    a = material_params.a;
     C_m = material_params.C_m;
     R_i = material_params.R_i;
     G_K = material_params.G_K;

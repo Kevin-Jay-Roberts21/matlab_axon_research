@@ -5,6 +5,7 @@
 function hh_material_params = hh_material_parameters()
     
     % Defining all of the material and intrinsic parameters
+    hh_material_params.a = 0.025; % (cm) axon radius 
     hh_material_params.C_m = 1; % (micro-farads/cm^2) membrane capacitance 
     hh_material_params.R_i = 0.030; % (kilo-ohms * cm) specific intracellular resistivity 
     hh_material_params.G_K = 36; % (mS/cm^2) maximum potassium conductance

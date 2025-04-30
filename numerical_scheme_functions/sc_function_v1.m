@@ -1,15 +1,13 @@
-% SC model v3 scheme
+% SC model v1 scheme
 % Kevin Roberts
 % April 2025
 
 % This function will solve for Vm, n, m and h for the SC model given mesh
 % and material parameters
 
-function sc_solution_data = sc_function_v3(mesh_params, material_params)
+function sc_solution_data = sc_function_v1(mesh_params, material_params)
     
     % Grabing and defining all the inputed mesh and material parameters
-    a = mesh_params.a; 
-    a_my = mesh_params.a_my;
     dx = mesh_params.dx;
     dt = mesh_params.dt; 
     L = mesh_params.L;
@@ -18,6 +16,8 @@ function sc_solution_data = sc_function_v3(mesh_params, material_params)
     N_s = mesh_params.N_s;
     m = mesh_params.m;
     n = mesh_params.n;
+    a = material_params.a; 
+    a_my = material_params.a_my;
     R_i = material_params.R_i;
     R_m = material_params.R_m;
     C_m = material_params.C_m;  
@@ -137,17 +137,36 @@ function sc_solution_data = sc_function_v3(mesh_params, material_params)
     N_all(1,:) = N;
     M_all(1,:) = M; 
     H_all(1,:) = H;
+
+    % Defining the A matrix
+    %%%%%%%%%%%%%%%%%%%%%%%
+    A = zeros(m, m);
+    % using the boundary conditions to define the top and bottom row of A
+    A(1, 1) = 1;
+    A(1, 2) = -1;
+    A(m, m-1) = -1;
+    A(m, m) = 1;
+    
+    for i = 2:(m-1)
+        
+        gamma1 = -rho*b_1(i - 1/2);
+        gamma2 = 1 + rho*(b_1(i + 1/2) + b_1(i - 1/2));
+        gamma3 = -rho*b_1(i + 1/2);
+        
+        A(i, i-1) = gamma1;
+        A(i, i) = gamma2;
+        A(i, i+1) = gamma3;
+        
+    end
     
     % Running the time loop
-    %%%%%%%%%%%%%%%%%%%%%%%
     for j = 1:(n-1)
         
-        % Updating the probability gate functions n, m and h
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % updating the probability gate functions n, m and h
         for i = 1:m-1
             seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
-            myelin_start = (seg - 1)*(N_s) + N_n; % start of internodal region in this segment
-            myelin_end = seg*(N_s); % end of internodal region in this segment
+            myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
+            myelin_end = seg*(N_s); % End of internodal region in this segment
             seg_start = (seg - 1)*(N_s); % index of the start of the segment
     
             if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
@@ -170,78 +189,59 @@ function sc_solution_data = sc_function_v3(mesh_params, material_params)
         
 
         % Updating Vmy
-        %%%%%%%%%%%%%%
         newVmy(1) = 0;
         for i = 2:m-1
             seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
-            myelin_start = (seg - 1)*(N_s) + N_n; % start of internodal region in this segment
+            myelin_start = (seg - 1)*(N_s) + N_n; % etart of internodal region in this segment
             myelin_end = seg*(N_s); % end of internodal region in this segment
+            seg_start = (seg - 1)*(N_s); % index of the start of the segment
     
             if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
-                
-                eta1 = 1/(1 + dt/(C_my*R_my));
-                eta2 = rho * w_1/2 * 1/(1 + dt/(C_my*R_my));
-                eta3 = -rho * w_1 * 1/(1 + dt/(C_my*R_my));
-                eta4 = rho * w_1/2 * 1/(1 + dt/(C_my*R_my));
+                eta1 = 1 - dt/(C_my*R_my);
+                eta2 = rho*w_1/2;
+                eta3 = -rho*w_1;
+                eta4 = rho*w_1/2;
             
-            else % End point and Nodal Regions
+            else % End point
                 eta1 = 0;
                 eta2 = 0;
                 eta3 = 0;
                 eta4 = 0;
             end
             newVmy(i) = eta1*Vmy(i) + eta2*Vm(i-1) + eta3*Vm(i) + eta4*Vm(i+1);
-        
+    
         end
         newVmy(m) = 0;
-        
+
 
         % Updating Vm
-
-        % Defining the A matrix and g_1 and g_2 vectors
-        A = zeros(m, m);
+        
+        % Defining g_1 and g_2 vectors
         g_1 = zeros(m, 1);
         g_2 = zeros(m, 1);
-        
-        % Setting the boundary conditions
-        A(1, 1) = 1;
-        A(1, 2) = -1;
-        A(m, m-1) = -1;
-        A(m, m) = 1;
     
-        % Starting the space loop
         for i = 2:(m-1)
     
-            gamma1 = -rho*b_1(i - 1/2);
-            gamma2 = 1 - dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
-            gamma3 = -rho*b_1(i + 1/2);
-            gamma4 = 1;
-            gamma5 = dt * f_1(newVmy(i), newN(i), newM(i), newH(i), i, j);
+            gamma4 = 1 + dt*c_1(newN(i), newM(i), newH(i), i, j);
+            gamma5 = dt*f_1(newVmy(i), newN(i), newM(i), newH(i), i, j);
     
-            A(i, i-1) = gamma1;
-            A(i, i) = gamma2;
-            A(i, i+1) = gamma3;
-            g_1(i) = gamma4*Vm(i);
-            g_2(i) = gamma5;
-               
+            g_1(i, 1) = gamma4*Vm(i);
+            g_2(i, 1) = gamma5; 
         end
-
+        
         j % displaying the current time iteration (nice way to see how long simulation is)
-
+    
         % Solving for V_m^{j+1}
-        %%%%%%%%%%%%%%%%%%%%%%%
         newVm = transpose(A\(g_1+g_2));
     
-        % Updating Vm, Vmy, N, M, and H
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Updating Vm, Vmy, N, M and H
         Vm = newVm;
         Vmy = newVmy;
         N = newN;
         M = newM;
         H = newH;
         
-        % Adding the updated vectors to the 'all' data
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Adding the updated vectors to the '_all' data
         Vm_all(j+1,:) = Vm;
         Vmy_all(j+1,:) = Vmy;
         Vm_minus_Vmy(j+1,:) = Vm - Vmy;
@@ -261,6 +261,6 @@ function sc_solution_data = sc_function_v3(mesh_params, material_params)
     sc_solution_data.material_params = material_params;
     
     % Saving all the data defined in this function (automatically saved)
-    save('sc_simulation_v3.mat');
+    save('sc_simulation_v1.mat');
 
 end

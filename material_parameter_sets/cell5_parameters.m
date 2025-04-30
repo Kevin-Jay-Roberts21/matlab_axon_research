@@ -8,6 +8,8 @@
 function cell5_params = cell5_parameters()
 
     % Defining the material properties
+    cell5_params.a = 0.55*10^(-4); % (cm) radius in nodal region
+    cell5_params.a_my = cell5_params.a/0.698; % (cm) radius in myelinated region
     cell5_params.R_i = 0.109; % (kilo-ohms*cm) intracellular resistivity
     cell5_params.R_m = 27.7; % (kilo-ohms*cm^2) specific membrane resistance
     cell5_params.C_m = 1.01; % (micro-farads/cm^2) specific membrane capacitance
@@ -15,6 +17,8 @@ function cell5_params = cell5_parameters()
     cell5_params.r_pn = 877*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
     cell5_params.R_my = 75.2; % (kilo-ohms*cm^2) specfic myelin resistance
     cell5_params.C_my = 0.0678; % (micro-fards/cm^2) specific myelin capacitance
+    cell5_params.R_pa = cell5_params.r_pa*pi*cell5_params.d_pa*(2*cell5_params.a + cell5_params.d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
+    cell5_params.R_pn = cell5_params.r_pn*pi*cell5_params.d_pn*(2*cell5_params.a + cell5_params.d_pn); % (kilo-ohms*cm) resistivity of the paranodal space (computed)
     cell5_params.G_K = 80; % (mS/cm^2) max specific potassium conductance
     cell5_params.G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
     cell5_params.G_L = 80; % (mS/cm^2) specific leak conductance

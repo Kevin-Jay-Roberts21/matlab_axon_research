@@ -8,6 +8,8 @@
 function set2_params = set2_parameters()
 
     % Defining the material properties
+    set2_params.a = 0.55*10^(-4); % (cm) radius in nodal region
+    set2_params.a_my = set2_params.a/0.698; % (cm) radius in myelinated region
     set2_params.R_i = 0.155; % (kilo-ohms*cm) intracellular resistivity
     set2_params.R_m = 24.6; % (kilo-ohms*cm^2) specific membrane resistance
     set2_params.C_m = 1.15; % (micro-farads/cm^2) specific membrane capacitance
@@ -15,6 +17,8 @@ function set2_params = set2_parameters()
     set2_params.r_pn = 2450*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
     set2_params.R_my = 240; % (kilo-ohms*cm^2) specfic myelin resistance
     set2_params.C_my = 0.0379; % (micro-fards/cm^2) specific myelin capacitance
+    set2_params.R_pa = set2_params.r_pa*pi*set2_params.d_pa*(2*set2_params.a + set2_params.d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
+    set2_params.R_pn = set2_params.r_pn*pi*set2_params.d_pn*(2*set2_params.a + set2_params.d_pn); % (kilo-ohms*cm) resistivity of the paranodal space (computed)
     set2_params.G_K = 80; % (mS/cm^2) max specific potassium conductance
     set2_params.G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
     set2_params.G_L = 80; % (mS/cm^2) specific leak conductance
