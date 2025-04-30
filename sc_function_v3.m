@@ -1,4 +1,4 @@
-% SC model v3
+% SC model v3 scheme
 % Kevin Roberts
 % April 2025
 
@@ -139,9 +139,11 @@ function sc_solution_data = sc_function_v3(mesh_params, material_params)
     H_all(1,:) = H;
     
     % Running the time loop
+    %%%%%%%%%%%%%%%%%%%%%%%
     for j = 1:(n-1)
         
         % Updating the probability gate functions n, m and h
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         for i = 1:m-1
             seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
             myelin_start = (seg - 1)*(N_s) + N_n; % start of internodal region in this segment
@@ -168,6 +170,7 @@ function sc_solution_data = sc_function_v3(mesh_params, material_params)
         
 
         % Updating Vmy
+        %%%%%%%%%%%%%%
         newVmy(1) = 0;
         for i = 2:m-1
             seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
@@ -194,6 +197,7 @@ function sc_solution_data = sc_function_v3(mesh_params, material_params)
         
 
         % Updating Vm
+
         % Defining the A matrix and g_1 and g_2 vectors
         A = zeros(m, m);
         g_1 = zeros(m, 1);
@@ -225,9 +229,11 @@ function sc_solution_data = sc_function_v3(mesh_params, material_params)
         j % displaying the current time iteration (nice way to see how long simulation is)
 
         % Solving for V_m^{j+1}
+        %%%%%%%%%%%%%%%%%%%%%%%
         newVm = transpose(A\(g_1+g_2));
     
         % Updating Vm, Vmy, N, M, and H
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         Vm = newVm;
         Vmy = newVmy;
         N = newN;
@@ -235,6 +241,7 @@ function sc_solution_data = sc_function_v3(mesh_params, material_params)
         H = newH;
         
         % Adding the updated vectors to the 'all' data
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         Vm_all(j+1,:) = Vm;
         Vmy_all(j+1,:) = Vmy;
         Vm_minus_Vmy(j+1,:) = Vm - Vmy;

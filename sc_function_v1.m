@@ -1,11 +1,11 @@
-% SC model v2 scheme
+% SC model v1 scheme
 % Kevin Roberts
 % April 2025
 
 % This function will solve for Vm, n, m and h for the SC model given mesh
 % and material parameters
 
-function sc_solution_data = sc_function_v2(mesh_params, material_params)
+function sc_solution_data = sc_function_v1(mesh_params, material_params)
     
     % Grabing and defining all the inputed mesh and material parameters
     a = mesh_params.a; 
@@ -137,6 +137,27 @@ function sc_solution_data = sc_function_v2(mesh_params, material_params)
     N_all(1,:) = N;
     M_all(1,:) = M; 
     H_all(1,:) = H;
+
+    % Defining the A matrix
+    %%%%%%%%%%%%%%%%%%%%%%%
+    A = zeros(m, m);
+    % using the boundary conditions to define the top and bottom row of A
+    A(1, 1) = 1;
+    A(1, 2) = -1;
+    A(m, m-1) = -1;
+    A(m, m) = 1;
+    
+    for i = 2:(m-1)
+        
+        gamma1 = -rho*b_1(i - 1/2);
+        gamma2 = 1 + rho*(b_1(i + 1/2) + b_1(i - 1/2));
+        gamma3 = -rho*b_1(i + 1/2);
+        
+        A(i, i-1) = gamma1;
+        A(i, i) = gamma2;
+        A(i, i+1) = gamma3;
+        
+    end
     
     % Running the time loop
     for j = 1:(n-1)
@@ -194,31 +215,18 @@ function sc_solution_data = sc_function_v2(mesh_params, material_params)
 
 
         % Updating Vm
-        % Defining the A matrix and g_1 and g_2
-        A = zeros(m, m);
+        
+        % Defining g_1 and g_2 vectors
         g_1 = zeros(m, 1);
         g_2 = zeros(m, 1);
-
-        % using the boundary conditions to define the top and bottom row of A
-        A(1, 1) = 1;
-        A(1, 2) = -1;
-        A(m, m-1) = -1;
-        A(m, m) = 1;
     
         for i = 2:(m-1)
     
-            gamma1 = -rho*b_1(i - 1/2);
-            gamma2 = 1 - dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
-            gamma3 = -rho*b_1(i + 1/2);
-            gamma4 = 1;
-            gamma5 = dt * f_1(newVmy(i), newN(i), newM(i), newH(i), i, j);
+            gamma4 = 1 + dt*c_1(newN(i), newM(i), newH(i), i, j);
+            gamma5 = dt*f_1(newVmy(i), newN(i), newM(i), newH(i), i, j);
     
-            A(i, i-1) = gamma1;
-            A(i, i) = gamma2;
-            A(i, i+1) = gamma3;
             g_1(i, 1) = gamma4*Vm(i);
-            g_2(i, 1) = gamma5;
-    
+            g_2(i, 1) = gamma5; 
         end
         
         j % displaying the current time iteration (nice way to see how long simulation is)
@@ -253,6 +261,6 @@ function sc_solution_data = sc_function_v2(mesh_params, material_params)
     sc_solution_data.material_params = material_params;
     
     % Saving all the data defined in this function (automatically saved)
-    save('sc_simulation_v2.mat');
+    save('sc_simulation_v1.mat');
 
 end
