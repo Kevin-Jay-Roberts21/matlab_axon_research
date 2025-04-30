@@ -1,4 +1,4 @@
-% Double Cable Model Finite Difference implicit discretization
+% Double Cable Model Finite Difference Implicit Discretization Version 3
 % Kevin Roberts
 % February 2025
 
@@ -10,41 +10,33 @@ clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 dx = 0.00005; % (cm) space step
 dt = 0.01; % (ms) time step 
-L_my = 0.0145; % (cm) internodal length
+L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
 L_pn = 2.3*10^(-4); % (cm) paranodal length
 d_pa = 12.3*10^(-7); % (cm) periaxonal thickness
 d_pn = 7.4*10^(-7); % (cm) paranodal thickness
 L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 10; % (dimless) number of axon segments
+n_s = 10; % (#) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 30; % (ms) the total time of the experiment
-N_n = round(L_n/dx); % number of space steps in a nodal region
-N_my = round(L_my/dx); % number of space steps in an internodal region
-N_s = N_n + N_my; % number of space steps in an entire axon segement
-m = N_s*n_s + 1; % total number of space steps
-n = T/dt + 1; % n is the number of time steps
+T = 5; % (ms) the total time of the experiment
+N_n = round(L_n/dx); % (#) number of space steps in a nodal region
+N_my = round(L_my/dx); % (#) number of space steps in an internodal region
+N_s = N_n + N_my; % (#) number of space steps in an entire axon segement
+m = N_s*n_s + 1; % (#) total number of space steps
+n = T/dt + 1; % (#) n is the number of time steps
 
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Parameters to change to test Dr. Huang's Paper
-% a_my = 0.0001; % (cm) radius in myelinated region
-% a = 0.0001238; % (cm) radius in nodal region
-% R_my = 123.6795; % (kilo-ohms*cm^2) specfic myelin resistance
-% C_my = 0.0081; % (micro-fards/cm^2) specific myelin capacitance
-
-% original a, a_my, R_my and C_my
 a = 0.55*10^(-4); % (cm) axon radius in nodal region
 a_my = a/0.698; % (cm) axon radius in myelinated section 
-R_i = 0.109; % (kilo-ohms*cm) intracellular resistivity
-R_m = 27.7; % (kilo-ohms*cm^2) specific membrane resistance
-C_m = 1.01; % (micro-farads/cm^2) specific membrane capacitance
-r_pa = 105*10^6; % 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
+R_i = 0.2; % (kilo-ohms*cm) intracellular resistivity
+R_m = 23.1; % (kilo-ohms*cm^2) specific membrane resistance
+C_m = 1.28; % (micro-farads/cm^2) specific membrane capacitance
+r_pa = 321*10^6; % 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
-r_pn = 877*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
-R_my = 75.2; % (kilo-ohms*cm^2) specific myelin resistance
-C_my = 0.0678; % (micro-farads/cm^2) specific myelin capacitance
+r_pn = 2450*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
+R_my = 530; % (kilo-ohms*cm^2) specific myelin resistance
+C_my = 0.174; % (micro-farads/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -54,18 +46,18 @@ E_L = -59.4; % (mV) Nernst potential for leak channels
 E_rest = -59.4; % (mV) effective resting nernst potential
 
 % defining rho, w1, w2 and w3 constants
-rho = dt/dx^2; % creating the courant number
+rho = dt/dx^2;
 w1 = a^2/(C_my*a_my*R_i);
 w2 = d_pa*(2*a + d_pa)/(C_my*a_my*R_pa);
 w3 = r_pa/(r_pn*L_pn);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 1500; % (in mS/cm^2) % stimulus value
-S_T0 = 1; % start time of when stimulus is added (in ms)
-S_T1 = 1.1; % end time of when stimulus is added (in ms)
-S_P0 = 0.0151; % start position of adding the stimulus (in cm)
-S_P1 = 0.0154; % end position of adding the stimulus (in cm)
+S_v = 151; % (mS/cm^2) % stimulus value
+S_T0 = 1; % (ms) start time of when stimulus is added
+S_T1 = 1.1; % (ms) end time of when stimulus is added
+S_P0 = 0.0001; % (cm) start position of adding the stimulus
+S_P1 = 0.0004; % (cm) end position of adding the stimulus
 % in the S functi on ii, is the space index and tt is the time index
 S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
                     (tt * dt < S_T1 | abs(tt * dt - S_T1) <= 1e-10) & ...
@@ -76,10 +68,10 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T_base = 20; % (C) base temperature
 T_actual = 20; % (C) the temperature of the squid axon
-Q_10_Na = 2.2; % (dimless) temperature coefficient for Na current
-Q_10_K = 3; % (dimless) temperature coefficient for K current
-phi_Na = Q_10_Na^((T_actual - T_base)/10); % (dimless) temperature scaling factor for Na current
-phi_K = Q_10_K^((T_actual - T_base)/10); % (dimless) temperature scaling factor for K current
+Q_10_Na = 2.2; % (#) temperature coefficient for Na current
+Q_10_K = 3; % (#) temperature coefficient for K current
+phi_Na = Q_10_Na^((T_actual - T_base)/10); % (#) temperature scaling factor for Na current
+phi_K = Q_10_K^((T_actual - T_base)/10); % (#) temperature scaling factor for K current
 alpha_n = @(Vm) phi_K * 0.01*(Vm + 55)/(1 - exp(-(Vm + 55)/10));
 beta_n = @(Vm) phi_K * 0.125*exp(-(Vm + 65)/80);
 alpha_m = @(Vm) phi_Na * 0.1*(Vm + 40)/(1 - exp(-(Vm + 40)/10));
@@ -87,7 +79,7 @@ beta_m = @(Vm) phi_Na * 4*exp(-(Vm + 65)/18);
 alpha_h = @(Vm) phi_Na * 0.07*exp(-(Vm + 65)/20);
 beta_h = @(Vm) phi_Na * 1/(1 + exp(-(Vm + 35)/10));
 
-% defining the b_1(x_i) function
+% Defining the b_1(x_i) function
 B_1 = (a/(2*R_i*C_m))*(1 + C_m*a/(C_my*a_my)); % Internodal region
 B_2 = a/(2*R_i*C_m); % Nodal region
 B_3 = (B_1 + B_2)/2; % End point (may not be used)
@@ -95,7 +87,7 @@ b_1 = @(ii) (mod(ii - 1, N_s) > N_n).*B_1 + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*B_2 + ... % Nodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*B_3; % End point      
 
-% defining the c_1(x_i) function
+% Defining the c_1(x_i) function
 C_1 = -1/(R_m*C_m); % Internodal region
 C_2 = @(n, m, h, ii, tt) -1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L); % Nodal region
 C_3 = @(n, m, h, ii, tt) (C_1 + C_2(n, m, h, ii, tt))/2; % End point
@@ -103,7 +95,7 @@ c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*C_2(n, m, h, ii, tt) + ... % Nodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*C_3(n, m, h, ii, tt); % End point        
        
-% defining the f_2(x_i) function
+% Defining the f_2(x_i) function
 F_1 = @(Vmy_i) (1/(R_m*C_m) - 1/(C_my*R_my))*Vmy_i + E_rest/(R_m*C_m);
 F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) w2/(2*dx^2)*Vmy_i_minus_1 - w2/dx^2*Vmy_i + w2/(2*dx^2)*Vmy_i_plus_1; % Internodal region
 F_2 = @(n, m, h, ii, tt) 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
@@ -204,7 +196,7 @@ for j = 1:(n-1)
     % Updating Vmy
     %%%%%%%%%%%%%%
     
-    % Defining the A_2 matrix as well as e_2 and f_2
+    % Defining the A_2 matrix as well as e_1 and e_2
     A_2 = zeros(m, m);
     e_1 = zeros(m, 1);
     e_2 = zeros(m, 1);
@@ -320,26 +312,13 @@ end
 % PICKING TIME AND POSITION SHOTS TO PLOT %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-position12 = 0.0008;
-position13 = 0.001;
-position14 = 0.0015;
 position1 = L*0.25; % in cm
 position2 = L*0.5; % in cm
 position3 = L*0.75; % in cm
 position4 = L; % in cm
 position5 = 0.0002; 
 
-% position1 = 0.0003; % in cm
-% position2 = 0.0005; % in cm
-% position3 = 0.0007; % in cm
-% position4 = 0.0009; % in cm
-% position5 = 0.0002; 
-
-
-list_of_positions = [position12
-                     position13
-                     position14
-                     position1
+list_of_positions = [position1
                      position2
                      position3
                      position4
@@ -529,4 +508,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('DC_Cohen_DC_cell5_params_shifted_stimulus.mat');
+% save('DC_v3.mat');
