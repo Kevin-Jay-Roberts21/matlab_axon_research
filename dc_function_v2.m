@@ -1,11 +1,11 @@
-% DC model v3 scheme
+% DC model v2 scheme
 % Kevin Roberts
 % April 2025
 
 % This function will solve for Vm, n, m and h for the DC model given mesh
 % and material parameters
 
-function dc_solution_data = dc_function_v3(mesh_params, material_params)
+function dc_solution_data = dc_function_v2(mesh_params, material_params)
     
     % Grabing and defining all the inputed mesh and material parameters
     a = mesh_params.a; 
@@ -217,9 +217,9 @@ function dc_solution_data = dc_function_v3(mesh_params, material_params)
     
             if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
                 eta1 = -rho*w2/2;
-                eta2 = 1 + dt/(R_my*C_my) + rho*w2;
+                eta2 = 1 + rho*w2;
                 eta3 = -rho*w2/2; 
-                eta4 = 1; 
+                eta4 = 1 - dt/(R_my*C_my); 
                 eta5 = rho*w1/2*Vm(i-1) - rho*w1*Vm(i) + rho*w1/2*Vm(i+1);
             elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
                 eta1 = 0;
@@ -314,6 +314,6 @@ function dc_solution_data = dc_function_v3(mesh_params, material_params)
     dc_solution_data.material_params = material_params;
     
     % Saving all the data defined in this function (automatically saved)
-    save('dc_simulation_v3.mat');
+    save('dc_simulation_v2.mat');
 
 end
