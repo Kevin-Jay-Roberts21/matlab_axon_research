@@ -6,54 +6,50 @@ clear all
 close all
 clc
 
-% importing the structs
-addpath('mesh_parameter_sets')
-
-
-
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Running an HH Simulation %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Run the code below to run an hh simulation (data will automatically be saved)
+
 % Getting the mesh and material parameters
-hh_mesh = hh_mesh_parameters();
-hh_material = hh_material_parameters();
+hh_mesh = mesh_parameter_sets.hh_mesh_parameters();
+hh_material = material_parameter_sets.hh_material_parameters();
 
 % Running the HH simulation
-hh_simultion = hh_function_v1(hh_mesh, hh_material);
-
-% % Saving HH data
-% save('hh_simulation.mat', 'hh_simultion');
+hh_simultion = numerical_scheme_functions.hh_function_v1(hh_mesh, hh_material);
 
 
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Running a SC Simulation %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% % Getting the mesh and material parameters
-% sc_mesh = sc_dc_mesh_parameters();
-% sc_material = set1_parameters();
-% 
-% % Running the SC simulation
-% sc_simulation = sc_function_v3(sc_mesh, sc_material);
-% 
-% % % Saving SC data
-% % save('sc_simulation.mat', 'sc_simultion');
+% Run the code below to run a sc simulation (data will automatically be saved)
+
+% Getting the mesh and material parameters
+sc_mesh = mesh_parameter_sets.sc_dc_mesh_parameters();
+sc_material = material_parameter_sets.set1_parameters();
+
+% Running the SC simulation
+sc_simulation = numerical_scheme_functions.sc_function_v1(sc_mesh, sc_material);
 
 
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Running a DC Simulation %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% % Getting the mesh and material parameters
-% dc_mesh = sc_dc_mesh_parameters();
-% dc_material = set1_parameters();
-% 
-% % Running the SC simulation
-% dc_simulation = dc_function_v2(dc_mesh, dc_material);
-% 
-% % % Saving SC data
-% % save('sc_simulation.mat', 'sc_simultion');
+% Run the code below to run a dc simulation (data will automatically be saved)
+
+
+% Getting the mesh and material parameters
+dc_mesh = mesh_parameter_sets.sc_dc_mesh_parameters();
+dc_material = material_parameter_sets.set1_parameters();
+
+% Running the SC simulation
+dc_simulation = numerical_scheme_functions.dc_function_v3(dc_mesh, dc_material);
 
 
 

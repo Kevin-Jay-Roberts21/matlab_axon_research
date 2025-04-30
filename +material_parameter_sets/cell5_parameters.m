@@ -10,6 +10,8 @@ function cell5_params = cell5_parameters()
     % Defining the material properties
     cell5_params.a = 0.55*10^(-4); % (cm) radius in nodal region
     cell5_params.a_my = cell5_params.a/0.698; % (cm) radius in myelinated region
+    cell5_params.d_pa = 12.3*10^(-7); % (cm) periaxonal thickness
+    cell5_params.d_pn = 7.4*10^(-7); % (cm) paranodal thickness
     cell5_params.R_i = 0.109; % (kilo-ohms*cm) intracellular resistivity
     cell5_params.R_m = 27.7; % (kilo-ohms*cm^2) specific membrane resistance
     cell5_params.C_m = 1.01; % (micro-farads/cm^2) specific membrane capacitance

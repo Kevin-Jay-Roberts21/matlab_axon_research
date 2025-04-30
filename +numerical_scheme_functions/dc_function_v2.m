@@ -1,11 +1,11 @@
-% DC model v3 scheme
+% DC model v2 scheme
 % Kevin Roberts
 % April 2025
 
 % This function will solve for Vm, n, m and h for the DC model given mesh
 % and material parameters
 
-function dc_solution_data = dc_function_v3(mesh_params, material_params)
+function dc_solution_data = dc_function_v2(mesh_params, material_params)
     
     % Grabing and defining all the inputed mesh and material parameters
     dx = mesh_params.dx;
@@ -13,8 +13,6 @@ function dc_solution_data = dc_function_v3(mesh_params, material_params)
     L_my = mesh_params.L_my;
     L_n = mesh_params.L_n;
     L_pn = mesh_params.L_pn;
-    d_pa = mesh_params.d_pa;
-    d_pn = mesh_params.d_pn;
     L_s = mesh_params.L_s;
     n_s = mesh_params.n_s;
     L = mesh_params.L;
@@ -26,6 +24,8 @@ function dc_solution_data = dc_function_v3(mesh_params, material_params)
     n = mesh_params.n;
     a = material_params.a; 
     a_my = material_params.a_my;
+    d_pa = material_params.d_pa;
+    d_pn = material_params.d_pn;
     R_i = material_params.R_i;
     R_m = material_params.R_m;
     C_m = material_params.C_m; 
@@ -213,9 +213,9 @@ function dc_solution_data = dc_function_v3(mesh_params, material_params)
     
             if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
                 eta1 = -rho*w2/2;
-                eta2 = 1 + dt/(R_my*C_my) + rho*w2;
+                eta2 = 1 + rho*w2;
                 eta3 = -rho*w2/2; 
-                eta4 = 1; 
+                eta4 = 1 - dt/(R_my*C_my); 
                 eta5 = rho*w1/2*Vm(i-1) - rho*w1*Vm(i) + rho*w1/2*Vm(i+1);
             elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
                 eta1 = 0;
@@ -310,6 +310,6 @@ function dc_solution_data = dc_function_v3(mesh_params, material_params)
     dc_solution_data.material_params = material_params;
     
     % Saving all the data defined in this function (automatically saved)
-    save('dc_simulation_v3.mat');
+    save('dc_simulation_v2.mat');
 
 end

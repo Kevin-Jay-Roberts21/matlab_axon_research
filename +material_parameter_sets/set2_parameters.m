@@ -10,6 +10,8 @@ function set2_params = set2_parameters()
     % Defining the material properties
     set2_params.a = 0.55*10^(-4); % (cm) radius in nodal region
     set2_params.a_my = set2_params.a/0.698; % (cm) radius in myelinated region
+    set2_params.d_pa = 12.3*10^(-7); % (cm) periaxonal thickness
+    set2_params.d_pn = 7.4*10^(-7); % (cm) paranodal thickness
     set2_params.R_i = 0.155; % (kilo-ohms*cm) intracellular resistivity
     set2_params.R_m = 24.6; % (kilo-ohms*cm^2) specific membrane resistance
     set2_params.C_m = 1.15; % (micro-farads/cm^2) specific membrane capacitance
