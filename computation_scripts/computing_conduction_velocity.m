@@ -198,7 +198,7 @@ clc
 % Huang Parameters
 SC_Huang_Myelinated_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1.mat');
 SC_Huang_Tube_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_Tube_set1.mat');
-SC_Huang_TubeParalyne_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_TubeParalyne_set1.mat');
+SC_Huang_TubeParalyne_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_TubeParalyene_set1.mat');
 % DC_Huang_Myelinated_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1.mat');
 % DC_Huang_Tube_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Tube_set1.mat');
 % DC_Huang_TubeParalyne_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyne_set1.mat');
