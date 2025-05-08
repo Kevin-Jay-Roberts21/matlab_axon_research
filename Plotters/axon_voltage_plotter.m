@@ -1,13 +1,6 @@
 % Axon voltage plotter. This code is meant to plot data from the following
-% files: 
-% squid_giant_axon.m 
-% myelianted_HH_axon.m,
-% dimensionless_squid_giant_axon.m 
-% sc_code_implicit_v1.m
-% sc_code_implicit_v2.m
-% sc_code_implicit_v3.m
-% dc_code_implicit.m
-% 
+% files
+
 % Additionally, variables like list_of_positions, list_of_times, and pause 
 % may have to be modified depending on HH, SC or DC to obtain useful animations
 % and/or plots.
@@ -227,16 +220,9 @@ time_shot = 1.1; % in ms
 % time1 = 5.1; % in ms
 % time2 = 9.5; % in ms
 % time3 = 10; % in ms
-
 time1 = 2; % in ms
 time2 = 3.3; % in ms
 time3 = 4; % in ms
-time4 = 2.7; % in ms
-time5 = 2.9; % in ms
-time6 = 3.3; % in ms
-time7 = 3.3; % in ms
-time8 = 4; % in ms
-
 list_of_times = {time1, time2, time3};
 
 % picking space shots
@@ -251,9 +237,7 @@ position4 = 0.0885; % in cm
 
 % position1 = 0.0005; % in cm
 % position2 = 0.06; % in cm
-% position3 = 0.1; % in cm
 % position4 = 0.16; % in cm
-% position5 = 0.0002; 
 
 list_of_positions = {position1, position2, position4};
 
