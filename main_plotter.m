@@ -9,8 +9,9 @@ clc
 
 % There are 9 total different types of data that we would like plot. We
 % will categorize them as follows:
-% data_type1: Vm, Vmy, Vm_minus_Vmy, n, m and h
-% data_type2: n_and_m_and_h, Vm_and_Vm_minus_Vmy, and Vm_and_Vmy_and_Vm_minus_Vmy
+% data_type1: "Vm", "Vmy", "Vm_minus_Vmy", "n", "m" and "h"
+% data_type2: "n_and_m_and_h", "Vm_and_Vm_minus_Vmy", and
+% "Vm_and_Vmy_and_Vm_minus_Vmy"
 % data_type3: everything in data_type1 AND data_type2
 
 % We note that in data_type2, multiple lines are plotted, whereas datatype1
@@ -20,8 +21,10 @@ clc
 % Loading in the data to plot
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% sc_simulation_v3 = ;
-% dc_simulation_v3 = ;
+% Note: some data may be saved in different paths
+hh_simulation = load(pwd + "/hh_simulation.mat");
+sc_simulation_v3 = load(pwd + "/sc_simulation_v1.mat");
+dc_simulation_v3 = load(pwd + "/dc_simulation_v3.mat");
 
 
 % The following variables are subject to change due to users preference
@@ -75,8 +78,8 @@ axon_segments = {axon_segment1, axon_segment2, axon_segment3};
 
 % Choosing a data_type to plot
 data_type1 = "Vm"; % can choose any other variable in data_type1 set
-data_type2 = "Vm_and_Vmy"; % can choose any other variable in data_type2 set
-data_type3 = "Vm"; % can choose any other variable in data_type3 set
+data_type2 = "Vm_and_Vm_minus_Vmy"; % can choose any other variable in data_type2 set
+data_type3 = "nmh"; % can choose any other variable in data_type3 set
 
 
 
@@ -87,35 +90,35 @@ data_type3 = "Vm"; % can choose any other variable in data_type3 set
 % Animations
 %%%%%%%%%%%%
 %%
-plot_animation_data_vs_time(data, data_type3, p);
+plotter_functions.plot_animation_data_vs_time(data, data_type3, p);
 
 %%
-plot_animation_data_vs_space(data, data_type3, p);
+plotter_functions.plot_animation_data_vs_space(data, data_type3, p);
 
 %%
-plot_animation_comparison_data_vs_time(data_set, data_type2, p);
+plotter_functions.plot_animation_comparison_data_vs_time(data_set, data_type1, p);
 
 %%
-plot_animation_comparison_data_vs_space(data_set, data_type2, p);
+plotter_functions.plot_animation_comparison_data_vs_space(data_set, data_type1, p);
 
 
 % Time and Space Shots
 %%%%%%%%%%%%%%%%%%%%%%
 %%
-plot_data_vs_time_at_space_shots(data, data_type1, space_shots);
+plotter_functions.plot_data_vs_time_at_space_shots(data, data_type1, space_shots);
 
 %%
-plot_data_vs_space_at_time_shots(data, data_type1, time_shots);
+plotter_functions.plot_data_vs_space_at_time_shots(data, data_type1, time_shots);
 
 %%
-plot_data_vs_time_at_one_space_shot(data, data_type2, space_shot);
+plotter_functions.plot_data_vs_time_at_one_space_shot(data, data_type3, space_shot);
 
 %%
-plot_data_vs_space_at_one_time_shot(data, data_type2, time_shot);
+plotter_functions.plot_data_vs_space_at_one_time_shot(data, data_type3, time_shot);
 
 %%
-plot_data_vs_space_axon_segment(data, data_type2, axon_segment);
+plotter_functions.plot_data_vs_space_axon_segment(data, data_type1, axon_segment);
 
 %%
-plot_data_vs_space_axon_segments(data, data_type2, axon_segments);
+plotter_functions.plot_data_vs_space_axon_segments(data, data_type1, axon_segments);
 
