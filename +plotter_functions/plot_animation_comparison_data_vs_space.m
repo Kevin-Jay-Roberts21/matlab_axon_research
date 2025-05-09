@@ -8,7 +8,6 @@ function plot_animation_comparison_data_vs_space(data_set, data_set_names, data_
 
     L = data_set{1}.L;
     m = data_set{1}.m;
-    n = data_set{1}.n;
     dt = data_set{1}.dt;
 
     t = linspace(0, L, m); 

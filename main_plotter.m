@@ -118,8 +118,5 @@ plotter_functions.plot_data_vs_time_at_one_space_shot(data, data_type2, space_sh
 plotter_functions.plot_data_vs_space_at_one_time_shot(data, data_type2, time_shot);
 
 %%
-plotter_functions.plot_data_vs_space_axon_segment(data, data_type1, axon_segment);
-
-%%
-plotter_functions.plot_data_vs_space_axon_segments(data, data_type1, axon_segments);
+plotter_functions.plot_data_vs_space_axon_segments(data, data_type1, axon_segments, time_shot);
 

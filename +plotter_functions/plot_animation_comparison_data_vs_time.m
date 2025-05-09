@@ -6,8 +6,7 @@
 
 function plot_animation_comparison_data_vs_time(data_set, data_set_names, data_type, p)
 
-    T = data_set{1}.T;
-    m = data_set{1}.m;
+    T = data_set{1}.T;    
     n = data_set{1}.n;
     dx = data_set{1}.dx;
 
@@ -46,7 +45,7 @@ function plot_animation_comparison_data_vs_time(data_set, data_set_names, data_t
         'VerticalAlignment', 'top', 'HorizontalAlignment', 'left');
 
     % Animation loop — update data instead of re-plotting
-    for i = 1:m
+    for i = 1:n
         for j = 1:length(data_set)
             plot_handles(j).YData = data_set{j}.(data_type)(:,i);
         end
