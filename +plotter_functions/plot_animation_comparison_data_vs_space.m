@@ -12,7 +12,7 @@ function plot_animation_comparison_data_vs_space(data_set, data_set_names, data_
     dt = data_set{1}.dt;
 
     t = linspace(0, L, m); 
-    x_axis = 'Time in milliseconds';
+    x_axis = 'Length of axon in cm';
     xmin = 0;
     xmax = L;
 
