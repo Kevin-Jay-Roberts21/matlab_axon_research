@@ -32,6 +32,7 @@ dc_simulation_v3 = load(pwd + "/dc_simulation_v3.mat");
 
 % Defining data_set
 data_set = {sc_simulation_v3, dc_simulation_v3};
+data_set_names = {'sc_simulation_v3', 'dc_simulation_v3'};
 
 % Defining data
 data = sc_simulation_v3;
@@ -77,7 +78,7 @@ axon_segments = {axon_segment1, axon_segment2, axon_segment3};
 
 
 % Choosing a data_type to plot
-data_type1 = "Vm"; % can choose any other variable in data_type1 set
+data_type1 = "Vmy"; % can choose any other variable in data_type1 set
 data_type2 = "Vm_and_Vm_minus_Vmy"; % can choose any other variable in data_type2 set
 data_type3 = "Vm_and_Vmy_and_Vm_minus_Vmy"; % can choose any other variable in data_type3 set
 
@@ -96,10 +97,10 @@ plotter_functions.plot_animation_data_vs_time(data, data_type3, p);
 plotter_functions.plot_animation_data_vs_space(data, data_type3, p);
 
 %%
-plotter_functions.plot_animation_comparison_data_vs_time(data_set, data_type1, p);
+plotter_functions.plot_animation_comparison_data_vs_time(data_set, data_set_names, data_type1, p);
 
 %%
-plotter_functions.plot_animation_comparison_data_vs_space(data_set, data_type1, p);
+plotter_functions.plot_animation_comparison_data_vs_space(data_set, data_set_names, data_type1, p);
 
 
 % Time and Space Shots
