@@ -26,7 +26,7 @@ hh_simulation = load(pwd + "/hh_simulation.mat");
 sc_simulation_v3 = load(pwd + "/sc_simulation_v3.mat");
 dc_simulation_v3 = load(pwd + "/dc_simulation_v3.mat");
 
-
+%%
 % The following variables are subject to change due to users preference
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
