@@ -62,7 +62,7 @@ time_shots = {time_shot1, time_shot2, time_shot3};
 space_shot = 0.08; % in cm
 
 % Defining a single time shot
-time_shot = 1.1; % in ms
+time_shot = 3; % in ms
 
 % Defining axon segment
 position1 = 0.0800; % in cm
@@ -79,7 +79,7 @@ axon_segments = {axon_segment1, axon_segment2, axon_segment3};
 
 % Choosing a data_type to plot
 data_type1 = "Vmy"; % can choose any other variable in data_type1 set
-data_type2 = "Vm_and_Vm_minus_Vmy"; % can choose any other variable in data_type2 set
+data_type2 = "Vm_and_Vmy_and_Vm_minus_Vmy"; % can choose any other variable in data_type2 set
 data_type3 = "Vm_and_Vmy_and_Vm_minus_Vmy"; % can choose any other variable in data_type3 set
 
 
@@ -112,10 +112,10 @@ plotter_functions.plot_data_vs_time_at_space_shots(data, data_type1, space_shots
 plotter_functions.plot_data_vs_space_at_time_shots(data, data_type1, time_shots);
 
 %%
-plotter_functions.plot_data_vs_time_at_one_space_shot(data, data_type3, space_shot);
+plotter_functions.plot_data_vs_time_at_one_space_shot(data, data_type2, space_shot);
 
 %%
-plotter_functions.plot_data_vs_space_at_one_time_shot(data, data_type3, time_shot);
+plotter_functions.plot_data_vs_space_at_one_time_shot(data, data_type2, time_shot);
 
 %%
 plotter_functions.plot_data_vs_space_axon_segment(data, data_type1, axon_segment);
