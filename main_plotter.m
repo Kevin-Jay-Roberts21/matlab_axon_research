@@ -10,7 +10,7 @@ clc
 % There are 9 total different types of data that we would like plot. We
 % will categorize them as follows:
 % data_type1: "Vm", "Vmy", "Vm_minus_Vmy", "n", "m" and "h"
-% data_type2: "n_and_m_and_h", "Vm_and_Vm_minus_Vmy", and
+% data_type2: "nmh", "Vm_and_Vm_minus_Vmy", and
 % "Vm_and_Vmy_and_Vm_minus_Vmy"
 % data_type3: everything in data_type1 AND data_type2
 
@@ -23,7 +23,7 @@ clc
 
 % Note: some data may be saved in different paths
 hh_simulation = load(pwd + "/hh_simulation.mat");
-sc_simulation_v3 = load(pwd + "/sc_simulation_v1.mat");
+sc_simulation_v3 = load(pwd + "/sc_simulation_v3.mat");
 dc_simulation_v3 = load(pwd + "/dc_simulation_v3.mat");
 
 
@@ -79,7 +79,7 @@ axon_segments = {axon_segment1, axon_segment2, axon_segment3};
 % Choosing a data_type to plot
 data_type1 = "Vm"; % can choose any other variable in data_type1 set
 data_type2 = "Vm_and_Vm_minus_Vmy"; % can choose any other variable in data_type2 set
-data_type3 = "nmh"; % can choose any other variable in data_type3 set
+data_type3 = "Vm_and_Vmy_and_Vm_minus_Vmy"; % can choose any other variable in data_type3 set
 
 
 

@@ -33,7 +33,7 @@ sc_mesh = mesh_parameter_sets.sc_dc_mesh_parameters();
 sc_material = material_parameter_sets.set1_parameters();
 
 % Running the SC simulation
-sc_simulation = numerical_scheme_functions.sc_function_v1(sc_mesh, sc_material);
+sc_simulation = numerical_scheme_functions.sc_function_v3(sc_mesh, sc_material);
 
 
 %%
