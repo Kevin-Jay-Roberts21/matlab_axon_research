@@ -23,7 +23,7 @@ clc
 
 % Note: some data may be saved in different paths
 hh_simulation = load(pwd + "/hh_simulation.mat");
-sc_simulation_v3 = load(pwd + "/sc_simulation_v3.mat");
+sc_simulation_v3 = load(pwd + "/sc_simulation_v1.mat");
 dc_simulation_v3 = load(pwd + "/dc_simulation_v3.mat");
 
 %%
