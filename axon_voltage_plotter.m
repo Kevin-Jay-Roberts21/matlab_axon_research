@@ -49,7 +49,7 @@ clc
 % SC_Cohen_DC_cell6_temp_56_long = load('projects/axon_simulations/Cohen_param_simulations/SC_Cohen_DC_cell6_temp56_long.mat');
 % DC_Cohen_DC_cell6_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params.mat');
 % DC_Cohen_DC_cell6_params_long = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_long.mat');
-% DC_Cohen_DC_cell65_params_shifted_stimulus = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell5_params_shifted_stimulus.mat');
+% DC_Cohen_DC_cell5_params_shifted_stimulus = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell5_params.mat');
 % DC_Cohen_DC_cell6_params_shifted_stimulus = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_shifted_stimulus.mat');
 % DC_Cohen_DC_cell6_params_shifted_stimulus_2 = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_shifted_stimulus_2.mat');
 % DC_Cohen_DC_cell6_params_shifted_stimulus_3 = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_params_shifted_stimulus_3.mat');
@@ -266,13 +266,13 @@ p = 0.01;
 % set_of_data13 = {DC_temp_30, DC_temp_31, DC_temp_32, DC_temp_33, DC_temp_34, DC_temp_35};
 
 
-data = sc_simulation_v2;
+data = DC_Cohen_DC_cell5_params_shifted_stimulus;
 % data = SC_temp_58;
 
 % plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
-% plot_Vm_minus_Vmy_picture(data, time_shot);
+plot_Vm_minus_Vmy_picture(data, time_shot);
 % plot_animation_voltage_vs_time(data, p);
-plot_animation_voltage_vs_space(data, p);
+% plot_animation_voltage_vs_space(data, p);
 % plot_animation_probabilities_vs_time(HH_data_Temp_33, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(data, list_of_positions, list_of_times);

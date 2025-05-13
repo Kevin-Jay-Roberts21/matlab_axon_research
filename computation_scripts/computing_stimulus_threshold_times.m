@@ -66,6 +66,6 @@ delta_stim = stim_grid - threshold;
 % Creating the Time to Peak mV of AP vs Stimulus Value figure
 figure;
 semilogx(delta_stim, action_potential_times, 'o-', 'LineWidth', 2);
-xlabel('Stimulus value (k$\Omega$ cm$^2$)', 'Interpreter', 'latex');
+xlabel('$S_v - S_{\mathrm{th}}$ (k$\Omega$ cm$^2$)', 'Interpreter', 'latex');
 ylabel('Time to Peak Voltage of AP (ms)', 'Interpreter', 'latex');
 grid on;

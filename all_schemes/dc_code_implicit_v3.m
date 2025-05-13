@@ -27,8 +27,8 @@ n = T/dt + 1; % (#) n is the number of time steps
 
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-a = 0.55*10^(-4); % (cm) axon radius in nodal region
-a_my = a/0.698; % (cm) axon radius in myelinated section 
+a = 0.0001; % 0.55*10^(-4); % (cm) axon radius in nodal region
+a_my = 0.000123% a/0.698; % (cm) axon radius in myelinated section 
 R_i = 0.2; % (kilo-ohms*cm) intracellular resistivity
 R_m = 23.1; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.28; % (micro-farads/cm^2) specific membrane capacitance
