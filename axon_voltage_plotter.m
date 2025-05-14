@@ -29,6 +29,8 @@ clc
 % DC_Huang_Myelinated_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1.mat');
 % DC_Huang_Tube_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Tube_set1.mat');
 % DC_Huang_TubeParalyne_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyne_set1.mat');
+DC_Huang_Myelianted_dt_01 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_dt_0.01.mat');
+DC_Huang_Myelianted_dt_001 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_dt_0.001.mat');
 
 % Increasing R_pa
 % SC_Cohen_DC_params = load('SC_model_with_DC_Cohen_params.mat');
@@ -264,22 +266,22 @@ p = 0.01;
 % set_of_data11 = {HH_temp_base, HH_temp_8, HH_temp_10, HH_temp_12, HH_temp_14, HH_temp_16, HH_temp_18, HH_temp_20, HH_temp_22, HH_temp_24, HH_temp_26, HH_temp_28, HH_temp_30, HH_temp_31, HH_temp_32, HH_temp_33, HH_temp_34, HH_temp_35};
 % set_of_data12 = {SC_temp_52, SC_temp_53, SC_temp_54, SC_temp_55, SC_temp_56, SC_temp_57, SC_temp_58};
 % set_of_data13 = {DC_temp_30, DC_temp_31, DC_temp_32, DC_temp_33, DC_temp_34, DC_temp_35};
+set_of_data14 = {DC_Huang_Myelianted_dt_01, DC_Huang_Myelianted_dt_001};
 
-
-data = DC_Cohen_DC_cell5_params_shifted_stimulus;
+% data = DC_Cohen_DC_cell5_params_shifted_stimulus;
 % data = SC_temp_58;
 
 % plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
-plot_Vm_minus_Vmy_picture(data, time_shot);
+% plot_Vm_minus_Vmy_picture(data, time_shot);
 % plot_animation_voltage_vs_time(data, p);
 % plot_animation_voltage_vs_space(data, p);
 % plot_animation_probabilities_vs_time(HH_data_Temp_33, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(data, list_of_positions, list_of_times);
-% plot_voltage_vs_time_comparison(set_of_data8, p);
-% plot_voltage_vs_space_comparison(set_of_data13, p);
-% plot_Vm_and_Vm_minus_Vmy_vs_space(data, p)
-
+% plot_voltage_vs_time_comparison(set_of_data14, p);
+% plot_voltage_vs_space_comparison(set_of_data14, p);
+% plot_Vm_and_Vm_minus_Vmy_vs_space(data, p);
+plot_voltage_vs_space_comparison_variable_dt(set_of_data14, p);
 
 
 %%%%%%%%%%%%%%%%%%%%%
@@ -882,7 +884,7 @@ function plot_voltage_vs_space_comparison(data_set, p)
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
-            legend('DC: Myelinated', 'DC: SiGe Tube params', 'DC: Tube+Paralyne params', 'Location', 'northeast');
+            legend('DC: Myelinated dt = 0.01', 'DC: Myelinated dt = 0.001', 'Location', 'northeast');
             % legend('SC model: Cohen DC Params', 'DC model: $R_{pa}, R_{pn}$ given', 'DC model: $R_{pa}, R_{pn}$ computed', 'Location', 'northeast', 'Interpreter', 'latex');
             % legend('SC model: $R_i = 0.144 k\Omega cm$', 'DC model: $R_i = 0.712 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
             % legend('DC model: $R_{pa} = 0.01 k\Omega cm$', 'DC model: $R_{pa} = 0.10 k\Omega cm$', 'DC model: $R_{pa} = 0.20 k\Omega cm$', 'DC model: $R_{pa} = 0.30 k\Omega cm$', 'DC model: $R_{pa} = 0.40 k\Omega cm$', 'DC model: $R_{pa} = 0.50 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
@@ -943,3 +945,67 @@ function plot_Vm_and_Vm_minus_Vmy_vs_space(data, p)
     end
 end
 
+function plot_voltage_vs_space_comparison_variable_dt(data_set, p)
+
+    % defining spatial and time variables from one of the data sets
+    % (doesn't matter which since we assume they must be the same for all)
+    L = data_set{1}.L;
+    m = data_set{1}.m;
+    n = data_set{1}.n;
+    dt = data_set{1}.dt;
+
+    % TEMPORAL PROFILE %
+    % x axis is the axon time
+    t = linspace(0, L, m); 
+       
+    % creating a list of voltage types to plot (either just Vm for HH model
+    % or Vm, Vmy and Vm-Vmy for SC or DC model)
+    voltages = {'Vm_all'};
+    
+    if isfield(data_set{1}, 'Vmy_all') && isfield(data_set{1}, 'Vm_minus_Vmy')
+        voltages{end+1} = 'Vmy_all';
+        voltages{end+1} = 'Vm_minus_Vmy';
+    end
+    
+    figure(1);
+    hold on;
+
+    xmin = 0;
+    xmax = L;
+    ymin = -90;
+    ymax = 90;
+    
+    for k=1:length(voltages)
+        
+        if strcmp(voltages{k}, 'Vm_all')
+            voltage_name = 'V_m';
+        elseif strcmp(voltages{k}, 'Vmy_all')
+            voltage_name = 'V_{my}';
+        else
+            voltage_name = 'V_m - V_{my}';
+        end
+    
+        axis([xmin xmax ymin ymax]);  % Set axis limits
+        xlabel('Length of axon in cm');
+        ylabel(['$', voltage_name, '$ in millivolts.'], 'Interpreter', 'latex')
+
+        % Loop through each vector and plot them one by one
+        for i = 1:n
+            
+
+            plot(t, data_set{1}.(voltages{k})(i,:), 'b-');
+            hold on
+            plot(t, data_set{2}.(voltages{k})(i*10,:), 'r--');
+            hold on 
+
+            % Add the legend (NOTE: the legend is what is slowing down the animation)
+            legend('DC: Myelinated dt = 0.01', 'DC: Myelinated dt = 0.001', 'Location', 'northeast');
+            text(xmin, ymax + 0.1, sprintf('Time: %.2f ms', round(i*dt, 2)), 'FontSize', 12, 'BackgroundColor', 'w');
+
+            % Add a pause to create animation effect
+            pause(p);
+
+            cla;
+        end
+    end
+end
