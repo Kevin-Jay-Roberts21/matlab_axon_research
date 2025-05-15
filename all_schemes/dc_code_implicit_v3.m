@@ -27,15 +27,15 @@ n = T/dt + 1; % (#) n is the number of time steps
 
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-a = 0.55*10^(-4); % (cm) axon radius in nodal region
-a_my = a/0.698; % (cm) axon radius in myelinated section 
+a = 0.0001; % 0.55*10^(-4); % (cm) axon radius in nodal region
+a_my = 0.0001238; % a/0.698; % (cm) axon radius in myelinated section 
 R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
 r_pa = 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
 r_pn = 2450*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
-R_my = 63.7; % (kilo-ohms*cm^2) specific myelin resistance
+R_my = 123.6795; % 63.7; % (kilo-ohms*cm^2) specific myelin resistance
 C_my = 0.0081; % 0.113; % (micro-farads/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
@@ -53,7 +53,7 @@ w3 = r_pa/(r_pn*L_pn);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 100000; % (mS/cm^2) % stimulus value
+S_v = 1000; % (mS/cm^2) % stimulus value
 S_T0 = 1; % (ms) start time of when stimulus is added
 S_T1 = 1.1; % (ms) end time of when stimulus is added
 S_P0 = 0.0001; % (cm) start position of adding the stimulus
@@ -508,4 +508,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('DC_Huang_Myelinated_test3.mat');
+% save('DC_Huang_Myelinated.mat');

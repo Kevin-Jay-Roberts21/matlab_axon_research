@@ -29,8 +29,12 @@ clc
 % DC_Huang_Myelinated_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1.mat');
 % DC_Huang_Tube_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Tube_set1.mat');
 % DC_Huang_TubeParalyne_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyne_set1.mat');
-DC_Huang_Myelianted_dt_01 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_dt_0.01.mat');
-DC_Huang_Myelianted_dt_001 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_dt_0.001.mat');
+% DC_Huang_Myelianted_dt_01 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_dt_0.01.mat');
+% DC_Huang_Myelianted_dt_001 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_dt_0.001.mat');
+DC_Huang_Myelinated = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated.mat');
+DC_Huang_Myelinated_test1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_test1.mat');
+DC_Huang_Myelinated_test2 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_test2.mat');
+DC_Huang_Myelinated_test3 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_test3.mat');
 
 % Increasing R_pa
 % SC_Cohen_DC_params = load('SC_model_with_DC_Cohen_params.mat');
@@ -266,7 +270,7 @@ p = 0.01;
 % set_of_data11 = {HH_temp_base, HH_temp_8, HH_temp_10, HH_temp_12, HH_temp_14, HH_temp_16, HH_temp_18, HH_temp_20, HH_temp_22, HH_temp_24, HH_temp_26, HH_temp_28, HH_temp_30, HH_temp_31, HH_temp_32, HH_temp_33, HH_temp_34, HH_temp_35};
 % set_of_data12 = {SC_temp_52, SC_temp_53, SC_temp_54, SC_temp_55, SC_temp_56, SC_temp_57, SC_temp_58};
 % set_of_data13 = {DC_temp_30, DC_temp_31, DC_temp_32, DC_temp_33, DC_temp_34, DC_temp_35};
-set_of_data14 = {DC_Huang_Myelianted_dt_01, DC_Huang_Myelianted_dt_001};
+set_of_data14 = {DC_Huang_Myelinated_test1, DC_Huang_Myelinated_test2, DC_Huang_Myelinated_test3, DC_Huang_Myelinated};
 
 % data = DC_Cohen_DC_cell5_params_shifted_stimulus;
 % data = SC_temp_58;
@@ -279,9 +283,9 @@ set_of_data14 = {DC_Huang_Myelianted_dt_01, DC_Huang_Myelianted_dt_001};
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(data, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data14, p);
-% plot_voltage_vs_space_comparison(set_of_data14, p);
+plot_voltage_vs_space_comparison(set_of_data14, p);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(data, p);
-plot_voltage_vs_space_comparison_variable_dt(set_of_data14, p);
+% plot_voltage_vs_space_comparison_variable_dt(set_of_data14, p);
 
 
 %%%%%%%%%%%%%%%%%%%%%
@@ -879,12 +883,12 @@ function plot_voltage_vs_space_comparison(data_set, p)
             %     hold on
             % end
             for j = 1:length(data_set)
-                plot(t, data_set{j}.(voltages{k})(i,:), 'Color', [1, 0, 0] * j/length(data_set));
+                plot(t, data_set{j}.(voltages{k})(i,:));
                 hold on
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
-            legend('DC: Myelinated dt = 0.01', 'DC: Myelinated dt = 0.001', 'Location', 'northeast');
+            legend('DC: Myelinated test1', 'DC: Myelinated test2', 'DC: Myelinated test3', 'DC: Myelinated', 'Location', 'northeast');
             % legend('SC model: Cohen DC Params', 'DC model: $R_{pa}, R_{pn}$ given', 'DC model: $R_{pa}, R_{pn}$ computed', 'Location', 'northeast', 'Interpreter', 'latex');
             % legend('SC model: $R_i = 0.144 k\Omega cm$', 'DC model: $R_i = 0.712 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
             % legend('DC model: $R_{pa} = 0.01 k\Omega cm$', 'DC model: $R_{pa} = 0.10 k\Omega cm$', 'DC model: $R_{pa} = 0.20 k\Omega cm$', 'DC model: $R_{pa} = 0.30 k\Omega cm$', 'DC model: $R_{pa} = 0.40 k\Omega cm$', 'DC model: $R_{pa} = 0.50 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
