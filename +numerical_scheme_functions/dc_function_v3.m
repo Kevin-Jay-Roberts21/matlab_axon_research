@@ -99,11 +99,11 @@ function dc_solution_data = dc_function_v3(mesh_params, material_params)
     F_1 = @(Vmy_i) (1/(R_m*C_m) - 1/(C_my*R_my))*Vmy_i + E_rest/(R_m*C_m);
     F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) w2/(2*dx^2)*Vmy_i_minus_1 - w2/dx^2*Vmy_i + w2/(2*dx^2)*Vmy_i_plus_1; % Internodal region
     F_2 = @(n, m, h, ii, tt) 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
-    F_5 = @(Vmy_i, n, m, h, ii, tt) (F_1(Vmy_i) + F_2(n, m, h, ii, tt))/2; % End point
+    F_3 = @(Vmy, n, m, h, ii, tt) (F_1(Vmy) + F_2(n, m, h, ii, tt))/2; % End point
      
     f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*(F_1(Vmy_i) + F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1)) + ... % Internodal region
                (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(n, m, h, ii, tt) + ... % Nodal region
-               ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*F_5(Vmy_i, n, m, h, ii, tt); % End point  
+               ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*F_3(Vmy_i, n, m, h, ii, tt); % End point  
     
     % Defining the initial vectors
     Vm = V_m0 * ones(1, m);
