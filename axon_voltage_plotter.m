@@ -35,6 +35,7 @@ DC_Huang_Myelinated = load('projects/axon_simulations/Huang_simulations/DC_Huang
 DC_Huang_Myelinated_test1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_test1.mat');
 DC_Huang_Myelinated_test2 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_test2.mat');
 DC_Huang_Myelinated_test3 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_test3.mat');
+SC_Huang_Myelianted_test3 = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_test3.mat');
 
 % Increasing R_pa
 % SC_Cohen_DC_params = load('SC_model_with_DC_Cohen_params.mat');
@@ -270,7 +271,7 @@ p = 0.01;
 % set_of_data11 = {HH_temp_base, HH_temp_8, HH_temp_10, HH_temp_12, HH_temp_14, HH_temp_16, HH_temp_18, HH_temp_20, HH_temp_22, HH_temp_24, HH_temp_26, HH_temp_28, HH_temp_30, HH_temp_31, HH_temp_32, HH_temp_33, HH_temp_34, HH_temp_35};
 % set_of_data12 = {SC_temp_52, SC_temp_53, SC_temp_54, SC_temp_55, SC_temp_56, SC_temp_57, SC_temp_58};
 % set_of_data13 = {DC_temp_30, DC_temp_31, DC_temp_32, DC_temp_33, DC_temp_34, DC_temp_35};
-set_of_data14 = {DC_Huang_Myelinated_test1, DC_Huang_Myelinated_test2, DC_Huang_Myelinated_test3, DC_Huang_Myelinated};
+set_of_data14 = {DC_Huang_Myelinated_test1, DC_Huang_Myelinated_test2, DC_Huang_Myelinated_test3, DC_Huang_Myelinated, SC_Huang_Myelianted_test3};
 
 % data = DC_Cohen_DC_cell5_params_shifted_stimulus;
 % data = SC_temp_58;
@@ -888,7 +889,7 @@ function plot_voltage_vs_space_comparison(data_set, p)
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
-            legend('DC: Myelinated test1', 'DC: Myelinated test2', 'DC: Myelinated test3', 'DC: Myelinated', 'Location', 'northeast');
+            legend('DC: Myelinated test1', 'DC: Myelinated test2', 'DC: Myelinated test3', 'DC: Myelinated', 'SC: Myelinated test3', 'Location', 'northeast');
             % legend('SC model: Cohen DC Params', 'DC model: $R_{pa}, R_{pn}$ given', 'DC model: $R_{pa}, R_{pn}$ computed', 'Location', 'northeast', 'Interpreter', 'latex');
             % legend('SC model: $R_i = 0.144 k\Omega cm$', 'DC model: $R_i = 0.712 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
             % legend('DC model: $R_{pa} = 0.01 k\Omega cm$', 'DC model: $R_{pa} = 0.10 k\Omega cm$', 'DC model: $R_{pa} = 0.20 k\Omega cm$', 'DC model: $R_{pa} = 0.30 k\Omega cm$', 'DC model: $R_{pa} = 0.40 k\Omega cm$', 'DC model: $R_{pa} = 0.50 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')

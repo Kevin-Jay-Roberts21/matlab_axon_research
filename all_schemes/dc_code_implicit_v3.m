@@ -27,15 +27,15 @@ n = T/dt + 1; % (#) n is the number of time steps
 
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-a = 0.0001; % 0.55*10^(-4); % (cm) axon radius in nodal region
-a_my = 0.0001238; % a/0.698; % (cm) axon radius in myelinated section 
+a = 0.55*10^(-4); % (cm) axon radius in nodal region
+a_my = a/0.698; % (cm) axon radius in myelinated section 
 R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
 r_pa = 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
 r_pn = 2450*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
-R_my = 123.6795; % 63.7; % (kilo-ohms*cm^2) specific myelin resistance
+R_my = 63.7; % (kilo-ohms*cm^2) specific myelin resistance
 C_my = 0.0081; % 0.113; % (micro-farads/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
@@ -252,6 +252,9 @@ for j = 1:(n-1)
     
     % Updating Vm 
     %%%%%%%%%%%%%
+    
+    
+
 
     % Defining the A_1 matrix
     A_1 = zeros(m, m);
@@ -266,6 +269,11 @@ for j = 1:(n-1)
     
     
     for i = 2:(m-1)
+        
+        % right after the stimulus
+        if j == round(S_T1/dt)
+            disp("Got to time t = ");
+        end
 
         gamma1 = -rho*b_1(i - 1/2);
         gamma2 = 1 - dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
