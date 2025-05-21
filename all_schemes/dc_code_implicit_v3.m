@@ -18,7 +18,7 @@ d_pn = 7.4*10^(-7); % (cm) paranodal thickness
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 20; % (#) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 30; % (ms) the total time of the experiment
+T = 5; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % (#) number of space steps in a nodal region
 N_my = round(L_my/dx); % (#) number of space steps in an internodal region
 N_s = N_n + N_my; % (#) number of space steps in an entire axon segement
@@ -36,7 +36,7 @@ r_pa = 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
 r_pn = 2450*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
 R_my = 63.7; % (kilo-ohms*cm^2) specific myelin resistance
-C_my = 0.0081; % 0.113; % (micro-farads/cm^2) specific myelin capacitance
+C_my = 0.113; % 0.113; % (micro-farads/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -101,7 +101,7 @@ F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) w2/(2*dx^2)*Vmy_i_minus_1 - w2/dx^2*
 F_2 = @(n, m, h, ii, tt) 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
 F_3 = @(Vmy, n, m, h, ii, tt) (F_1(Vmy) + F_2(n, m, h, ii, tt))/2; % End point
  
-f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*(F_1(Vmy_i) + F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1)) + ... % Internodal region
+f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*(F_1(Vmy_i)) + ... % Internodal region
            (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(n, m, h, ii, tt) + ... % Nodal region
            ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*F_3(Vmy_i, n, m, h, ii, tt); % End point
 
@@ -272,7 +272,7 @@ for j = 1:(n-1)
         
         % right after the stimulus
         if j == round(S_T1/dt)
-            disp("Got to time t = ");
+            disp("Stopping after stimulus time interval");
         end
 
         gamma1 = -rho*b_1(i - 1/2);

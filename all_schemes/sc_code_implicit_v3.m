@@ -30,7 +30,7 @@ R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
 R_my = 63.7; % (kilo-ohms*cm^2) specfic myelin resistance
-C_my = 0.0081; % (micro-fards/cm^2) specific myelin capacitance
+C_my = 0.003; % (micro-fards/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -461,4 +461,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('SC_Huang_Myelinated_test3.mat'); 
+% save('SC_Huang_Myelinated_test3.mat'); 
