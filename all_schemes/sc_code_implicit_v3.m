@@ -24,13 +24,13 @@ n = T/dt + 1; % (#) n is the number of time steps
 
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-a = 0.55*10^(-4); % (cm) radius in nodal region
-a_my = a/0.698; % (cm) radius in myelinated region
+a = 0.0001; % 0.55*10^(-4); % (cm) radius in nodal region
+a_my = 0.0001238; % a/0.698; % (cm) radius in myelinated region
 R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
-R_my = 63.7; % (kilo-ohms*cm^2) specfic myelin resistance
-C_my = 0.003; % (micro-fards/cm^2) specific myelin capacitance
+R_my = 123.6795; % 63.7; % (kilo-ohms*cm^2) specfic myelin resistance
+C_my = 0.0081; % 0.113; % (micro-fards/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -219,6 +219,11 @@ for j = 1:(n-1)
         % NOTE: the b function accounts for the piecewise values
         % putting 0's into the nodal regions of Vmy and 0's into the internodal
         % regions of N, M and H
+
+        % right after the stimulus
+        if j == 1000
+            disp("Stopping after stimulus time interval");
+        end
 
         gamma1 = -rho*b_1(i - 1/2);
         gamma2 = 1 - dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
@@ -461,4 +466,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('SC_Huang_Myelinated_test3.mat'); 
+% save('SC_Huang_TubeParalyene_set1.mat'); 
