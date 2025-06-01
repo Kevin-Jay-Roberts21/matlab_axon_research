@@ -8,7 +8,7 @@ clc
 
 % Defining the Thickness, Length and other Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dx = 0.00005; % (cm) space step
+dx = 0.00001; % (cm) space step
 dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
@@ -270,10 +270,10 @@ for j = 1:(n-1)
     
     for i = 2:(m-1)
         
-        % right after the stimulus
-        if j == 1000
-            disp("Stopping after stimulus time interval");
-        end
+        % % right after the stimulus
+        % if j == 50
+        %     disp("Stopping after stimulus time interval");
+        % end
 
         gamma1 = -rho*b_1(i - 1/2);
         gamma2 = 1 - dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
@@ -516,4 +516,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('DC_Huang_TubeParalyene_set1.mat');
+save('DC_Huang_Myelinated_set1_small_dx.mat');

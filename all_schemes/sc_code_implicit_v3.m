@@ -221,7 +221,7 @@ for j = 1:(n-1)
         % regions of N, M and H
 
         % right after the stimulus
-        if j == 1000
+        if j == 50
             disp("Stopping after stimulus time interval");
         end
 
