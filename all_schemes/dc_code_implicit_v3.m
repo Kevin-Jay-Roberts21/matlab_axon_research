@@ -8,7 +8,7 @@ clc
 
 % Defining the Thickness, Length and other Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dx = 0.00005; % (cm) space step
+dx = 0.000005; % (cm) space step
 dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
