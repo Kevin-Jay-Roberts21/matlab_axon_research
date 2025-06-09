@@ -8,7 +8,7 @@ clc
 
 % Defining the Thickness, Length and other Mesh Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dx = 0.000005; % (cm) space step
+dx = 0.00005; % (cm) space step
 dt = 0.01; % (ms) time step 
 L_my = 0.0075; % (cm) internodal length
 L_n = 0.0005; % (cm) nodal length
@@ -18,7 +18,7 @@ d_pn = 7.4*10^(-7); % (cm) paranodal thickness
 L_s = L_n + L_my; % (cm) length of an axon segment
 n_s = 20; % (#) number of axon segments
 L = n_s*L_s; % (cm) total length of axon
-T = 30; % (ms) the total time of the experiment
+T = 10; % (ms) the total time of the experiment
 N_n = round(L_n/dx); % (#) number of space steps in a nodal region
 N_my = round(L_my/dx); % (#) number of space steps in an internodal region
 N_s = N_n + N_my; % (#) number of space steps in an entire axon segement
@@ -97,7 +97,7 @@ c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
        
 % Defining the f_2(x_i) function
 F_1 = @(Vmy_i) (1/(R_m*C_m) - 1/(C_my*R_my))*Vmy_i + E_rest/(R_m*C_m);
-F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) w2/(2*dx^2)*Vmy_i_minus_1 - w2/dx^2*Vmy_i + w2/(2*dx^2)*Vmy_i_plus_1; % Internodal region
+F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) w2/(2*dx^2)*Vmy_i_minus_1 - (w2/dx^2)*Vmy_i + w2/(2*dx^2)*Vmy_i_plus_1; % Internodal region
 F_2 = @(n, m, h, ii, tt) 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
 F_3 = @(Vmy, n, m, h, ii, tt) (F_1(Vmy) + F_2(n, m, h, ii, tt))/2; % End point
  
@@ -271,7 +271,7 @@ for j = 1:(n-1)
     for i = 2:(m-1)
         
         % right after the stimulus
-        if j == 110
+        if j == 50
             disp("Stopping after stimulus time interval");
         end
 
@@ -516,4 +516,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('DC_Huang_Myelinated_set1_small_dx.mat');
+% save('DC_Huang_Myelinated_set1_smallest_dt_T10.mat');
