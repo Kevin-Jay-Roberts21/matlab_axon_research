@@ -20,12 +20,15 @@ clc
 
 
 % Huang parameters
-SC_Huang_Myelinated = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1.mat');
-SC_Huang_Tube = load('projects/axon_simulations/Huang_simulations/SC_Huang_Tube_set1.mat');
-SC_Huang_TubeParalyene = load('projects/axon_simulations/Huang_simulations/SC_Huang_TubeParalyene_set1.mat');
-DC_Huang_Myelinated = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1.mat');
+% SC_Huang_Myelinated = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1.mat');
+% SC_Huang_Tube = load('projects/axon_simulations/Huang_simulations/SC_Huang_Tube_set1.mat');
+% SC_Huang_TubeParalyene = load('projects/axon_simulations/Huang_simulations/SC_Huang_TubeParalyene_set1.mat');
+% DC_Huang_Myelinated = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1.mat');
 DC_Huang_Tube = load('projects/axon_simulations/Huang_simulations/DC_Huang_Tube_set1.mat');
-DC_Huang_TubeParalyene = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyene_set1.mat');
+% DC_Huang_TubeParalyene = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyene_set1.mat');
+DC_Huang_TubeParalyene_set1_stim_2000_rpn_100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyene_set1_stim_2000_rpn_100fold.mat');
+DC_Huang_Myelinated_set1_stim_2000_rpn_100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_stim_2000_rpn_100fold.mat');
+
 
 % Increasing R_pa
 % SC_Cohen_DC_params = load('SC_model_with_DC_Cohen_params.mat');
@@ -55,6 +58,13 @@ DC_Huang_TubeParalyene = load('projects/axon_simulations/Huang_simulations/DC_Hu
 % DC_Cohen_DC_cell6_temp_33_long = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_temp33_long.mat');
 % DC_Cohen_avg_r_pa1000fold = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_r_pa1000fold.mat');
 % DC_Cohen_avg_stim_increase = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_stim_increase.mat');
+% DC_Cohen_DC_cell5_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_cell5_params.mat');
+% DC_Cohen_DC_cell4_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_cell4_params.mat');
+% DC_Cohen_DC_cell3_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_cell3_params.mat');
+% DC_Cohen_DC_cell2_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_cell2_params.mat');
+% DC_Cohen_DC_cell1_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_cell1_params.mat');
+% DC_Cohen_DC_avg_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_params.mat');
+
 
 % increaing R_pa
 % DC_data_Rpa_01 = load('projects/axon_simulations/DC_R_pa_data/DC_model_Rpa_0.01.mat');
@@ -211,7 +221,7 @@ DC_Huang_TubeParalyene = load('projects/axon_simulations/Huang_simulations/DC_Hu
 interval1 = [0.0400 0.0485]; % interval is in cm
 interval2 = [0.0800 0.0885]; % interval is in cm
 interval3 = [0.1200 0.1285];
-time_shot = 1.1; % in ms
+time_shot = 2; % in ms
 
 % picking time shots
 % time1 = 5.1; % in ms
@@ -261,23 +271,24 @@ p = 0.001;
 % set_of_data11 = {HH_temp_base, HH_temp_8, HH_temp_10, HH_temp_12, HH_temp_14, HH_temp_16, HH_temp_18, HH_temp_20, HH_temp_22, HH_temp_24, HH_temp_26, HH_temp_28, HH_temp_30, HH_temp_31, HH_temp_32, HH_temp_33, HH_temp_34, HH_temp_35};
 % set_of_data12 = {SC_temp_52, SC_temp_53, SC_temp_54, SC_temp_55, SC_temp_56, SC_temp_57, SC_temp_58};
 % set_of_data13 = {DC_temp_30, DC_temp_31, DC_temp_32, DC_temp_33, DC_temp_34, DC_temp_35};
-set_of_data14 = {SC_Huang_Myelinated, SC_Huang_Tube, SC_Huang_TubeParalyene};
-set_of_data15 = {DC_Huang_Myelinated, DC_Huang_Tube, DC_Huang_TubeParalyene};
-set_of_data16 = {SC_Huang_Tube, DC_Huang_Tube};
+% set_of_data14 = {SC_Huang_Myelinated, SC_Huang_Tube, SC_Huang_TubeParalyene};
+% set_of_data15 = {DC_Huang_Myelinated, DC_Huang_Tube, DC_Huang_TubeParalyene};
+% set_of_data16 = {SC_Huang_Tube, DC_Huang_Tube};
+% set_of_data17 = {SC_Huang_Myelinated, DC_Huang_Myelinated_set1_stim_2000_rpn_100fold};
+% set_of_data18 = {SC_Huang_TubeParalyene, DC_Huang_TubeParalyene_set1_stim_2000_rpn_100fold};
 
-
-% data = DC_Cohen_DC_cell5_params_shifted_stimulus;
+data = DC_Huang_TubeParalyene_set1_stim_2000_rpn_100fold;
 % data = SC_temp_58;
 
 % plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
-% plot_Vm_minus_Vmy_picture(data, time_shot);
+plot_Vm_minus_Vmy_picture(data, time_shot);
 % plot_animation_voltage_vs_time(data, p);
 % plot_animation_voltage_vs_space(data, p);
 % plot_animation_probabilities_vs_time(HH_data_Temp_33, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(data, list_of_positions, list_of_times);
-plot_voltage_vs_time_comparison(set_of_data16, p);
-% plot_voltage_vs_space_comparison(set_of_data16, p);
+% plot_voltage_vs_time_comparison(set_of_data16, p);
+% plot_voltage_vs_space_comparison(set_of_data18, p);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(data, p);
 % plot_voltage_vs_space_comparison_variable_dt(set_of_data14, p);
 
@@ -882,9 +893,9 @@ function plot_voltage_vs_space_comparison(data_set, p)
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
-            % legend('SC: Myelinated', 'SC: Tube', 'SC: Tube+Paralyene', 'Location', 'northeast');
+            legend('SC: Tube+Paralyene', 'DC: Tube+Paralyene w/ higher stim and rpn', 'Location', 'northeast');
             % legend('DC: Myelinated', 'DC: Tube', 'DC: Tube+Paralyene', 'Location', 'northeast');
-            legend('SC: Tube', 'DC: Tube', 'Location', 'northeast');
+            % legend('SC: Tube', 'DC: Tube', 'Location', 'northeast');
             % legend('SC model: Cohen DC Params', 'DC model: $R_{pa}, R_{pn}$ given', 'DC model: $R_{pa}, R_{pn}$ computed', 'Location', 'northeast', 'Interpreter', 'latex');
             % legend('SC model: $R_i = 0.144 k\Omega cm$', 'DC model: $R_i = 0.712 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
             % legend('DC model: $R_{pa} = 0.01 k\Omega cm$', 'DC model: $R_{pa} = 0.10 k\Omega cm$', 'DC model: $R_{pa} = 0.20 k\Omega cm$', 'DC model: $R_{pa} = 0.30 k\Omega cm$', 'DC model: $R_{pa} = 0.40 k\Omega cm$', 'DC model: $R_{pa} = 0.50 k\Omega cm$', 'Location', 'northeast', 'Interpreter', 'latex')
