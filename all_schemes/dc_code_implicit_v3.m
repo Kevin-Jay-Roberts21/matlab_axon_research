@@ -34,7 +34,7 @@ R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
 r_pa = 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
-r_pn = 3210*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
+r_pn = 32100*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
 R_my = 123.6795; % 63.7; % (kilo-ohms*cm^2) specific myelin resistance
 C_my = 0.0081; % 0.113; % (micro-farads/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
@@ -55,7 +55,7 @@ w3 = r_pa/(r_pn*L_pn);
 %%%%%%%%%%%%%%%%%%%%%%
 S_v = 2000; % (mS/cm^2) % stimulus value
 S_T0 = 1; % (ms) start time of when stimulus is added
-S_T1 = 5; % (ms) end time of when stimulus is added
+S_T1 = 1.2; % (ms) end time of when stimulus is added
 S_P0 = 0.00005; % (cm) start position of adding the stimulus
 S_P1 = 0.00045; % (cm) end position of adding the stimulus
 % in the S functi on ii, is the space index and tt is the time index
@@ -516,4 +516,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('DC_Huang_TubeParalyene_higher_stim_rpn_10fold.mat');
+save('DC_Huang_Myelinated_set_higher_stim1_rpn_100fold.mat');

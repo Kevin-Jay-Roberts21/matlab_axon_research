@@ -28,7 +28,9 @@ DC_Huang_Tube = load('projects/axon_simulations/Huang_simulations/DC_Huang_Tube_
 % DC_Huang_TubeParalyene = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyene_set1.mat');
 DC_Huang_TubeParalyene_set1_stim_2000_rpn_100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyene_set1_stim_2000_rpn_100fold.mat');
 DC_Huang_Myelinated_set1_stim_2000_rpn_100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_stim_2000_rpn_100fold.mat');
-
+DC_Huang_Myelinated_set1_higher_stim_rpn_10fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_higher_stim_rpn_10fold.mat');
+DC_Huang_Myelinated_set1_higher_stim_rpn_100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_higher_stim_rpn_100fold.mat');
+DC_Huang_Myelinated_set1_higher_stim1_rpn_10fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_higher_stim1_rpn_10fold.mat');
 
 % Increasing R_pa
 % SC_Cohen_DC_params = load('SC_model_with_DC_Cohen_params.mat');
@@ -58,6 +60,7 @@ DC_Huang_Myelinated_set1_stim_2000_rpn_100fold = load('projects/axon_simulations
 % DC_Cohen_DC_cell6_temp_33_long = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_DC_cell6_temp33_long.mat');
 % DC_Cohen_avg_r_pa1000fold = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_r_pa1000fold.mat');
 % DC_Cohen_avg_stim_increase = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_avg_stim_increase.mat');
+% DC_Cohen_cell5_params_higher_stim_interval = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_cell5_params_higher_stim_interval.mat');
 % DC_Cohen_DC_cell5_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_cell5_params.mat');
 % DC_Cohen_DC_cell4_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_cell4_params.mat');
 % DC_Cohen_DC_cell3_params = load('projects/axon_simulations/Cohen_param_simulations/DC_Cohen_cell3_params.mat');
@@ -253,7 +256,7 @@ list_of_positions = {position1, position2, position4};
 % is in seconds. It is how many seconds each time (or space) shot will be
 % paused at). NOTE: the legends are what slows down the animations, may
 % condsider getting rid of or adding them in certain cases.
-p = 0.001;
+p = 0.1;
 
 % creating a set of data from multiple experiments used to plot animation
 % (the first element in the set_of_data is darkred, then the proceeding elements get
@@ -275,19 +278,19 @@ p = 0.001;
 % set_of_data15 = {DC_Huang_Myelinated, DC_Huang_Tube, DC_Huang_TubeParalyene};
 % set_of_data16 = {SC_Huang_Tube, DC_Huang_Tube};
 % set_of_data17 = {SC_Huang_Myelinated, DC_Huang_Myelinated_set1_stim_2000_rpn_100fold};
-% set_of_data18 = {SC_Huang_TubeParalyene, DC_Huang_TubeParalyene_set1_stim_2000_rpn_100fold};
+set_of_data18 = {DC_Huang_Myelinated_set1_higher_stim_rpn_10fold, DC_Huang_Myelinated_set1_higher_stim_rpn_100fold};
 
-data = DC_Huang_TubeParalyene_set1_stim_2000_rpn_100fold;
+data = DC_Huang_Myelinated_set1_higher_stim_rpn_10fold;
 % data = SC_temp_58;
-
+ 
 % plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
-plot_Vm_minus_Vmy_picture(data, time_shot);
+% plot_Vm_minus_Vmy_picture(data, time_shot);
 % plot_animation_voltage_vs_time(data, p);
 % plot_animation_voltage_vs_space(data, p);
-% plot_animation_probabilities_vs_time(HH_data_Temp_33, p);
+plot_animation_probabilities_vs_time(data, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(data, list_of_positions, list_of_times);
-% plot_voltage_vs_time_comparison(set_of_data16, p);
+% plot_voltage_vs_time_comparison(set_of_data18, p);
 % plot_voltage_vs_space_comparison(set_of_data18, p);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(data, p);
 % plot_voltage_vs_space_comparison_variable_dt(set_of_data14, p);
@@ -826,7 +829,7 @@ function plot_voltage_vs_time_comparison(data_set, p)
             end
 
             % legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
-            legend('SC: Tube', 'DC: Tube', 'Location', 'northeast');
+            legend('No AP', 'Yes AP', 'Location', 'northeast');
             text(xmin + 0.2, ymax + 0.1, sprintf('Space: %.5f cm', round(i*dx, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
@@ -893,7 +896,7 @@ function plot_voltage_vs_space_comparison(data_set, p)
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
-            legend('SC: Tube+Paralyene', 'DC: Tube+Paralyene w/ higher stim and rpn', 'Location', 'northeast');
+            legend('No AP', 'Yes AP', 'Location', 'northeast');
             % legend('DC: Myelinated', 'DC: Tube', 'DC: Tube+Paralyene', 'Location', 'northeast');
             % legend('SC: Tube', 'DC: Tube', 'Location', 'northeast');
             % legend('SC model: Cohen DC Params', 'DC model: $R_{pa}, R_{pn}$ given', 'DC model: $R_{pa}, R_{pn}$ computed', 'Location', 'northeast', 'Interpreter', 'latex');
