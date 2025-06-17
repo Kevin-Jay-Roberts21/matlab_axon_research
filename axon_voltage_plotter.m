@@ -24,13 +24,19 @@ clc
 % SC_Huang_Tube = load('projects/axon_simulations/Huang_simulations/SC_Huang_Tube_set1.mat');
 % SC_Huang_TubeParalyene = load('projects/axon_simulations/Huang_simulations/SC_Huang_TubeParalyene_set1.mat');
 % DC_Huang_Myelinated = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1.mat');
-DC_Huang_Tube = load('projects/axon_simulations/Huang_simulations/DC_Huang_Tube_set1.mat');
+% DC_Huang_Tube = load('projects/axon_simulations/Huang_simulations/DC_Huang_Tube_set1.mat');
 % DC_Huang_TubeParalyene = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyene_set1.mat');
-DC_Huang_TubeParalyene_set1_stim_2000_rpn_100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyene_set1_stim_2000_rpn_100fold.mat');
-DC_Huang_Myelinated_set1_stim_2000_rpn_100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_stim_2000_rpn_100fold.mat');
-DC_Huang_Myelinated_set1_higher_stim_rpn_10fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_higher_stim_rpn_10fold.mat');
-DC_Huang_Myelinated_set1_higher_stim_rpn_100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_higher_stim_rpn_100fold.mat');
-DC_Huang_Myelinated_set1_higher_stim1_rpn_10fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_higher_stim1_rpn_10fold.mat');
+% DC_Huang_TubeParalyene_set1_stim_2000_rpn_100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyene_set1_stim_2000_rpn_100fold.mat');
+% DC_Huang_Myelinated_set1_stim_2000_rpn_100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_stim_2000_rpn_100fold.mat');
+% DC_Huang_Myelinated_set1_higher_stim_rpn_10fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_higher_stim_rpn_10fold.mat');
+% DC_Huang_Myelinated_set1_higher_stim_rpn_100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_higher_stim_rpn_100fold.mat');
+% DC_Huang_Myelinated_set1_higher_stim1_rpn_10fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_higher_stim1_rpn_10fold.mat');
+
+SC_old_params = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1.mat');
+SC_new_params = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1_newconductances.mat');
+DC_old_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_rpn_100fold.mat');
+DC_new_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_rpn_100fold_newconductances.mat');
+
 
 % Increasing R_pa
 % SC_Cohen_DC_params = load('SC_model_with_DC_Cohen_params.mat');
@@ -256,7 +262,7 @@ list_of_positions = {position1, position2, position4};
 % is in seconds. It is how many seconds each time (or space) shot will be
 % paused at). NOTE: the legends are what slows down the animations, may
 % condsider getting rid of or adding them in certain cases.
-p = 0.1;
+p = 0.01;
 
 % creating a set of data from multiple experiments used to plot animation
 % (the first element in the set_of_data is darkred, then the proceeding elements get
@@ -278,20 +284,19 @@ p = 0.1;
 % set_of_data15 = {DC_Huang_Myelinated, DC_Huang_Tube, DC_Huang_TubeParalyene};
 % set_of_data16 = {SC_Huang_Tube, DC_Huang_Tube};
 % set_of_data17 = {SC_Huang_Myelinated, DC_Huang_Myelinated_set1_stim_2000_rpn_100fold};
-set_of_data18 = {DC_Huang_Myelinated_set1_higher_stim_rpn_10fold, DC_Huang_Myelinated_set1_higher_stim_rpn_100fold};
+set_of_data18 = {DC_old_params, DC_new_params};
 
-data = DC_Huang_Myelinated_set1_higher_stim_rpn_10fold;
 % data = SC_temp_58;
  
 % plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
 % plot_Vm_minus_Vmy_picture(data, time_shot);
 % plot_animation_voltage_vs_time(data, p);
 % plot_animation_voltage_vs_space(data, p);
-plot_animation_probabilities_vs_time(data, p);
+% plot_animation_probabilities_vs_time(data, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(data, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data18, p);
-% plot_voltage_vs_space_comparison(set_of_data18, p);
+plot_voltage_vs_space_comparison(set_of_data18, p);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(data, p);
 % plot_voltage_vs_space_comparison_variable_dt(set_of_data14, p);
 
@@ -876,6 +881,8 @@ function plot_voltage_vs_space_comparison(data_set, p)
             voltage_name = 'V_m';
         elseif strcmp(voltages{k}, 'Vmy_all')
             voltage_name = 'V_{my}';
+            ymin = -20
+            ymax = 120
         else
             voltage_name = 'V_m - V_{my}';
         end
@@ -896,7 +903,7 @@ function plot_voltage_vs_space_comparison(data_set, p)
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
-            legend('No AP', 'Yes AP', 'Location', 'northeast');
+            legend('DC old conductances', 'DC new conductances', 'Location', 'northeast');
             % legend('DC: Myelinated', 'DC: Tube', 'DC: Tube+Paralyene', 'Location', 'northeast');
             % legend('SC: Tube', 'DC: Tube', 'Location', 'northeast');
             % legend('SC model: Cohen DC Params', 'DC model: $R_{pa}, R_{pn}$ given', 'DC model: $R_{pa}, R_{pn}$ computed', 'Location', 'northeast', 'Interpreter', 'latex');
