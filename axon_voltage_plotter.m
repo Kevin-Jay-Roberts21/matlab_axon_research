@@ -32,10 +32,18 @@ clc
 % DC_Huang_Myelinated_set1_higher_stim_rpn_100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_higher_stim_rpn_100fold.mat');
 % DC_Huang_Myelinated_set1_higher_stim1_rpn_10fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_higher_stim1_rpn_10fold.mat');
 
-SC_old_params = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1.mat');
-SC_new_params = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1_newconductances.mat');
-DC_old_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_rpn_100fold.mat');
-DC_new_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_rpn_100fold_newconductances.mat');
+% SC_old_params = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1.mat');
+% SC_new_params = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1_newconductances.mat');
+% DC_old_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_rpn_100fold.mat');
+% DC_new_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_rpn_100fold_newconductances.mat');
+
+DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_40 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_40.mat');
+DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_50 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_50.mat');
+DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_55 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_55.mat');
+
+DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_40_new = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_40_new_conductances.mat');
+DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_50_new = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_50_new_conductances.mat');
+DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_60_new = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_60_new_conductances.mat');
 
 
 % Increasing R_pa
@@ -284,7 +292,7 @@ p = 0.01;
 % set_of_data15 = {DC_Huang_Myelinated, DC_Huang_Tube, DC_Huang_TubeParalyene};
 % set_of_data16 = {SC_Huang_Tube, DC_Huang_Tube};
 % set_of_data17 = {SC_Huang_Myelinated, DC_Huang_Myelinated_set1_stim_2000_rpn_100fold};
-set_of_data18 = {DC_old_params, DC_new_params};
+set_of_data18 = {DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_40_new, DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_50_new, DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_60_new};
 
 % data = SC_temp_58;
  
@@ -903,7 +911,7 @@ function plot_voltage_vs_space_comparison(data_set, p)
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
-            legend('DC old conductances', 'DC new conductances', 'Location', 'northeast');
+            legend('E_rest = 40', 'E_rest = 50', 'E_rest = 60', 'Location', 'northeast');
             % legend('DC: Myelinated', 'DC: Tube', 'DC: Tube+Paralyene', 'Location', 'northeast');
             % legend('SC: Tube', 'DC: Tube', 'Location', 'northeast');
             % legend('SC model: Cohen DC Params', 'DC model: $R_{pa}, R_{pn}$ given', 'DC model: $R_{pa}, R_{pn}$ computed', 'Location', 'northeast', 'Interpreter', 'latex');

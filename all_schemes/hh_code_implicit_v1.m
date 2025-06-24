@@ -21,7 +21,7 @@ E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
 
 % Defining the mesh parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-L = 50; % axon length (cm)
+L = 5; % axon length (cm)
 dx = 0.01; % space step (MAY CHANGE LATER)
 T = 30; % (ms) Total Time
 dt = 0.01; % time step (MAY CHANGE LATER)
@@ -107,9 +107,9 @@ for j = 1:(n-1)
             gamma5 = dt*G_K*(N(i)^4)*E_K/C_m + dt*(G_Na*(M(i)^3)*H(i) + S_v)*E_Na/C_m + dt*G_L*E_L/C_m;
         end
         
-        A(i, i-1) = gamma3;
+        A(i, i-1) = gamma1;
         A(i, i) = gamma2;
-        A(i, i+1) = gamma1;
+        A(i, i+1) = gamma3;
         g_1(i) = gamma4*Vm(i); 
         g_2(i) = gamma5;
         
