@@ -47,10 +47,10 @@ w_1 = a^2/(C_my*a_my*R_i);
 %%%%%%%%%%%%%%%%%%%%%%
 S_v = 2000; % (mS/cm^2) % stimulus value
 S_T0 = 1; % (ms) start time of when stimulus is added
-S_T1 = 1.2; % (ms) end time of when stimulus is added 
-S_P0 = 0.00005; % (cm) start position of adding the stimulus
-S_P1 = 0.00045; % (cm) end position of adding the stimulus
-% in the S function ii, is the space index and tt is the time index
+S_T1 = 1.5; % (ms) end time of when stimulus is added 
+S_P0 = 0; % (cm) start position of adding the stimulus (corresponds to ii = 1)
+S_P1 = 0.0005; % (cm) end position of adding the stimulus (corresponds to ii = 11)
+% in the S function ii, is the space index and tt is the time index (inclusive)
 S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
                     (tt * dt < S_T1 | abs(tt * dt - S_T1) <= 1e-10) & ...
                     (abs(ii * dx - S_P0) <= 1e-10 | ii * dx > S_P0) & ...
@@ -98,7 +98,7 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 % Initialization
 %%%%%%%%%%%%%%%%
 V_m0 = -58.1124; % (mV) initial condition for membrane potential 
-V_my0 = -0.136; % (mV) initial condition for axon potential in periaxonal space
+V_my0 = 0.8166; % (mV) initial condition for axon potential in periaxonal space
 N_0 = 0.4264; % (dimless) initial condition for gating variable n
 M_0 = 0.1148; % (dimless) initial condition for gating variable m
 H_0 = 0.3548; % (dimless) initial condition for gating variable h
@@ -466,4 +466,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('SC_Huang_Myelinated_set1.mat'); 
+save('SC_Huang_Myelinated_set1.mat'); 

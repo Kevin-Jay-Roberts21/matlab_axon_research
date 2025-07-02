@@ -37,13 +37,20 @@ clc
 % DC_old_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_rpn_100fold.mat');
 % DC_new_params = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_rpn_100fold_newconductances.mat');
 
-DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_40 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_40.mat');
-DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_50 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_50.mat');
-DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_55 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_55.mat');
 
-DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_40_new = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_40_new_conductances.mat');
-DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_50_new = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_50_new_conductances.mat');
-DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_60_new = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_60_new_conductances.mat');
+
+% SC_Huang_Tube_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_Tube_set1.mat');
+% DC_Huang_Tube_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Tube_set1.mat');
+
+% DC_Huang_Myelinated_set1 = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1.mat');
+% DC_Huang_Myelinated_set1_rpn10fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_rpn10fold.mat');
+% DC_Huang_Myelinated_set1_rpn100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_rpn100fold.mat');
+% 
+SC_Huang_Myelinated_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_Myelinated_set1.mat');
+SC_Huang_TubeParalyene_set1 = load('projects/axon_simulations/Huang_simulations/SC_Huang_TubeParalyene_set1.mat');
+DC_Huang_Myelinated_set1_rpn100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_Myelinated_set1_rpn100fold.mat');
+DC_Huang_TubeParalyene_set1_rpn100fold = load('projects/axon_simulations/Huang_simulations/DC_Huang_TubeParalyene_set1_rpn100fold.mat');
+
 
 
 % Increasing R_pa
@@ -238,15 +245,15 @@ DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_60_new = load('projects
 interval1 = [0.0400 0.0485]; % interval is in cm
 interval2 = [0.0800 0.0885]; % interval is in cm
 interval3 = [0.1200 0.1285];
-time_shot = 2; % in ms
+time_shot = 4; % in ms
 
 % picking time shots
 % time1 = 5.1; % in ms
 % time2 = 9.5; % in ms
 % time3 = 10; % in ms
-time1 = 2; % in ms
-time2 = 3.3; % in ms
-time3 = 4; % in ms
+time1 = 1.5; % in ms
+time2 = 2.5; % in ms
+time3 = 3.25; % in ms
 list_of_times = {time1, time2, time3};
 
 % picking space shots
@@ -254,14 +261,14 @@ list_of_times = {time1, time2, time3};
 % position2 = 3; % in cm
 % position3 = 5; % in cm
 
-position1 = 0.0800; % in cm
-position2 = 0.0828; % in cm
-position3 = 0.0857; % in cm
-position4 = 0.0885; % in cm
+% position1 = 0.0800; % in cm
+% position2 = 0.0828; % in cm
+% position3 = 0.0857; % in cm
+% position4 = 0.0885; % in cm
 
-% position1 = 0.0005; % in cm
-% position2 = 0.06; % in cm
-% position4 = 0.16; % in cm
+position1 = 0.02; % in cm
+position2 = 0.06; % in cm
+position4 = 0.08; % in cm
 
 list_of_positions = {position1, position2, position4};
 
@@ -292,9 +299,9 @@ p = 0.01;
 % set_of_data15 = {DC_Huang_Myelinated, DC_Huang_Tube, DC_Huang_TubeParalyene};
 % set_of_data16 = {SC_Huang_Tube, DC_Huang_Tube};
 % set_of_data17 = {SC_Huang_Myelinated, DC_Huang_Myelinated_set1_stim_2000_rpn_100fold};
-set_of_data18 = {DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_40_new, DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_50_new, DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_60_new};
+% set_of_data18 = {DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_40_new, DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_50_new, DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_60_new};
 
-% data = SC_temp_58;
+data = DC_Huang_TubeParalyene_set1_rpn100fold;
  
 % plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
 % plot_Vm_minus_Vmy_picture(data, time_shot);
@@ -302,9 +309,9 @@ set_of_data18 = {DC_Huang_Myelinated_set1_r_pn_10fold_increased_Erest_neg_40_new
 % plot_animation_voltage_vs_space(data, p);
 % plot_animation_probabilities_vs_time(data, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
-% plot_time_and_space_shots(data, list_of_positions, list_of_times);
+plot_time_and_space_shots(data, list_of_positions, list_of_times);
 % plot_voltage_vs_time_comparison(set_of_data18, p);
-plot_voltage_vs_space_comparison(set_of_data18, p);
+% plot_voltage_vs_space_comparison(set_of_data18, p);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(data, p);
 % plot_voltage_vs_space_comparison_variable_dt(set_of_data14, p);
 
@@ -425,8 +432,8 @@ function plot_Vm_minus_Vmy_picture(data, time_shot)
     
     xmin = 0;
     xmax = L;
-    ymin = -70;
-    ymax = 30;
+    ymin = -80;
+    ymax = 40;
     axis([xmin xmax ymin ymax]);  % Set axis limits
 
     text(xmin+0.10, ymax-30, sprintf('Time: %.3f ms', time_shot), 'FontSize', 11, 'BackgroundColor', 'w');
