@@ -16,9 +16,9 @@ clc
 % E_L = -54.4; % Equilibrium Potential for Leak Channels (mV)
 
 % Used for SC or DC Model
-G_K = 500; % (mS/cm^2)
+G_K = 900; % (mS/cm^2)
 G_Na = 3000; % (mS/cm^2)
-G_L = 1; % (mS/cm^2)
+G_L = 7.5; % (mS/cm^2)
 E_K = -82; % Equilibrium Potential for Potassium Ions (mV)
 E_Na = 45; % Equilibrium Potential for Sodium Ions (mV)
 E_L = -59.4; % Equilibrium Potential for Leak Channels (mV)

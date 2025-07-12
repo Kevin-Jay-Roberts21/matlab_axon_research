@@ -27,16 +27,16 @@ n = T/dt + 1; % (#) n is the number of time steps
 
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-a = 0.0001; %0.55*10^(-4); % (cm) axon radius in nodal region
-a_my = 0.0001238; %a/0.698; % (cm) axon radius in myelinated section 
+a = 0.55*10^(-4); % (cm) axon radius in nodal region
+a_my = a/0.698; % (cm) axon radius in myelinated section 
 R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
 r_pa = 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
-r_pn = 32100*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
-R_my = 123.6795; % 63.7; % (kilo-ohms*cm^2) specific myelin resistance
-C_my = 0.0081; % 0.113; % (micro-farads/cm^2) specific myelin capacitance
+r_pn = 800*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
+R_my = 63.7; %63.7; % (kilo-ohms*cm^2) specific myelin resistance
+C_my = 0.113; %0.113; % (micro-farads/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -55,7 +55,7 @@ w3 = r_pa/(r_pn*L_pn);
 %%%%%%%%%%%%%%%%%%%%%%
 S_v = 2000; % (mS/cm^2) % stimulus value
 S_T0 = 1; % (ms) start time of when stimulus is added
-S_T1 = 1.5; % (ms) end time of when stimulus is added
+S_T1 = 1.1; % (ms) end time of when stimulus is added
 S_P0 = 0; % (cm) start position of adding the stimulus (corresponds to ii = 1)
 S_P1 = 0.0005; % (cm) end position of adding the stimulus (corresponds to ii = 11)
 % in the S functi on ii, is the space index and tt is the time index (inclusive)
@@ -108,7 +108,7 @@ f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) >
 % Initialization
 %%%%%%%%%%%%%%%%
 V_m0 = -58.1124; % (mV) initial condition for membrane potential 
-V_my0 = 0.2625; % (mV) initial condition for axon potential in periaxonal space
+V_my0 = 0.005; % (mV) initial condition for axon potential in periaxonal space
 N_0 = 0.4264; % (dimless) initial condition for gating variable n
 M_0 = 0.1148; % (dimless) initial condition for gating variable m
 H_0 = 0.3548; % (dimless) initial condition for gating variable h
@@ -516,4 +516,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('DC_Huang_Myelinated_set1_rpn100fold.mat');
+save('DC_Cohen_set1_rpn800.mat');

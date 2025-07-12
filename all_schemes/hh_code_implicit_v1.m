@@ -134,19 +134,14 @@ end
 % units in um)
 position1 = 0.5; % in cm
 position2 = 1; % in cm
-position3 = 1.5; % in cm
+position3 = 1; % in cm
 position4 = 2; % in cm
-position5 = 2.5; % in cm
-position6 = 3; % in cm
-position7 = 3.5; % in cm
+position5 = 3; % in cm
+position6 = 4; % in cm
+position7 = 5; % in cm
 
-list_of_positions = [position1
-                     position2
-                     position3
-                     position4
-                     position5
-                     position6
-                     position7];
+list_of_positions = [position3, position4, position5, position6, position7
+                     ];
 
 % Times to observe the voltage along the axon
 time1 = 5; % in ms
