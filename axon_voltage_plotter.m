@@ -92,7 +92,7 @@ p = 0.01;
 % creating a set of data from multiple experiments used to plot animation
 % (the first element in the set_of_data is darkred, then the proceeding elements get
 % brighter and brighter until the last element which is the brightest red)
-set_of_data1 = {SC_Cohen_set1, SC_Cohen_set1_new_conductances};
+set_of_data1 = {DC_Cohen_set1, DC_Cohen_set1_new_conductances};
 
 
 data = SC_Cohen_set1;
@@ -771,7 +771,7 @@ function plot_voltage_vs_time_comparison(data_set, space_shot)
     end
 
     % legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
-    legend('SC', 'SC Scaled Conductance', 'Location', 'northeast', 'FontSize', 14);
+    legend('DC Mammalian Conductance', 'DC Scaled HH Conductance', 'Location', 'northeast', 'FontSize', 14);
   
 end
 
