@@ -220,11 +220,6 @@ for j = 1:(n-1)
         % putting 0's into the nodal regions of Vmy and 0's into the internodal
         % regions of N, M and H
 
-        % right after the stimulus
-        if j == 110
-            disp("Stopping after stimulus time interval");
-        end
-
         gamma1 = -rho*b_1(i - 1/2);
         gamma2 = 1 - dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
         gamma3 = -rho*b_1(i + 1/2);
