@@ -59,7 +59,7 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
 % Defining alpha/beta functions as well as the b_1, c_1 and f_1 functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T_base = 20; % (C) base temperature
-T_actual = 66; % (C) the temperature of the squid axon
+T_actual = 20; % (C) the temperature of the squid axon
 Q_10_Na = 2.2; % (#) temperature coefficient for Na current
 Q_10_K = 3; % (#) temperature coefficient for K current
 phi_Na = Q_10_Na^((T_actual - T_base)/10); % (#) temperature scaling factor for Na current
@@ -461,4 +461,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('SC_Cohen_set1_T66.mat'); 
+% save('SC_Cohen_set1_T66.mat'); 
