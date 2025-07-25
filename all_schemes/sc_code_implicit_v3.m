@@ -24,13 +24,13 @@ n = T/dt + 1; % (#) n is the number of time steps
 
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-a = 0.0001; % 0.55*10^(-4); % (cm) radius in nodal region
-a_my = 0.0001238; % a/0.698; % (cm) radius in myelinated region
+a = 0.55*10^(-4); % (cm) radius in nodal region
+a_my = a/0.698; % (cm) radius in myelinated region
 R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
-R_my = 123.6795; % 63.7; % (kilo-ohms*cm^2) specfic myelin resistance
-C_my = 0.0081; % 0.113; % (micro-fards/cm^2) specific myelin capacitance
+R_my = 63.7; % (kilo-ohms*cm^2) specfic myelin resistance
+C_my = 0.113; % (micro-fards/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -45,12 +45,12 @@ w_1 = a^2/(C_my*a_my*R_i);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
-S_v = 1000; % (mS/cm^2) % stimulus value
+S_v = 2000; % (mS/cm^2) % stimulus value
 S_T0 = 1; % (ms) start time of when stimulus is added
 S_T1 = 1.1; % (ms) end time of when stimulus is added 
-S_P0 = 0.0001; % (cm) start position of adding the stimulus
-S_P1 = 0.0004; % (cm) end position of adding the stimulus
-% in the S function ii, is the space index and tt is the time index
+S_P0 = 0; % (cm) start position of adding the stimulus (corresponds to ii = 1)
+S_P1 = 0.0005; % (cm) end position of adding the stimulus (corresponds to ii = 11)
+% in the S function ii, is the space index and tt is the time index (inclusive)
 S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
                     (tt * dt < S_T1 | abs(tt * dt - S_T1) <= 1e-10) & ...
                     (abs(ii * dx - S_P0) <= 1e-10 | ii * dx > S_P0) & ...
@@ -97,11 +97,11 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 
 % Initialization
 %%%%%%%%%%%%%%%%
-V_m0 = -58.1124; % (mV) initial condition for membrane potential 
-V_my0 = 1.2727; % (mV) initial condition for axon potential in periaxonal space
-N_0 = 0.4264; % (#) initial condition for gating variable n
-M_0 = 0.1148; % (#) initial condition for gating variable m
-H_0 = 0.3548; % (#) initial condition for gating variable h
+V_m0 = -58.1539; % (mV) initial condition for membrane potential 
+V_my0 = 0.8004; % (mV) initial condition for axon potential in periaxonal space
+N_0 = 0.4258; % (dimless) initial condition for gating variable n
+M_0 = 0.1144; % (dimless) initial condition for gating variable m
+H_0 = 0.3560; % (dimless) initial condition for gating variable h
 Vm = V_m0 * ones(1, m);
 Vmy = zeros(1, m);
 N = zeros(1, m);
@@ -219,11 +219,6 @@ for j = 1:(n-1)
         % NOTE: the b function accounts for the piecewise values
         % putting 0's into the nodal regions of Vmy and 0's into the internodal
         % regions of N, M and H
-
-        % right after the stimulus
-        if j == 110
-            disp("Stopping after stimulus time interval");
-        end
 
         gamma1 = -rho*b_1(i - 1/2);
         gamma2 = 1 - dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
@@ -466,4 +461,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('SC_Huang_TubeParalyene_set1.mat'); 
+% save('SC_Cohen_set1_T66.mat'); 
