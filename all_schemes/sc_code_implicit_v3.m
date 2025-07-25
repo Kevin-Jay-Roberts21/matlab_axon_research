@@ -31,9 +31,9 @@ R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
 R_my = 63.7; % (kilo-ohms*cm^2) specfic myelin resistance
 C_my = 0.113; % (micro-fards/cm^2) specific myelin capacitance
-G_K = 900; % (mS/cm^2) max specific potassium conductance
+G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
-G_L = 7.5; % (mS/cm^2) specific leak conductance
+G_L = 80; % (mS/cm^2) specific leak conductance
 E_K = -82; % (mV) Nernst potential for potassium ions
 E_Na = 45; % (mV) Nernst potential for sodium ions
 E_L = -59.4; % (mV) Nernst potential for leak channels
@@ -59,7 +59,7 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
 % Defining alpha/beta functions as well as the b_1, c_1 and f_1 functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T_base = 20; % (C) base temperature
-T_actual = 20; % (C) the temperature of the squid axon
+T_actual = 66; % (C) the temperature of the squid axon
 Q_10_Na = 2.2; % (#) temperature coefficient for Na current
 Q_10_K = 3; % (#) temperature coefficient for K current
 phi_Na = Q_10_Na^((T_actual - T_base)/10); % (#) temperature scaling factor for Na current
@@ -97,11 +97,11 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 
 % Initialization
 %%%%%%%%%%%%%%%%
-V_m0 = -58.1124; % (mV) initial condition for membrane potential 
-V_my0 = 1.2080; % (mV) initial condition for axon potential in periaxonal space
-N_0 = 0.4264; % (dimless) initial condition for gating variable n
-M_0 = 0.1148; % (dimless) initial condition for gating variable m
-H_0 = 0.3548; % (dimless) initial condition for gating variable h
+V_m0 = -58.1539; % (mV) initial condition for membrane potential 
+V_my0 = 0.8004; % (mV) initial condition for axon potential in periaxonal space
+N_0 = 0.4258; % (dimless) initial condition for gating variable n
+M_0 = 0.1144; % (dimless) initial condition for gating variable m
+H_0 = 0.3560; % (dimless) initial condition for gating variable h
 Vm = V_m0 * ones(1, m);
 Vmy = zeros(1, m);
 N = zeros(1, m);
@@ -466,4 +466,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('SC_Cohen_set1_new_conductances.mat'); 
+save('SC_Cohen_set1_T66.mat'); 

@@ -22,18 +22,18 @@ clc
 % HH_2 = load('projects/axon_simulations/Paper_HH_Data/HH_2.mat');
 % HH_3 = load('projects/axon_simulations/Paper_HH_Data/HH_3.mat');
 
-SC_Cohen_set1 = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1.mat');
+% SC_Cohen_set1 = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1.mat');
 % SC_Cohen_set1_long = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1_long.mat');
 % SC_Cohen_set2 = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set2.mat');
 % SC_Cohen_set1_T33 = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1_T33.mat');
 % SC_Cohen_set1_T33_long = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1_T33_long.mat');
-SC_Cohen_set1_new_conductances = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1_new_conductances.mat');
-DC_Cohen_set1 = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1.mat');
+% SC_Cohen_set1_new_conductances = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1_new_conductances.mat');
+% DC_Cohen_set1 = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1.mat');
 % DC_Cohen_set1_long = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_long.mat');
 % DC_Cohen_set2 = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set2.mat');
 % DC_Cohen_set1_T33 = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_T33.mat');
 % DC_Cohen_set1_T33_long = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_T33_long.mat');
-DC_Cohen_set1_new_conductances = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_new_conductances.mat');
+% DC_Cohen_set1_new_conductances = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_new_conductances.mat');
 
 % SC_Huang_Myelinated_set1 = load('projects/axon_simulations/Paper_Huang_Data/SC_Huang_Myelinated_set1.mat');
 % SC_Huang_Tube_set1 = load('projects/axon_simulations/Paper_Huang_Data/SC_Huang_Tube_set1.mat');
@@ -46,7 +46,184 @@ DC_Cohen_set1_new_conductances = load('projects/axon_simulations/Paper_SC_DC_Dat
 % DC_Huang_Tube_set1_rpn100fold = load('projects/axon_simulations/Paper_Huang_Data/DC_Huang_Tube_set1_rpn100fold.mat');
 % DC_Huang_TubeParalyene_set1_rpn100fold = load('projects/axon_simulations/Paper_Huang_Data/DC_Huang_TubeParalyene_set1_rpn100fold.mat');
 
+% PARAMETER SENSITIVITY
+% DC_Cohen_set1_rpn1 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn1.mat');
+% DC_Cohen_set1_rpn25 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn25.mat');
+% DC_Cohen_set1_rpn50 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn50.mat');
+% DC_Cohen_set1_rpn200 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn200.mat');
+% DC_Cohen_set1_rpn400 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn400.mat');
+% DC_Cohen_set1_rpn600 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn600.mat');
+% DC_Cohen_set1_rpn800 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn800.mat');
+% DC_Cohen_set1_rpn1000 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn1000.mat');
+% DC_Cohen_set1_rpn1200 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn1200.mat');
+% DC_Cohen_set1_rpn1400 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn1400.mat');
+% DC_Cohen_set1_rpn1600 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn1600.mat');
+% DC_Cohen_set1_rpn1800 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn1800.mat');
+% DC_Cohen_set1_rpn2000 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn2000.mat');
+% DC_Cohen_set1_rpn2200 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn2200.mat');
+% DC_Cohen_set1_rpn2400 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn2400.mat');
+% DC_Cohen_set1_rpn2600 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn2600.mat');
+% DC_Cohen_set1_rpn2800 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn2800.mat');
+% DC_Cohen_set1_rpn3000 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_rpn3000.mat');
+% DC_Cohen_set2_rpn1 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn1.mat');
+% DC_Cohen_set2_rpn25 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn25.mat');
+% DC_Cohen_set2_rpn50 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn50.mat');
+% DC_Cohen_set2_rpn200 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn200.mat');
+% DC_Cohen_set2_rpn400 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn400.mat');
+% DC_Cohen_set2_rpn600 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn600.mat');
+% DC_Cohen_set2_rpn800 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn800.mat');
+% DC_Cohen_set2_rpn1000 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn1000.mat');
+% DC_Cohen_set2_rpn1200 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn1200.mat');
+% DC_Cohen_set2_rpn1400 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn1400.mat');
+% DC_Cohen_set2_rpn1600 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn1600.mat');
+% DC_Cohen_set2_rpn1800 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn1800.mat');
+% DC_Cohen_set2_rpn2000 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn2000.mat');
+% DC_Cohen_set2_rpn2200 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn2200.mat');
+% DC_Cohen_set2_rpn2400 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn2400.mat');
+% DC_Cohen_set2_rpn2600 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn2600.mat');
+% DC_Cohen_set2_rpn2800 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn2800.mat');
+% DC_Cohen_set2_rpn3000 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_rpn3000.mat');
 
+% DC_Cohen_set1_Cmy01 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy01.mat');
+% DC_Cohen_set1_Cmy02 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy02.mat');
+% DC_Cohen_set1_Cmy03 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy03.mat');
+% DC_Cohen_set1_Cmy04 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy04.mat');
+% DC_Cohen_set1_Cmy05 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy05.mat');
+% DC_Cohen_set1_Cmy06 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy06.mat');
+% DC_Cohen_set1_Cmy07 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy07.mat');
+% DC_Cohen_set1_Cmy08 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy08.mat');
+% DC_Cohen_set1_Cmy09 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy09.mat');
+% DC_Cohen_set1_Cmy10 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy10.mat');
+% DC_Cohen_set1_Cmy11 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy11.mat');
+% DC_Cohen_set1_Cmy12 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy12.mat');
+% DC_Cohen_set1_Cmy13 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy13.mat');
+% DC_Cohen_set1_Cmy14 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy14.mat');
+% DC_Cohen_set1_Cmy15 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy15.mat');
+% DC_Cohen_set1_Cmy16 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy16.mat');
+% DC_Cohen_set1_Cmy17 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy17.mat');
+% DC_Cohen_set1_Cmy18 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy18.mat');
+% DC_Cohen_set1_Cmy19 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy19.mat');
+% DC_Cohen_set1_Cmy20 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Cmy20.mat');
+% DC_Cohen_set2_Cmy01 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy01.mat');
+% DC_Cohen_set2_Cmy02 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy02.mat');
+% DC_Cohen_set2_Cmy03 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy03.mat');
+% DC_Cohen_set2_Cmy04 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy04.mat');
+% DC_Cohen_set2_Cmy05 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy05.mat');
+% DC_Cohen_set2_Cmy06 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy06.mat');
+% DC_Cohen_set2_Cmy07 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy07.mat');
+% DC_Cohen_set2_Cmy08 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy08.mat');
+% DC_Cohen_set2_Cmy09 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy09.mat');
+% DC_Cohen_set2_Cmy10 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy10.mat');
+% DC_Cohen_set2_Cmy11 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy11.mat');
+% DC_Cohen_set2_Cmy12 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy12.mat');
+% DC_Cohen_set2_Cmy13 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy13.mat');
+% DC_Cohen_set2_Cmy14 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy14.mat');
+% DC_Cohen_set2_Cmy15 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy15.mat');
+% DC_Cohen_set2_Cmy16 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy16.mat');
+% DC_Cohen_set2_Cmy17 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy17.mat');
+% DC_Cohen_set2_Cmy18 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy18.mat');
+% DC_Cohen_set2_Cmy19 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy19.mat');
+% DC_Cohen_set2_Cmy20 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Cmy20.mat');
+% 
+% DC_Cohen_set1_Rmy50 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Rmy50.mat');
+% DC_Cohen_set1_Rmy100 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Rmy100.mat');
+% DC_Cohen_set1_Rmy200 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Rmy200.mat');
+% DC_Cohen_set1_Rmy300 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Rmy300.mat');
+% DC_Cohen_set1_Rmy400 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Rmy400.mat');
+% DC_Cohen_set1_Rmy500 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Rmy500.mat');
+% DC_Cohen_set1_Rmy600 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Rmy600.mat');
+% DC_Cohen_set1_Rmy700 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Rmy700.mat');
+% DC_Cohen_set1_Rmy800 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Rmy800.mat');
+% DC_Cohen_set1_Rmy900 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Rmy900.mat');
+% DC_Cohen_set1_Rmy1000 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Rmy1000.mat');
+% DC_Cohen_set2_Rmy50 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Rmy50.mat');
+% DC_Cohen_set2_Rmy100 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Rmy100.mat');
+% DC_Cohen_set2_Rmy200 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Rmy200.mat');
+% DC_Cohen_set2_Rmy300 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Rmy300.mat');
+% DC_Cohen_set2_Rmy400 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Rmy400.mat');
+% DC_Cohen_set2_Rmy500 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Rmy500.mat');
+% DC_Cohen_set2_Rmy600 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Rmy600.mat');
+% DC_Cohen_set2_Rmy700 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Rmy700.mat');
+% DC_Cohen_set2_Rmy800 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Rmy800.mat');
+% DC_Cohen_set2_Rmy900 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Rmy900.mat');
+% DC_Cohen_set2_Rmy1000 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Rmy1000.mat');
+
+% DC_Cohen_set1_Ri20 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Ri20.mat');
+% DC_Cohen_set1_Ri40 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Ri40.mat');
+% DC_Cohen_set1_Ri60 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Ri60.mat');
+% DC_Cohen_set1_Ri80 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Ri80.mat');
+% DC_Cohen_set1_Ri100 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Ri100.mat');
+% DC_Cohen_set1_Ri120 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Ri120.mat');
+% DC_Cohen_set1_Ri140 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Ri140.mat');
+% DC_Cohen_set1_Ri160 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Ri160.mat');
+% DC_Cohen_set1_Ri180 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Ri180.mat');
+% DC_Cohen_set1_Ri200 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set1_Ri200.mat');
+% DC_Cohen_set2_Ri20 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Ri20.mat');
+% DC_Cohen_set2_Ri40 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Ri40.mat');
+% DC_Cohen_set2_Ri60 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Ri60.mat');
+% DC_Cohen_set2_Ri80 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Ri80.mat');
+% DC_Cohen_set2_Ri100 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Ri100.mat');
+% DC_Cohen_set2_Ri120 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Ri120.mat');
+% DC_Cohen_set2_Ri140 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Ri140.mat');
+% DC_Cohen_set2_Ri160 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Ri160.mat');
+% DC_Cohen_set2_Ri180 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Ri180.mat');
+% DC_Cohen_set2_Ri200 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Ri200.mat');
+
+% TEMPERATURE ANALYSIS
+% HH_Tbase = load('projects/axon_simulations/Paper_Temp_Data/HH_Tbase.mat');
+% HH_T7 = load('projects/axon_simulations/Paper_Temp_Data/HH_T7.mat');
+% HH_T9 = load('projects/axon_simulations/Paper_Temp_Data/HH_T9.mat');
+% HH_T11 = load('projects/axon_simulations/Paper_Temp_Data/HH_T11.mat');
+% HH_T13 = load('projects/axon_simulations/Paper_Temp_Data/HH_T13.mat');
+% HH_T15 = load('projects/axon_simulations/Paper_Temp_Data/HH_T15.mat');
+% HH_T17 = load('projects/axon_simulations/Paper_Temp_Data/HH_T17.mat');
+% HH_T19 = load('projects/axon_simulations/Paper_Temp_Data/HH_T19.mat');
+% HH_T21 = load('projects/axon_simulations/Paper_Temp_Data/HH_T21.mat');
+% HH_T23 = load('projects/axon_simulations/Paper_Temp_Data/HH_T23.mat');
+% HH_T25 = load('projects/axon_simulations/Paper_Temp_Data/HH_T25.mat');
+% HH_T27 = load('projects/axon_simulations/Paper_Temp_Data/HH_T27.mat');
+% HH_T29 = load('projects/axon_simulations/Paper_Temp_Data/HH_T29.mat');
+% HH_T31 = load('projects/axon_simulations/Paper_Temp_Data/HH_T31.mat');
+HH_T33 = load('projects/axon_simulations/Paper_Temp_Data/HH_T33.mat'); % decays
+HH_T33_diff = load('projects/axon_simulations/Paper_Temp_Data/HH_T33_different_stim_time.mat');
+% HH_T35 = load('projects/axon_simulations/Paper_Temp_Data/HH_T35.mat'); % decays
+% HH_T37 = load('projects/axon_simulations/Paper_Temp_Data/HH_T37.mat'); % decays
+
+% SC_Cohen_set1_T20 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T20.mat');
+% SC_Cohen_set1_T22 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T22.mat');
+% SC_Cohen_set1_T24 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T24.mat');
+% SC_Cohen_set1_T26 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T26.mat');
+% SC_Cohen_set1_T28 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T28.mat');
+% SC_Cohen_set1_T30 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T30.mat');
+% SC_Cohen_set1_T32 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T32.mat');
+% SC_Cohen_set1_T34 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T34.mat');
+% SC_Cohen_set1_T36 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T36.mat');
+% SC_Cohen_set1_T38 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T38.mat');
+% SC_Cohen_set1_T40 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T40.mat');
+% SC_Cohen_set1_T42 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T42.mat');
+% SC_Cohen_set1_T44 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T44.mat');
+% SC_Cohen_set1_T46 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T46.mat');
+% SC_Cohen_set1_T48 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T48.mat');
+% SC_Cohen_set1_T50 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T50.mat');
+% SC_Cohen_set1_T52 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T52.mat');
+% SC_Cohen_set1_T54 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T54.mat');
+% SC_Cohen_set1_T56 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T56.mat');
+SC_Cohen_set1_T58 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T58.mat'); % decays
+% SC_Cohen_set1_T60 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T60.mat'); % decays
+% SC_Cohen_set1_T62 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T62.mat'); % decays
+% SC_Cohen_set1_T64 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T64.mat'); % decays
+% 
+% DC_Cohen_set1_T20 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T20.mat');
+% DC_Cohen_set1_T22 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T22.mat');
+% DC_Cohen_set1_T24 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T24.mat');
+% DC_Cohen_set1_T26 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T26.mat');
+% DC_Cohen_set1_T28 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T28.mat');
+% DC_Cohen_set1_T30 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T30.mat');
+% DC_Cohen_set1_T32 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T32.mat');
+DC_Cohen_set1_T34 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T34.mat'); % decays
+% DC_Cohen_set1_T36 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T36.mat'); % decays
+% DC_Cohen_set1_T38 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T38.mat'); % decays
+% DC_Cohen_set1_T40 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T40.mat'); % decays
 
 
 % picking interval
@@ -66,36 +243,39 @@ time3 = 3.75; % in ms
 list_of_times = {time1, time2, time3};
 
 % picking space shots
-% position1 = 1; % in cm
-% position2 = 3; % in cm
-% position3 = 5; % in cm
+position1 = 1.1; % in cm
+position2 = 2; % in cm
+position3 = 3; % in cm
+position4 = 4; % in cm
+position5 = 5; % in cm
 
 % position1 = 0.0800; % in cm
 % position2 = 0.0828; % in cm
 % % position3 = 0.0857; % in cm
 % position4 = 0.0885; % in cm
 
-position1 = 0.0005; % in cm
-position2 = 0.05; % in cm
-position3 = 0.10; % in cm
-position4 = 0.15; % in cm
+% position1 = 0.0005; % in cm
+% position2 = 0.04; % in cm
+% position3 = 0.08; % in cm
+% position4 = 0.12; % in cm
+% position5 = 0.16; % in cm
 
-list_of_positions = {position1, position2, position3, position4};
+list_of_positions = {position1, position2, position3, position4, position5};
 
 
 % picking pause (this controls the speed of the animation, the pause variable 
 % is in seconds. It is how many seconds each time (or space) shot will be
 % paused at). NOTE: the legends are what slows down the animations, may
 % condsider getting rid of or adding them in certain cases.
-p = 0.01;
+p = 0.001;
 
 % creating a set of data from multiple experiments used to plot animation
 % (the first element in the set_of_data is darkred, then the proceeding elements get
 % brighter and brighter until the last element which is the brightest red)
-set_of_data1 = {DC_Cohen_set1, DC_Cohen_set1_new_conductances};
+% set_of_data = {DC_Cohen_set1_rpn50, DC_Cohen_set1_rpn1, DC_Cohen_set2_rpn50, DC_Cohen_set2_rpn1};
+% set_of_data = {DC_Cohen_set1_T30, DC_Cohen_set1_T32, DC_Cohen_set1_T34, DC_Cohen_set1_T36, DC_Cohen_set1_T38, DC_Cohen_set1_T40};
 
-
-data = SC_Cohen_set1;
+data = HH_T33_diff;
  
 % plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
 % plot_Vm_minus_Vmy_picture(data, time_shot);
@@ -103,11 +283,11 @@ data = SC_Cohen_set1;
 % plot_animation_voltage_vs_space(data, p);
 % plot_animation_probabilities_vs_time(data, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
-% plot_time_and_space_shots(data, list_of_positions, list_of_times);
-% plot_voltage_vs_time_comparison_animation(set_of_data1, p);
-% plot_voltage_vs_space_comparison_animation(set_of_data1, p);
-plot_voltage_vs_time_comparison(set_of_data1, space_shot);
-% plot_voltage_vs_space_comparison(set_of_data1, time_shot);
+plot_time_and_space_shots(data, list_of_positions, list_of_times);
+% plot_voltage_vs_time_comparison_animation(set_of_data, p);
+% plot_voltage_vs_space_comparison_animation(set_of_data, p);
+% plot_voltage_vs_time_comparison(set_of_data, space_shot);
+% plot_voltage_vs_space_comparison(set_of_data, time_shot);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(data, p);
 % plot_voltage_vs_space_comparison_variable_dt(set_of_data1, p);
 
@@ -651,7 +831,7 @@ function plot_voltage_vs_time_comparison_animation(data_set, p)
             end
 
             % legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
-            legend('DC', 'DC Scaled Condcutances', 'Location', 'northeast', 'FontSize', 14);
+            legend('DC Set (1) r_{pn}=50', 'DC Set (1) r_{pn}=1', 'DC Set (2) r_{pn}=50', 'DC Set (2) r_{pn}=1', 'Location', 'northeast', 'FontSize', 14);
             text(xmin + 0.2, ymax + 0.1, sprintf('Space: %.5f cm', round(i*dx, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
@@ -771,7 +951,7 @@ function plot_voltage_vs_time_comparison(data_set, space_shot)
     end
 
     % legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
-    legend('DC Mammalian Conductance', 'DC Scaled HH Conductance', 'Location', 'northeast', 'FontSize', 14);
+    legend('DC Set (1) r_pn 50', 'DC Set (2) r_pn 50', 'Location', 'northeast', 'FontSize', 14);
   
 end
 

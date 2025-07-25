@@ -36,7 +36,7 @@ r_pa = 125*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
 r_pn = 2450*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
 R_my = 240; %63.7; % (kilo-ohms*cm^2) specific myelin resistance
-C_my = 0.0379; %0.113; % (micro-farads/cm^2) specific myelin capacitance
+C_my = 0.035; %0.113; % (micro-farads/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -107,11 +107,11 @@ f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) >
 
 % Initialization
 %%%%%%%%%%%%%%%%
-V_m0 = -58.354; % (mV) initial condition for membrane potential 
-V_my0 = 0.0299; % (mV) initial condition for axon potential in periaxonal space
-N_0 = 0.4230; % (dimless) initial condition for gating variable n
-M_0 = 0.1123; % (dimless) initial condition for gating variable m
-H_0 = 0.3616; % (dimless) initial condition for gating variable h
+V_m0 = -58.1124; % (mV) initial condition for membrane potential 
+V_my0 = 0.005; % (mV) initial condition for axon potential in periaxonal space
+N_0 = 0.4264; % (dimless) initial condition for gating variable n
+M_0 = 0.1148; % (dimless) initial condition for gating variable m
+H_0 = 0.3548; % (dimless) initial condition for gating variable h
 Vm = V_m0 * ones(1, m);
 Vmy = V_my0 * ones(1, m);
 N = zeros(1, m);
@@ -516,4 +516,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('DC_Cohen_set2_Rmy700');
+% save('DC_Cohen_set1_T33');

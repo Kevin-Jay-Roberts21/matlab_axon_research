@@ -134,7 +134,7 @@ end
 % units in um)
 position1 = 0.5; % in cm
 position2 = 1; % in cm
-position3 = 1; % in cm
+position3 = 1.1; % in cm
 position4 = 2; % in cm
 position5 = 3; % in cm
 position6 = 4; % in cm
@@ -211,4 +211,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('HH_Temp_35.mat');
+% save('HH_T33_different_stim_time.mat');

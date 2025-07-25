@@ -2,7 +2,6 @@
 % SC/DC models
 % Kevin Roberts
 % July 2025
-
 function list_of_ap_peaks = computing_AP_peak(data)
     
     list_of_ap_peaks = zeros(1, length(data));
