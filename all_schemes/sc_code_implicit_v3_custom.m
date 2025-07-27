@@ -76,6 +76,8 @@ for i = 1:20
         R_my = 63.7; 
         C_my = 0.113;
     end
+    % NOTE: Later we can change nodal and internodal region lengths with
+    % the same idea of changing a_my, C_my and R_my in different regions
     segments(i) = struct('a_my', a_my, 'R_my', R_my, 'C_my', C_my, 'L_n', 0.0005, 'L_my', 0.0075);
 end
 
@@ -137,14 +139,13 @@ L = (m)*dx;
 % Coefficient Arrays
 %%%%%%%%%%%%%%%%%%%%
 w_1_split = zeros(1, m);
-b_1_split = zeros(1, m);
 for i = 1:m
+    % NOTE: differing regions for defining w_1 shouldn't matter. It should
+    % all be handled in C_my_split and a_my_split
     if region_type(i) == 2
         w_1_split(i) = a^2/(C_my_split(i)*a_my_split(i)*R_i);
-        b_1_split(i) = (a/(2*R_i*C_m)) * (1 + (C_m*a)/(C_my_split(i)*a_my_split(i)));
     else
         w_1_split(i) = 0;
-        b_1_split(i) = a/(2*R_i*C_m);
     end
 end
 
@@ -186,17 +187,23 @@ H_all(1,:) = H;
 
 % Defining c_1 and f_1 functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% b_1(x_i) function
+b_1 = @(ii) (region_type(ii - 1/2) == 2 && region_type(ii + 1/2) == 2)*((a/(2*R_i*C_m))*(1 + C_m*a/(C_my_split(ii)*a_my_split(ii)))) + ... % internodal region
+            (region_type(ii - 1/2) == 3 && region_type(ii + 1/2) == 2)*((a/(2*R_i*C_m))*(1 + C_m*a/(C_my_split(ii)*a_my_split(ii)))) + ... % internodal region
+            (region_type(ii - 1/2) == 1 && region_type(ii + 1/2) == 1)*(a/(2*R_i*C_m)) + ... % nodal region
+            (region_type(ii - 1/2) == 1 && region_type(ii + 1/2) == 3)*(a/(2*R_i*C_m)); % nodal region
+
 % c_1 function
 c_1 = @(ii, n, m, h, tt)...
-    (region_type(i) == 2)*(-1/(R_m*C_m)) + ... % internodal
-    (region_type(i) == 1)*(-1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L)) + ... % nodal
-    (region_type(i) == 3)*((-1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L) + -1/(R_m*C_m))/2); % end point
+    (region_type(ii) == 2)*(-1/(R_m*C_m)) + ... % internodal
+    (region_type(ii) == 1)*(-1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L)) + ... % nodal
+    (region_type(ii) == 3)*((-1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L) + -1/(R_m*C_m))/2); % end point
  
 % f_1 function
 f_1 = @(ii, Vmy, n, m, h, tt)...
-    (region_type(i) == 2)*((1/(R_m*C_m) - 1/(C_my_split(i)*R_my_split(i)))*Vmy + E_rest/(R_m*C_m)) + ... % internodal
-    (region_type(i) == 1)*(1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(i, tt))*E_Na + G_L*E_L)) + ... % nodal
-    (region_type(i) == 3)*(((1/(R_m*C_m) - 1/(C_my_split(i)*R_my_split(i)))*Vmy + E_rest/(R_m*C_m) + 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(i, tt))*E_Na + G_L*E_L))/2); % end point
+    (region_type(ii) == 2)*((1/(R_m*C_m) - 1/(C_my_split(i)*R_my_split(i)))*Vmy + E_rest/(R_m*C_m)) + ... % internodal
+    (region_type(ii) == 1)*(1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(i, tt))*E_Na + G_L*E_L)) + ... % nodal
+    (region_type(ii) == 3)*(((1/(R_m*C_m) - 1/(C_my_split(i)*R_my_split(i)))*Vmy + E_rest/(R_m*C_m) + 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(i, tt))*E_Na + G_L*E_L))/2); % end point
 
 
 % Running the time loop
@@ -248,12 +255,9 @@ for j = 1:(n-1)
     A(m,m-1) = -1; A(m,m) = 1;
 
     for i = 2:m-1
-        bL = b_1_split(i-1);
-        bC = b_1_split(i);
-        bR = b_1_split(i+1);
-        gamma1 = -rho*bL;
-        gamma2 = 1 - dt*c_1(i, newN(i), newM(i), newH(i), j) + rho*(bL + bR);
-        gamma3 = -rho*bR;
+        gamma1 = -rho*b_1_split(i-1/2);
+        gamma2 = 1 - dt*c_1(i, newN(i), newM(i), newH(i), j) + rho*(b_1_split(i-1/2) + b_1_split(i+1/2));
+        gamma3 = -rho*b_1_split(i+1/2);
         gamma4 = 1;
         gamma5 = dt * f_1(i, newVmy(i), newN(i), newM(i), newH(i), j);
 
