@@ -81,18 +81,56 @@ end
 
 % Spatial Grid
 %%%%%%%%%%%%%%
-x = []; region_type = []; C_my_split = []; R_my_split = []; a_my_split = [];
-for s = 1:length(segments)
-    N_n = round(segments(s).L_n/dx);
-    N_my = round(segments(s).L_my/dx);
-    for i = 1:(N_n + N_my)
-        x(end+1) = (length(x)) * dx;
-        region_type(end+1) = (i == 1 || i == N_n + N_my) * 3 + (i > 1 && i <= N_n) * 1 + (i > N_n) * 2;
-        C_my_split(end+1) = segments(s).C_my;
-        R_my_split(end+1) = segments(s).R_my;
-        a_my_split(end+1) = segments(s).a_my;
+x = [];
+region_type = [];
+C_my_split = [];
+R_my_split = [];
+a_my_split = [];
+
+% Add initial endpoint at the very start of the axon
+x(end+1) = 0;
+region_type(end+1) = 3;  % global starting endpoint
+C_my_split(end+1) = segments(1).C_my;
+R_my_split(end+1) = segments(1).R_my;
+a_my_split(end+1) = segments(1).a_my;
+
+for seg = 1:length(segments)
+    N_n = round(segments(seg).L_n / dx);
+    N_my = round(segments(seg).L_my / dx);
+
+    % Nodal region
+    for i = 1:(N_n-1)
+        x(end+1) = length(x) * dx;
+        region_type(end+1) = 1;
+        C_my_split(end+1) = segments(seg).C_my;
+        R_my_split(end+1) = segments(seg).R_my;
+        a_my_split(end+1) = segments(seg).a_my;
     end
+
+    % Endpoint between nodal and internodal
+    x(end+1) = length(x) * dx;
+    region_type(end+1) = 3;
+    C_my_split(end+1) = segments(seg).C_my;
+    R_my_split(end+1) = segments(seg).R_my;
+    a_my_split(end+1) = segments(seg).a_my;
+
+    % Internodal region
+    for i = 1:(N_my-1)
+        x(end+1) = length(x) * dx;
+        region_type(end+1) = 2;
+        C_my_split(end+1) = segments(seg).C_my;
+        R_my_split(end+1) = segments(seg).R_my;
+        a_my_split(end+1) = segments(seg).a_my;
+    end
+
+    % Endpoint at end of segment
+    x(end+1) = length(x) * dx;
+    region_type(end+1) = 3;
+    C_my_split(end+1) = segments(seg).C_my;
+    R_my_split(end+1) = segments(seg).R_my;
+    a_my_split(end+1) = segments(seg).a_my;
 end
+
 m = length(x);
 L = (m)*dx;
 
@@ -102,7 +140,7 @@ w_1_split = zeros(1, m);
 b_1_split = zeros(1, m);
 for i = 1:m
     if region_type(i) == 2
-        w_1_split(i) = a^2 / (C_my_split(i)*a_my_split(i)*R_i);
+        w_1_split(i) = a^2/(C_my_split(i)*a_my_split(i)*R_i);
         b_1_split(i) = (a/(2*R_i*C_m)) * (1 + (C_m*a)/(C_my_split(i)*a_my_split(i)));
     else
         w_1_split(i) = 0;
