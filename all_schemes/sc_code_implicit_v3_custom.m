@@ -11,7 +11,7 @@ clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 dx = 0.00005; % (cm) space step
 dt = 0.01; % (ms) time step 
-T = 30; % (ms) the total time of the experiment
+T = 10; % (ms) the total time of the experiment
 n = T/dt + 1; % (#) n is the number of time steps
 
 % Defining the constant material parameters
@@ -60,107 +60,55 @@ alpha_h = @(Vm) phi_Na * 0.07*exp(-(Vm + 65)/20);
 beta_h = @(Vm) phi_Na * 1/(1 + exp(-(Vm + 35)/10));
 
 
-
-
 % Handling other variables that may differ in each axon segment
 % Note: Variables that will vary for each axon segment include L_n, L_my,
 % a_my, R_my and C_my
 
-% defining L_n, L_my, a_my, R_my and C_my in 20 axon segments
-% Note: In this loop, a_my, R_my and C_my in axon segment 5 differs from the rest
+% Axon Segments
+%%%%%%%%%%%%%%%
 for i = 1:20
     if i == 5
-        segments(i).a_my = a/0.698*(0.9); % (cm) radius in myelinated region
-        segments(i).R_my = 63.7/(0.9); % (kilo-ohms*cm^2) specfic myelin resistance
-        segments(i).C_my = 0.113*(0.9); % (micro-fards/cm^2) specific myelin capacitance
-        segments(i).L_n = 0.0005; % (cm) nodal length
-        segments(i).L_my = 0.0075; % (cm) internodal length
+        a_my = a/0.698; % a/0.698*0.9; 
+        R_my = 63.7; % 63.7/0.9; 
+        C_my = 0.113; % 0.113*0.9;
     else
-        segments(i).a_my = a/0.698; % (cm) radius in myelinated region
-        segments(i).R_my = 63.7; % (kilo-ohms*cm^2) specfic myelin resistance
-        segments(i).C_my = 0.113; % (micro-fards/cm^2) specific myelin capacitance
-        segments(i).L_n = 0.0005; % (cm) nodal length
-        segments(i).L_my = 0.0075; % (cm) internodal length
+        a_my = a/0.698; 
+        R_my = 63.7; 
+        C_my = 0.113;
     end
+    segments(i) = struct('a_my', a_my, 'R_my', R_my, 'C_my', C_my, 'L_n', 0.0005, 'L_my', 0.0075);
 end
 
-n_s = length(segments); % number of axon segments
-
-% Building the spatial grid
-x = [];
-region_type = [];
-C_my_all = [];
-R_my_all = [];
-a_my_all = [];
-
-for s = 1:n_s
+% Spatial Grid
+%%%%%%%%%%%%%%
+x = []; region_type = []; C_my_split = []; R_my_split = []; a_my_split = [];
+for s = 1:length(segments)
     N_n = round(segments(s).L_n/dx);
     N_my = round(segments(s).L_my/dx);
-    seg_length = N_n + N_my;
-
-    for i = 1:seg_length
-        x(end+1) = (length(x)) * dx;  % <--- FIXED: populate x
-
-        if i == 1 || i == seg_length
-            region_type(end+1) = 3; % endpoint
-        elseif i <= N_n
-            region_type(end+1) = 1; % nodal
-        else
-            region_type(end+1) = 2; % internodal
-        end
-
-        % Material property arrays
-        C_my_all(end+1) = segments(s).C_my;
-        R_my_all(end+1) = segments(s).R_my;
-        a_my_all(end+1) = segments(s).a_my;
+    for i = 1:(N_n + N_my)
+        x(end+1) = (length(x)) * dx;
+        region_type(end+1) = (i == 1 || i == N_n + N_my) * 3 + (i > 1 && i <= N_n) * 1 + (i > N_n) * 2;
+        C_my_split(end+1) = segments(s).C_my;
+        R_my_split(end+1) = segments(s).R_my;
+        a_my_split(end+1) = segments(s).a_my;
     end
 end
+m = length(x);
+L = (m)*dx;
 
-m = length(x); % total number of space points
-
-% Modifying b_1 and w_1 (no longer creating functions, defining vectors instead)
-w_1_all = zeros(1, m);
-b_1_all = zeros(1, m);
-
+% Coefficient Arrays
+%%%%%%%%%%%%%%%%%%%%
+w_1_split = zeros(1, m);
+b_1_split = zeros(1, m);
 for i = 1:m
-    if region_type(i) == 2  % Internodal
-        w_1_all(i) = a^2/(C_my_all(i)*a_my_all(i)*R_i);
-        b_1_all(i) = (a/(2*R_i*C_m))*(1 + (C_m*a)/(C_my_all(i)*a_my_all(i)));
-    else                    % Nodal or end
-        w_1_all(i) = 0;
-        b_1_all(i) = a/(2*R_i*C_m);
+    if region_type(i) == 2
+        w_1_split(i) = a^2 / (C_my_split(i)*a_my_split(i)*R_i);
+        b_1_split(i) = (a/(2*R_i*C_m)) * (1 + (C_m*a)/(C_my_split(i)*a_my_split(i)));
+    else
+        w_1_split(i) = 0;
+        b_1_split(i) = a/(2*R_i*C_m);
     end
 end
-
-% Modifying f_1 and c_1 functions
-% c_1 function
-function val = c_1(i, n, m, h, tt, region_type, C_m, G_K, G_Na, G_L, S)
-    if region_type(i) == 2  % internodal
-        val = -1/(R_m*C_m);  % use R_m = 24.8 directly or pass as arg
-    elseif region_type(i) == 1  % nodal
-        val = -1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(i, tt)) + G_L);
-    else  % endpoint (average)
-        nodal_val = -1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(i, tt)) + G_L);
-        internodal_val = -1/(R_m*C_m);
-        val = (nodal_val + internodal_val)/2;
-    end
-end
- 
-% f_1 function
-function val = f_1(i, Vmy, n, m, h, tt, region_type, C_my_all, R_my_all, E_rest, C_m, R_m, G_K, G_Na, G_L, E_K, E_Na, E_L, S)
-    if region_type(i) == 2  % internodal
-        term1 = (1/(R_m*C_m) - 1/(C_my_all(i)*R_my_all(i)))*Vmy;
-        term2 = E_rest/(R_m*C_m);
-        val = term1 + term2;
-    elseif region_type(i) == 1  % nodal
-        val = 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(i, tt))*E_Na + G_L*E_L);
-    else  % endpoint (average of node + internode formula)
-        internodal_term = (1/(R_m*C_m) - 1/(C_my_all(i)*R_my_all(i)))*Vmy + E_rest/(R_m*C_m);
-        nodal_term = 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(i, tt))*E_Na + G_L*E_L);
-        val = (internodal_term + nodal_term)/2;
-    end
-end
-
 
 % Initialization
 %%%%%%%%%%%%%%%%
@@ -174,10 +122,7 @@ Vmy = zeros(1, m);
 N = zeros(1, m);
 M = zeros(1, m);
 H = zeros(1, m);
-N(1) = N_0;
-M(1) = M_0;
-H(1) = H_0;
-for i = 2:m-1
+for i = 1:m
     if region_type(i) == 2 % internodal region
         Vmy(i) = V_my0;
         N(i) = 0;
@@ -192,6 +137,7 @@ for i = 2:m-1
 end
 
 % Defining the matrices to collect data at every time step
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Vm_all(1,:) = Vm;
 Vmy_all(1,:) = Vmy;
 Vm_minus_Vmy(1,:) = Vm - Vmy;
@@ -199,43 +145,54 @@ N_all(1,:) = N;
 M_all(1,:) = M; 
 H_all(1,:) = H;
 
+
+% Defining c_1 and f_1 functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% c_1 function
+c_1 = @(ii, n, m, h, tt)...
+    (region_type(i) == 2)*(-1/(R_m*C_m)) + ... % internodal
+    (region_type(i) == 1)*(-1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L)) + ... % nodal
+    (region_type(i) == 3)*((-1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L) + -1/(R_m*C_m))/2); % end point
+ 
+% f_1 function
+f_1 = @(ii, Vmy, n, m, h, tt)...
+    (region_type(i) == 2)*((1/(R_m*C_m) - 1/(C_my_split(i)*R_my_split(i)))*Vmy + E_rest/(R_m*C_m)) + ... % internodal
+    (region_type(i) == 1)*(1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(i, tt))*E_Na + G_L*E_L)) + ... % nodal
+    (region_type(i) == 3)*(((1/(R_m*C_m) - 1/(C_my_split(i)*R_my_split(i)))*Vmy + E_rest/(R_m*C_m) + 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(i, tt))*E_Na + G_L*E_L))/2); % end point
+
+
 % Running the time loop
 %%%%%%%%%%%%%%%%%%%%%%%
 for j = 1:(n-1)
-    
-    % Updating the probability gate functions n, m and h
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    newN = zeros(1, m);
-    newM = zeros(1, m);
-    newH = zeros(1, m);
-
-    for i = 2:(m-1)
-        if region_type(i) == 2 % internodal
-            newN(i) = 0;
-            newM(i) = 0;
-            newH(i) = 0;
-        else % nodal or endpoint
-            newN(i) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
-            newM(i) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
-            newH(i) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
+    % Update n, m, h
+    for i = 1:m
+        type = region_type(i);
+        switch type
+            case 1  % nodal
+                newN(i) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
+                newM(i) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
+                newH(i) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
+            case 2  % internodal
+                newN(i) = 0;
+                newM(i) = 0;
+                newH(i) = 0;
+            otherwise  % endpoint
+                newN(i) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
+                newM(i) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
+                newH(i) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
         end
     end
-    newN(m) = 0;
-    newM(m) = 0;
-    newH(m) = 0;
-    
-    % Updating Vmy
-    %%%%%%%%%%%%%%
-    newVmy = zeros(1, m);
-    newVmy(1) = 0;
 
-    for i = 2:(m-1)
-        if region_type(i) == 2  % internodal region
-            eta1 = 1 / (1 + dt / (C_my_all(i) * R_my_all(i)));
-            eta2 = rho * w_1_all(i) / 2 * eta1;
-            eta3 = -rho * w_1_all(i) * eta1;
-            eta4 = rho * w_1_all(i) / 2 * eta1;
-        else % nodal and endpoint regions
+    % Update Vmy
+    newVmy(1) = 0;
+    for i = 2:m-1
+        if region_type(i) == 2  % internodal
+            w1 = w_1_split(i);
+            eta1 = 1/(1 + dt/(C_my_split(i)*R_my_split(i)));
+            eta2 = rho * w1/2 * eta1;
+            eta3 = -rho * w1 * eta1;
+            eta4 = rho * w1/2 * eta1;
+        else
             eta1 = 0;
             eta2 = 0;
             eta3 = 0;
@@ -244,52 +201,39 @@ for j = 1:(n-1)
         newVmy(i) = eta1*Vmy(i) + eta2*Vm(i-1) + eta3*Vm(i) + eta4*Vm(i+1);
     end
     newVmy(m) = 0;
-    
-    % Updating Vm
-    %%%%%%%%%%%%%
-    % Defining the A matrix and RHS vectors
-    A = zeros(m, m);
-    g_1 = zeros(m, 1);
-    g_2 = zeros(m, 1);
 
-    % Apply Neumann BC at boundaries (dV/dx = 0)
-    A(1, 1) = 1;
-    A(1, 2) = -1;
-    A(m, m-1) = -1;
-    A(m, m) = 1;
+    % Assemble A matrix, g_1, g_2
+    A = zeros(m);
+    g_1 = zeros(m,1);
+    g_2 = zeros(m,1);
+    A(1,1) = 1; A(1,2) = -1;
+    A(m,m-1) = -1; A(m,m) = 1;
 
-    for i = 2:(m-1)
-        % Approximate b(i ± 1/2) using central difference
-        b_i_minus = (b_1_all(i-1) + b_1_all(i)) / 2;
-        b_i_plus  = (b_1_all(i+1) + b_1_all(i)) / 2;
-
-        gamma1 = -rho * b_i_minus;
-        gamma2 = 1 - dt * c_1(i, newN(i), newM(i), newH(i), j, region_type, C_m, G_K, G_Na, G_L, S) ...
-                     + rho * (b_i_minus + b_i_plus);
-        gamma3 = -rho * b_i_plus;
+    for i = 2:m-1
+        bL = b_1_split(i-1);
+        bC = b_1_split(i);
+        bR = b_1_split(i+1);
+        gamma1 = -rho*bL;
+        gamma2 = 1 - dt*c_1(i, newN(i), newM(i), newH(i), j) + rho*(bL + bR);
+        gamma3 = -rho*bR;
         gamma4 = 1;
-        gamma5 = dt * f_1(i, newVmy(i), newN(i), newM(i), newH(i), j, ...
-                         region_type, C_my_all, R_my_all, E_rest, ...
-                         C_m, R_m, G_K, G_Na, G_L, E_K, E_Na, E_L, S);
+        gamma5 = dt * f_1(i, newVmy(i), newN(i), newM(i), newH(i), j);
 
-        A(i, i-1) = gamma1;
-        A(i, i)   = gamma2;
-        A(i, i+1) = gamma3;
-        g_1(i) = gamma4 * Vm(i);
+        A(i,i-1) = gamma1;
+        A(i,i) = gamma2;
+        A(i,i+1) = gamma3;
+        g_1(i) = gamma4*Vm(i);
         g_2(i) = gamma5;
     end
 
-    % Solve A * Vm^{j+1} = g_1 + g_2
-    newVm = (A \ (g_1 + g_2))';
+    newVm = transpose(A\(g_1 + g_2));
 
-    % Update all variables
     Vm = newVm;
     Vmy = newVmy;
     N = newN;
     M = newM;
     H = newH;
 
-    % Store data
     Vm_all(j+1,:) = Vm;
     Vmy_all(j+1,:) = Vmy;
     Vm_minus_Vmy(j+1,:) = Vm - Vmy;
@@ -297,11 +241,7 @@ for j = 1:(n-1)
     M_all(j+1,:) = M;
     H_all(j+1,:) = H;
 
-    % Progress update
-    if mod(j, 50) == 0
-        fprintf("Completed time step %d / %d\n", j, n-1);
-    end
-
+    j
 end
 
 
