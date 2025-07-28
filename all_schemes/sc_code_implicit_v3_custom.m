@@ -68,9 +68,9 @@ beta_h = @(Vm) phi_Na * 1/(1 + exp(-(Vm + 35)/10));
 %%%%%%%%%%%%%%%
 for i = 1:20
     if i == 5
-        a_my = a/0.698; % a/0.698*0.9; 
-        R_my = 63.7; % 63.7/0.9; 
-        C_my = 0.113; % 0.113*0.9;
+        a_my = a/0.698*0.9; 
+        R_my = 63.7/0.9; 
+        C_my = 0.113*0.9;
     else
         a_my = a/0.698; 
         R_my = 63.7; 
@@ -496,4 +496,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('SC_split_test_3.mat'); 
+% save('SC_split_demyelination0.9.mat'); 
