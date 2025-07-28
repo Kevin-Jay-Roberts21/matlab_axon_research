@@ -184,8 +184,8 @@ clc
 % HH_T27 = load('projects/axon_simulations/Paper_Temp_Data/HH_T27.mat');
 % HH_T29 = load('projects/axon_simulations/Paper_Temp_Data/HH_T29.mat');
 % HH_T31 = load('projects/axon_simulations/Paper_Temp_Data/HH_T31.mat');
-HH_T33 = load('projects/axon_simulations/Paper_Temp_Data/HH_T33.mat'); % decays
-HH_T33_diff = load('projects/axon_simulations/Paper_Temp_Data/HH_T33_different_stim_time.mat');
+% HH_T33 = load('projects/axon_simulations/Paper_Temp_Data/HH_T33.mat'); % decays
+% HH_T33_diff = load('projects/axon_simulations/Paper_Temp_Data/HH_T33_different_stim_time.mat');
 % HH_T35 = load('projects/axon_simulations/Paper_Temp_Data/HH_T35.mat'); % decays
 % HH_T37 = load('projects/axon_simulations/Paper_Temp_Data/HH_T37.mat'); % decays
 
@@ -208,7 +208,7 @@ HH_T33_diff = load('projects/axon_simulations/Paper_Temp_Data/HH_T33_different_s
 % SC_Cohen_set1_T52 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T52.mat');
 % SC_Cohen_set1_T54 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T54.mat');
 % SC_Cohen_set1_T56 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T56.mat');
-SC_Cohen_set1_T58 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T58.mat'); % decays
+% SC_Cohen_set1_T58 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T58.mat'); % decays
 % SC_Cohen_set1_T60 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T60.mat'); % decays
 % SC_Cohen_set1_T62 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T62.mat'); % decays
 % SC_Cohen_set1_T64 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T64.mat'); % decays
@@ -220,10 +220,16 @@ SC_Cohen_set1_T58 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set
 % DC_Cohen_set1_T28 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T28.mat');
 % DC_Cohen_set1_T30 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T30.mat');
 % DC_Cohen_set1_T32 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T32.mat');
-DC_Cohen_set1_T34 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T34.mat'); % decays
+% DC_Cohen_set1_T34 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T34.mat'); % decays
 % DC_Cohen_set1_T36 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T36.mat'); % decays
 % DC_Cohen_set1_T38 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T38.mat'); % decays
 % DC_Cohen_set1_T40 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T40.mat'); % decays
+
+% OTHER TESTS
+sc_reg = load("SC_reg.mat");
+sc_split = load("SC_split_test.mat");
+dc_reg = load("DC_reg.mat");
+dc_split = load("DC_split_test.mat");
 
 
 % picking interval
@@ -274,8 +280,10 @@ p = 0.001;
 % brighter and brighter until the last element which is the brightest red)
 % set_of_data = {DC_Cohen_set1_rpn50, DC_Cohen_set1_rpn1, DC_Cohen_set2_rpn50, DC_Cohen_set2_rpn1};
 % set_of_data = {DC_Cohen_set1_T30, DC_Cohen_set1_T32, DC_Cohen_set1_T34, DC_Cohen_set1_T36, DC_Cohen_set1_T38, DC_Cohen_set1_T40};
+set_of_data = {dc_reg, dc_split};
 
-data = HH_T33_diff;
+
+% data = HH_T33_diff;
  
 % plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
 % plot_Vm_minus_Vmy_picture(data, time_shot);
@@ -283,8 +291,8 @@ data = HH_T33_diff;
 % plot_animation_voltage_vs_space(data, p);
 % plot_animation_probabilities_vs_time(data, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
-plot_time_and_space_shots(data, list_of_positions, list_of_times);
-% plot_voltage_vs_time_comparison_animation(set_of_data, p);
+% plot_time_and_space_shots(data, list_of_positions, list_of_times);
+plot_voltage_vs_time_comparison_animation(set_of_data, p);
 % plot_voltage_vs_space_comparison_animation(set_of_data, p);
 % plot_voltage_vs_time_comparison(set_of_data, space_shot);
 % plot_voltage_vs_space_comparison(set_of_data, time_shot);

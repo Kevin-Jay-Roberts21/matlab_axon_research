@@ -1,42 +1,31 @@
-% Double Cable Model Finite Difference Implicit Discretization Version 3
+% Code used to simulate demylination and to construct nonuniform axon
+% geometries for DC model
 % Kevin Roberts
-% February 2025
+% July 2025
 
 clear all
 close all
 clc
 
-% Defining the Thickness, Length and other Mesh Parameters
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Defining the constant Mesh Parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 dx = 0.00005; % (cm) space step
 dt = 0.01; % (ms) time step 
-L_my = 0.0075; % (cm) internodal length
-L_n = 0.0005; % (cm) nodal length
+T = 30; % (ms) the total time of the experiment
+n = T/dt + 1; % (#) n is the number of time steps
 L_pn = 2.3*10^(-4); % (cm) paranodal length
 d_pa = 12.3*10^(-7); % (cm) periaxonal thickness
 d_pn = 7.4*10^(-7); % (cm) paranodal thickness
-L_s = L_n + L_my; % (cm) length of an axon segment
-n_s = 20; % (#) number of axon segments
-L = n_s*L_s; % (cm) total length of axon
-T = 30; % (ms) the total time of the experiment
-N_n = round(L_n/dx); % (#) number of space steps in a nodal region
-N_my = round(L_my/dx); % (#) number of space steps in an internodal region
-N_s = N_n + N_my; % (#) number of space steps in an entire axon segement
-m = N_s*n_s + 1; % (#) total number of space steps
-n = T/dt + 1; % (#) n is the number of time steps
 
-% Defining the material properties on other intrinsic parameters
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-a = 0.55*10^(-4); % (cm) axon radius in nodal region
-a_my = a/0.698; % (cm) axon radius in myelinated section 
+% Defining the constant material parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+a = 0.55*10^(-4); % (cm) radius in nodal region
 R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
 r_pa = 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
 r_pn = 321*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
-R_my = 63.7; %63.7; % (kilo-ohms*cm^2) specific myelin resistance
-C_my = 0.113; %0.113; % (micro-farads/cm^2) specific myelin capacitance
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -45,10 +34,9 @@ E_Na = 45; % (mV) Nernst potential for sodium ions
 E_L = -59.4; % (mV) Nernst potential for leak channels
 E_rest = -59.4; % (mV) effective resting nernst potential
 
-% defining rho, w1, w2 and w3 constants
+
+% defining rho and w3 constants
 rho = dt/dx^2;
-w1 = a^2/(C_my*a_my*R_i);
-w2 = d_pa*(2*a + d_pa)/(C_my*a_my*R_pa);
 w3 = r_pa/(r_pn*L_pn);
 
 % Stimulus Information
@@ -64,8 +52,8 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
                     (abs(ii * dx - S_P0) <= 1e-10 | ii * dx > S_P0) & ...
                     (ii * dx < S_P1 | abs(ii * dx - S_P1) <= 1e-10));
 
-% Defining alpha/beta functions as well as the b_1, c_1 and f_1 functions
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Defining alpha/beta functions 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T_base = 20; % (C) base temperature
 T_actual = 20; % (C) the temperature of the squid axon
 Q_10_Na = 2.2; % (#) temperature coefficient for Na current
@@ -79,31 +67,97 @@ beta_m = @(Vm) phi_Na * 4*exp(-(Vm + 65)/18);
 alpha_h = @(Vm) phi_Na * 0.07*exp(-(Vm + 65)/20);
 beta_h = @(Vm) phi_Na * 1/(1 + exp(-(Vm + 35)/10));
 
-% Defining the b_1(x_i) function
-B_1 = (a/(2*R_i*C_m))*(1 + C_m*a/(C_my*a_my)); % Internodal region
-B_2 = a/(2*R_i*C_m); % Nodal region
-B_3 = (B_1 + B_2)/2; % End point (may not be used)
-b_1 = @(ii) (mod(ii - 1, N_s) > N_n).*B_1 + ... % Internodal region
-           (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*B_2 + ... % Nodal region
-           ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*B_3; % End point      
+% Handling other variables that may differ in each axon segment
+% Note: Variables that will vary for each axon segment include L_n, L_my,
+% a_my, R_my and C_my
 
-% Defining the c_1(x_i) function
-C_1 = -1/(R_m*C_m); % Internodal region
-C_2 = @(n, m, h, ii, tt) -1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L); % Nodal region
-C_3 = @(n, m, h, ii, tt) (C_1 + C_2(n, m, h, ii, tt))/2; % End point
-c_1 = @(n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*C_1 + ... % Internodal region
-           (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*C_2(n, m, h, ii, tt) + ... % Nodal region
-           ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*C_3(n, m, h, ii, tt); % End point        
-       
-% Defining the f_2(x_i) function
-F_1 = @(Vmy_i) (1/(R_m*C_m) - 1/(C_my*R_my))*Vmy_i + E_rest/(R_m*C_m);
-F_4 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) w2/(2*dx^2)*Vmy_i_minus_1 - (w2/dx^2)*Vmy_i + w2/(2*dx^2)*Vmy_i_plus_1; % Internodal region
-F_2 = @(n, m, h, ii, tt) 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L); % Nodal region
-F_3 = @(Vmy, n, m, h, ii, tt) (F_1(Vmy) + F_2(n, m, h, ii, tt))/2; % End point
- 
-f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*(F_4(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1) + F_1(Vmy_i)) + ... % Internodal region
-           (mod(ii - 1, N_s) < N_n & mod(ii - 1, N_s) ~= 0).*F_2(n, m, h, ii, tt) + ... % Nodal region
-           ((mod(ii - 1, N_s) == N_n) | (mod(ii - 1, N_s) == 0)).*F_3(Vmy_i, n, m, h, ii, tt); % End point
+% Axon Segments
+%%%%%%%%%%%%%%%
+for i = 1:20
+    if i == 5
+        a_my = a/0.698*0.9; 
+        R_my = 63.7/0.9; 
+        C_my = 0.113*0.9;
+    else
+        a_my = a/0.698; 
+        R_my = 63.7; 
+        C_my = 0.113;
+    end
+    % NOTE: Later we can change nodal and internodal region lengths with
+    % the same idea of changing a_my, C_my and R_my in different regions
+    segments(i) = struct('a_my', a_my, 'R_my', R_my, 'C_my', C_my, 'L_n', 0.0005, 'L_my', 0.0075);
+end
+
+% Spatial Grid
+%%%%%%%%%%%%%%
+x = [];
+region_type = [];
+C_my_split = [];
+R_my_split = [];
+a_my_split = [];
+
+% Add initial endpoint at the very start of the axon
+x(end+1) = 0;
+region_type(end+1) = 4;  % global starting endpoint
+C_my_split(end+1) = segments(1).C_my;
+R_my_split(end+1) = segments(1).R_my;
+a_my_split(end+1) = segments(1).a_my;
+
+for seg = 1:length(segments)
+    N_n = round(segments(seg).L_n / dx);
+    N_my = round(segments(seg).L_my / dx);
+
+    % Nodal region
+    for i = 1:(N_n-1)
+        x(end+1) = length(x) * dx;
+        region_type(end+1) = 1;
+        C_my_split(end+1) = segments(seg).C_my;
+        R_my_split(end+1) = segments(seg).R_my;
+        a_my_split(end+1) = segments(seg).a_my;
+    end
+
+    % Endpoint between nodal and internodal (left end point)
+    x(end+1) = length(x) * dx;
+    region_type(end+1) = 3;
+    C_my_split(end+1) = segments(seg).C_my;
+    R_my_split(end+1) = segments(seg).R_my;
+    a_my_split(end+1) = segments(seg).a_my;
+
+    % Internodal region
+    for i = 1:(N_my-1)
+        x(end+1) = length(x) * dx;
+        region_type(end+1) = 2;
+        C_my_split(end+1) = segments(seg).C_my;
+        R_my_split(end+1) = segments(seg).R_my;
+        a_my_split(end+1) = segments(seg).a_my;
+    end
+
+    % Endpoint at right end of segment
+    x(end+1) = length(x) * dx;
+    region_type(end+1) = 4;
+    C_my_split(end+1) = segments(seg).C_my;
+    R_my_split(end+1) = segments(seg).R_my;
+    a_my_split(end+1) = segments(seg).a_my;
+end
+
+m = length(x);
+L = (m-1)*dx;
+
+% Coefficient Arrays
+%%%%%%%%%%%%%%%%%%%%
+w_1_split = zeros(1, m);
+w_2_split = zeros(1, m);
+for i = 1:m
+    % NOTE: differing regions for defining w_1, w_2 shouldn't matter. It should
+    % all be handled in C_my_split and a_my_split
+    if region_type(i) == 2
+        w_1_split(i) = a^2/(C_my_split(i)*a_my_split(i)*R_i);
+        w_2_split(i) = d_pa*(2*a + d_pa)/(C_my_split(i)*a_my_split(i)*R_pa);
+    else
+        w_1_split(i) = 0;
+        w_2_split(i) = 0;
+    end
+end     
 
 % Initialization
 %%%%%%%%%%%%%%%%
@@ -121,32 +175,26 @@ Vmy(1) = 0;
 N(1) = N_0;
 M(1) = M_0;
 H(1) = H_0;
-for i = 2:m-1 % because we want to keep the end points (1 and M) for Vmy, n, m, h at 0
-    
-    seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
-    myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
-    myelin_end = seg*(N_s); % End of internodal region in this segment
-    seg_start = (seg - 1)*(N_s); % index of the start of the segment
+for i = 2:m-1
 
-    % Internodal region
-    if (i > myelin_start + 1) && (i < myelin_end + 1)
+    if region_type(i) == 2 % internodal region 
         Vmy(i) = V_my0;
         N(i) = 0;
         M(i) = 0;
         H(i) = 0;
     % Nodal region
-    elseif (i > seg_start + 1) && (i < myelin_start + 1)
+    elseif region_type(i) == 1 % nodal region
         Vmy(i) = 0;
         N(i) = N_0;
         M(i) = M_0; 
         H(i) = H_0;
     % End points
-    elseif (i == seg_start + 1) % Right end point (x_R)
+    elseif region_type(i) == 4 % right end point
         Vmy(i) = V_my0/(1 + w3*dx);
         N(i) = N_0;
         M(i) = M_0;
         H(i) = H_0;
-    elseif (i == myelin_start + 1) % Left end point (x_L)
+    elseif region_type(i) == 3 % left end point
         Vmy(i) = V_my0/(1 + w3*dx);
         N(i) = N_0;
         M(i) = M_0;
@@ -163,6 +211,37 @@ N_all(1,:) = N;
 M_all(1,:) = M; 
 H_all(1,:) = H;
 
+% Defining c_1 and f_1 functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% b_1 function
+b_1 = @(ii) (region_type(ii - 1/2) == 2 && region_type(ii + 1/2) == 2)*((a/(2*R_i*C_m))*(1 + C_m*a/(C_my_split(ii+1/2)*a_my_split(ii+1/2)))) + ... % internodal region
+            (region_type(ii - 1/2) == 3 && region_type(ii + 1/2) == 2)*((a/(2*R_i*C_m))*(1 + C_m*a/(C_my_split(ii+1/2)*a_my_split(ii+1/2)))) + ... % internodal region (near left end point)
+            (region_type(ii + 1/2) == 4 && region_type(ii - 1/2) == 2)*((a/(2*R_i*C_m))*(1 + C_m*a/(C_my_split(ii-1/2)*a_my_split(ii-1/2)))) + ... % internodla region (near right end point)
+            (region_type(ii - 1/2) == 1 && region_type(ii + 1/2) == 1)*(a/(2*R_i*C_m)) + ... % nodal region
+            (region_type(ii - 1/2) == 1 && region_type(ii + 1/2) == 3)*(a/(2*R_i*C_m)) + ... % nodal region (near left end point)
+            (region_type(ii + 1/2) == 1 && region_type(ii - 1/2) == 4)*(a/(2*R_i*C_m)); % nodal region (near right end point)
+            
+% c_1 function
+c_1 = @(n, m, h, ii, tt)...
+    (region_type(ii) == 2)*(-1/(R_m*C_m)) + ... % internodal
+    (region_type(ii) == 1)*(-1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L)) + ... % nodal
+    (region_type(ii) == 3)*((-1/(R_m*C_m) + -1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L))/2) + ... % end point (left)
+    (region_type(ii) == 4)*((-1/(R_m*C_m) + -1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L))/2); % end point (right)
+ 
+% f_2 function
+f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt)...
+    (region_type(ii) == 2)*((1/(R_m*C_m) - 1/(C_my_split(ii)*R_my_split(ii)))*Vmy_i ...
+                          + w_2_split(ii)/(2*dx^2)*Vmy_i_minus_1 ...
+                          - (w_2_split(ii)/dx^2)*Vmy_i ...
+                          + w_2_split(ii)/(2*dx^2)*Vmy_i_plus_1 ...
+                          + E_rest/(R_m*C_m)) + ... % internodal
+    (region_type(ii) == 1)*(1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L)) + ... % nodal
+    (region_type(ii) == 3)*(((1/(R_m*C_m) - 1/(C_my_split(ii)*R_my_split(ii)))*Vmy_i + E_rest/(R_m*C_m) ...
+                           + 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L))/2) + ... % end point (left)
+    (region_type(ii) == 4)*(((1/(R_m*C_m) - 1/(C_my_split(ii)*R_my_split(ii)))*Vmy_i + E_rest/(R_m*C_m) ...
+                           + 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L))/2); % end point (right)
+
+
 % Running the time loop
 %%%%%%%%%%%%%%%%%%%%%%%
 for j = 1:(n-1)
@@ -170,20 +249,16 @@ for j = 1:(n-1)
     % updating the probability gate functions n, m and h
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     for i = 1:m-1
-        seg = floor((i - 1)/(N_s)) + 1; % axon segment number based on index i
-        myelin_start = (seg - 1)*(N_s) + N_n; % Start of internodal region in this segment
-        myelin_end = seg*(N_s); % End of internodal region in this segment
-        seg_start = (seg - 1)*(N_s); % index of the start of the segment
 
-        if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
+        if region_type(i) == 2 % internodal region
             newN(i) = 0;
             newM(i) = 0;
             newH(i) = 0;
-        elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
+        elseif region_type(i) == 1 % nodal region
             newN(i) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
             newM(i) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
             newH(i) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
-        else % End point
+        else % end point
             newN(i) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
             newM(i) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
             newH(i) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
@@ -208,32 +283,26 @@ for j = 1:(n-1)
     A_2(m, m) = (1 + w3*dx);
 
     for i = 2:(m-1)
-        % updating the A_2 matrix each row is determined based on
-        % internodal, nodal, and end points (left or right end points)
-        seg = floor((i - 1)/N_s) + 1; % axon segment number based on index i
-        myelin_start = (seg - 1)*N_s + N_n; % Start of internodal region in this segment
-        myelin_end = seg*N_s; % End of internodal region in this segment
-        seg_start = (seg - 1)*N_s; % index of the start of the segment
 
-        if (i > myelin_start + 1) && (i < myelin_end + 1) % Internodal region
-            eta1 = -rho*w2/2;
-            eta2 = 1 + dt/(R_my*C_my) + rho*w2;
-            eta3 = -rho*w2/2; 
+        if region_type(i) == 2 % internodal region
+            eta1 = -rho*w_2_split(i)/2;
+            eta2 = 1 + dt/(R_my_split(i)*C_my_split(i)) + rho*w_2_split(i);
+            eta3 = -rho*w_2_split(i)/2; 
             eta4 = 1; 
-            eta5 = rho*w1/2*Vm(i-1) - rho*w1*Vm(i) + rho*w1/2*Vm(i+1);
-        elseif (i > seg_start + 1) && (i < myelin_start + 1) % Nodal region
+            eta5 = rho*w_1_split(i)/2*Vm(i-1) - rho*w_1_split(i)*Vm(i) + rho*w_1_split(i)/2*Vm(i+1);
+        elseif region_type(i) == 1 % Nodal region
             eta1 = 0;
             eta2 = 1;
             eta3 = 0; 
             eta4 = 0; 
             eta5 = 0;
-        elseif (i == seg_start + 1) % Right end point (x_R)
+        elseif region_type(i) == 4 % Right end point (x_R)
             eta1 = -1;
             eta2 = (1 + dx*w3);
             eta3 = 0; 
             eta4 = 0; 
             eta5 = 0;
-        elseif (i == myelin_start + 1) % Left end point (x_L)
+        elseif region_type(i) == 3 % Left end point (x_L)
             eta1 = 0;
             eta2 = (1 + dx*w3);
             eta3 = -1;
@@ -508,4 +577,5 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('DC_reg');
+save('DC_split_demyelination0.9');
+
