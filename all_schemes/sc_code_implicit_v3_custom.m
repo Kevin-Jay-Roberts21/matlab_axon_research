@@ -11,7 +11,7 @@ clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 dx = 0.00005; % (cm) space step
 dt = 0.01; % (ms) time step 
-T = 10; % (ms) the total time of the experiment
+T = 30; % (ms) the total time of the experiment
 n = T/dt + 1; % (#) n is the number of time steps
 
 % Defining the constant material parameters
@@ -134,7 +134,7 @@ for seg = 1:length(segments)
 end
 
 m = length(x);
-L = (m)*dx;
+L = (m-1)*dx;
 
 % Coefficient Arrays
 %%%%%%%%%%%%%%%%%%%%
@@ -187,46 +187,50 @@ H_all(1,:) = H;
 
 % Defining c_1 and f_1 functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% b_1(x_i) function
-b_1 = @(ii) (region_type(ii - 1/2) == 2 && region_type(ii + 1/2) == 2)*((a/(2*R_i*C_m))*(1 + C_m*a/(C_my_split(ii)*a_my_split(ii)))) + ... % internodal region
-            (region_type(ii - 1/2) == 3 && region_type(ii + 1/2) == 2)*((a/(2*R_i*C_m))*(1 + C_m*a/(C_my_split(ii)*a_my_split(ii)))) + ... % internodal region
+% b_1 function
+b_1 = @(ii) (region_type(ii - 1/2) == 2 && region_type(ii + 1/2) == 2)*((a/(2*R_i*C_m))*(1 + C_m*a/(C_my_split(ii+1/2)*a_my_split(ii+1/2)))) + ... % internodal region
+            (region_type(ii - 1/2) == 3 && region_type(ii + 1/2) == 2)*((a/(2*R_i*C_m))*(1 + C_m*a/(C_my_split(ii+1/2)*a_my_split(ii+1/2)))) + ... % internodal region (near left end point)
+            (region_type(ii + 1/2) == 3 && region_type(ii - 1/2) == 2)*((a/(2*R_i*C_m))*(1 + C_m*a/(C_my_split(ii-1/2)*a_my_split(ii-1/2)))) + ... % internodla region (near right end point)
             (region_type(ii - 1/2) == 1 && region_type(ii + 1/2) == 1)*(a/(2*R_i*C_m)) + ... % nodal region
-            (region_type(ii - 1/2) == 1 && region_type(ii + 1/2) == 3)*(a/(2*R_i*C_m)); % nodal region
-
+            (region_type(ii - 1/2) == 1 && region_type(ii + 1/2) == 3)*(a/(2*R_i*C_m)) + ... % nodal region (near left end point)
+            (region_type(ii + 1/2) == 1 && region_type(ii - 1/2) == 3)*(a/(2*R_i*C_m)); % nodal region (near right end point)
+            
 % c_1 function
-c_1 = @(ii, n, m, h, tt)...
+c_1 = @(n, m, h, ii, tt)...
     (region_type(ii) == 2)*(-1/(R_m*C_m)) + ... % internodal
     (region_type(ii) == 1)*(-1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L)) + ... % nodal
-    (region_type(ii) == 3)*((-1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L) + -1/(R_m*C_m))/2); % end point
+    (region_type(ii) == 3)*((-1/(R_m*C_m) + -1/C_m*(G_K*n^4 + (G_Na*m^3*h + S(ii, tt)) + G_L))/2); % end point
  
 % f_1 function
-f_1 = @(ii, Vmy, n, m, h, tt)...
-    (region_type(ii) == 2)*((1/(R_m*C_m) - 1/(C_my_split(i)*R_my_split(i)))*Vmy + E_rest/(R_m*C_m)) + ... % internodal
-    (region_type(ii) == 1)*(1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(i, tt))*E_Na + G_L*E_L)) + ... % nodal
-    (region_type(ii) == 3)*(((1/(R_m*C_m) - 1/(C_my_split(i)*R_my_split(i)))*Vmy + E_rest/(R_m*C_m) + 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(i, tt))*E_Na + G_L*E_L))/2); % end point
+f_1 = @(Vmy, n, m, h, ii, tt)...
+    (region_type(ii) == 2)*((1/(R_m*C_m) - 1/(C_my_split(ii)*R_my_split(ii)))*Vmy + E_rest/(R_m*C_m)) + ... % internodal
+    (region_type(ii) == 1)*(1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L)) + ... % nodal
+    (region_type(ii) == 3)*(((1/(R_m*C_m) - 1/(C_my_split(ii)*R_my_split(ii)))*Vmy + E_rest/(R_m*C_m) + 1/C_m*(G_K*n^4*E_K + (G_Na*m^3*h + S(ii, tt))*E_Na + G_L*E_L))/2); % end point
 
 
 % Running the time loop
 %%%%%%%%%%%%%%%%%%%%%%%
 for j = 1:(n-1)
     % Update n, m, h
-    for i = 1:m
-        type = region_type(i);
-        switch type
-            case 1  % nodal
-                newN(i) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
-                newM(i) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
-                newH(i) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
-            case 2  % internodal
-                newN(i) = 0;
-                newM(i) = 0;
-                newH(i) = 0;
-            otherwise  % endpoint
-                newN(i) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
-                newM(i) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
-                newH(i) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
+    for i = 1:m-1
+        if region_type(i) == 2  % internodal
+            newN(i) = 0;
+            newM(i) = 0;
+            newH(i) = 0;
+        elseif region_type(i) == 1 % nodal
+            newN(i) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
+            newM(i) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
+            newH(i) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
+        else % endpoint
+            newN(i) = 1/(1 + dt*alpha_n(Vm(i)) + dt*beta_n(Vm(i))) * (N(i) + dt*alpha_n(Vm(i)));
+            newM(i) = 1/(1 + dt*alpha_m(Vm(i)) + dt*beta_m(Vm(i))) * (M(i) + dt*alpha_m(Vm(i)));
+            newH(i) = 1/(1 + dt*alpha_h(Vm(i)) + dt*beta_h(Vm(i))) * (H(i) + dt*alpha_h(Vm(i)));
         end
     end
+    newN(m) = 0;
+    newM(m) = 0;
+    newH(m) = 0;
+
 
     % Update Vmy
     newVmy(1) = 0;
@@ -234,9 +238,9 @@ for j = 1:(n-1)
         if region_type(i) == 2  % internodal
             w1 = w_1_split(i);
             eta1 = 1/(1 + dt/(C_my_split(i)*R_my_split(i)));
-            eta2 = rho * w1/2 * eta1;
-            eta3 = -rho * w1 * eta1;
-            eta4 = rho * w1/2 * eta1;
+            eta2 = rho * w1/2 * 1/(1 + dt/(C_my_split(i)*R_my_split(i)));
+            eta3 = -rho * w1 * 1/(1 + dt/(C_my_split(i)*R_my_split(i)));
+            eta4 = rho * w1/2 * 1/(1 + dt/(C_my_split(i)*R_my_split(i)));
         else
             eta1 = 0;
             eta2 = 0;
@@ -248,25 +252,29 @@ for j = 1:(n-1)
     newVmy(m) = 0;
 
     % Assemble A matrix, g_1, g_2
-    A = zeros(m);
+    A = zeros(m, m);
     g_1 = zeros(m,1);
     g_2 = zeros(m,1);
-    A(1,1) = 1; A(1,2) = -1;
-    A(m,m-1) = -1; A(m,m) = 1;
+    A(1,1) = 1; 
+    A(1,2) = -1;
+    A(m,m-1) = -1; 
+    A(m,m) = 1;
 
     for i = 2:m-1
-        gamma1 = -rho*b_1_split(i-1/2);
-        gamma2 = 1 - dt*c_1(i, newN(i), newM(i), newH(i), j) + rho*(b_1_split(i-1/2) + b_1_split(i+1/2));
-        gamma3 = -rho*b_1_split(i+1/2);
+        gamma1 = -rho*b_1(i - 1/2);
+        gamma2 = 1 - dt*c_1(newN(i), newM(i), newH(i), i, j) + rho*(b_1(i + 1/2) + b_1(i - 1/2));
+        gamma3 = -rho*b_1(i + 1/2);
         gamma4 = 1;
-        gamma5 = dt * f_1(i, newVmy(i), newN(i), newM(i), newH(i), j);
+        gamma5 = dt * f_1(newVmy(i), newN(i), newM(i), newH(i), i, j);
 
-        A(i,i-1) = gamma1;
-        A(i,i) = gamma2;
-        A(i,i+1) = gamma3;
+        A(i, i-1) = gamma1;
+        A(i, i) = gamma2;
+        A(i, i+1) = gamma3;
         g_1(i) = gamma4*Vm(i);
         g_2(i) = gamma5;
     end
+    
+    j % showing the j index, just for seeing how long simulation takes   
 
     newVm = transpose(A\(g_1 + g_2));
 
@@ -283,7 +291,7 @@ for j = 1:(n-1)
     M_all(j+1,:) = M;
     H_all(j+1,:) = H;
 
-    j
+    
 end
 
 
@@ -488,4 +496,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('SC_Cohen_set1_T66.mat'); 
+save('SC_split_test_3.mat'); 
