@@ -169,8 +169,16 @@ clc
 % DC_Cohen_set2_Ri180 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Ri180.mat');
 % DC_Cohen_set2_Ri200 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_Cohen_set2_Ri200.mat');
 
+% DC_test1a = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_param_sensitivity_test_1a.mat');
+% DC_test2a = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_param_sensitivity_test_2a.mat');
+% DC_test1b = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_param_sensitivity_test_1b.mat');
+% DC_test2b = load('projects/axon_simulations/Paper_Parameter_Sensitivity/DC_param_sensitivity_test_2b.mat');
+
+
+
 % TEMPERATURE ANALYSIS
 % HH_Tbase = load('projects/axon_simulations/Paper_Temp_Data/HH_Tbase.mat');
+% HH_Tbase_diff = load('projects/axon_simulations/Paper_Temp_Data/HH_Tbase_different_stim_time.mat');
 % HH_T7 = load('projects/axon_simulations/Paper_Temp_Data/HH_T7.mat');
 % HH_T9 = load('projects/axon_simulations/Paper_Temp_Data/HH_T9.mat');
 % HH_T11 = load('projects/axon_simulations/Paper_Temp_Data/HH_T11.mat');
@@ -178,6 +186,7 @@ clc
 % HH_T15 = load('projects/axon_simulations/Paper_Temp_Data/HH_T15.mat');
 % HH_T17 = load('projects/axon_simulations/Paper_Temp_Data/HH_T17.mat');
 % HH_T19 = load('projects/axon_simulations/Paper_Temp_Data/HH_T19.mat');
+% HH_T19_diff = load('projects/axon_simulations/Paper_Temp_Data/HH_T19_different_stim_time.mat');
 % HH_T21 = load('projects/axon_simulations/Paper_Temp_Data/HH_T21.mat');
 % HH_T23 = load('projects/axon_simulations/Paper_Temp_Data/HH_T23.mat');
 % HH_T25 = load('projects/axon_simulations/Paper_Temp_Data/HH_T25.mat');
@@ -225,11 +234,20 @@ clc
 % DC_Cohen_set1_T38 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T38.mat'); % decays
 % DC_Cohen_set1_T40 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T40.mat'); % decays
 
-% OTHER TESTS
-sc_reg = load("SC_reg.mat");
-sc_split = load("SC_split_test.mat");
-dc_reg = load("DC_reg.mat");
-dc_split = load("DC_split_test.mat");
+% DEMYELINATION DATA
+% SC_Cohen_set1_reg = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1.mat');
+% SC_Cohen_set1_demyelination09 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination09.mat');
+% SC_Cohen_set1_demyelination08 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination08.mat');
+% SC_Cohen_set1_demyelination07 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination07.mat');
+% SC_Cohen_set1_demyelination06 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination06.mat');
+% SC_Cohen_set1_demyelination05 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination05.mat');
+
+DC_Cohen_set1_reg = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1.mat');
+DC_Cohen_set1_demyelination09 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination09.mat');
+DC_Cohen_set1_demyelination08 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination08.mat');
+DC_Cohen_set1_demyelination07 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination07.mat');
+DC_Cohen_set1_demyelination06 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination06.mat');
+DC_Cohen_set1_demyelination05 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination05.mat');
 
 
 % picking interval
@@ -280,9 +298,9 @@ p = 0.001;
 % brighter and brighter until the last element which is the brightest red)
 % set_of_data = {DC_Cohen_set1_rpn50, DC_Cohen_set1_rpn1, DC_Cohen_set2_rpn50, DC_Cohen_set2_rpn1};
 % set_of_data = {DC_Cohen_set1_T30, DC_Cohen_set1_T32, DC_Cohen_set1_T34, DC_Cohen_set1_T36, DC_Cohen_set1_T38, DC_Cohen_set1_T40};
-set_of_data = {dc_reg, dc_split};
-
-
+% set_of_data = {sc_reg, sc_demylin, sc_full_demylin};
+% set_of_data = {DC_Cohen_set2_rpn50, DC_test2b}
+set_of_data = {DC_Cohen_set1_reg, DC_Cohen_set1_demyelination08, DC_Cohen_set1_demyelination06};
 % data = HH_T33_diff;
  
 % plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
@@ -292,8 +310,8 @@ set_of_data = {dc_reg, dc_split};
 % plot_animation_probabilities_vs_time(data, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(data, list_of_positions, list_of_times);
-plot_voltage_vs_time_comparison_animation(set_of_data, p);
-% plot_voltage_vs_space_comparison_animation(set_of_data, p);
+% plot_voltage_vs_time_comparison_animation(set_of_data, p);
+plot_voltage_vs_space_comparison_animation(set_of_data, p);
 % plot_voltage_vs_time_comparison(set_of_data, space_shot);
 % plot_voltage_vs_space_comparison(set_of_data, time_shot);
 % plot_Vm_and_Vm_minus_Vmy_vs_space(data, p);
@@ -643,7 +661,7 @@ function plot_animation_probabilities_vs_space(data, p)
         hold on
         
         % Add the legend (NOTE: legends are what slows down animation)
-        legend([p1, p2, p3], 'K activation gate', 'Na activation gate', 'Na inactivation date', 'Location', 'northeast');
+        legend([p1, p2, p3], '(n) K activation gate', '(m) Na activation gate', '(h) Na inactivation date', 'Location', 'northeast');
 
         text(xmin, ymax, sprintf('Time: %.3f ms', round(i*dt, 3)), 'FontSize', 12, 'BackgroundColor', 'w');
         
@@ -735,8 +753,8 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
     
     xmin = 0;
     xmax = L;
-    ymin = -65;
-    ymax = 30;
+    ymin = -75;
+    ymax = 45;
     axis([xmin xmax ymin ymax]);  % Set axis limits
     set(gca, 'FontSize', 13); % Set axis size
 
@@ -758,8 +776,8 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
 
     xmin = 0;
     xmax = T;
-    ymin = -65;
-    ymax = 30;
+    ymin = -80;
+    ymax = 45;
     axis([xmin xmax ymin ymax]);  % Set axis limits
     set(gca, 'FontSize', 13); % Set axis size
     
@@ -839,7 +857,7 @@ function plot_voltage_vs_time_comparison_animation(data_set, p)
             end
 
             % legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
-            legend('DC Set (1) r_{pn}=50', 'DC Set (1) r_{pn}=1', 'DC Set (2) r_{pn}=50', 'DC Set (2) r_{pn}=1', 'Location', 'northeast', 'FontSize', 14);
+            legend('SC Reg', 'SC segment 5 demyelinated', 'SC all segments demyelinated', 'Location', 'northeast', 'FontSize', 14);
             text(xmin + 0.2, ymax + 0.1, sprintf('Space: %.5f cm', round(i*dx, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
@@ -909,7 +927,7 @@ function plot_voltage_vs_space_comparison_animation(data_set, p)
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
-            legend('DC', 'DC Scaled Condcutances', 'Location', 'northeast', 'FontSize', 14);
+            legend('DC: $\lambda = 1$', 'DC: $\lambda = 0.8$', 'DC: $\lambda  = 0.6$', 'Location', 'northeast', 'FontSize', 14, 'Interpreter', 'latex');
             % legend('DC: Myelinated', 'DC: Tube', 'DC: Tube+Paralyene', 'Location', 'northeast');
             % legend('SC: Tube', 'DC: Tube', 'Location', 'northeast');
             % legend('SC model: Cohen DC Params', 'DC model: $R_{pa}, R_{pn}$ given', 'DC model: $R_{pa}, R_{pn}$ computed', 'Location', 'northeast', 'Interpreter', 'latex');

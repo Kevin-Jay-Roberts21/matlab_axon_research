@@ -577,5 +577,5 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('DC_split_demyelination0.9');
+save('DC_split_demyelination09.mat');
 

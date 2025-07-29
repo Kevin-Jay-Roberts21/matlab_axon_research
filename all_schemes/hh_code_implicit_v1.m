@@ -44,8 +44,8 @@ beta_h = @(Vm) phi * 1/(1 + exp(-(Vm + 35)/10)); % (1/ms)
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
 S_v = 20; % (in mS/cm^2) % stimulus value
-S_T0 = 5; % start time of when stimulus is added (in ms)
-S_T1 = 5.1; % end time of when stimulus is added (in ms)
+S_T0 = 1; % start time of when stimulus is added (in ms)
+S_T1 = 1.1; % end time of when stimulus is added (in ms)
 S_P0 = 1; % start position of adding the stimulus (in cm)
 S_P1 = 1.1; % end position of adding the stimulus (in cm)
 
@@ -211,4 +211,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-% save('HH_T33_different_stim_time.mat');
+% save('HH_Tbase_different_stim_time.mat');
