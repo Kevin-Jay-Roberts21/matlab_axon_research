@@ -20,12 +20,12 @@ d_pn = 7.4*10^(-7); % (cm) paranodal thickness
 % Defining the constant material parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 a = 0.55*10^(-4); % (cm) radius in nodal region
-R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
-R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
-C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
-r_pa = 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
+R_i = 0.109; % (kilo-ohms*cm) intracellular resistivity
+R_m = 27.7; % (kilo-ohms*cm^2) specific membrane resistance
+C_m = 1.01; % (micro-farads/cm^2) specific membrane capacitance
+r_pa = 105*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
-r_pn = 321*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
+r_pn = 877*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -73,19 +73,41 @@ beta_h = @(Vm) phi_Na * 1/(1 + exp(-(Vm + 35)/10));
 
 % Axon Segments
 %%%%%%%%%%%%%%%
-for i = 1:20
-    if i == 5
-        a_my = a/0.698*0.9; 
-        R_my = 63.7/0.9; 
-        C_my = 0.113*0.9;
+for i = 1:6
+    if i == 1
+        a_my = a/0.698; 
+        R_my = 63.7; 
+        C_my = 0.113;
+        L_my = 0.0080;
+    elseif i == 2
+        a_my = a/0.698; 
+        R_my = 63.7; 
+        C_my = 0.113;
+        L_my = 0.0090;
+    elseif i == 3
+        a_my = a/0.698; 
+        R_my = 63.7; 
+        C_my = 0.113;
+        L_my = 0.0150;
+    elseif i == 4
+        a_my = a/0.698; 
+        R_my = 63.7; 
+        C_my = 0.113;
+        L_my = 0.0100;
+    elseif i == 5
+        a_my = a/0.698; 
+        R_my = 63.7; 
+        C_my = 0.113;
+        L_my = 0.0150;
     else
         a_my = a/0.698; 
         R_my = 63.7; 
         C_my = 0.113;
+        L_my = 0.0170;
     end
     % NOTE: Later we can change nodal and internodal region lengths with
     % the same idea of changing a_my, C_my and R_my in different regions
-    segments(i) = struct('a_my', a_my, 'R_my', R_my, 'C_my', C_my, 'L_n', 0.0005, 'L_my', 0.0075);
+    segments(i) = struct('a_my', a_my, 'R_my', R_my, 'C_my', C_my, 'L_n', 0.0005, 'L_my', L_my);
 end
 
 % Spatial Grid
@@ -577,5 +599,5 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('DC_split_demyelination09.mat');
+save('DC_cell5.mat');
 

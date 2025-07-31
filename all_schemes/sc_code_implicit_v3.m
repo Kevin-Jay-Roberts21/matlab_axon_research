@@ -24,13 +24,29 @@ n = T/dt + 1; % (#) n is the number of time steps
 
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% demylination parameters
+% lambda_d = 1; % (#) demylination factor
+% n_my = 15; % (#) number of myelin lamellae
+% n_my_tilde = 10; % (#) number of myelin lamellae (shrink to simulate demyelination)
+% d_my_tilde = 0.01613*10^(-4); % (cm) myelin lamellae thickness
+% R_mm = 8.56; % (kilo-ohms*cm^2) resistance of a single myelin lamellae
+% C_mm = 1; % (micro-farads/cm^2) capacitance of a single myelin lamellae
+
+% other material parameters
 a = 0.55*10^(-4); % (cm) radius in nodal region
-a_my = a/0.698; % (cm) radius in myelinated region
+a_my = a/0.698; % (cm) axon radius in myelinated section 
+% a_my = a_my*lambda_d;
+% a_my = a_my - (n_my - n_my_tilde)*d_my_tilde;
 R_i = 0.155; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.6; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.15; % (micro-farads/cm^2) specific membrane capacitance
-R_my = 240; % (kilo-ohms*cm^2) specfic myelin resistance
-C_my = 0.0379; % (micro-fards/cm^2) specific myelin capacitance
+R_my = 240; %63.7; % (kilo-ohms*cm^2) specific myelin resistance
+% R_my = R_my*lambda_d;
+% R_my = 2*n_my_tilde*R_mm;
+C_my = 0.0379; %0.113; % (micro-farads/cm^2) specific myelin capacitance
+% C_my = C_my/lambda_d;
+% C_my = C_mm/(2*n_my_tilde);
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
 G_L = 80; % (mS/cm^2) specific leak conductance
@@ -59,7 +75,7 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
 % Defining alpha/beta functions as well as the b_1, c_1 and f_1 functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T_base = 20; % (C) base temperature
-T_actual = 45; % (C) the temperature of the squid axon
+T_actual = 20; % (C) the temperature of the squid axon
 Q_10_Na = 2.2; % (#) temperature coefficient for Na current
 Q_10_K = 3; % (#) temperature coefficient for K current
 phi_Na = Q_10_Na^((T_actual - T_base)/10); % (#) temperature scaling factor for Na current
@@ -97,11 +113,11 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 
 % Initialization
 %%%%%%%%%%%%%%%%
-V_m0 = -58.1539; % (mV) initial condition for membrane potential 
-V_my0 = 0.8004; % (mV) initial condition for axon potential in periaxonal space
+V_m0 = -58.1512; % (mV) initial condition for membrane potential 
+V_my0 = 1.0892; % (mV) initial condition for axon potential in periaxonal space
 N_0 = 0.4258; % (dimless) initial condition for gating variable n
 M_0 = 0.1144; % (dimless) initial condition for gating variable m
-H_0 = 0.3560; % (dimless) initial condition for gating variable h
+H_0 = 0.3559; % (dimless) initial condition for gating variable h
 Vm = V_m0 * ones(1, m);
 Vmy = zeros(1, m);
 N = zeros(1, m);
@@ -461,4 +477,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('SC_Cohen_set2_T45.mat'); 
+% save('SC_Cohen_set2_T45_scaled_HH_conductances.mat'); 
