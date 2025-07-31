@@ -416,6 +416,7 @@ DC_Cmy_Temp33_ap_peak_set1 = [-58.1124000000000	-58.1124000000000	-57.9321139947
 % % title('SC: CV vs Temp.')
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
+% ylim([0.6 1.5]);
 % grid on;
 % 
 % figure(17);
@@ -427,6 +428,7 @@ DC_Cmy_Temp33_ap_peak_set1 = [-58.1124000000000	-58.1124000000000	-57.9321139947
 % % title('SC: Peak Votage of AP vs Temp.')
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
+% ylim([-5 40]);
 % grid on;
 % 
 % figure(18);
@@ -452,6 +454,7 @@ DC_Cmy_Temp33_ap_peak_set1 = [-58.1124000000000	-58.1124000000000	-57.9321139947
 % % title('DC: CV vs Temp.')
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
+% ylim([0 0.4]);
 % grid on;
 % 
 % figure(20);
@@ -463,6 +466,7 @@ DC_Cmy_Temp33_ap_peak_set1 = [-58.1124000000000	-58.1124000000000	-57.9321139947
 % % title('DC: Peak Votage of AP vs Temp.')
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
+% ylim([-70 20]);
 % grid on;
 % 
 % figure(21);
@@ -488,6 +492,7 @@ xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
 % title('SC: CV vs Temp.')
 legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 set(gca, 'FontSize', 13);
+ylim([0.6 1.5]);
 grid on;
 
 figure(23);
@@ -499,6 +504,7 @@ xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
 % title('SC: Peak Votage of AP vs Temp.')
 legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 set(gca, 'FontSize', 13);
+ylim([-5 40]);
 grid on;
 
 figure(24);
@@ -524,6 +530,7 @@ xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
 % title('DC: CV vs Temp.')
 legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 set(gca, 'FontSize', 13);
+ylim([0 0.4]);
 grid on;
 
 figure(26);
@@ -535,6 +542,7 @@ xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
 % title('DC: Peak Votage of AP vs Temp.')
 legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 set(gca, 'FontSize', 13);
+ylim([-70 20]);
 grid on;
 
 figure(27);
