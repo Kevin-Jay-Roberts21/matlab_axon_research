@@ -28,12 +28,15 @@ clc
 % SC_Cohen_set1_T33 = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1_T33.mat');
 % SC_Cohen_set1_T33_long = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1_T33_long.mat');
 % SC_Cohen_set1_new_conductances = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1_new_conductances.mat');
+% SC_Cohen_set1_new_amy = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1_new_amy.mat');
 % DC_Cohen_set1 = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1.mat');
 % DC_Cohen_set1_long = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_long.mat');
 % DC_Cohen_set2 = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set2.mat');
 % DC_Cohen_set1_T33 = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_T33.mat');
 % DC_Cohen_set1_T33_long = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_T33_long.mat');
 % DC_Cohen_set1_new_conductances = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_new_conductances.mat');
+% DC_Cohen_set1_new_amy = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_new_amy.mat');
+
 
 % SC_Huang_Myelinated_set1 = load('projects/axon_simulations/Paper_Huang_Data/SC_Huang_Myelinated_set1.mat');
 % SC_Huang_Tube_set1 = load('projects/axon_simulations/Paper_Huang_Data/SC_Huang_Tube_set1.mat');
@@ -235,12 +238,12 @@ clc
 % SC_Cohen_set2_Rmy900 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set2_Rmy900.mat');
 % SC_Cohen_set2_Rmy1000 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set2_Rmy1000.mat');
 % 
-SC_Cohen_set1_Ri10 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri10.mat');
-SC_Cohen_set1_Ri20 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri20.mat');
-SC_Cohen_set1_Ri30 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri30.mat');
-SC_Cohen_set1_Ri40 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri40.mat');
-SC_Cohen_set1_Ri50 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri50.mat');
-SC_Cohen_set1_Ri60 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri60.mat');
+% SC_Cohen_set1_Ri10 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri10.mat');
+% SC_Cohen_set1_Ri20 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri20.mat');
+% SC_Cohen_set1_Ri30 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri30.mat');
+% SC_Cohen_set1_Ri40 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri40.mat');
+% SC_Cohen_set1_Ri50 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri50.mat');
+% SC_Cohen_set1_Ri60 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri60.mat');
 % SC_Cohen_set1_Ri70 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri70.mat');
 % SC_Cohen_set1_Ri80 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri80.mat');
 % SC_Cohen_set1_Ri90 = load('projects/axon_simulations/Paper_Parameter_Sensitivity/SC_Cohen_set1_Ri90.mat');
@@ -337,15 +340,22 @@ SC_Cohen_set1_Ri60 = load('projects/axon_simulations/Paper_Parameter_Sensitivity
 % DC_Cohen_set1_T38 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T38.mat'); % decays
 % DC_Cohen_set1_T40 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T40.mat'); % decays
 
-DC_Cohen_set1_T28_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T28_scaled_HH_conductances.mat'); 
-DC_Cohen_set1_T29_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T29_scaled_HH_conductances.mat'); 
-DC_Cohen_set1_T30_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T30_scaled_HH_conductances.mat'); 
-DC_Cohen_set1_T31_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T31_scaled_HH_conductances.mat'); 
-DC_Cohen_set1_T32_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T32_scaled_HH_conductances.mat'); 
-DC_Cohen_set1_T33_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T33_scaled_HH_conductances.mat'); 
-DC_Cohen_set1_T34_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T34_scaled_HH_conductances.mat'); 
-DC_Cohen_set1_T35_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T35_scaled_HH_conductances.mat'); 
-DC_Cohen_set1_T36_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T36_scaled_HH_conductances.mat'); 
+DC_Cohen_set1_T33_new_amy = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T33_new_amy.mat'); % decays
+DC_Cohen_set1_T34_new_amy = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T34_new_amy.mat'); % decays
+DC_Cohen_set1_T35_new_amy = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T35_new_amy.mat'); % decays
+DC_Cohen_set1_T36_new_amy = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T36_new_amy.mat'); % decays
+DC_Cohen_set1_T37_new_amy = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T37_new_amy.mat'); % decays
+
+
+% DC_Cohen_set1_T28_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T28_scaled_HH_conductances.mat'); 
+% DC_Cohen_set1_T29_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T29_scaled_HH_conductances.mat'); 
+% DC_Cohen_set1_T30_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T30_scaled_HH_conductances.mat'); 
+% DC_Cohen_set1_T31_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T31_scaled_HH_conductances.mat'); 
+% DC_Cohen_set1_T32_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T32_scaled_HH_conductances.mat'); 
+% DC_Cohen_set1_T33_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T33_scaled_HH_conductances.mat'); 
+% DC_Cohen_set1_T34_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T34_scaled_HH_conductances.mat'); 
+% DC_Cohen_set1_T35_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T35_scaled_HH_conductances.mat'); 
+% DC_Cohen_set1_T36_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T36_scaled_HH_conductances.mat'); 
 % DC_Cohen_set2_T39_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set2_T39_scaled_HH_conductances.mat'); 
 % DC_Cohen_set2_T40_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set2_T40_scaled_HH_conductances.mat'); 
 % DC_Cohen_set2_T41_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set2_T41_scaled_HH_conductances.mat'); 
@@ -376,7 +386,7 @@ DC_Cohen_set1_T36_scaled_HH_conductances = load('projects/axon_simulations/Paper
 interval1 = [0.0400 0.0485]; % interval is in cm
 interval2 = [0.0800 0.0885]; % interval is in cm
 interval3 = [0.1200 0.1285];
-time_shot = 1.1; % in ms
+time_shot = 6; % in ms
 space_shot = 0.12; % in cm
 
 % picking time shots
@@ -389,11 +399,11 @@ time3 = 3.75; % in ms
 list_of_times = {time1, time2, time3};
 
 % picking space shots
-position1 = 1.1; % in cm
-position2 = 2; % in cm
-position3 = 3; % in cm
-position4 = 4; % in cm
-position5 = 5; % in cm
+% position1 = 1.1; % in cm
+% position2 = 2; % in cm
+% position3 = 3; % in cm
+% position4 = 4; % in cm
+% position5 = 5; % in cm
 
 % position1 = 0.0800; % in cm
 % position2 = 0.0828; % in cm
@@ -406,7 +416,12 @@ position5 = 5; % in cm
 % position4 = 0.12; % in cm
 % position5 = 0.16; % in cm
 
-list_of_positions = {position1, position2, position3, position4, position5};
+position1 = 0.0005; % in cm
+position2 = 0.05; % in cm
+position3 = 0.10; % in cm
+position4 = 0.15; % in cm
+
+list_of_positions = {position1, position2, position3, position4};
 
 
 % picking pause (this controls the speed of the animation, the pause variable 
@@ -427,8 +442,9 @@ p = 0.001;
 % set_of_data = {SC_Cohen_set2_Cmy01, SC_Cohen_set2_Cmy02, SC_Cohen_set2_Cmy03, SC_Cohen_set2_Cmy04, SC_Cohen_set2_Cmy05};
 % set_of_data = {SC_Cohen_set1_Ri10, SC_Cohen_set1_Ri20, SC_Cohen_set1_Ri30, SC_Cohen_set1_Ri40, SC_Cohen_set1_Ri50, SC_Cohen_set1_Ri60};
 % set_of_data = {SC_Cohen_set2_Ri10, SC_Cohen_set2_Ri20, SC_Cohen_set2_Ri30, SC_Cohen_set2_Ri40, SC_Cohen_set2_Ri50, SC_Cohen_set2_Ri60};
-set_of_data = {DC_Cohen_set1_T28_scaled_HH_conductances, DC_Cohen_set1_T29_scaled_HH_conductances, DC_Cohen_set1_T30_scaled_HH_conductances, DC_Cohen_set1_T31_scaled_HH_conductances, DC_Cohen_set1_T32_scaled_HH_conductances, DC_Cohen_set1_T33_scaled_HH_conductances, DC_Cohen_set1_T34_scaled_HH_conductances, DC_Cohen_set1_T35_scaled_HH_conductances, DC_Cohen_set1_T36_scaled_HH_conductances};
-% data = dc_cell5;
+% set_of_data = {DC_Cohen_set1_T28_scaled_HH_conductances, DC_Cohen_set1_T29_scaled_HH_conductances, DC_Cohen_set1_T30_scaled_HH_conductances, DC_Cohen_set1_T31_scaled_HH_conductances, DC_Cohen_set1_T32_scaled_HH_conductances, DC_Cohen_set1_T33_scaled_HH_conductances, DC_Cohen_set1_T34_scaled_HH_conductances, DC_Cohen_set1_T35_scaled_HH_conductances, DC_Cohen_set1_T36_scaled_HH_conductances};
+set_of_data = {DC_Cohen_set1_T33_new_amy, DC_Cohen_set1_T34_new_amy, DC_Cohen_set1_T35_new_amy, DC_Cohen_set1_T36_new_amy, DC_Cohen_set1_T37_new_amy};
+% data = SC_Cohen_set1_new_amy;
  
 % plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
 % plot_Vm_minus_Vmy_picture(data, time_shot);
@@ -880,8 +896,8 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
     
     xmin = 0;
     xmax = L;
-    ymin = -75;
-    ymax = 45;
+    ymin = -65;
+    ymax = 30;
     axis([xmin xmax ymin ymax]);  % Set axis limits
     set(gca, 'FontSize', 13); % Set axis size
 
@@ -903,8 +919,8 @@ function plot_time_and_space_shots(data, list_of_positions, list_of_times)
 
     xmin = 0;
     xmax = T;
-    ymin = -80;
-    ymax = 45;
+    ymin = -65;
+    ymax = 30;
     axis([xmin xmax ymin ymax]);  % Set axis limits
     set(gca, 'FontSize', 13); % Set axis size
     

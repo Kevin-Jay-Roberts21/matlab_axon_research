@@ -24,6 +24,9 @@ DC_rpn_ap_peak_set2 = [-25.5706110991875	-24.9309985293710	-24.0511683392359	-23
 DC_Cmy_cv_set1 = [0 0 0 0 0.138972714445893	0.168824276030921	0.190797678682091	0.208114028092337	0.222982408059927	0.234939434710022	0.245606761762314	0.254809616906391	0.261113225901958	0.268823921372647	0.274526089505570	0.280143855076099	0.283792009043085	0.289035913414023	0.293305652680653	0.295262293086660];
 DC_Cmy_ap_duration_set1 = [0 0 0 0 13.4200000000000	10.9000000000000	9.58000000000000	8.76000000000000	8.18000000000000	7.72000000000000	7.38000000000000	7.12000000000000	6.88000000000000	6.70000000000000	6.54000000000000	6.40000000000000	6.30000000000000	6.18000000000000	6.08000000000000	6];
 DC_Cmy_ap_peak_set1 = [-58.1124000000000	-58.1124000000000	-58.0438032053246	-57.6731333605780	-19.7725438734397	-13.0256203796846	-8.60259984706558	-5.24721782101643	-2.56820572245506	-0.364220050688241	1.48735922173004	3.06804104535706	4.43520281173143	5.63032274620713	6.68514021222542	7.62279433803886	8.46330887284787	9.22016155083013	9.90570255671926	10.5302987552505];
+DC_Cmy_rpn100fold_cv_set1 = [0.403349468254249	0.725351950680899	0.809043245522374	0.832693056323888	0.828969268866967	0.801382047071702	0.772681704260652	0.761021142600090	0.735364396654720	0.722593004572983	0.701894166333822	0.687856003645478	0.661775725812044	0.648905256082366	0.635112436583025	0.619372294372294	0.610714285714286	0.596004943565919	0.584914182475158	0.578256828256828];
+DC_Cmy_rpn100fold_ap_duration_set1 = [5.760000000000000	4.740000000000000	4.660000000000000	4.620000000000000	4.620000000000000	4.620000000000000	4.620000000000000	4.620000000000000	4.640000000000000	4.640000000000000	4.620000000000000	4.620000000000000	4.640000000000000	4.640000000000000	4.620000000000000	4.620000000000000	4.620000000000000	4.640000000000000	4.640000000000000	4.640000000000000];
+DC_Cmy_rpn100fold_ap_peak_set1 = [-12.364098528023934	7.344246768359690	13.022150195759103	15.812964983261615	17.476980078389378	18.580867960955985	19.366162928830153	19.954593919883656	20.409876234063042	20.773001730165848	21.069500665430777	21.315972088476631	21.523830129122512	21.701257785339376	21.854303435199039	21.987535643358097	22.104455674599674	22.207769869739671	22.299577127192261	22.381502784178629];
 DC_Cmy_cv_set2 = [0, 0, 0.0767571713086678	0.146075465136498	0.181719227062257	0.206219199684605	0.224238551633497	0.237891054841427	0.248072383949646	0.255666076650762	0.261440808126092	0.266615737203973	0.270082815734990	0.272900810402736	0.274701099952176	0.276354786158708	0.276551339164743	0.277452240065644	0.277648793071679	0.277322944103014];
 DC_Cmy_ap_duration_set2 = [0, 0, 16.3600000000000	10.0600000000000	8.22000000000000	7.28000000000000	6.74000000000000	6.36000000000000	6.10000000000000	5.90000000000000	5.76000000000000	5.64000000000000	5.52000000000000	5.44000000000000	5.36000000000000	5.32000000000000	5.24000000000000	5.20000000000000	5.16000000000000	5.12000000000000];
 DC_Cmy_ap_peak_set2 = [-58.3540000000000	-57.8149440381218	-28.4546715076982	-12.4325542943729	-5.42863059221648	-0.795186679454457	2.57627833416860	5.15833607003834	7.20509797915812	8.86940835051960	10.2499954334081	11.4143494481623	12.4091935118673	13.2694209495534	14.0201025233308	14.6798581581332	15.2659106364325	15.7887226638238	16.2579690161492	16.6807621924412];
@@ -93,6 +96,9 @@ SC_Temp_ap_peak_set2 = [23.773467382788187	23.366088970394433	22.928645601173493
 DC_Temp_cv_set1 = [0.248688529938530	0.254809616906391	0.260450217641998	0.266184348376129	0.271476318872679	0.276245280720984	0.279046401169163	0.283024106963411	0.282661298957151	0.282661298957151	0.279108658388729	0.269435085968004	0.252872883456118	0.213171612081267, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 DC_Temp_ap_duration_set1 = [7.30000000000000	6.98000000000000	6.70000000000000	6.44000000000000	6.22000000000000	6.02000000000000	5.86000000000000	5.74000000000000	5.64000000000000	5.62000000000000	5.64000000000000	5.76000000000000	6.02000000000000	6.40000000000000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 DC_Temp_ap_peak_set1 = [1.98697024137971	0.417039747088619	-1.21431020737798	-2.91018180649520	-4.67424648983438	-6.51255088888750	-8.43374838643677	-10.4507298485085	-12.5833199035873	-14.8626292030437	-17.3392571687887	-20.1022245176226	-23.3304197256292	-27.4349764022747, -33.5212089083390	-42.6519345852629	-49.7997625398069	-53.2945942373314	-55.0058116412702	-55.9355136906158	-56.4936715134550	-56.8565550225845	-57.1072137187832	-57.2885807111151	-57.4245858471018	-57.5294355440625];
+DC_Temp_cv_set1_rpn10fold = [0.431303268433810	0.449534161490683	0.465434891905480	0.486841840330212	0.504319105691057	0.523191102959687	0.538084580953851	0.560723514211886	0.578533852565417	0.599192896353140	0.616492740471869	0.636287208867854	0.654761904761905 0.671324468484712	0.687685558375214	0.707070707070707	0.711805555555556	0.731090892381215	0.736467236467236	0.751282051282051	0.752492877492877	0.752492877492878	0.744159544159545	0.727222634202612	0.675722616632860 0];
+DC_Temp_ap_duration_set1_rpn10fold = [5.640000000000000	5.220000000000000	4.840000000000000	4.480000000000000	4.140000000000000	3.840000000000000	3.560000000000000	3.300000000000000	3.080000000000000	2.880000000000000	2.680000000000000	2.500000000000000	2.340000000000000 2.220000000000000	2.080000000000000	1.960000000000000	1.860000000000000	1.760000000000000	1.680000000000000	1.600000000000000	1.560000000000000	1.500000000000000	1.480000000000000	1.460000000000000	1.440000000000000	0];
+DC_Temp_ap_peak_set1_rpn10fold = [9.863457712142337	9.080138352471735	8.275732240427097	7.447401024487996	6.591371800655693	5.709064156857334	4.794172011787954	3.847775116150698	2.863789391254536	1.841034666569291	0.774158952138847	-0.336901367594094	-1.500768772533712 -2.717350432209921	-3.995481283462405	-5.341345338060757	-6.757775879728182	-8.259969041699426	-9.850689652362146	-11.551068992828746	-13.384877443253627	-15.363345680575764	-17.541651372258489	-19.980717826046597	-22.799825369249675	-26.200594715522687];
 DC_Temp_cv_set2 = [0.133187615350308	0.131472986092072	0.126933341042754	0.124322760135598	0.120628141088744	0.115780966876857	0.104569400921828	0	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
 DC_Temp_ap_duration_set2 = [10.880000000000001	10.779999999999999	10.859999999999999	11.279999999999999	11.460000000000001	11.650000000000001	11.880000000000001	0	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
 DC_Temp_ap_peak_set2 = [-15.408171025141451	-17.774112783359715	-20.540922075267762	-24.079267168364101	-29.606137382955932	-40.974396990178249	-51.043551252561798	-54.828769864185340	-56.313901441958201	-56.990944880390273	-57.354208482894528	-57.575955096639042	-57.722325023952884	-57.824449084497729 -57.898860156358303	-57.954875166732037	-57.998062240482582	-58.031951077829412	-58.058873153665736	-58.072258433248365	-58.082015210963462	-58.089840447597943	-58.096226069017938	-58.101518277831175	-58.105976630345580	-58.109754791615210];
@@ -132,8 +138,8 @@ DC_Cmy_Temp33_ap_peak_set1 = [-58.1124000000000	-58.1124000000000	-57.9321139947
 % xlabel('$r_{pn}$ ($10^6$ k$\Omega$/cm)', 'Interpreter', 'latex', 'FontSize', 16)
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
-% ylim([0 0.5]);
-% % grid on;
+% ylim([0 1]);
+% grid on;
 % 
 % figure(2);
 % plot(rpn_grid, DC_rpn_ap_peak_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
@@ -163,20 +169,24 @@ DC_Cmy_Temp33_ap_peak_set1 = [-58.1124000000000	-58.1124000000000	-57.9321139947
 % plot(Cmy_grid, DC_Cmy_cv_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % hold on;
 % plot(Cmy_grid, DC_Cmy_cv_set2, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% hold on;
+% plot(Cmy_grid, DC_Cmy_rpn100fold_cv_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % ylabel('Conduction Velocity (m/s)', 'Interpreter', 'latex', 'FontSize', 16)
 % xlabel('$C_{my}$ ($\mu$F/cm$^2$)', 'Interpreter', 'latex', 'FontSize', 16)
-% legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
+% legend('Set (1)', 'Set (2)', 'Set (1) w/ r_{pn} 100-fold', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
-% ylim([0 0.5]);
+% ylim([0 1]);
 % % grid on;
 % 
 % figure(5);
 % plot(Cmy_grid, DC_Cmy_ap_peak_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % hold on;
 % plot(Cmy_grid, DC_Cmy_ap_peak_set2, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% hold on;
+% plot(Cmy_grid, DC_Cmy_rpn100fold_ap_peak_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % ylabel('Peak Voltage of AP (mV)', 'Interpreter', 'latex', 'FontSize', 16)
 % xlabel('$C_{my}$ ($\mu$F/cm$^2$)', 'Interpreter', 'latex', 'FontSize', 16)
-% legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
+% legend('Set (1)', 'Set (2)', 'Set (1) w/ r_{pn} 100-fold', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
 % ylim([-60 30]);
 % % grid on;
@@ -185,12 +195,14 @@ DC_Cmy_Temp33_ap_peak_set1 = [-58.1124000000000	-58.1124000000000	-57.9321139947
 % plot(Cmy_grid, DC_Cmy_ap_duration_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % hold on;
 % plot(Cmy_grid, DC_Cmy_ap_duration_set2, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% hold on;
+% plot(Cmy_grid, DC_Cmy_rpn100fold_ap_duration_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % ylabel('AP Duration (mV)', 'Interpreter', 'latex', 'FontSize', 16)
 % xlabel('$C_{my}$ ($\mu$F/cm$^2$)', 'Interpreter', 'latex', 'FontSize', 16)
-% legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
+% legend('Set (1)', 'Set (2)', 'Set (1) w/ r_{pn} 100-fold', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
 % ylim([0 20]);
-% % grid on;
+% grid on;
 % 
 % % PLOTTING R_my
 % %%%%%%%%%%%%%%%
@@ -202,8 +214,8 @@ DC_Cmy_Temp33_ap_peak_set1 = [-58.1124000000000	-58.1124000000000	-57.9321139947
 % xlabel('$R_{my}$ (k$\Omega\cdot$cm$^2$)', 'Interpreter', 'latex', 'FontSize', 16)
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
-% ylim([0 0.5]);
-% % grid on;
+% ylim([0 1]);
+% grid on;
 % 
 % figure(8);
 % plot(Rmy_grid, DC_Rmy_ap_peak_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
@@ -237,8 +249,8 @@ DC_Cmy_Temp33_ap_peak_set1 = [-58.1124000000000	-58.1124000000000	-57.9321139947
 % xlabel('$R_{i}$ (k$\Omega$ cm)', 'Interpreter', 'latex', 'FontSize', 16)
 % legend('Set (1) w/ $C_{my} = 0.0379$', 'Set (2) w/ $r_{pn} = 321\cdot10^6$', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
-% ylim([0 0.5]);
-% % grid on;
+% ylim([0 1]);
+% grid on;
 % 
 % figure(14);
 % plot(Ri_grid, DC_Ri_ap_peak_set1_w_set2Cmy, '-o', 'LineWidth', 2, 'MarkerSize', 8);
@@ -416,7 +428,7 @@ DC_Cmy_Temp33_ap_peak_set1 = [-58.1124000000000	-58.1124000000000	-57.9321139947
 % % title('SC: CV vs Temp.')
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
-% ylim([0.6 1.5]);
+% ylim([0 1.5]);
 % grid on;
 % 
 % figure(17);
@@ -443,28 +455,32 @@ DC_Cmy_Temp33_ap_peak_set1 = [-58.1124000000000	-58.1124000000000	-57.9321139947
 % ylim([0 20]);
 % grid on;
 % 
-% % DC MODEL
-% %%%%%%%%%%
+% DC MODEL
+%%%%%%%%%%
 % figure(19);
 % plot(DC_Temp_grid, DC_Temp_cv_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % hold on;
 % plot(DC_Temp_grid, DC_Temp_cv_set2, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% hold on;
+% plot(DC_Temp_grid, DC_Temp_cv_set1_rpn10fold, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % ylabel('Conduction Velocity (m/s)', 'Interpreter', 'latex', 'FontSize', 16)
 % xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
 % % title('DC: CV vs Temp.')
-% legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
+% legend('Set (1)', 'Set (2)', 'Set (1) w/ r_{pn} 10-fold', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
-% ylim([0 0.4]);
+% ylim([0 1.5]);
 % grid on;
 % 
 % figure(20);
 % plot(DC_Temp_grid, DC_Temp_ap_peak_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % hold on;
 % plot(DC_Temp_grid, DC_Temp_ap_peak_set2, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% hold on;
+% plot(DC_Temp_grid, DC_Temp_ap_peak_set1_rpn10fold, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % ylabel('Peak Voltage of AP (mV)', 'Interpreter', 'latex', 'FontSize', 16)
 % xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
 % % title('DC: Peak Votage of AP vs Temp.')
-% legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
+% legend('Set (1)', 'Set (2)', 'Set (1) w/ r_{pn} 10-fold', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
 % ylim([-70 20]);
 % grid on;
@@ -473,6 +489,84 @@ DC_Cmy_Temp33_ap_peak_set1 = [-58.1124000000000	-58.1124000000000	-57.9321139947
 % plot(DC_Temp_grid, DC_Temp_ap_duration_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % hold on;
 % plot(DC_Temp_grid, DC_Temp_ap_duration_set2, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% hold on;
+% plot(DC_Temp_grid, DC_Temp_ap_duration_set1_rpn10fold, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% ylabel('AP Duration (mV)', 'Interpreter', 'latex', 'FontSize', 16)
+% xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
+% % title('DC: AP Duration vs Temp.')
+% legend('Set (1)', 'Set (2)', 'Set (1) w/ r_{pn} 10-fold', 'Interpreter', 'latex', 'FontSize', 16)
+% set(gca, 'FontSize', 13);
+% ylim([0 20]);
+% grid on;
+
+% % SC MODEL SCALED HH CONDUCTANCES
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% figure(22);
+% plot(SC_Temp_grid, SC_Temp_cv_set1_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% hold on;
+% plot(SC_Temp_grid, SC_Temp_cv_set2_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% ylabel('Conduction Velocity (m/s)', 'Interpreter', 'latex', 'FontSize', 16)
+% xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
+% % title('SC: CV vs Temp.')
+% legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
+% set(gca, 'FontSize', 13);
+% ylim([0 1.5]);
+% grid on;
+% 
+% figure(23);
+% plot(SC_Temp_grid, SC_Temp_ap_peak_set1_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% hold on;
+% plot(SC_Temp_grid, SC_Temp_ap_peak_set2_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% ylabel('Peak Voltage of AP (mV)', 'Interpreter', 'latex', 'FontSize', 16)
+% xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
+% % title('SC: Peak Votage of AP vs Temp.')
+% legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
+% set(gca, 'FontSize', 13);
+% ylim([-5 40]);
+% grid on;
+% 
+% figure(24);
+% plot(SC_Temp_grid, SC_Temp_ap_duration_set1_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% hold on;
+% plot(SC_Temp_grid, SC_Temp_ap_duration_set2_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% ylabel('AP Duration (mV)', 'Interpreter', 'latex', 'FontSize', 16)
+% xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
+% % title('SC: AP Duration vs Temp.')
+% legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
+% set(gca, 'FontSize', 13);
+% ylim([0 20]);
+% grid on;
+% 
+% % DC MODEL SCALED HH CONDUCTANCES
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% figure(25);
+% plot(DC_Temp_grid, DC_Temp_cv_set1_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% hold on;
+% plot(DC_Temp_grid, DC_Temp_cv_set2_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% ylabel('Conduction Velocity (m/s)', 'Interpreter', 'latex', 'FontSize', 16)
+% xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
+% % title('DC: CV vs Temp.')
+% legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
+% set(gca, 'FontSize', 13);
+% ylim([0 1.5]);
+% grid on;
+% 
+% figure(26);
+% plot(DC_Temp_grid, DC_Temp_ap_peak_set1_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% hold on;
+% plot(DC_Temp_grid, DC_Temp_ap_peak_set2_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% ylabel('Peak Voltage of AP (mV)', 'Interpreter', 'latex', 'FontSize', 16)
+% xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
+% % title('DC: Peak Votage of AP vs Temp.')
+% legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
+% set(gca, 'FontSize', 13);
+% ylim([-70 20]);
+% grid on;
+% 
+% figure(27);
+% plot(DC_Temp_grid, DC_Temp_ap_duration_set1_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
+% hold on;
+% plot(DC_Temp_grid, DC_Temp_ap_duration_set2_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % ylabel('AP Duration (mV)', 'Interpreter', 'latex', 'FontSize', 16)
 % xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
 % % title('DC: AP Duration vs Temp.')
@@ -480,82 +574,6 @@ DC_Cmy_Temp33_ap_peak_set1 = [-58.1124000000000	-58.1124000000000	-57.9321139947
 % set(gca, 'FontSize', 13);
 % ylim([0 20]);
 % grid on;
-
-% SC MODEL SCALED HH CONDUCTANCES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-figure(22);
-plot(SC_Temp_grid, SC_Temp_cv_set1_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
-hold on;
-plot(SC_Temp_grid, SC_Temp_cv_set2_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
-ylabel('Conduction Velocity (m/s)', 'Interpreter', 'latex', 'FontSize', 16)
-xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
-% title('SC: CV vs Temp.')
-legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
-set(gca, 'FontSize', 13);
-ylim([0.6 1.5]);
-grid on;
-
-figure(23);
-plot(SC_Temp_grid, SC_Temp_ap_peak_set1_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
-hold on;
-plot(SC_Temp_grid, SC_Temp_ap_peak_set2_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
-ylabel('Peak Voltage of AP (mV)', 'Interpreter', 'latex', 'FontSize', 16)
-xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
-% title('SC: Peak Votage of AP vs Temp.')
-legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
-set(gca, 'FontSize', 13);
-ylim([-5 40]);
-grid on;
-
-figure(24);
-plot(SC_Temp_grid, SC_Temp_ap_duration_set1_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
-hold on;
-plot(SC_Temp_grid, SC_Temp_ap_duration_set2_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
-ylabel('AP Duration (mV)', 'Interpreter', 'latex', 'FontSize', 16)
-xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
-% title('SC: AP Duration vs Temp.')
-legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
-set(gca, 'FontSize', 13);
-ylim([0 20]);
-grid on;
-
-% DC MODEL SCALED HH CONDUCTANCES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-figure(25);
-plot(DC_Temp_grid, DC_Temp_cv_set1_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
-hold on;
-plot(DC_Temp_grid, DC_Temp_cv_set2_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
-ylabel('Conduction Velocity (m/s)', 'Interpreter', 'latex', 'FontSize', 16)
-xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
-% title('DC: CV vs Temp.')
-legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
-set(gca, 'FontSize', 13);
-ylim([0 0.4]);
-grid on;
-
-figure(26);
-plot(DC_Temp_grid, DC_Temp_ap_peak_set1_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
-hold on;
-plot(DC_Temp_grid, DC_Temp_ap_peak_set2_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
-ylabel('Peak Voltage of AP (mV)', 'Interpreter', 'latex', 'FontSize', 16)
-xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
-% title('DC: Peak Votage of AP vs Temp.')
-legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
-set(gca, 'FontSize', 13);
-ylim([-70 20]);
-grid on;
-
-figure(27);
-plot(DC_Temp_grid, DC_Temp_ap_duration_set1_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
-hold on;
-plot(DC_Temp_grid, DC_Temp_ap_duration_set2_scaled_HH_conductances, '-o', 'LineWidth', 2, 'MarkerSize', 8);
-ylabel('AP Duration (mV)', 'Interpreter', 'latex', 'FontSize', 16)
-xlabel('Temperature ($^\circ$C)', 'Interpreter', 'latex', 'FontSize', 16)
-% title('DC: AP Duration vs Temp.')
-legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
-set(gca, 'FontSize', 13);
-ylim([0 20]);
-grid on;
 
 
 % 
