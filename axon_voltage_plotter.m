@@ -340,11 +340,10 @@ clc
 % DC_Cohen_set1_T38 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T38.mat'); % decays
 % DC_Cohen_set1_T40 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T40.mat'); % decays
 
-DC_Cohen_set1_T33_new_amy = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T33_new_amy.mat'); % decays
-DC_Cohen_set1_T34_new_amy = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T34_new_amy.mat'); % decays
-DC_Cohen_set1_T35_new_amy = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T35_new_amy.mat'); % decays
-DC_Cohen_set1_T36_new_amy = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T36_new_amy.mat'); % decays
-DC_Cohen_set1_T37_new_amy = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T37_new_amy.mat'); % decays
+DC_Cohen_set1_T42_rpn10fold_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T42_rpn10fold_scaled_HH_conductances.mat'); 
+DC_Cohen_set1_T43_rpn10fold_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T43_rpn10fold_scaled_HH_conductances.mat'); 
+DC_Cohen_set1_T44_rpn10fold_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T44_rpn10fold_scaled_HH_conductances.mat'); 
+DC_Cohen_set1_T45_rpn10fold_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T45_rpn10fold_scaled_HH_conductances.mat'); % decays
 
 
 % DC_Cohen_set1_T28_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T28_scaled_HH_conductances.mat'); 
@@ -443,7 +442,7 @@ p = 0.001;
 % set_of_data = {SC_Cohen_set1_Ri10, SC_Cohen_set1_Ri20, SC_Cohen_set1_Ri30, SC_Cohen_set1_Ri40, SC_Cohen_set1_Ri50, SC_Cohen_set1_Ri60};
 % set_of_data = {SC_Cohen_set2_Ri10, SC_Cohen_set2_Ri20, SC_Cohen_set2_Ri30, SC_Cohen_set2_Ri40, SC_Cohen_set2_Ri50, SC_Cohen_set2_Ri60};
 % set_of_data = {DC_Cohen_set1_T28_scaled_HH_conductances, DC_Cohen_set1_T29_scaled_HH_conductances, DC_Cohen_set1_T30_scaled_HH_conductances, DC_Cohen_set1_T31_scaled_HH_conductances, DC_Cohen_set1_T32_scaled_HH_conductances, DC_Cohen_set1_T33_scaled_HH_conductances, DC_Cohen_set1_T34_scaled_HH_conductances, DC_Cohen_set1_T35_scaled_HH_conductances, DC_Cohen_set1_T36_scaled_HH_conductances};
-set_of_data = {DC_Cohen_set1_T33_new_amy, DC_Cohen_set1_T34_new_amy, DC_Cohen_set1_T35_new_amy, DC_Cohen_set1_T36_new_amy, DC_Cohen_set1_T37_new_amy};
+set_of_data = {DC_Cohen_set1_T42_rpn10fold_scaled_HH_conductances, DC_Cohen_set1_T43_rpn10fold_scaled_HH_conductances, DC_Cohen_set1_T44_rpn10fold_scaled_HH_conductances, DC_Cohen_set1_T45_rpn10fold_scaled_HH_conductances};
 % data = SC_Cohen_set1_new_amy;
  
 % plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);

@@ -28,7 +28,7 @@ n = T/dt + 1; % (#) n is the number of time steps
 % Defining the material properties on other intrinsic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % demyelination parameters
-% lambda_d = 1; % (#) demylination factor
+lambda_d = 0.5; % (#) demylination factor
 % n_my = 15; % (#) number of myelin lamellae
 % n_my_tilde = 10; % (#) number of myelin lamellae (shrink to simulate demyelination)
 % d_my_tilde = 0.01613*10^(-4); % (cm) myelin lamellae thickness
@@ -38,21 +38,22 @@ n = T/dt + 1; % (#) n is the number of time steps
 % other material parameters
 a = 0.55*10^(-4); % (cm) radius in nodal region
 g_ratio = 0.698; % g ratio (used to define effective radius a_my)
-a_my = a/g_ratio; % (cm) axon radius in myelinated section 
-% a_my = a*(1/g_ratio + 1)/2; 
-% a_my = a_my*lambda_d;
+% a_my = a/g_ratio; % (cm) axon radius in myelinated section OLD VERSION
+a_my = a*(1/g_ratio + 1)/2; 
+a_my = a + (a_my - a)*lambda_d;
 % a_my = a_my - (n_my - n_my_tilde)*d_my_tilde;
-R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
-R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
-C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
-r_pa = 96.3*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
+R_i = 0.155; % (kilo-ohms*cm) intracellular resistivity
+R_m = 24.6; % (kilo-ohms*cm^2) specific membrane resistance
+C_m = 1.15; % (micro-farads/cm^2) specific membrane capacitance
+r_pa = 125*10^6; % (kilo-ohms/cm) periaxonal resistivity per unit length
 R_pa = r_pa*pi*d_pa*(2*a + d_pa); % (kilo-ohms*cm) resistivity of the periaxonal space (computed)
-r_pn = 3210*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
-R_my = 63.7; %63.7; % (kilo-ohms*cm^2) specific myelin resistance
-% R_my = R_my*lambda_d;
+r_pn = 2450*10^6; % (kilo-ohms/cm) paranodal resitance per unit length (used in BC since r_bar_pn = r_pn * L_pn) 
+r_pn = r_pn*lambda_d;
+R_my = 240; %63.7; % (kilo-ohms*cm^2) specific myelin resistance
+R_my = R_my*lambda_d;
 % R_my = 2*n_my_tilde*R_mm;
-C_my = 0.113; %0.113; % (micro-farads/cm^2) specific myelin capacitance
-% C_my = C_my/lambda_d;
+C_my = 0.0379; %0.113; % (micro-farads/cm^2) specific myelin capacitance
+C_my = C_my/lambda_d;
 % C_my = C_mm/(2*n_my_tilde);
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
@@ -84,7 +85,7 @@ S = @(ii, tt) S_v * ((abs(tt * dt - S_T0) <= 1e-10 | tt * dt > S_T0) & ...
 % Defining alpha/beta functions as well as the b_1, c_1 and f_1 functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T_base = 20; % (C) base temperature
-T_actual = 45; % (C) the temperature of the squid axon
+T_actual = 20; % (C) the temperature of the squid axon
 Q_10_Na = 2.2; % (#) temperature coefficient for Na current
 Q_10_K = 3; % (#) temperature coefficient for K current
 phi_Na = Q_10_Na^((T_actual - T_base)/10); % (#) temperature scaling factor for Na current
@@ -124,11 +125,11 @@ f_2 = @(Vmy_i_minus_1, Vmy_i, Vmy_i_plus_1, n, m, h, ii, tt) (mod(ii - 1, N_s) >
 
 % Initialization
 %%%%%%%%%%%%%%%%
-V_m0 = -58.1124; % (mV) initial condition for membrane potential 
-V_my0 = 0.005; % (mV) initial condition for axon potential in periaxonal space
-N_0 = 0.4264; % (dimless) initial condition for gating variable n
-M_0 = 0.1148; % (dimless) initial condition for gating variable m
-H_0 = 0.3548; % (dimless) initial condition for gating variable h
+V_m0 = -58.354; % (mV) initial condition for membrane potential 
+V_my0 = 0.0299; % (mV) initial condition for axon potential in periaxonal space
+N_0 = 0.423; % (dimless) initial condition for gating variable n
+M_0 = 0.1123; % (dimless) initial condition for gating variable m
+H_0 = 0.3616; % (dimless) initial condition for gating variable h
 Vm = V_m0 * ones(1, m);
 Vmy = V_my0 * ones(1, m);
 N = zeros(1, m);
@@ -525,4 +526,4 @@ legend(legendStrings3, 'Interpreter','latex')
 ylabel("Probabilities of ion channels opening/closing.")
 xlabel("Time in milliseconds.")
 
-save('DC_Cohen_set1_T45_rpn10fold.mat');
+% save('DC_Cohen_set2_demyelination05_method2.mat');
