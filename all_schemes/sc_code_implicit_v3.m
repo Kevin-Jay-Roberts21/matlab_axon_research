@@ -26,7 +26,7 @@ n = T/dt + 1; % (#) n is the number of time steps
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % demylination parameters
-% lambda_d = 1; % (#) demylination factor
+% lambda_d = 0.5; % (#) demylination factor
 % n_my = 15; % (#) number of myelin lamellae
 % n_my_tilde = 10; % (#) number of myelin lamellae (shrink to simulate demyelination)
 % d_my_tilde = 0.01613*10^(-4); % (cm) myelin lamellae thickness
@@ -37,14 +37,14 @@ n = T/dt + 1; % (#) n is the number of time steps
 a = 0.55*10^(-4); % (cm) radius in nodal region
 g_ratio = 0.698; % g ratio (used to define effective radius a_my)
 a_my = a/g_ratio; % (cm) axon radius in myelinated section OLD VERSION
-% a_my = a + (a_my - a)*lambda_d; % tilde(a)_my
-a_my = 0.5*(a + a_my); % this is bar(a)_my (where a_my on the inside is tilde_a_my when simulating demyelination)
-R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
-R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
-C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
-R_my = 63.7; %63.7; % (kilo-ohms*cm^2) specific myelin resistance
+% a_my = a + (a_my - a)*lambda_d; % a_my_tilde
+a_my_bar = 0.5*(a + a_my); % this is a_my_bar (where a_my on the inside is a_my_tilde when simulating demyelination)
+R_i = 0.155; % (kilo-ohms*cm) intracellular resistivity
+R_m = 24.6; % (kilo-ohms*cm^2) specific membrane resistance
+C_m = 1.15; % (micro-farads/cm^2) specific membrane capacitance
+R_my = 240; %63.7; % (kilo-ohms*cm^2) specific myelin resistance
 % R_my = R_my*lambda_d;
-C_my = 0.113; %0.113; % (micro-farads/cm^2) specific myelin capacitance
+C_my = 0.0379; %0.113; % (micro-farads/cm^2) specific myelin capacitance
 % C_my = C_my/lambda_d;
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
@@ -56,7 +56,7 @@ E_rest = -59.4; % (mV) effective resting nernst potential
 
 % defining rho and w_1 constants
 rho = dt/dx^2;
-w_1 = a^2/(C_my*a_my*R_i);
+w_1 = a^2/(C_my*a_my_bar*R_i);
 
 % Stimulus Information
 %%%%%%%%%%%%%%%%%%%%%%
@@ -87,7 +87,7 @@ alpha_h = @(Vm) phi_Na * 0.07*exp(-(Vm + 65)/20);
 beta_h = @(Vm) phi_Na * 1/(1 + exp(-(Vm + 35)/10));
 
 % Defining the b_1(x_i) function
-B_1 = (a/(2*R_i*C_m))*(1 + C_m*a/(C_my*a_my)); % Internodal region
+B_1 = (a/(2*R_i*C_m))*(1 + C_m*a/(C_my*a_my_bar)); % Internodal region
 B_2 = a/(2*R_i*C_m); % Nodal region
 B_3 = (B_1 + B_2)/2; % End point (may not be used)
 b_1 = @(ii) (mod(ii - 1, N_s) > N_n).*B_1 + ... % Internodal region
@@ -112,8 +112,8 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 
 % Initialization
 %%%%%%%%%%%%%%%%
-V_m0 = -58.1547; % (mV) initial condition for membrane potential 
-V_my0 = 0.8212; % (mV) initial condition for axon potential in periaxonal space
+V_m0 = -58.1513; % (mV) initial condition for membrane potential 
+V_my0 = 1.0925; % (mV) initial condition for axon potential in periaxonal space
 N_0 = 0.4258; % (dimless) initial condition for gating variable n
 M_0 = 0.1144; % (dimless) initial condition for gating variable m
 H_0 = 0.3560; % (dimless) initial condition for gating variable h
@@ -307,173 +307,173 @@ list_of_times = [time1
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PLOTTING Vm SPATIAL AND TEMPORAL PROFILES %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% First figure: Voltage along the axon at different times
-figure(1);
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % PLOTTING Vm SPATIAL AND TEMPORAL PROFILES %
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % First figure: Voltage along the axon at different times
+% figure(1);
+% 
+% % Adjust the figure size (Position [left, bottom, width, height])
+% set(gcf, 'Position', [100, 100, 1200, 500]); % Increase width (1200)
+% 
+% % Create subplot (1 row, 2 columns, 1st subplot)
+% subplot(1, 2, 1);
+% t1 = linspace(0, 10000*L, m);
+% plot(t1, Vm_all(round(time1/dt),:));
+% hold on
+% for i = 2:length(list_of_times)
+%     plot(t1, Vm_all(round(list_of_times(i)/dt),:));
+% end
+% 
+% % Describing plots using legends
+% legendStrings1 = {};
+% for i  = 1:length(list_of_times)
+%     legendStrings1{end+1} = sprintf('$V_m$ at t = %g ms', list_of_times(i));
+% end
+% legend(legendStrings1, 'Interpreter','latex');
+% ylabel("$V_m$ in millivolts.", 'Interpreter','latex');
+% xlabel("Length of the axon in um.");
+% 
+% 
+% % Second figure: Voltage vs Time at different positions
+% % Create subplot (1 row, 2 columns, 2nd subplot)
+% subplot(1, 2, 2);
+% t2 = linspace(0, T, n); % FULL MATRIX
+% plot(t2, Vm_all(:,round(position1/dx)));
+% hold on
+% for i = 2:length(list_of_positions)
+%     plot(t2, Vm_all(:,round(list_of_positions(i)/dx)));
+% end
+% 
+% % Describing plots using legends
+% legendStrings2 = {};
+% for i = 1:length(list_of_positions)
+%     legendStrings2{end+1} = sprintf('$V_m$ at x = %g um', 10000*list_of_positions(i));
+% end
+% legend(legendStrings2, 'Interpreter', 'latex');
+% ylabel("$V_m$ in millivolts.", 'Interpreter', 'latex');
+% xlabel("Time in milliseconds.");
+% 
+% 
+% 
+% 
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % PLOTTING Vmy SPATIAL AND TEMPORAL PROFILES %
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % First figure: Voltage along the axon at different times
+% figure(2);
+% 
+% % Adjust the figure size (Position [left, bottom, width, height])
+% set(gcf, 'Position', [100, 100, 1200, 500]); % Increase width (1200)
+% 
+% % Create subplot (1 row, 2 columns, 1st subplot)
+% subplot(1, 2, 1);
+% t1 = linspace(0, L*10000, m);
+% plot(t1, Vmy_all(round(time1/dt),:));
+% hold on
+% for i = 2:length(list_of_times)
+%     plot(t1, Vmy_all(round(list_of_times(i)/dt),:));
+% end
+% 
+% % Describing plots using legends
+% legendStrings1 = {};
+% for i  = 1:length(list_of_times)
+%     legendStrings1{end+1} = sprintf('$V_{my}$ at t = %g ms', list_of_times(i));
+% end
+% legend(legendStrings1, 'Interpreter','latex');
+% ylabel("$V_{my}$ in millivolts.", 'Interpreter','latex');
+% xlabel("Length of the axon in um.");
+% 
+% 
+% % Second figure: Voltage vs Time at different positions
+% % Create subplot (1 row, 2 columns, 2nd subplot)
+% subplot(1, 2, 2);
+% t2 = linspace(0, T, n); % FULL MATRIX
+% plot(t2, Vmy_all(:,round(position1/dx)));
+% hold on
+% for i = 2:length(list_of_positions)
+%     plot(t2, Vmy_all(:,round(list_of_positions(i)/dx)));
+% end
+% 
+% % Describing plots using legends
+% legendStrings2 = {};
+% for i = 1:length(list_of_positions)
+%     legendStrings2{end+1} = sprintf('$V_{my}$ at x = %g um', 10000*list_of_positions(i));
+% end
+% legend(legendStrings2, 'Interpreter', 'latex');
+% ylabel("$V_{my}$ in millivolts.", 'Interpreter', 'latex');
+% xlabel("Time in milliseconds.");
+% 
+% 
+% 
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % PLOTTING Vm-Vmy SPATIAL AND TEMPORAL PROFILES %
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % First figure: Voltage along the axon at different times
+% figure(3);
+% 
+% % Adjust the figure size (Position [left, bottom, width, height])
+% set(gcf, 'Position', [100, 100, 1200, 500]); % Increase width (1200)
+% 
+% % Create subplot (1 row, 2 columns, 1st subplot)
+% subplot(1, 2, 1);
+% t1 = linspace(0, 10000*L, m);
+% plot(t1, Vm_minus_Vmy(round(time1/dt),:));
+% hold on
+% for i = 2:length(list_of_times)
+%     plot(t1, Vm_minus_Vmy(round(list_of_times(i)/dt),:));
+% end
+% 
+% % Describing plots using legends
+% legendStrings1 = {};
+% for i  = 1:length(list_of_times)
+%     legendStrings1{end+1} = sprintf('$V_m - V_{my}$ at t = %g ms', list_of_times(i));
+% end
+% legend(legendStrings1, 'Interpreter','latex');
+% ylabel("$V_m - V_{my}$ in millivolts.", 'Interpreter','latex');
+% xlabel("Length of the axon in um.");
+% 
+% 
+% % Second figure: Voltage vs Time at different positions
+% % Create subplot (1 row, 2 columns, 2nd subplot)
+% subplot(1, 2, 2);
+% t2 = linspace(0, T, n); % FULL MATRIX
+% plot(t2, Vm_minus_Vmy(:,round(position1/dx)));
+% hold on
+% for i = 2:length(list_of_positions)
+%     plot(t2, Vm_minus_Vmy(:,round(list_of_positions(i)/dx)));
+% end
+% 
+% % Describing plots using legends
+% legendStrings2 = {};
+% for i = 1:length(list_of_positions)
+%     legendStrings2{end+1} = sprintf('$V_m - V_{my}$ at x = %g um', 10000*list_of_positions(i));
+% end
+% legend(legendStrings2, 'Interpreter', 'latex');
+% ylabel("$V_m - V_{my}$ in millivolts.", 'Interpreter', 'latex');
+% xlabel("Time in milliseconds.");
+% 
+% 
+% 
+% 
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % PLOTTING n, m, and h TEMPROAL PROFILES %
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% figure(4)
+% plot(t2, N_all(:,round(position5/dx)))
+% hold on
+% plot(t2, M_all(:,round(position5/dx)))
+% hold on
+% plot(t2, H_all(:,round(position5/dx)))
+% legendStrings3 = {
+%     sprintf('n at x = %g um', 10000*position5), ...
+%     sprintf('m at x = %g um', 10000*position5), ...
+%     sprintf('h at x = %g um', 10000*position5)};
+% legend(legendStrings3, 'Interpreter','latex')
+% ylabel("Probabilities of ion channels opening/closing.")
+% xlabel("Time in milliseconds.")
 
-% Adjust the figure size (Position [left, bottom, width, height])
-set(gcf, 'Position', [100, 100, 1200, 500]); % Increase width (1200)
-
-% Create subplot (1 row, 2 columns, 1st subplot)
-subplot(1, 2, 1);
-t1 = linspace(0, 10000*L, m);
-plot(t1, Vm_all(round(time1/dt),:));
-hold on
-for i = 2:length(list_of_times)
-    plot(t1, Vm_all(round(list_of_times(i)/dt),:));
-end
-
-% Describing plots using legends
-legendStrings1 = {};
-for i  = 1:length(list_of_times)
-    legendStrings1{end+1} = sprintf('$V_m$ at t = %g ms', list_of_times(i));
-end
-legend(legendStrings1, 'Interpreter','latex');
-ylabel("$V_m$ in millivolts.", 'Interpreter','latex');
-xlabel("Length of the axon in um.");
-
-
-% Second figure: Voltage vs Time at different positions
-% Create subplot (1 row, 2 columns, 2nd subplot)
-subplot(1, 2, 2);
-t2 = linspace(0, T, n); % FULL MATRIX
-plot(t2, Vm_all(:,round(position1/dx)));
-hold on
-for i = 2:length(list_of_positions)
-    plot(t2, Vm_all(:,round(list_of_positions(i)/dx)));
-end
-
-% Describing plots using legends
-legendStrings2 = {};
-for i = 1:length(list_of_positions)
-    legendStrings2{end+1} = sprintf('$V_m$ at x = %g um', 10000*list_of_positions(i));
-end
-legend(legendStrings2, 'Interpreter', 'latex');
-ylabel("$V_m$ in millivolts.", 'Interpreter', 'latex');
-xlabel("Time in milliseconds.");
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PLOTTING Vmy SPATIAL AND TEMPORAL PROFILES %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% First figure: Voltage along the axon at different times
-figure(2);
-
-% Adjust the figure size (Position [left, bottom, width, height])
-set(gcf, 'Position', [100, 100, 1200, 500]); % Increase width (1200)
-
-% Create subplot (1 row, 2 columns, 1st subplot)
-subplot(1, 2, 1);
-t1 = linspace(0, L*10000, m);
-plot(t1, Vmy_all(round(time1/dt),:));
-hold on
-for i = 2:length(list_of_times)
-    plot(t1, Vmy_all(round(list_of_times(i)/dt),:));
-end
-
-% Describing plots using legends
-legendStrings1 = {};
-for i  = 1:length(list_of_times)
-    legendStrings1{end+1} = sprintf('$V_{my}$ at t = %g ms', list_of_times(i));
-end
-legend(legendStrings1, 'Interpreter','latex');
-ylabel("$V_{my}$ in millivolts.", 'Interpreter','latex');
-xlabel("Length of the axon in um.");
-
-
-% Second figure: Voltage vs Time at different positions
-% Create subplot (1 row, 2 columns, 2nd subplot)
-subplot(1, 2, 2);
-t2 = linspace(0, T, n); % FULL MATRIX
-plot(t2, Vmy_all(:,round(position1/dx)));
-hold on
-for i = 2:length(list_of_positions)
-    plot(t2, Vmy_all(:,round(list_of_positions(i)/dx)));
-end
-
-% Describing plots using legends
-legendStrings2 = {};
-for i = 1:length(list_of_positions)
-    legendStrings2{end+1} = sprintf('$V_{my}$ at x = %g um', 10000*list_of_positions(i));
-end
-legend(legendStrings2, 'Interpreter', 'latex');
-ylabel("$V_{my}$ in millivolts.", 'Interpreter', 'latex');
-xlabel("Time in milliseconds.");
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PLOTTING Vm-Vmy SPATIAL AND TEMPORAL PROFILES %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% First figure: Voltage along the axon at different times
-figure(3);
-
-% Adjust the figure size (Position [left, bottom, width, height])
-set(gcf, 'Position', [100, 100, 1200, 500]); % Increase width (1200)
-
-% Create subplot (1 row, 2 columns, 1st subplot)
-subplot(1, 2, 1);
-t1 = linspace(0, 10000*L, m);
-plot(t1, Vm_minus_Vmy(round(time1/dt),:));
-hold on
-for i = 2:length(list_of_times)
-    plot(t1, Vm_minus_Vmy(round(list_of_times(i)/dt),:));
-end
-
-% Describing plots using legends
-legendStrings1 = {};
-for i  = 1:length(list_of_times)
-    legendStrings1{end+1} = sprintf('$V_m - V_{my}$ at t = %g ms', list_of_times(i));
-end
-legend(legendStrings1, 'Interpreter','latex');
-ylabel("$V_m - V_{my}$ in millivolts.", 'Interpreter','latex');
-xlabel("Length of the axon in um.");
-
-
-% Second figure: Voltage vs Time at different positions
-% Create subplot (1 row, 2 columns, 2nd subplot)
-subplot(1, 2, 2);
-t2 = linspace(0, T, n); % FULL MATRIX
-plot(t2, Vm_minus_Vmy(:,round(position1/dx)));
-hold on
-for i = 2:length(list_of_positions)
-    plot(t2, Vm_minus_Vmy(:,round(list_of_positions(i)/dx)));
-end
-
-% Describing plots using legends
-legendStrings2 = {};
-for i = 1:length(list_of_positions)
-    legendStrings2{end+1} = sprintf('$V_m - V_{my}$ at x = %g um', 10000*list_of_positions(i));
-end
-legend(legendStrings2, 'Interpreter', 'latex');
-ylabel("$V_m - V_{my}$ in millivolts.", 'Interpreter', 'latex');
-xlabel("Time in milliseconds.");
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PLOTTING n, m, and h TEMPROAL PROFILES %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-figure(4)
-plot(t2, N_all(:,round(position5/dx)))
-hold on
-plot(t2, M_all(:,round(position5/dx)))
-hold on
-plot(t2, H_all(:,round(position5/dx)))
-legendStrings3 = {
-    sprintf('n at x = %g um', 10000*position5), ...
-    sprintf('m at x = %g um', 10000*position5), ...
-    sprintf('h at x = %g um', 10000*position5)};
-legend(legendStrings3, 'Interpreter','latex')
-ylabel("Probabilities of ion channels opening/closing.")
-xlabel("Time in milliseconds.")
-
-% save('SC_Cohen_set2_demyelination05.mat'); 
+% save('SC_Cohen_set2_lambda05_method1.mat'); 
