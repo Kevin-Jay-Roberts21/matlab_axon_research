@@ -28,15 +28,12 @@ clc
 % SC_Cohen_set1_T33 = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1_T33.mat');
 % SC_Cohen_set1_T33_long = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1_T33_long.mat');
 % SC_Cohen_set1_new_conductances = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1_new_conductances.mat');
-% SC_Cohen_set1_new_amy = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1_new_amy.mat');
 % DC_Cohen_set1 = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1.mat');
 % DC_Cohen_set1_long = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_long.mat');
 % DC_Cohen_set2 = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set2.mat');
 % DC_Cohen_set1_T33 = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_T33.mat');
 % DC_Cohen_set1_T33_long = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_T33_long.mat');
 % DC_Cohen_set1_new_conductances = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_new_conductances.mat');
-% DC_Cohen_set1_new_amy = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_set1_new_amy.mat');
-
 
 % SC_Huang_Myelinated_set1 = load('projects/axon_simulations/Paper_Huang_Data/SC_Huang_Myelinated_set1.mat');
 % SC_Huang_Tube_set1 = load('projects/axon_simulations/Paper_Huang_Data/SC_Huang_Tube_set1.mat');
@@ -389,6 +386,7 @@ clc
 % SC_Cohen_set1_T43 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T43.mat');
 % SC_Cohen_set1_T44 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T44.mat');
 % SC_Cohen_set1_T45 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T45.mat');
+% SC_Cohen_set1_T58 = load('projects/axon_simulations/Paper_Temp_Data/SC_Cohen_set1_T58.mat');
 % 
 % DC_Cohen_set1_T20 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T20.mat');
 % DC_Cohen_set1_T21 = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set1_T21.mat');
@@ -688,84 +686,115 @@ clc
 % DC_Cohen_set2_T45_scaled_HH_conductances = load('projects/axon_simulations/Paper_Temp_Data/DC_Cohen_set2_T45_scaled_HH_conductances.mat'); % decays
 
 % DEMYELINTATION DATA
-% SC_Cohen_set1_demyelination1 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination1.mat');
-% SC_Cohen_set1_demyelination09 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination09.mat');
-% SC_Cohen_set1_demyelination08 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination08.mat');
-% SC_Cohen_set1_demyelination07 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination07.mat');
-% SC_Cohen_set1_demyelination06 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination06.mat');
-% SC_Cohen_set1_demyelination05 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination05.mat');
+% SC_Cohen_set1_lambda1_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_lambda1_method1.mat');
+% SC_Cohen_set1_lambda09_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_lambda09_method1.mat');
+% SC_Cohen_set1_lambda08_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_lambda08_method1.mat');
+% SC_Cohen_set1_lambda07_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_lambda07_method1.mat');
+% SC_Cohen_set1_lambda06_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_lambda06_method1.mat');
+% SC_Cohen_set1_lambda05_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_lambda05_method1.mat');
 
-% SC_Cohen_set2_demyelination1 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_demyelination1.mat');
-% SC_Cohen_set2_demyelination09 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_demyelination09.mat');
-% SC_Cohen_set2_demyelination08 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_demyelination08.mat');
-% SC_Cohen_set2_demyelination07 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_demyelination07.mat');
-% SC_Cohen_set2_demyelination06 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_demyelination06.mat');
-% SC_Cohen_set2_demyelination05 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_demyelination05.mat');
+% DC_Cohen_set1_lambda1_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_lambda1_method1.mat');
+% DC_Cohen_set1_lambda09_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_lambda09_method1.mat');
+% DC_Cohen_set1_lambda08_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_lambda08_method1.mat');
+% DC_Cohen_set1_lambda07_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_lambda07_method1.mat');
+% DC_Cohen_set1_lambda06_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_lambda06_method1.mat');
+% DC_Cohen_set1_lambda05_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_lambda05_method1.mat');
 
-% SC_Cohen_set1_demyelination15_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination15_v2.mat');
-% SC_Cohen_set1_demyelination14_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination14_v2.mat');
-% SC_Cohen_set1_demyelination13_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination13_v2.mat');
-% SC_Cohen_set1_demyelination12_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination12_v2.mat');
-% SC_Cohen_set1_demyelination11_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination11_v2.mat');
-% SC_Cohen_set1_demyelination10_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set1_demyelination10_v2.mat');
+% DC_Cohen_set1_rpn10fold_lambda1_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn10fold_lambda1_method1.mat');
+% DC_Cohen_set1_rpn10fold_lambda09_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn10fold_lambda09_method1.mat');
+% DC_Cohen_set1_rpn10fold_lambda08_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn10fold_lambda08_method1.mat');
+% DC_Cohen_set1_rpn10fold_lambda07_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn10fold_lambda07_method1.mat');
+% DC_Cohen_set1_rpn10fold_lambda06_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn10fold_lambda06_method1.mat');
+% DC_Cohen_set1_rpn10fold_lambda05_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn10fold_lambda05_method1.mat');
 
-% SC_Cohen_set2_demyelination15_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_demyelination15_v2.mat');
-% SC_Cohen_set2_demyelination14_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_demyelination14_v2.mat');
-% SC_Cohen_set2_demyelination13_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_demyelination13_v2.mat');
-% SC_Cohen_set2_demyelination12_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_demyelination12_v2.mat');
-% SC_Cohen_set2_demyelination11_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_demyelination11_v2.mat');
-% SC_Cohen_set2_demyelination10_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_demyelination10_v2.mat');
+% DC_Cohen_set1_rpn100fold_lambda1_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn100fold_lambda1_method1.mat');
+% DC_Cohen_set1_rpn100fold_lambda09_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn100fold_lambda09_method1.mat');
+% DC_Cohen_set1_rpn100fold_lambda08_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn100fold_lambda08_method1.mat');
+% DC_Cohen_set1_rpn100fold_lambda07_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn100fold_lambda07_method1.mat');
+% DC_Cohen_set1_rpn100fold_lambda06_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn100fold_lambda06_method1.mat');
+% DC_Cohen_set1_rpn100fold_lambda05_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn100fold_lambda05_method1.mat');
 
-% DC_Cohen_set1_demyelination1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination1.mat');
-% DC_Cohen_set1_demyelination09 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination09.mat');
-% DC_Cohen_set1_demyelination08 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination08.mat');
-% DC_Cohen_set1_demyelination07 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination07.mat');
-% DC_Cohen_set1_demyelination06 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination06.mat');
-% DC_Cohen_set1_demyelination05 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination05.mat');
+% SC_Cohen_set2_lambda1_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_lambda1_method1.mat');
+% SC_Cohen_set2_lambda09_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_lambda09_method1.mat');
+% SC_Cohen_set2_lambda08_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_lambda08_method1.mat');
+% SC_Cohen_set2_lambda07_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_lambda07_method1.mat');
+% SC_Cohen_set2_lambda06_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_lambda06_method1.mat');
+% SC_Cohen_set2_lambda05_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/SC_Cohen_set2_lambda05_method1.mat');
 
-% DC_Cohen_set2_demyelination1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination1.mat');
-% DC_Cohen_set2_demyelination09 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination09.mat');
-% DC_Cohen_set2_demyelination08 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination08.mat');
-% DC_Cohen_set2_demyelination07 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination07.mat');
-% DC_Cohen_set2_demyelination06 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination06.mat');
-% DC_Cohen_set2_demyelination05 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination05.mat');
+% DC_Cohen_set2_lambda1_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_lambda1_method1.mat');
+% DC_Cohen_set2_lambda09_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_lambda09_method1.mat');
+% DC_Cohen_set2_lambda08_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_lambda08_method1.mat');
+% DC_Cohen_set2_lambda07_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_lambda07_method1.mat');
+% DC_Cohen_set2_lambda06_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_lambda06_method1.mat');
+% DC_Cohen_set2_lambda05_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_lambda05_method1.mat');
+ 
+% DC_Cohen_set2_rpn10fold_lambda1_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn10fold_lambda1_method1.mat');
+% DC_Cohen_set2_rpn10fold_lambda09_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn10fold_lambda09_method1.mat');
+% DC_Cohen_set2_rpn10fold_lambda08_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn10fold_lambda08_method1.mat');
+% DC_Cohen_set2_rpn10fold_lambda07_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn10fold_lambda07_method1.mat');
+% DC_Cohen_set2_rpn10fold_lambda06_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn10fold_lambda06_method1.mat');
+% DC_Cohen_set2_rpn10fold_lambda05_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn10fold_lambda05_method1.mat');
+ 
+% DC_Cohen_set2_rpn100fold_lambda1_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn100fold_lambda1_method1.mat');
+% DC_Cohen_set2_rpn100fold_lambda09_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn100fold_lambda09_method1.mat');
+% DC_Cohen_set2_rpn100fold_lambda08_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn100fold_lambda08_method1.mat');
+% DC_Cohen_set2_rpn100fold_lambda07_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn100fold_lambda07_method1.mat');
+% DC_Cohen_set2_rpn100fold_lambda06_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn100fold_lambda06_method1.mat');
+% DC_Cohen_set2_rpn100fold_lambda05_method1 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn100fold_lambda05_method1.mat');
 
-% DC_Cohen_set1_demyelination1_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination1_method2.mat');
-% DC_Cohen_set1_demyelination09_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination09_method2.mat');
-% DC_Cohen_set1_demyelination08_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination08_method2.mat');
-% DC_Cohen_set1_demyelination07_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination07_method2.mat');
-% DC_Cohen_set1_demyelination06_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination06_method2.mat');
-% DC_Cohen_set1_demyelination05_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination05_method2.mat');
+% DC_Cohen_set1_lambda1_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_lambda1_method2.mat');
+% DC_Cohen_set1_lambda09_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_lambda09_method2.mat');
+% DC_Cohen_set1_lambda08_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_lambda08_method2.mat');
+% DC_Cohen_set1_lambda07_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_lambda07_method2.mat');
+% DC_Cohen_set1_lambda06_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_lambda06_method2.mat');
+% DC_Cohen_set1_lambda05_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_lambda05_method2.mat');
 
-% DC_Cohen_set2_demyelination1_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination1_method2.mat');
-% DC_Cohen_set2_demyelination09_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination09_method2.mat');
-% DC_Cohen_set2_demyelination08_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination08_method2.mat');
-% DC_Cohen_set2_demyelination07_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination07_method2.mat');
-% DC_Cohen_set2_demyelination06_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination06_method2.mat');
-% DC_Cohen_set2_demyelination05_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination05_method2.mat');
+% DC_Cohen_set1_rpn10fold_lambda1_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn10fold_lambda1_method2.mat');
+% DC_Cohen_set1_rpn10fold_lambda09_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn10fold_lambda09_method2.mat');
+% DC_Cohen_set1_rpn10fold_lambda08_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn10fold_lambda08_method2.mat');
+% DC_Cohen_set1_rpn10fold_lambda07_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn10fold_lambda07_method2.mat');
+% DC_Cohen_set1_rpn10fold_lambda06_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn10fold_lambda06_method2.mat');
+% DC_Cohen_set1_rpn10fold_lambda05_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn10fold_lambda05_method2.mat');
 
-% DC_Cohen_set1_demyelination15_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination15_v2.mat');
-% DC_Cohen_set1_demyelination14_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination14_v2.mat');
-% DC_Cohen_set1_demyelination13_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination13_v2.mat');
-% DC_Cohen_set1_demyelination12_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination12_v2.mat');
-% DC_Cohen_set1_demyelination11_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination11_v2.mat');
-% DC_Cohen_set1_demyelination10_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_demyelination10_v2.mat');
+% DC_Cohen_set1_rpn100fold_lambda1_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn100fold_lambda1_method2.mat');
+% DC_Cohen_set1_rpn100fold_lambda09_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn100fold_lambda09_method2.mat');
+% DC_Cohen_set1_rpn100fold_lambda08_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn100fold_lambda08_method2.mat');
+% DC_Cohen_set1_rpn100fold_lambda07_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn100fold_lambda07_method2.mat');
+% DC_Cohen_set1_rpn100fold_lambda06_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn100fold_lambda06_method2.mat');
+% DC_Cohen_set1_rpn100fold_lambda05_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set1_rpn100fold_lambda05_method2.mat');
+ 
+% DC_Cohen_set2_lambda1_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_lambda1_method2.mat');
+% DC_Cohen_set2_lambda09_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_lambda09_method2.mat');
+% DC_Cohen_set2_lambda08_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_lambda08_method2.mat');
+% DC_Cohen_set2_lambda07_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_lambda07_method2.mat');
+% DC_Cohen_set2_lambda06_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_lambda06_method2.mat');
+% DC_Cohen_set2_lambda05_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_lambda05_method2.mat');
 
-% DC_Cohen_set2_demyelination15_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination15_v2.mat');
-% DC_Cohen_set2_demyelination14_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination14_v2.mat');
-% DC_Cohen_set2_demyelination13_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination13_v2.mat');
-% DC_Cohen_set2_demyelination12_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination12_v2.mat');
-% DC_Cohen_set2_demyelination11_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination11_v2.mat');
-% DC_Cohen_set2_demyelination10_v2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_demyelination10_v2.mat');
+% DC_Cohen_set2_rpn10fold_lambda1_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn10fold_lambda1_method2.mat');
+% DC_Cohen_set2_rpn10fold_lambda09_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn10fold_lambda09_method2.mat');
+% DC_Cohen_set2_rpn10fold_lambda08_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn10fold_lambda08_method2.mat');
+% DC_Cohen_set2_rpn10fold_lambda07_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn10fold_lambda07_method2.mat');
+% DC_Cohen_set2_rpn10fold_lambda06_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn10fold_lambda06_method2.mat');
+% DC_Cohen_set2_rpn10fold_lambda05_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn10fold_lambda05_method2.mat');
+
+% DC_Cohen_set2_rpn100fold_lambda1_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn100fold_lambda1_method2.mat');
+% DC_Cohen_set2_rpn100fold_lambda09_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn100fold_lambda09_method2.mat');
+% DC_Cohen_set2_rpn100fold_lambda08_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn100fold_lambda08_method2.mat');
+% DC_Cohen_set2_rpn100fold_lambda07_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn100fold_lambda07_method2.mat');
+% DC_Cohen_set2_rpn100fold_lambda06_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn100fold_lambda06_method2.mat');
+% DC_Cohen_set2_rpn100fold_lambda05_method2 = load('projects/axon_simulations/Paper_Demyelination_Data/DC_Cohen_set2_rpn100fold_lambda05_method2.mat');
+
 
 % DC COMPARISON TO COHEN PAPER
-% dc_cell5 = load('projects/axon_simulations/Paper_SC_DC_Data/DC_cell5.mat');
+% SC_Cohen_set1_comparison = load('projects/axon_simulations/Paper_SC_DC_Data/SC_Cohen_set1_comparison.mat');
+% DC_Cohen_cell5_comparison = load('projects/axon_simulations/Paper_SC_DC_Data/DC_Cohen_cell5_comparison.mat');
+
 
 % picking interval
 interval1 = [0.0400 0.0485]; % interval is in cm
 interval2 = [0.0800 0.0885]; % interval is in cm
 interval3 = [0.1200 0.1285];
-time_shot = 6; % in ms
+time_shot = 2.75; % in ms
 space_shot = 0.12; % in cm
 
 % picking time shots
@@ -789,18 +818,22 @@ list_of_times = {time1, time2, time3};
 % % position3 = 0.0857; % in cm
 % position4 = 0.0885; % in cm
 
-% position1 = 0.0005; % in cm
-% position2 = 0.04; % in cm
-% position3 = 0.08; % in cm
-% position4 = 0.12; % in cm
-% position5 = 0.16; % in cm
+% position1 = 0.0800; % in cm
+% position2 = 0.0828; % in cm
+% position3 = 0.0885; % in cm
 
 position1 = 0.0005; % in cm
-position2 = 0.05; % in cm
-position3 = 0.10; % in cm
-position4 = 0.15; % in cm
+position2 = 0.04; % in cm
+position3 = 0.08; % in cm
+position4 = 0.12; % in cm
+position5 = 0.16; % in cm
 
-list_of_positions = {position1, position2, position3, position4};
+% position1 = 0.0005; % in cm
+% position2 = 0.05; % in cm
+% position3 = 0.10; % in cm
+% position4 = 0.15; % in cm
+
+list_of_positions = {position1, position2, position3, position4, position5};
 
 
 % picking pause (this controls the speed of the animation, the pause variable 
@@ -822,8 +855,12 @@ p = 0.001;
 % set_of_data = {SC_Cohen_set1_Ri10, SC_Cohen_set1_Ri20, SC_Cohen_set1_Ri30, SC_Cohen_set1_Ri40, SC_Cohen_set1_Ri50, SC_Cohen_set1_Ri60};
 % set_of_data = {SC_Cohen_set2_Ri10, SC_Cohen_set2_Ri20, SC_Cohen_set2_Ri30, SC_Cohen_set2_Ri40, SC_Cohen_set2_Ri50, SC_Cohen_set2_Ri60};
 % set_of_data = {DC_Cohen_set1_T28_scaled_HH_conductances, DC_Cohen_set1_T29_scaled_HH_conductances, DC_Cohen_set1_T30_scaled_HH_conductances, DC_Cohen_set1_T31_scaled_HH_conductances, DC_Cohen_set1_T32_scaled_HH_conductances, DC_Cohen_set1_T33_scaled_HH_conductances, DC_Cohen_set1_T34_scaled_HH_conductances, DC_Cohen_set1_T35_scaled_HH_conductances, DC_Cohen_set1_T36_scaled_HH_conductances};
-set_of_data = {DC_Cohen_set2_Ri110_w_set1rpn, DC_Cohen_set2_Ri120_w_set1rpn, DC_Cohen_set2_Ri130_w_set1rpn};
-% data = SC_Cohen_set1_new_amy;
+% set_of_data = {SC_Cohen_set1_lambda09_method1, SC_Cohen_set1_lambda07_method1, SC_Cohen_set1_lambda05_method1};
+% set_of_data = {DC_Cohen_set1_lambda09_method1, DC_Cohen_set1_lambda07_method1, DC_Cohen_set1_lambda05_method1}
+% set_of_data = {DC_Cohen_set1_rpn10fold_lambda09_method1, DC_Cohen_set1_rpn10fold_lambda07_method1, DC_Cohen_set1_rpn10fold_lambda05_method1};
+% set_of_data = {DC_Cohen_set1_rpn100fold_lambda09_method1, DC_Cohen_set1_rpn100fold_lambda07_method1, DC_Cohen_set1_rpn100fold_lambda05_method1};
+% set_of_data = {DC_Cohen_set1, DC_Cohen_set1_new_conductances};
+% data = DC_Cohen_set1_T33;
  
 % plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interval2, interval3);
 % plot_Vm_minus_Vmy_picture(data, time_shot);
@@ -832,7 +869,7 @@ set_of_data = {DC_Cohen_set2_Ri110_w_set1rpn, DC_Cohen_set2_Ri120_w_set1rpn, DC_
 % plot_animation_probabilities_vs_time(data, p);
 % plot_animation_probabilities_vs_space(HH_data_Temp_32, p);
 % plot_time_and_space_shots(data, list_of_positions, list_of_times);
-plot_voltage_vs_time_comparison_animation(set_of_data, p);
+% plot_voltage_vs_time_comparison_animation(set_of_data, p);
 % plot_voltage_vs_space_comparison_animation(set_of_data, p);
 % plot_voltage_vs_time_comparison(set_of_data, space_shot);
 % plot_voltage_vs_space_comparison(set_of_data, time_shot);
@@ -926,10 +963,11 @@ function plot_zoomed_in_region_w_AP_at_spaces(data, time_shot, interval1, interv
     end
 
     hold off
-    xlabel('Time (ms)')
-    ylabel('$V_m$ in millivolts', 'Interpreter', 'latex')
-    title('Axon segment of $V_m$ vs Time for Set (1) on DC', 'Interpreter', 'latex')
-    legend('show', 'Location', 'northeast')
+    xlabel('Time (ms)', 'FontSize', 16)
+    ylabel('$V_m$ in millivolts', 'Interpreter', 'latex',  'FontSize', 16)
+    title('Axon segment of $V_m$ vs Time for Set (1) on DC', 'Interpreter', 'latex',  'FontSize', 16)
+    legend('show', 'Location', 'northeast', 'FontSize', 13)
+    set(gca, 'FontSize', 13); % Set axis size
 
     T = data.T;
     xmin = 0;
@@ -1379,7 +1417,7 @@ function plot_voltage_vs_time_comparison_animation(data_set, p)
             end
 
             % legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
-            legend('SC Reg', 'SC segment 5 demyelinated', 'SC all segments demyelinated', 'Location', 'northeast', 'FontSize', 14);
+            legend('SC Mammalian Conductance','SC Scaled HH Conductance','Location', 'northeast', 'Interpreter', 'latex', 'FontSize', 14);
             text(xmin + 0.2, ymax + 0.1, sprintf('Space: %.5f cm', round(i*dx, 5)), 'FontSize', 12, 'BackgroundColor', 'w');
 
             % Add a pause to create animation effect
@@ -1449,7 +1487,7 @@ function plot_voltage_vs_space_comparison_animation(data_set, p)
             end
 
             % Add the legend (NOTE: the legend is what is slowing down the animation)
-            legend('DC: $\lambda = 1$', 'DC: $\lambda = 0.8$', 'DC: $\lambda  = 0.6$', 'Location', 'northeast', 'FontSize', 14, 'Interpreter', 'latex');
+            legend('SC Mammalian Conductance','SC Scaled HH Conductance', 'Location', 'northeast', 'FontSize', 14, 'Interpreter', 'latex');
             % legend('DC: Myelinated', 'DC: Tube', 'DC: Tube+Paralyene', 'Location', 'northeast');
             % legend('SC: Tube', 'DC: Tube', 'Location', 'northeast');
             % legend('SC model: Cohen DC Params', 'DC model: $R_{pa}, R_{pn}$ given', 'DC model: $R_{pa}, R_{pn}$ computed', 'Location', 'northeast', 'Interpreter', 'latex');
@@ -1499,7 +1537,7 @@ function plot_voltage_vs_time_comparison(data_set, space_shot)
     end
 
     % legend('SiGe Tube params', 'Tube+Paralyne params', 'Location', 'northeast');
-    legend('DC Set (1) r_pn 50', 'DC Set (2) r_pn 50', 'Location', 'northeast', 'FontSize', 14);
+    legend('DC Mammalian Conductance','DC Scaled HH Conductance', 'Location', 'northeast', 'Interpreter', 'latex', 'FontSize', 14);
   
 end
 

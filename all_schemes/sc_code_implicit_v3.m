@@ -39,12 +39,12 @@ g_ratio = 0.698; % g ratio (used to define effective radius a_my)
 a_my = a/g_ratio; % (cm) axon radius in myelinated section OLD VERSION
 % a_my = a + (a_my - a)*lambda_d; % a_my_tilde
 a_my_bar = 0.5*(a + a_my); % this is a_my_bar (where a_my on the inside is a_my_tilde when simulating demyelination)
-R_i = 0.155; % (kilo-ohms*cm) intracellular resistivity
-R_m = 24.6; % (kilo-ohms*cm^2) specific membrane resistance
-C_m = 1.15; % (micro-farads/cm^2) specific membrane capacitance
-R_my = 240; %63.7; % (kilo-ohms*cm^2) specific myelin resistance
+R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
+R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
+C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
+R_my = 63.7; %63.7; % (kilo-ohms*cm^2) specific myelin resistance
 % R_my = R_my*lambda_d;
-C_my = 0.0379; %0.113; % (micro-farads/cm^2) specific myelin capacitance
+C_my = 0.113; %0.113; % (micro-farads/cm^2) specific myelin capacitance
 % C_my = C_my/lambda_d;
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
@@ -112,8 +112,8 @@ f_1 = @(Vmy, n, m, h, ii, tt) (mod(ii - 1, N_s) > N_n).*F_1(Vmy) + ... % Interno
 
 % Initialization
 %%%%%%%%%%%%%%%%
-V_m0 = -58.1513; % (mV) initial condition for membrane potential 
-V_my0 = 1.0925; % (mV) initial condition for axon potential in periaxonal space
+V_m0 = -58.1547; % (mV) initial condition for membrane potential 
+V_my0 = 0.8212; % (mV) initial condition for axon potential in periaxonal space
 N_0 = 0.4258; % (dimless) initial condition for gating variable n
 M_0 = 0.1144; % (dimless) initial condition for gating variable m
 H_0 = 0.3560; % (dimless) initial condition for gating variable h
@@ -476,4 +476,4 @@ list_of_times = [time1
 % ylabel("Probabilities of ion channels opening/closing.")
 % xlabel("Time in milliseconds.")
 
-% save('SC_Cohen_set2_lambda05_method1.mat'); 
+% save('SC_Cohen_set1_T58.mat'); 

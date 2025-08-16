@@ -125,8 +125,8 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % PlOTTING C_my, R_my and R_i DATA FOR DC MODEL Set 1 and Set 2 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% PLOTTING r_pn
-%%%%%%%%%%%%%%%
+% % PLOTTING r_pn
+% %%%%%%%%%%%%%%%
 % figure(1);
 % plot(rpn_grid, DC_rpn_cv_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % hold on;
@@ -137,7 +137,7 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % set(gca, 'FontSize', 13);
 % ylim([0 1]);
 % grid on;
-% 
+
 % figure(2);
 % plot(rpn_grid, DC_rpn_ap_peak_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % hold on;
@@ -147,7 +147,7 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
 % ylim([-60 30]);
-% % grid on;
+% grid on;
 % 
 % figure(3);
 % plot(rpn_grid, DC_rpn_ap_duration_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
@@ -157,8 +157,8 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % xlabel('$r_{pn}$ ($10^6$ k$\Omega$/cm)', 'Interpreter', 'latex', 'FontSize', 16)
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
-% ylim([0 21]);
-% % grid on;
+% ylim([0 22]);
+% grid on;
 % 
 % % PLOTTING C_my
 % %%%%%%%%%%%%%%%
@@ -175,8 +175,8 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % legend('Set (1)', 'Set (2)', 'Set (1) w/ r_{pn} 10-fold', 'Set (1) w/ r_{pn} 100-fold', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
 % ylim([0 1]);
-% % grid on;
-% 
+% grid on;
+
 % figure(5);
 % plot(Cmy_grid, DC_Cmy_ap_peak_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % hold on;
@@ -190,8 +190,8 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % legend('Set (1)', 'Set (2)', 'Set (1) w/ r_{pn} 10-fold', 'Set (1) w/ r_{pn} 100-fold', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
 % ylim([-60 30]);
-% % grid on;
-% 
+% grid on;
+
 % figure(6);
 % plot(Cmy_grid, DC_Cmy_ap_duration_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % hold on;
@@ -204,9 +204,9 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % xlabel('$C_{my}$ ($\mu$F/cm$^2$)', 'Interpreter', 'latex', 'FontSize', 16)
 % legend('Set (1)', 'Set (2)', 'Set (1) w/ r_{pn} 10-fold', 'Set (1) w/ r_{pn} 100-fold', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
-% ylim([0 21]);
+% ylim([0 22]);
 % grid on;
-% 
+
 % % PLOTTING R_my
 % %%%%%%%%%%%%%%%
 % figure(7);
@@ -219,7 +219,7 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % set(gca, 'FontSize', 13);
 % ylim([0 1]);
 % grid on;
-% 
+
 % figure(8);
 % plot(Rmy_grid, DC_Rmy_ap_peak_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % hold on
@@ -229,8 +229,8 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
 % ylim([-60 30]);
-% % grid on;
-% 
+% grid on;
+
 % figure(9);
 % plot(Rmy_grid, DC_Rmy_ap_duration_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % hold on
@@ -239,9 +239,9 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % xlabel('$R_{my}$ (k$\Omega\cdot$cm$^2$)', 'Interpreter', 'latex', 'FontSize', 16)
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
-% ylim([0 21]);
+% ylim([0 22]);
 % grid on;
-% 
+
 % % PLOTTING R_i (w/ Set (2) params and r_pn = 321*10^6)
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % figure(13);
@@ -254,7 +254,7 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % set(gca, 'FontSize', 13);
 % ylim([0 1]);
 % grid on;
-% 
+
 % figure(14);
 % plot(Ri_grid, DC_Ri_ap_peak_set1_w_set2Cmy, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % hold on;
@@ -264,8 +264,8 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % legend('Set (1) w/ $C_{my} = 0.0379$', 'Set (2) w/ $r_{pn} = 321\cdot10^6$', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
 % ylim([-60 30]);
-% % grid on;
-% 
+% grid on;
+
 % figure(15);
 % plot(Ri_grid, DC_Ri_ap_duration_set1_w_set2Cmy, '-o', 'LineWidth', 2, 'MarkerSize', 8);
 % hold on;
@@ -274,13 +274,13 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % xlabel('$R_{i}$ (k$\Omega$ cm)', 'Interpreter', 'latex', 'FontSize', 16)
 % legend('Set (1) w/ $C_{my} = 0.0379$', 'Set (2) w/ $r_{pn} = 321\cdot10^6$', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
-% ylim([0 21]);
+% ylim([0 22]);
 % grid on;
 % 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% % PlOTTING C_my, R_my and R_i DATA FOR SC MODEL Set 1 and Set 2 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PlOTTING C_my, R_my and R_i DATA FOR SC MODEL Set 1 and Set 2 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % % PLOTTING C_my
 % %%%%%%%%%%%%%%%
 % figure(16);
@@ -292,7 +292,7 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
 % ylim([0 3]);
-% % grid on;
+% grid on;
 % 
 % figure(17);
 % plot(Cmy_grid, SC_Cmy_ap_peak_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
@@ -303,7 +303,7 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
 % ylim([-60 30]);
-% % grid on;
+% grid on;
 % 
 % figure(18);
 % plot(Cmy_grid, SC_Cmy_ap_duration_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
@@ -313,7 +313,7 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % xlabel('$C_{my}$ ($\mu$F/cm$^2$)', 'Interpreter', 'latex', 'FontSize', 16)
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
-% ylim([0 21]);
+% ylim([0 22]);
 % grid on;
 % 
 % % PLOTTING R_my
@@ -327,7 +327,7 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
 % ylim([0 3]);
-% % grid on;
+% grid on;
 % 
 % figure(20);
 % plot(Rmy_grid, SC_Rmy_ap_peak_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
@@ -338,7 +338,7 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
 % ylim([-60 30]);
-% % grid on;
+% grid on;
 % 
 % figure(21);
 % plot(Rmy_grid, SC_Rmy_ap_duration_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
@@ -348,7 +348,7 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % xlabel('$R_{my}$ (k$\Omega\cdot$cm$^2$)', 'Interpreter', 'latex', 'FontSize', 16)
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
-% ylim([0 21]);
+% ylim([0 22]);
 % grid on;
 % 
 % % PLOTTING R_i
@@ -362,7 +362,7 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
 % ylim([0 3]);
-% % grid on;
+% grid on;
 % 
 % figure(23);
 % plot(Ri_grid, SC_Ri_ap_peak_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
@@ -373,7 +373,7 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
 % ylim([-60 30]);
-% % grid on;
+% grid on;
 % 
 % figure(24);
 % plot(Ri_grid, SC_Ri_ap_duration_set1, '-o', 'LineWidth', 2, 'MarkerSize', 8);
@@ -383,8 +383,8 @@ DC_Temp_ap_peak_set2_scaled_HH_conductances = [-3.167878080947303	-5.42344178998
 % xlabel('$R_{i}$ (k$\Omega$ cm)', 'Interpreter', 'latex', 'FontSize', 16)
 % legend('Set (1)', 'Set (2)', 'Interpreter', 'latex', 'FontSize', 16)
 % set(gca, 'FontSize', 13);
-% ylim([0 21]);
-% % grid on;
+% ylim([0 22]);
+% grid on;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PLOTTING TEMPERATURE DATA
