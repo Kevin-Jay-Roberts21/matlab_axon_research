@@ -34,17 +34,17 @@ n = T/dt + 1; % (#) n is the number of time steps
 % C_mm = 1; % (micro-farads/cm^2) capacitance of a single myelin lamellae
 
 % other material parameters
-a = 0.55*10^(-4); % (cm) radius in nodal region
+a = 0.0001;%0.55*10^(-4); % (cm) radius in nodal region
 g_ratio = 0.698; % g ratio (used to define effective radius a_my)
-a_my = a/g_ratio; % (cm) axon radius in myelinated section OLD VERSION
+a_my = 0.00014;%a/g_ratio; % (cm) axon radius in myelinated section OLD VERSION
 % a_my = a + (a_my - a)*lambda_d; % a_my_tilde
 a_my_bar = 0.5*(a + a_my); % this is a_my_bar (where a_my on the inside is a_my_tilde when simulating demyelination)
 R_i = 0.0712; % (kilo-ohms*cm) intracellular resistivity
 R_m = 24.8; % (kilo-ohms*cm^2) specific membrane resistance
 C_m = 1.23; % (micro-farads/cm^2) specific membrane capacitance
-R_my = 63.7; %63.7; % (kilo-ohms*cm^2) specific myelin resistance
+R_my = 5.2779*10^10;%63.7; %63.7; % (kilo-ohms*cm^2) specific myelin resistance
 % R_my = R_my*lambda_d;
-C_my = 0.113; %0.113; % (micro-farads/cm^2) specific myelin capacitance
+C_my = 0.0174; %0.113; % (micro-farads/cm^2) specific myelin capacitance
 % C_my = C_my/lambda_d;
 G_K = 80; % (mS/cm^2) max specific potassium conductance
 G_Na = 3000; % (mS/cm^2) max specific sodium conductance 
@@ -476,4 +476,4 @@ list_of_times = [time1
 % ylabel("Probabilities of ion channels opening/closing.")
 % xlabel("Time in milliseconds.")
 
-% save('SC_Cohen_set1_T58.mat'); 
+save('SC_Huang_TubeParalyene_set1.mat'); 
